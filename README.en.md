@@ -1,51 +1,46 @@
-# huoyan-opensource-retail-android
+# HuoYan Retail Android App
 
-[简体中文](README.md) | English
+An Android product recognition and checkout app for fresh food, snacks, bakery products and small dishes.
 
-Huoyan's open-source Android retail client provides AI recognition and checkout for **fresh produce, snacks, bakery products, and small-portion prepared dishes**.
+[中文](README.md) · [Website and activation](https://www.huoyan.cc) · [Downloads](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/releases)
 
-Official website: [www.huoyan.cc](https://www.huoyan.cc)
+The project's own App and client JAR source code is available for everyone to use. Recognition requires a separately installed HuoYan SDK and activation arranged with HuoYan. See the [usage and activation rules](USAGE.md) and [third-party notices](THIRD_PARTY_NOTICES.md); the repository does not designate an MIT or Apache 2.0 license for all its contents.
 
-Application package: `cc.huoyan.retail`; SDK JAR package: `cc.huoyan.sdk.client`.
+## Get started
 
-## SDK JAR integration
+| Goal | Documentation |
+| --- | --- |
+| Run the complete App | [Quick start](QUICKSTART.md) in Chinese: install the App and SDK, activate a model, wait for readiness, create and learn a product, then recognize it |
+| Integrate the client JAR into your App | [English integration guide](huoyan-sdk-client/INTEGRATION_GUIDE.en.md), [SDK overview](huoyan-sdk-client/README.en.md), and [Java example](huoyan-sdk-client/samples/RecognitionIntegrationExample.java) |
+| Build or contribute | [Build setup](docs/build.md), [testing](docs/testing.md), and [contributing](CONTRIBUTING.md) in Chinese |
 
-[English Integration Guide](huoyan-sdk-client/INTEGRATION_GUIDE.en.md) · [Chinese Integration Guide](huoyan-sdk-client/INTEGRATION_GUIDE.md) · [Java example](huoyan-sdk-client/samples/RecognitionIntegrationExample.java)
+The App package is `cc.huoyan.retail`; the client JAR package is `cc.huoyan.sdk.client`; the separately installed recognition SDK package is `cc.huoyan`.
 
-Use the JAR in an existing application or customize this client. The JAR handles communication with the Huoyan SDK.
+## Interface
 
-The app uses `app/src/main/libs/huoyan-sdk-client-2.0.0.jar`; runtime dependencies are declared in `app/build.gradle`. The `huoyan-sdk-client` module is packaged and tested independently, and app builds do not update the JAR automatically. After changing SDK source, run `bash gradlew :huoyan-sdk-client:updateAppSdkJar` with JBR-17 before building the app. `:huoyan-sdk-client:clientDistribution` generates the full delivery ZIP.
+| Home | Checkout waiting for recognition |
+| --- | --- |
+| ![App home screen](docs/images/home-landscape-en.png) | ![Checkout waiting for recognition](docs/images/checkout-landscape-en.png) |
 
-The SDK's `OFFLINE` state supports local checkout and learning when the certificate is valid, the model is ready, and the key is not lost. There is no need to wait for cloud reconciliation to return the SDK to `READY`. Cloud operations still use the SDK's actual results; failures are not treated as local successes while offline.
+App 2.0.6 on a C50 device with English selected in the App. Shop and device identifiers have been hidden.
 
-## Features
-
-- AI recognition (USB camera + Huoyan SDK) → product matching → pricing by count or weight
-- Mixed-cart checkout through `CartCalculator`, combining count and weight pricing with per-line HALF_UP rounding
-- Weighing and printing switches stored in local SharedPreferences, with defaults for each shop scenario
-- Pricing validation that blocks weight-based products when weighing is disabled
-
-## Code structure
-
-See [Code structure](docs/code-structure.md) (Chinese) for business packages, device integration, and test locations.
+[Chinese and English screenshots](docs/images/README.md). Landscape and portrait designs are maintained in the [shared design source](design/huoyan-retail.pen).
 
 ## Build
 
-Use JBR-17; Gradle 7.5 does not support Java 21. Replace `JAVA_HOME` below with your local path.
+Use JDK/JBR 17, Android SDK 33, NDK 25.2.9519653 and CMake 3.22.1. Gradle 7.5 does not support Java 21.
 
 ```bash
-export JAVA_HOME=/path/to/jbr-17/Contents/Home
-bash gradlew :app:assembleDebug        # Debug APK (huoyan-retail-{version}-*.apk)
-bash gradlew :app:assembleRelease      # Release APK (open-source experimental signing by default)
-bash gradlew :app:testDebugUnitTest    # Unit tests
+bash gradlew :app:assembleDebug
+bash gradlew :app:testDebugUnitTest :huoyan-sdk-client:testDebugUnitTest
 ```
 
-Debug builds use the debug signing key generated locally by Android build tools. Local and CNB release builds use the repository's [`xinhai-debug-demo` signing key](signing/README.md) by default, with debugging disabled. **This key is only for noncommercial experiments and test Release builds of the open-source version. Do not use it for commercial releases; its test private key and password are public.**
+On Windows PowerShell use `.\gradlew.bat` instead of `bash gradlew`. The App uses a committed JAR; after changing SDK source, run `:huoyan-sdk-client:updateAppSdkJar` before rebuilding the App. Build a full SDK ZIP with `:huoyan-sdk-client:clientDistribution`.
 
-For production releases, configure all four properties in the untracked `local.properties`: `signing.storeFile` (an absolute path is recommended), `signing.storePassword`, `signing.keyAlias`, and `signing.keyPassword`. Release builds will then use that signing configuration. Do not commit production signing keys or passwords.
+Default Release APKs use a publicly shared experimental signing key, restricted to non-commercial experiments and testing. Use your own signing key for production distribution; see [signing instructions](signing/README.md).
 
-## Tests
+## Releases and support
 
-- Unit tests: `app/src/test/java` (plain JUnit tests for money, pricing, and checkout logic)
+[GitHub Releases](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/releases) and [CNB Releases](https://cnb.cool/xinhaizhikong/xlabs/huoyan-opensource-retail-android/-/releases) are separate publishing destinations. CNB publishing is maintained in the CNB repository. If no release assets are available on a platform, build from source. App, client JAR and SDK versions are independently managed; see the [compatibility notes](docs/version-compatibility.md) and [changelog](CHANGELOG.md).
 
-See [Agents.en.md](Agents.en.md) for coding conventions.
+For activation, package registration or private support, contact HuoYan through the [official website](https://www.huoyan.cc). Report ordinary bugs through [GitHub Issues](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/issues). Do not post activation codes, account credentials or security vulnerabilities publicly; see [security reporting](SECURITY.md).

@@ -34,6 +34,8 @@ export JAVA_HOME=/path/to/jbr-17/Contents/Home
 bash gradlew :huoyan-sdk-client:clientDistribution
 ```
 
+将路径换成本机 JDK/JBR 17。Windows PowerShell 使用 `.\gradlew.bat`；环境配置见[构建指南](../docs/build.md)。
+
 发行工具回归测试（需要 Python 3 和 JDK 17）：
 
 ```bash

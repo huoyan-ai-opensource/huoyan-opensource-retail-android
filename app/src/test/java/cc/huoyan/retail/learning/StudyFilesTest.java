@@ -1,6 +1,7 @@
 package cc.huoyan.retail.learning;
 
 import org.junit.Rule;
+import org.junit.Assume;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import java.io.File;
@@ -37,7 +38,10 @@ public class StudyFilesTest {
         File outside = temp.newFolder("outside");
         File sentinel = new File(outside, "keep");
         assertTrue(sentinel.createNewFile());
-        Files.createSymbolicLink(new File(root, "linkedProduct").toPath(), outside.toPath());
+        File linkedProduct = new File(root, "linkedProduct");
+        Files.createSymbolicLink(linkedProduct.toPath(), outside.toPath());
+        // 本用例依赖 Android/Linux 的 File 规范路径语义；Windows JDK 不解析目录符号链接。
+        Assume.assumeTrue("当前文件系统的 File API 不解析符号链接", outside.getCanonicalFile().equals(linkedProduct.getCanonicalFile()));
         assertFalse(StudyFiles.deleteProduct(root, "linkedProduct"));
         File product = new File(root, "123");
         assertTrue(product.mkdir());

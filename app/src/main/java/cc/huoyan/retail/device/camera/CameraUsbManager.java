@@ -17,7 +17,6 @@ import com.serenegiant.usb.Size;
 import com.serenegiant.usb.UVCCamera;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +39,6 @@ public class CameraUsbManager {
 
     private TextureView mCameraView;
 
-    //    private final List<UsbDevice> usbDeviceList = new ArrayList<>();
     private final Map<String, UsbDevice> usbDeviceHashMap = new LinkedHashMap<>();
     private String currentCameraId;
 
@@ -56,7 +54,6 @@ public class CameraUsbManager {
     // 重开会周期性关开相机（黑 1-2s→恢复→再黑）；在途期间调用方应跳过重复发起
     private volatile boolean cameraRestarting = false;
 
-    //    private Handler mBackgroundHandler;
     private boolean selected = false;
     private final Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -117,10 +114,6 @@ public class CameraUsbManager {
     public void removeListener(String key) {
         listenerMap.remove(key);
     }
-
-//    public void setBackgroundHandler(Handler mBackgroundHandler) {
-//        this.mBackgroundHandler = mBackgroundHandler;
-//    }
 
     public static CameraUsbManager getInstance() {
         if (INSTANCE == null) {
@@ -197,9 +190,6 @@ public class CameraUsbManager {
                 if (mCameraViewMain != null) {
                     mCameraViewMain.setAspectRatio(width, height);
                 }
-//                if (mCameraViewMain != null) {
-//                    mCameraViewMain.getSurfaceTexture().setDefaultBufferSize(width, height);
-//                }
 
             }
 
@@ -211,9 +201,6 @@ public class CameraUsbManager {
                 mCameraHelper.addSurface(mCameraView.getSurfaceTexture(), false);
             }
             mCameraHelper.setFrameCallback(frame -> {
-//                byte[] nv21 = new byte[frame.remaining()];
-//                frame.get(nv21, 0, nv21.length);
-//                EventBus.getDefault().post(new CameraUsbEvent(className, GsonUtil.toJson(new CameraUsbEntity(nv21, size.width, size.height))));
 
                 byte[] nv21 = new byte[frame.remaining()];
                 frame.get(nv21, 0, nv21.length);
@@ -303,7 +290,6 @@ public class CameraUsbManager {
         // 重开在途置位（onCameraOpen 清零）：设备选择/打开全程相机未开，调用方
         // 据此跳过重复发起（2026-08-27 用户反馈① 振荡根因）
         cameraRestarting = true;
-//        rotateBy();
         mCameraHelper.setStateCallback(guardedCallback(++sessionGeneration));
         handler.sendEmptyMessageDelayed(1, 500);
     }
@@ -325,14 +311,6 @@ public class CameraUsbManager {
         }
         this.mCameraView = cameraView;
         applyMirror(mCameraView);
-//        Size size = mCameraHelper.getPreviewSize();
-//        if (size != null) {
-//            int width = size.width;
-//            int height = size.height;
-        //auto aspect ratio
-//            mCameraViewMain.setAspectRatio(width, height);
-//            cameraView.getSurfaceTexture().setDefaultBufferSize(width, height);
-//        }
 
         if (previewPaused) {
             previewPaused = false;

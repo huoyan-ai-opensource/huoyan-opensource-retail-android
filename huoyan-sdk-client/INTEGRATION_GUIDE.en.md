@@ -15,7 +15,7 @@ The Huoyan SDK is installed separately. Client applications call the SDK through
 | Use the JAR in an existing application | You already have product, camera, or checkout functionality and need recognition | Import the JAR → connect and activate → submit an image → handle recognition results |
 | Customize the reference client | You want to reuse the existing screens and retail workflows | [Run the reference client](#reference-client) → try learning and checkout → customize products, devices, and screens |
 
-Before integrating, obtain a matching SDK installer and activation instructions from your integration contact, confirm device support, and register the client application's package name. The account is embedded in the delivered JAR; changing accounts requires a JAR for the new account.
+Before integrating, contact HuoYan through the [official website](https://www.huoyan.cc) to obtain a matching SDK installer and activation instructions, confirm device support, and register the client application's package name. The account is embedded in the delivered JAR; changing accounts requires a JAR for the new account.
 
 Start with a fixed image to verify the workflow. If the device has already learned products, you can recognize them directly. On a new device, first photograph and learn a product as described in section 4.1, then recognize it.
 

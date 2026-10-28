@@ -23,10 +23,7 @@ import java.util.Set;
 
 public class SPManager {
     public static final String SP_JSON_CAMERA_CONFIG = "SP_JSON_CAMERA_CONFIG";
-    public static final String SP_JSON_FTP_CONFIG = "SP_JSON_FTP_CONFIG";
-    public static final String SP_DEVICE_CAMERA = "SP_DEVICE_CAMERA";
     public static final String SP_ACTIVATE_CODE = "SP_ACTIVATE_CODE";
-    public static final String SP_ACTIVATE_USER_TOKEN = "SP_ACTIVATE_USER_TOKEN";
     // SDK 2.0 对接通道：值为 aidl/ws，默认 aidl（读写见 SdkChannelManager）
     public static final String SP_SDK_CHANNEL = "SP_SDK_CHANNEL";
     // SDK 2.0 WS 通道端点覆盖：格式 ws://host:port/ws，
@@ -41,11 +38,6 @@ public class SPManager {
     public static final String SP_SHOP_ID = "SP_SHOP_ID";
     public static final String SP_DEVICES_ID = "SP_DEVICES_ID";
     public static final String SP_RECOGNIZE_AREA = "SP_RECOGNIZE_AREA";
-    public static final String SP_UVC_INIT = "SP_UVC_INIT";
-    public static final String SP_FTP_S080_LENGTH = "SP_FTP_S080_LENGTH";
-    public static final String SP_FTP_SERVER_IP = "SP_FTP_SERVER_IP";
-    public static final String SP_FLOATING_X = "SP_FLOATING_X";
-    public static final String SP_FLOATING_Y = "SP_FLOATING_Y";
     public static final String SP_SHOP_ADDRESS = "SP_SHOP_ADDRESS";
     public static final String SP_SHOP_PHONE = "SP_SHOP_PHONE";
     public static final String SP_SHOP_NO = "SP_SHOP_NO";
@@ -117,20 +109,6 @@ public class SPManager {
     public void putCameraConfig(CameraConfigEntity entity) {
         putString(cameraPreferenceKey(SP_JSON_CAMERA_CONFIG), GsonUtil.toJson(entity));
     }
-
-//    public void putDeviceResolution(UsbDevice usbDevice, List<PreviewSize> sizeList) {
-//        putString(SP_DEVICE_CAMERA + usbDevice.getDeviceId(), GsonUtil.toJson(sizeList));
-//    }
-//
-//    public List<PreviewSize> getDeviceResolution(UsbDevice usbDevice) {
-//        String json = getString(SP_DEVICE_CAMERA + usbDevice.getDeviceId());
-//        if ("".equals(json)) {
-//            return new ArrayList<>();
-//        }
-//        Type type = new TypeToken<List<PreviewSize>>() {
-//        }.getType();
-//        return GsonUtil.fromJson(json, type);
-//    }
 
     public void putRecognizeArea(RecognizeAreaEntity recognizeAreaEntity) {
         putString(cameraPreferenceKey(SP_RECOGNIZE_AREA), GsonUtil.toJson(recognizeAreaEntity));

@@ -1,0 +1,68 @@
+name: 问题反馈
+description: 反馈可以复现的软件或对接问题。
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提交前请查阅 [常见问题](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/blob/main/docs/faq.md)。
+        激活申请、包名登记请通过 [火眼官网](https://www.huoyan.cc) 联系。
+        不要上传激活码、账号密码、令牌、正式签名或客户资料；安全漏洞请按 [安全反馈说明](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/blob/main/SECURITY.md) 私密反馈。
+  - type: input
+    id: versions
+    attributes:
+      label: App / JAR / SDK 壳版本
+      description: 写明各自版本；源码运行时请附分支、提交号和来源平台。无法取得的版本标为未知。
+      placeholder: "App 2.0.6；JAR 2.0.0；SDK 壳版本；GitHub main@提交号"
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: 设备环境
+      description: 设备型号、Android 版本、CPU/ABI，以及相关相机、秤、打印机型号。
+      placeholder: "设备型号 / Android 版本 / arm64-v8a / 外设型号"
+    validations:
+      required: true
+  - type: dropdown
+    id: transport
+    attributes:
+      label: SDK 连接方式
+      options:
+        - 本机 AIDL
+        - 本机 WebSocket
+        - 局域网 WebSocket
+        - 尚未连接或不确定
+        - 与 SDK 连接无关
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 写明从哪个页面开始、执行了什么操作，是否必现，以及是否开启云端服务。使用测试数据说明。
+      placeholder: |
+        1. 打开……
+        2. 点击……
+        3. 出现……
+    validations:
+      required: true
+  - type: textarea
+    id: expected_actual
+    attributes:
+      label: 预期与实际结果
+      description: 附完整错误码、提示原文和出现时间；UI 问题可附脱敏截图。
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 脱敏日志或补充信息
+      description: 提供问题前后的相关日志即可。不要提交完整生产日志、真实业务照片或凭据。已有另一平台讨论时请附链接。
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: 提交确认
+      options:
+        - label: 我已检查附件和日志，未包含激活码、账号凭据或客户资料。
+          required: true

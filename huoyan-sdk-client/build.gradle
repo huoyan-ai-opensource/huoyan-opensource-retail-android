@@ -68,6 +68,9 @@ tasks.register('clientDistribution', Zip) {
     from(clientJar) { into 'libs' }
     from(configurations.releaseRuntimeClasspath) { into 'libs'; include '*.jar' }
     from 'README.md', 'README.en.md', 'INTEGRATION_GUIDE.md', 'INTEGRATION_GUIDE.en.md', 'consumer-rules.pro'
+    from rootProject.file('USAGE.md'), rootProject.file('THIRD_PARTY_NOTICES.md')
+    from(rootProject.file('docs/licenses')) { into 'docs/licenses' }
+    from(rootProject.file('app/src/main/libs/huoyan-sdk-client-2.0.0-接入指南.docx')) { into 'docs' }
     from('samples') { into 'samples' }
     preserveFileTimestamps = false
     reproducibleFileOrder = true

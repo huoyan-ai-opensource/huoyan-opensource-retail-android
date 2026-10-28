@@ -22,7 +22,7 @@
 | `common` | 跨业务基础工具；`ui` 存放通用界面基类、控件和弹窗 |
 | `receiver` | 开机启动和调试广播入口 |
 
-业务专用的适配器、弹窗和模型放在对应业务包，共用界面组件放入 `common.ui`。辅助类保持包内可见，跨包只开放必要入口。`FileUtil` 等历史工具尚有混合职责。
+业务专用的适配器、弹窗和模型放在对应业务包，共用界面组件放入 `common.ui`。辅助类保持包内可见，跨包只开放必要入口。`FileUtil` 负责图片裁剪、保存和识别坐标转换。
 
 单元测试和设备测试分别位于 `app/src/test/java`、`app/src/androidTest/java`，按被测业务包组织。跨页面测试以主要断言对象归属，例如首页到学习页的分页测试位于 `learning`。
 
@@ -133,7 +133,7 @@ bash gradlew :app:testDebugUnitTest :app:assembleDebug :app:assembleDebugAndroid
 | `RealModelVersionDeviceTest` | `-e realModelVersionTest true` | AIDL、WS 及设置页模型版本，只读查询 |
 | `ShopDetailsDeviceTest` | `-e realShopDetailsTest true -e externalShopId <已核对的外部门店标识>` | 真实绑定、门店地址和电话及重启后的持久化 |
 
-反馈上报和跨模型识别库的历史未完成验收见 [反馈真机验收记录](feedback-item-real-device-20261016.md)。该记录保留失败证据与复测入口，不代表当前版本已经通过相应验收。
+反馈上报问题见[常见问题](faq.md#学习或结算成功为什么云端没有图片和反馈)，真实设备验收的参数和范围见[测试指南](testing.md)。这些说明不代表当前版本已经通过真实 SDK 和云端反馈验收。
 
 ## SDK JAR 边界
 

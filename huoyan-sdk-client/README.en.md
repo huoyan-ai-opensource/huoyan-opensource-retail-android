@@ -17,5 +17,8 @@ The Java resource `raw/config` inside the JAR supplies the account. Preserve it 
 | `INTEGRATION_GUIDE.en.md` | Integration steps, parameters, and result handling in English |
 | `README.md` / `README.en.md` | Delivery notes in Chinese and English |
 | `consumer-rules.pro` | Obfuscation configuration |
+| `docs/huoyan-sdk-client-2.0.0-接入指南.docx` | Offline Word integration guide in Chinese |
+| `USAGE.md` / `THIRD_PARTY_NOTICES.md` | Usage, activation and third-party component notices in Chinese |
+| `docs/licenses/` | Collected original license texts and Chinese reference translations |
 | `samples/` | Java calling examples |
 | Reference client source (provided separately) | Run complete workflows or customize the existing client |

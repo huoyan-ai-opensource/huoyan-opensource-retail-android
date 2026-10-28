@@ -94,7 +94,7 @@ public final class ReadAccount {
         System.out.println(BundledAccount.getAccountId());
     }
 }
-''')
+''', encoding="utf-8")
         subprocess.run([javac, "--release", "11", "-encoding", "UTF-8", "-d", str(self.root),
                         str(sdk / "src/main/java/cc/huoyan/sdk/client/internal/BundledAccount.java"),
                         str(runner)], check=True, capture_output=True)

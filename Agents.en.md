@@ -23,7 +23,7 @@ This is the English version of the repository's [AGENTS.md](AGENTS.md), the guid
 Huoyan's general-purpose, open-source Android retail client provides AI recognition and checkout for **fresh produce, snacks, bakery products, and small-portion prepared dishes**.
 
 **Package:** `cc.huoyan.retail`
-**Min SDK:** 24 | **Target SDK:** 27 | **Compile SDK:** 33
+**Min SDK:** 24 | **Target SDK:** 28 | **Compile SDK:** 33
 **Java source and target compatibility:** 11 | **NDK:** 25.2.9519653
 
 ## Build with JBR-17
@@ -37,6 +37,8 @@ bash gradlew :app:testDebugUnitTest    # Run unit tests
 ```
 
 Use `bash gradlew` because the wrapper may not have executable permission.
+
+On Windows, use `.\gradlew.bat`. See the [build guide](docs/build.md) (Chinese) for toolchain setup, Android Studio, and commands for each platform.
 
 ## Architecture and MVP boundaries
 

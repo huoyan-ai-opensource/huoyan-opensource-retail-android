@@ -23,7 +23,7 @@
 火眼开源零售安卓客户端（通用版本）：面向 **生鲜 / 零食 / 烘焙 / 小碗菜** 四类零售场景的 AI 识别 + 收银客户端。
 
 **Package:** `cc.huoyan.retail`
-**Min SDK:** 24 | **Target SDK:** 27 | **Compile SDK:** 33
+**Min SDK:** 24 | **Target SDK:** 28 | **Compile SDK:** 33
 **Java:** 11 | **NDK:** 25.2.9519653
 
 ## 构建（重要：必须 JBR-17）
@@ -37,6 +37,8 @@ bash gradlew :app:testDebugUnitTest    # 单元测试
 ```
 
 gradlew 可能无执行位，用 `bash gradlew` 调用。
+
+Windows 使用 `.\gradlew.bat`；完整环境、Android Studio 和多平台命令见 [构建指南](docs/build.md)。
 
 ## 架构（页面 MVP 边界拆分）
 

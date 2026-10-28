@@ -42,7 +42,6 @@
 -keep class cc.huoyan.retail.checkout.domain.WeightedSaleResult { *; }
 -keep class cc.huoyan.retail.checkout.domain.WeightedSaleResult$* { *; }
 -keep class cc.huoyan.retail.common.EventBusModel { *; }
--keep class cc.huoyan.retail.data.FtpConfigEntity { *; }
 -keep class cc.huoyan.retail.data.GoodsEntity { *; }
 -keep class cc.huoyan.retail.device.camera.CameraConfigEntity { *; }
 -keep class cc.huoyan.retail.device.camera.RecognizeAreaEntity { *; }
@@ -50,22 +49,7 @@
 -keep class cc.huoyan.retail.diagnostics.LogFIleDirectory { *; }
 -keep class cc.huoyan.retail.diagnostics.LogFIleDirectoryType { *; }
 -keep class cc.huoyan.retail.diagnostics.SdkLogEntity { *; }
--keep class cc.huoyan.retail.learning.StudyFeedbackBatch { *; }
--keep class cc.huoyan.retail.learning.StudyItemEntity { *; }
 -keep class cc.huoyan.retail.learning.StudyPicEntity { *; }
--keep class cc.huoyan.retail.recognition.DetectBoxParser { *; }
--keep class cc.huoyan.retail.recognition.DetectBoxParser$* { *; }
--keep class cc.huoyan.retail.recognition.DetectGeometry { *; }
--keep class cc.huoyan.retail.recognition.ModelTypeGeometry { *; }
--keep class cc.huoyan.retail.recognition.model.BaseResp { *; }
--keep class cc.huoyan.retail.recognition.model.BaseRet { *; }
--keep class cc.huoyan.retail.recognition.model.BaseWsResp { *; }
--keep class cc.huoyan.retail.recognition.model.DetectItemEntity { *; }
--keep class cc.huoyan.retail.recognition.model.DetectWsResp { *; }
--keep class cc.huoyan.retail.recognition.model.DetectWsResp$* { *; }
--keep class cc.huoyan.retail.recognition.model.DetectionEntity { *; }
--keep class cc.huoyan.retail.recognition.model.SimilarEntity { *; }
--keep class cc.huoyan.retail.sdk.model.InitData { *; }
 -keep class cc.huoyan.retail.settings.ScanSerialEntity { *; }
 -keep class cc.huoyan.retail.device.camera.CameraUsbEntity { *; }
 
@@ -77,25 +61,6 @@
 -keep class com.herohan.uvcapp.** { *; }
 -keep class com.serenegiant.usb.** { *; }
 -dontwarn com.serenegiant.usb.**
-
-# ========== 腾讯云 COS SDK ==========
--keep class com.tencent.** { *; }
--keep interface com.tencent.** { *; }
--dontwarn com.tencent.**
--keep class com.qcloud.** { *; }
--keep interface com.qcloud.** { *; }
--dontwarn com.qcloud.**
-
-# ========== 腾讯云 CLS 日志 SDK ==========
--keep class com.tencentcloudapi.** { *; }
--keep interface com.tencentcloudapi.** { *; }
--dontwarn com.tencentcloudapi.**
--keep class net.jpountz.lz4.** { *; }
--keep interface net.jpountz.lz4.** { *; }
--dontwarn net.jpountz.lz4.**
--keep class net.jpountz.xxhash.** { *; }
--keep interface net.jpountz.xxhash.** { *; }
--dontwarn net.jpountz.xxhash.**
 
 # ========== JNI Native 方法 ==========
 -keep class cc.huoyan.retail.ThreadAffinity {

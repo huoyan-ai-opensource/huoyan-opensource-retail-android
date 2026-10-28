@@ -1,0 +1,33 @@
+name: 功能建议
+description: 描述使用场景和希望改进的功能。
+title: "[建议] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 使用场景与当前问题
+      description: 说明服务哪类零售场景、使用什么设备，以及当前操作遇到的困难。
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: 期望的行为
+      description: 用具体操作和结果说明需求；可附草图或脱敏截图。
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 已尝试的方法
+      description: 如有替代操作或相关 Issue，请附上，便于判断改动范围。
+  - type: input
+    id: versions
+    attributes:
+      label: 相关版本与设备
+      description: 如建议涉及兼容或外设，请写明 App / JAR / SDK 壳版本、设备与外设型号。
+  - type: markdown
+    attributes:
+      value: |
+        SDK 获取、激活和包名登记请通过 [火眼官网](https://www.huoyan.cc) 联系。
+        请勿公开账号凭据、激活码、业务照片或客户资料。

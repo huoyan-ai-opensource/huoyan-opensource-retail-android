@@ -17,5 +17,8 @@
 | `INTEGRATION_GUIDE.en.md` | 英文版接入步骤、参数和结果说明 |
 | `README.md` / `README.en.md` | 中英文交付说明 |
 | `consumer-rules.pro` | 混淆配置 |
+| `docs/huoyan-sdk-client-2.0.0-接入指南.docx` | 可离线阅读的 Word 接入指南 |
+| `USAGE.md` / `THIRD_PARTY_NOTICES.md` | 使用、激活及第三方组件说明 |
+| `docs/licenses/` | 第三方许可原文及中文参考译文汇总 |
 | `samples/` | 可参考的 Java 调用代码 |
 | 参考客户端源码（单独提供） | 运行完整流程或修改现有客户端 |
