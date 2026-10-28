@@ -1,5 +1,7 @@
 # huoyan-opensource-retail-android
 
+简体中文 | [English](README.en.md)
+
 火眼开源零售安卓客户端，支持 **生鲜 / 零食 / 烘焙 / 小碗菜** 的 AI 识别和收银。
 
 官网：[www.huoyan.cc](https://www.huoyan.cc)
