@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="zh">
+    <string name="home_rotation_pending">等待密钥轮换审核</string>
+    <string name="home_waiting_review">等待审核</string>
+    <string name="home_restoring_service">正在恢复</string>
+    <string name="home_checkout_unavailable">暂不可用</string>
+    <string name="home_service_unavailable">识别服务暂不可用</string>
+    <string name="home_checkout_starting">SDK 启动中…</string>
+    <string name="home_checkout_starting_hint">正在连接识别服务，请稍候</string>
+    <string name="goods_input_too_long">商品名称最多 64 字，价格最多 11 位</string>
+    <string name="model_version">模型版本：%1$s</string>
+    <string name="model_version_unknown">模型版本：—</string>
+    <string name="home_activation_required">设备未激活，激活后才能使用</string>
+    <string name="home_activate_now">立即激活</string>
+    <string name="sdk_local_help">使用此设备上的 SDK 服务，无需填写 IP 地址。</string>
+    <string name="cloud_enable">开启云端服务</string>
+    <string name="cloud_retry">重新获取</string>
+    <string name="cloud_state_retry">云端状态暂不可用，请重新获取</string>
+    <string name="cloud_sync_goods">同步商品</string>
+    <string name="cloud_sync_images">同步识别库</string>
+    <string name="cloud_sync_hint">下载云端商品与学习图片，同步到当前设备。</string>
+    <string name="cloud_sync_images_confirm">将下载云端学习图片并更新当前设备的识别库，是否继续？</string>
+    <string name="cloud_sync_complete">同步完成</string>
+    <string name="cloud_sync_partial">已同步 %1$d 项，%2$d 项失败或跳过，请检查后重试</string>
+    <string name="cloud_sync_incomplete">商品分页结果不完整，本地商品未更新</string>
+    <string name="cloud_scope_changed">连接或店铺已变更，请重新同步</string>
+    <string name="cloud_working">正在处理，请稍候。关闭弹窗后操作仍会继续。</string>
+    <string name="printer_connecting">正在连接打印机，请稍候</string>
+    <string name="printer_connect_timeout">连接超时，请检查打印机类型和设备后重试</string>
+    <string name="printer_selection_saved">已更换打印机配置，请测试连接</string>
+    <string name="sdk_discovery_empty">点击局域网探测，查找可用设备</string>
+    <string name="cloud_not_filled">未填写</string>
+    <string name="cloud_shop_address">地址：%1$s</string>
+    <string name="cloud_shop_phone">电话：%1$s</string>
+    <string name="cloud_enable_hint">开启后可同步云端商品与识别库。</string>
+    <string name="cloud_benefit_title_1">经营动态，随时掌握</string>
+    <string name="cloud_benefit_body_1">汇聚门店经营信息，帮助把握销售机会。</string>
+    <string name="cloud_benefit_title_2">多店协同，省时省心</string>
+    <string name="cloud_benefit_body_2">统一管理商品资料，让门店协作更高效。</string>
+    <string name="cloud_benefit_title_3">营销运营，多一份助力</string>
+    <string name="cloud_benefit_body_3">了解云端运营工具，探索更多营销方式。</string>
+    <string name="home_sdk_missing">SDK 未安装，安装后即可激活</string>
+    <string name="home_install_now">立即安装</string>
+</resources>

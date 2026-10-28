@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/homeGoods" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="16dp" style="@style/HomeFeatureCard" android:background="@drawable/home_feature_card" android:clickable="true" android:focusable="true" android:foreground="?android:attr/selectableItemBackground">
+    <ImageView android:layout_width="@dimen/home_feature_icon_size" android:layout_height="@dimen/home_feature_icon_size" android:src="@drawable/land_icon_database" android:importantForAccessibility="no" />
+    <LinearLayout style="@style/HomeFeatureText" android:layout_height="wrap_content" android:orientation="vertical">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="@dimen/home_feature_title_height" android:gravity="@integer/home_feature_text_gravity" android:text="@string/home_goods_title" android:textColor="#293A51" android:textSize="@dimen/home_feature_title_size" android:textStyle="bold" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="@dimen/home_feature_subtitle_height" android:gravity="@integer/home_feature_text_gravity" android:layout_marginTop="@dimen/home_feature_subtitle_gap" android:text="@string/home_goods_subtitle" android:textColor="#6E7C90" android:textSize="14sp" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+    </LinearLayout>
+</LinearLayout>

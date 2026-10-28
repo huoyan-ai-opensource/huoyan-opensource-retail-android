@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cc.huoyan.retail.common.ui.BoundedDialogLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical"
+    android:padding="12dp" android:background="@drawable/activation_surface">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:gravity="center_vertical">
+        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="@string/activation_input_title" android:textSize="24sp" android:textStyle="bold" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false"/>
+        <TextView android:id="@+id/scan" android:layout_width="wrap_content" android:layout_height="48dp" android:paddingHorizontal="8dp" android:gravity="center" android:text="@string/activate_scan_code" android:textSize="16sp" android:textColor="#3F3EED" android:drawableStart="@drawable/land_icon_scan_line" android:drawablePadding="6dp" android:background="?attr/selectableItemBackground" android:clickable="true" android:focusable="true"/>
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginTop="@dimen/activation_section_gap" android:fillViewport="false">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/activation_input_description" android:textSize="16sp" android:textColor="#586982" android:fontFamily="@font/retail_sans" android:includeFontPadding="false"/>
+            <FrameLayout android:layout_width="match_parent" android:layout_height="64dp" android:layout_marginTop="@dimen/activation_section_gap">
+                <LinearLayout android:id="@+id/activationSegments" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center_vertical" android:importantForAccessibility="noHideDescendants">
+                    <TextView android:id="@+id/text1" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:gravity="center" android:fontFamily="monospace" android:textSize="20sp" android:textColor="#293A51" android:background="@drawable/activation_segment" android:includeFontPadding="false"/>
+<TextView android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginHorizontal="8dp" android:gravity="center" android:text="–" android:textColor="#8994A5" android:textSize="16sp"/>
+<TextView android:id="@+id/text2" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:gravity="center" android:fontFamily="monospace" android:textSize="20sp" android:textColor="#293A51" android:background="@drawable/activation_segment" android:includeFontPadding="false"/>
+<TextView android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginHorizontal="8dp" android:gravity="center" android:text="–" android:textColor="#8994A5" android:textSize="16sp"/>
+<TextView android:id="@+id/text3" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:gravity="center" android:fontFamily="monospace" android:textSize="20sp" android:textColor="#293A51" android:background="@drawable/activation_segment" android:includeFontPadding="false"/>
+<TextView android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_marginHorizontal="8dp" android:gravity="center" android:text="–" android:textColor="#8994A5" android:textSize="16sp"/>
+<TextView android:id="@+id/text4" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:gravity="center" android:fontFamily="monospace" android:textSize="20sp" android:textColor="#293A51" android:background="@drawable/activation_segment" android:includeFontPadding="false"/>
+                </LinearLayout>
+                <cc.huoyan.retail.settings.ActivationCodeEditText android:id="@+id/editText" android:layout_width="match_parent" android:layout_height="match_parent" android:background="@null" android:padding="0dp" android:textColor="@android:color/transparent" android:textColorHighlight="@android:color/transparent" android:cursorVisible="false" android:singleLine="true" android:inputType="textVisiblePassword|textNoSuggestions" android:imeOptions="flagNoExtractUi" android:importantForAutofill="no" android:saveEnabled="false" android:contentDescription="@string/activation_input_title"/>
+            </FrameLayout>
+            <LinearLayout android:id="@+id/activationKeyboard" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="@dimen/activation_section_gap"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp" android:layout_marginTop="@dimen/activation_section_gap" android:gravity="center_vertical">
+                <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="@string/activation_keyboard_hint" android:textSize="14sp" android:textColor="#586982" android:fontFamily="@font/retail_sans" android:includeFontPadding="false"/>
+                <TextView android:id="@+id/activationClear" android:layout_width="64dp" android:layout_height="48dp" android:gravity="center" android:text="@string/activation_clear" android:textColor="@color/white" android:textSize="16sp" android:background="@drawable/keypad_clear" android:clickable="true" android:focusable="true"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="@dimen/activation_section_gap">
+        <TextView android:id="@+id/cancel" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:gravity="center" android:text="@string/button_cancel" android:textSize="18sp" android:textColor="#293A51" android:background="@drawable/activation_secondary" android:clickable="true" android:focusable="true"/>
+        <TextView android:id="@+id/activate" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:layout_marginStart="12dp" android:gravity="center" android:text="@string/panel_activation_button" android:textSize="18sp" android:textColor="@color/activation_primary_text" android:background="@drawable/activation_primary" android:enabled="false" android:clickable="true" android:focusable="true"/>
+    </LinearLayout>
+</cc.huoyan.retail.common.ui.BoundedDialogLayout>

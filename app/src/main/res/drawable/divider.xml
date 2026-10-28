@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#EEEEEE" /> <!-- 分割线颜色 -->
+    <size android:height="@dimen/dp_0_5" />    <!-- 分割线高度 -->
+</shape>

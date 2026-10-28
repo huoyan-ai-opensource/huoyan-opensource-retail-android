@@ -1,0 +1,17 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/main" android:background="#F2F4F8" android:orientation="vertical">
+  <LinearLayout android:layout_width="match_parent" android:layout_height="80dp" android:id="@+id/checkoutNavigation" android:background="#FFFFFF" android:orientation="horizontal" android:paddingHorizontal="16dp" android:paddingVertical="8dp" android:gravity="center_vertical">
+    <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_vertical" android:layout_weight="1">
+      <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/default_shop_name" android:textSize="20sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/shopName" android:textStyle="bold" android:maxLines="1" android:ellipsize="end" />
+      <TextClock android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/checkoutClock" android:format12Hour="yyyy/MM/dd HH:mm:ss" android:format24Hour="yyyy/MM/dd HH:mm:ss" android:textSize="14sp" android:textColor="#637187" android:fontFamily="@font/retail_sans" />
+    </LinearLayout>
+    <include android:layout_width="424dp" android:layout_height="64dp" android:layout_marginTop="0dp" layout="@layout/checkout_weights" />
+  </LinearLayout>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal">
+    <include android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" layout="@layout/checkout_camera" />
+    <include android:layout_width="320dp" android:layout_height="match_parent" layout="@layout/checkout_results" />
+  </LinearLayout>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="84dp" android:id="@+id/checkoutFooter" android:orientation="horizontal" android:gravity="end|center_vertical" android:paddingHorizontal="16dp" android:paddingVertical="12dp" android:background="#FFFFFF">
+    <include android:layout_width="0dp" android:layout_height="56dp" layout="@layout/checkout_actions" android:layout_weight="1" />
+    <include android:layout_width="300dp" android:layout_height="60dp" android:layout_marginStart="16dp" layout="@layout/checkout_summary" />
+  </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,44 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#66203351" android:padding="20dp">
+  <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical">
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:background="@drawable/land_card" android:paddingHorizontal="24dp" android:paddingBottom="24dp" android:paddingTop="8dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical" android:orientation="horizontal" android:layout_marginBottom="4dp">
+          <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/checkout_scale_title" android:textSize="24sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:textStyle="bold" android:layout_weight="1" />
+          <TextView android:layout_width="48dp" android:layout_height="48dp" android:text="×" android:textSize="32sp" android:textColor="#6E7C90" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/closeDialog" android:gravity="center" android:clickable="true" android:focusable="true" android:contentDescription="@string/button_cancel" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+          <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="116dp" android:background="@drawable/land_field" android:orientation="vertical" android:padding="16dp">
+              <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/checkout_net" android:textSize="13sp" android:textColor="#637187" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+              <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:gravity="center_vertical">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="—" android:textSize="34sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/dialogNetWeight" android:textStyle="bold" android:layout_weight="1" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="kg" android:textSize="14sp" android:textColor="#637187" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+              </LinearLayout>
+              <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="—" android:textSize="13sp" android:textColor="#637187" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/dialogTareWeight" android:layout_weight="1" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="—" android:textSize="13sp" android:textColor="#637187" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/dialogGrossWeight" />
+              </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical" android:layout_marginTop="20dp" android:layout_marginBottom="8dp">
+              <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="8dp">
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/checkout_tare_grams" android:textSize="16sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:textStyle="bold" />
+                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/checkout_tare_hint" android:textSize="13sp" android:textColor="#637187" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:layout_marginTop="4dp" />
+              </LinearLayout>
+              <TextView android:layout_width="64dp" android:layout_height="40dp" android:text="@string/checkout_clear" android:textSize="18sp" android:textColor="@color/white" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/clearInput" android:gravity="center" android:background="@drawable/keypad_clear" android:clickable="true" android:focusable="true" android:textStyle="bold" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="@dimen/ui_scale_key_height" android:gravity="center_vertical" android:background="@drawable/land_field" android:paddingHorizontal="16dp">
+              <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="" android:textSize="28sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/tareInput" android:layout_weight="1" android:textStyle="bold" />
+              <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/unit_g" android:textSize="14sp" android:textColor="#637187" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+            </LinearLayout>
+          </LinearLayout>
+          <include android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" layout="@layout/checkout_numeric_keyboard" />
+        </LinearLayout>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/checkout_zero_hint" android:textSize="13sp" android:textColor="#637187" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:layout_marginTop="12dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp">
+          <TextView android:layout_width="0dp" android:layout_height="56dp" android:text="@string/checkout_zero" android:textSize="18sp" android:textColor="#3F3EED" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/zeroScale" android:gravity="center" android:background="@drawable/land_soft" android:clickable="true" android:focusable="true" android:textStyle="bold" android:layout_weight="1" />
+          <TextView android:layout_width="0dp" android:layout_height="56dp" android:text="@string/checkout_confirm_tare" android:textSize="18sp" android:textColor="#FFFFFF" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/confirmTare" android:gravity="center" android:background="@drawable/land_primary" android:clickable="true" android:focusable="true" android:textStyle="bold" android:layout_marginStart="16dp" android:layout_weight="2" />
+        </LinearLayout>
+      </LinearLayout>
+    </LinearLayout>
+  </ScrollView>
+</FrameLayout>

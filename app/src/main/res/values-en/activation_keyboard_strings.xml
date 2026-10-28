@@ -1,0 +1,7 @@
+<resources>
+    <string name="activation_input_title">Activation code</string>
+    <string name="activation_input_description">Enter 16 characters, grouped in fours</string>
+    <string name="activation_keyboard_hint">Uppercase and digits; no 0, I or O</string>
+    <string name="activation_clear">Clear</string>
+    <string name="activation_backspace">Delete; hold to repeat</string>
+</resources>

@@ -1,0 +1,31 @@
+<resources>
+    <string name="land_title_camera">Camera settings</string>
+    <string name="land_title_scale">Scale settings</string>
+    <string name="land_title_print">Printer settings</string>
+    <string name="land_title_goods">Learning and recognition library</string>
+    <string name="land_title_authorization">Device license</string>
+    <string name="land_title_sdk">SDK connection</string>
+    <string name="land_title_shop">Shop details</string>
+    <string name="land_title_recognition">Recognition settings</string>
+    <string name="land_title_maintenance">System maintenance</string>
+    <string name="land_title_logs">Logs</string>
+    <string name="land_serial_copied">Serial number copied</string>
+    <string name="land_sdk_connected">SDK connected</string>
+    <string name="sdk_connection_saved">SDK connection saved (%1$s)</string>
+    <string name="land_sdk_save_first">Save the connection, then check whether the SDK is running</string>
+    <string name="land_camera_connected">● Connected</string>
+    <string name="land_scale_stable">● Stable reading</string>
+    <string name="land_scale_unstable">● Waiting for a stable reading</string>
+    <string name="land_scale_connected">Scale connected · Reading weight</string>
+    <string name="land_plu_read_only">Product PLU (read only)</string>
+    <string name="land_log_truncated">\nShowing the first 256 KB. Open device storage for the full file.</string>
+    <string name="land_goods_plu">Product PLU</string>
+    <string name="land_goods_name">Product name</string>
+    <string name="goods_price_weight">Unit price ($/kg)</string>
+    <string name="goods_price_count">Unit price ($/item)</string>
+    <string name="land_goods_pricing">Pricing mode</string>
+    <string name="land_guide_step_1">1. Switch product: search by name, initials or PLU.</string>
+    <string name="land_guide_step_2">2. Capture: learn immediately; new images appear first.</string>
+    <string name="land_guide_step_3">3. Manage images: × removes one; Forget clears this product’s images.</string>
+    <string name="land_guide_step_4">4. Save: submit feedback and refresh images.</string>
+</resources>

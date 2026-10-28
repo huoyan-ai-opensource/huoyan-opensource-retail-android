@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="95"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dp_10"
+        android:text="@string/settings_tab_panel"
+        android:textColor="#2A3547"
+        android:textSize="@dimen/sp_8"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:background="#EAEFF4" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="926"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/dp_12"
+        android:paddingTop="@dimen/dp_11">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="510"
+            android:background="@drawable/bg_white_radius_dddddd_3"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="@dimen/dp_9"
+                android:paddingVertical="@dimen/dp_8"
+                android:text="@string/panel_basic_info"
+                android:textColor="#2A3547"
+                android:textSize="@dimen/sp_8"
+                android:textStyle="normal" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="#EAEFF4" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/dp_9"
+                android:paddingVertical="@dimen/dp_8">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/panel_client_version"
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+
+                <TextView
+                    android:id="@+id/app_version"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|end"
+                    android:text=""
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="#EAEFF4" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/dp_9"
+                android:paddingVertical="@dimen/dp_8">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/panel_sdk_version"
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+
+                <TextView
+                    android:id="@+id/sdk_version"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|end"
+                    android:text="@string/text_unavailable"
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="#EAEFF4" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/dp_9"
+                android:paddingVertical="@dimen/dp_8">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/panel_hardware_serial"
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+
+                <TextView
+                    android:id="@+id/hardware_serial"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|end"
+                    android:text="@string/text_unavailable"
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="#EAEFF4" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/dp_9"
+                android:paddingVertical="@dimen/dp_8">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/panel_cloud_service"
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+
+                <Switch
+                    android:id="@+id/cloudServiceSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:contentDescription="@string/panel_cloud_service"
+                    android:background="@android:color/transparent"
+                    android:thumb="@drawable/thumb_selector"
+                    android:track="@drawable/track_selector"
+                    android:showText="false" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="21" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="510"
+            android:background="@drawable/bg_white_radius_dddddd_3"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="@dimen/dp_9"
+                android:paddingVertical="@dimen/dp_8"
+                android:text="@string/panel_activation_info"
+                android:textColor="#2A3547"
+                android:textSize="@dimen/sp_8"
+                android:textStyle="normal" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="#EAEFF4" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/dp_9"
+                android:paddingVertical="@dimen/dp_8">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/panel_activation_status"
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+
+                <TextView
+                    android:id="@+id/active_status"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|end"
+                    android:text="@string/panel_activation_status_inactive"
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="#EAEFF4" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/dp_9"
+                android:paddingVertical="@dimen/dp_8">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/panel_activation_time"
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+
+                <TextView
+                    android:id="@+id/service_start_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|end"
+                    android:text="@string/text_unavailable"
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="#EAEFF4" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/dp_9"
+                android:paddingVertical="@dimen/dp_8">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/panel_activation_expire"
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+
+                <TextView
+                    android:id="@+id/service_expire_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|end"
+                    android:text="@string/text_unavailable"
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="#EAEFF4" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/dp_9"
+                android:paddingVertical="@dimen/dp_8">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/panel_activation_serial_type"
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+
+                <TextView
+                    android:id="@+id/serial_type"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|end"
+                    android:text="@string/text_unavailable"
+                    android:textColor="#6B79A8"
+                    android:textSize="@dimen/sp_7" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="#EAEFF4" />
+
+            <TextView
+                android:id="@+id/activate"
+                android:layout_width="@dimen/dp_135"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginBottom="@dimen/dp_10"
+                android:background="@drawable/btn_main_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_7"
+                android:text="@string/panel_activation_button"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_7" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

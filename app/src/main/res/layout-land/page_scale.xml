@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="#F2F4F8">
+  <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal" android:paddingLeft="@dimen/ui_page_horizontal" android:paddingRight="@dimen/ui_page_horizontal" android:paddingTop="@dimen/ui_page_vertical" android:paddingBottom="@dimen/ui_page_vertical">
+    <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:fillViewport="true" android:clipToPadding="false" android:layout_weight="520">
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/ui_card_padding" android:background="@drawable/land_card">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="72dp" android:gravity="center_vertical">
+          <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="20sp" android:textColor="#293A51" android:includeFontPadding="false" android:text="@string/settings_system_weighing_module" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+            <Space android:layout_width="1dp" android:layout_height="6dp" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="15sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:lineSpacingExtra="3dp" android:text="@string/land_weighing_hint" android:fontFamily="@font/retail_sans" />
+          </LinearLayout>
+          <cc.huoyan.retail.common.ui.LandscapeSwitch android:layout_width="52dp" android:layout_height="48dp" android:id="@+id/weighingModule" android:showText="false" android:thumb="@drawable/land_switch_thumb" android:track="@drawable/land_switch_track" android:splitTrack="false" android:switchMinWidth="52dp" android:thumbTint="@null" android:trackTint="@null" android:padding="0dp" />
+        </LinearLayout>
+        <Space android:layout_width="1dp" android:layout_height="16dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/scaleBrand" android:orientation="horizontal" android:gravity="center_vertical">
+          <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/settings_scale_brand" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end|center_vertical" android:text="@string/land_scale_aclas" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="24dp" android:layout_height="wrap_content" android:textSize="26sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_chevron" android:fontFamily="@font/retail_sans" />
+        </LinearLayout>
+        <Space android:layout_width="1dp" android:layout_height="16dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/selectScalePort" android:orientation="vertical" android:gravity="center_vertical" android:minHeight="64dp" android:paddingTop="6dp" android:paddingBottom="6dp">
+          <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:gravity="start|center_vertical" android:text="@string/settings_scale_select_port" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/selectedScalePort" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="start|center_vertical" android:text="@string/land_placeholder" android:fontFamily="@font/retail_sans" android:layout_marginTop="6dp" android:maxLines="2" android:ellipsize="end" />
+        </LinearLayout>
+        <Space android:layout_width="1dp" android:layout_height="16dp" />
+
+        <Space android:layout_width="1dp" android:layout_height="16dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:lineSpacingExtra="3dp" android:text="@string/land_scale_test_hint" android:fontFamily="@font/retail_sans" />
+      </LinearLayout>
+    </ScrollView>
+    <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:fillViewport="true" android:clipToPadding="false" android:layout_weight="672" android:layout_marginStart="16dp">
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/ui_card_padding" android:background="@drawable/land_card">
+        <TextView android:layout_width="match_parent" android:layout_height="48dp" android:id="@+id/scaleTestStatus" android:textSize="16sp" android:textColor="#27835B" android:includeFontPadding="false" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:background="@drawable/land_success" android:text="@string/land_scale_not_started" android:fontFamily="@font/retail_sans" />
+        <Space android:layout_width="1dp" android:layout_height="22dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="20sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:lineSpacingExtra="3dp" android:text="@string/land_net_weight" android:fontFamily="@font/retail_sans" />
+        <Space android:layout_width="1dp" android:layout_height="22dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="110dp" android:gravity="bottom">
+          <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/scaleWeight" android:textSize="76sp" android:textColor="#293A51" android:includeFontPadding="false" android:text="@string/text_weight_initial" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="24sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:layout_marginStart="20dp" android:layout_marginBottom="10dp" android:text="@string/display_unit_weight" android:fontFamily="@font/retail_sans" />
+        </LinearLayout>
+        <Space android:layout_width="1dp" android:layout_height="22dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/scaleStable" android:textSize="18sp" android:textColor="#27835B" android:includeFontPadding="false" android:text="@string/land_waiting_weight" android:fontFamily="@font/retail_sans" />
+        <Space android:layout_width="1dp" android:layout_height="22dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="52dp">
+          <TextView android:layout_width="0dp" android:layout_height="52dp" android:id="@+id/zeroScale" android:textSize="18sp" android:textColor="#3F3EED" android:includeFontPadding="false" android:gravity="center" android:background="@drawable/land_soft" android:clickable="true" android:focusable="true" android:layout_weight="1" android:text="@string/settings_scale_zero" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="0dp" android:layout_height="52dp" android:id="@+id/tareScale" android:textSize="18sp" android:textColor="#3F3EED" android:includeFontPadding="false" android:gravity="center" android:background="@drawable/land_soft" android:clickable="true" android:focusable="true" android:layout_weight="1" android:layout_marginStart="16dp" android:text="@string/settings_scale_tare" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+        </LinearLayout>
+      </LinearLayout>
+    </ScrollView>
+  </LinearLayout>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="80dp" android:orientation="horizontal" android:gravity="center_vertical" android:background="#FFFFFF" android:paddingHorizontal="@dimen/ui_page_horizontal">
+    <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
+    <TextView android:layout_width="200dp" android:layout_height="52dp" android:id="@+id/testScalePort" android:textSize="18sp" android:textColor="#FFFFFF" android:includeFontPadding="false" android:gravity="center" android:background="@drawable/land_primary" android:clickable="true" android:focusable="true" android:layout_marginStart="16dp" android:text="@string/land_start_scale_test" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+  </LinearLayout>
+</LinearLayout>

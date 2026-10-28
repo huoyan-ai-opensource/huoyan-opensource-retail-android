@@ -1,0 +1,9 @@
+<resources>
+    <string name="status_print_done_auto_resume">Printed. Recognition resumes in 10 seconds</string>
+    <string name="goods_tare_label">Tare (g)</string>
+    <string name="goods_tare_invalid">Enter a non-negative whole number of grams</string>
+    <string name="checkout_price_required">Product price is required</string>
+    <string name="password_processing">Processing…</string>
+    <string name="unit_g">g</string>
+    <string name="receipt_shared_weight">Shared weight</string>
+</resources>

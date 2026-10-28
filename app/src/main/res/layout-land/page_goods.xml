@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:ns1="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="#F2F4F8">
+  <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:orientation="horizontal" android:paddingLeft="@dimen/ui_page_horizontal" android:paddingRight="@dimen/ui_page_horizontal" android:paddingTop="@dimen/ui_page_vertical" android:paddingBottom="@dimen/ui_page_vertical" android:layout_weight="1">
+    <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:fillViewport="true" android:clipToPadding="false" android:layout_weight="448">
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/ui_card_padding" android:background="@drawable/land_card">
+        <TextView android:layout_width="match_parent" android:layout_height="35dp" android:textSize="24sp" android:textColor="#293A51" android:includeFontPadding="false" android:gravity="center_vertical" android:text="@string/goods_tab_record" android:textStyle="bold" android:fontFamily="@font/retail_sans" android:layout_marginBottom="12dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/localGoodsRow" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="12dp">
+          <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/land_local_goods" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/goodsCount" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_placeholder" android:fontFamily="@font/retail_sans" android:minWidth="40dp" />
+          <TextView android:layout_width="24dp" android:layout_height="wrap_content" android:textSize="26sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_chevron" android:fontFamily="@font/retail_sans" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/learnedGoodsRow" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="12dp">
+          <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/goods_learned_label" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/libraryLocalCount" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_placeholder" android:fontFamily="@font/retail_sans" android:minWidth="40dp" />
+          <TextView android:layout_width="24dp" android:layout_height="wrap_content" android:textSize="26sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_chevron" android:fontFamily="@font/retail_sans" />
+        </LinearLayout>
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:lineSpacingExtra="3dp" android:text="@string/goods_management_hint" android:fontFamily="@font/retail_sans" android:layout_marginBottom="12dp" />
+        <Space android:layout_width="1dp" android:layout_height="0dp" android:layout_weight="1" />
+        <FrameLayout android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/openLearning" android:background="@drawable/land_primary" android:clickable="true" android:focusable="true" android:foreground="?android:attr/selectableItemBackground" android:layout_marginBottom="0dp">
+          <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_gravity="center" android:gravity="center" android:orientation="horizontal">
+            <TextView android:layout_width="wrap_content" android:layout_height="match_parent" android:gravity="center" android:text="@string/goods_management_open" android:fontFamily="@font/retail_sans" android:textSize="18sp" android:textColor="#FFFFFF" android:textStyle="bold" android:includeFontPadding="false" />
+          </LinearLayout>
+        </FrameLayout>
+      </LinearLayout>
+    </ScrollView>
+    <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:fillViewport="true" android:clipToPadding="false" android:layout_weight="744" android:layout_marginStart="16dp">
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/ui_card_padding" android:background="@drawable/land_card">
+        <TextView android:layout_width="match_parent" android:layout_height="35dp" android:textSize="24sp" android:textColor="#293A51" android:includeFontPadding="false" android:gravity="center_vertical" android:text="@string/goods_tab_library" android:textStyle="bold" android:fontFamily="@font/retail_sans" android:layout_marginBottom="12dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:lineSpacingExtra="3dp" android:text="@string/land_latest_backup" android:fontFamily="@font/retail_sans" android:layout_marginBottom="12dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/libraryBackupTime" android:textSize="28sp" android:textColor="#293A51" android:includeFontPadding="false" android:text="@string/land_placeholder" android:textStyle="bold" android:fontFamily="@font/retail_sans" android:layout_marginBottom="12dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="48dp" android:textSize="16sp" android:textColor="#D26527" android:includeFontPadding="false" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:background="@drawable/land_warning" android:text="@string/land_restore_warning" android:fontFamily="@font/retail_sans" android:layout_marginBottom="12dp" />
+        <Space android:layout_width="1dp" android:layout_height="0dp" android:layout_weight="1" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="0dp" android:orientation="vertical">
+          <FrameLayout android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/backupRecognitionLibrary" android:background="@drawable/land_primary" android:clickable="true" android:focusable="true" android:layout_weight="0" android:foreground="?android:attr/selectableItemBackground" android:layout_marginStart="0dp" android:layout_marginTop="0dp">
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_gravity="center" android:gravity="center" android:orientation="horizontal">
+              <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/land_icon_database" ns1:tint="#FFFFFF" android:layout_marginEnd="10dp" />
+              <TextView android:layout_width="wrap_content" android:layout_height="match_parent" android:gravity="center" android:text="@string/library_backup" android:fontFamily="@font/retail_sans" android:textSize="18sp" android:textColor="#FFFFFF" android:textStyle="bold" android:includeFontPadding="false" />
+            </LinearLayout>
+          </FrameLayout>
+          <FrameLayout android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/restoreRecognitionLibrary" android:background="@drawable/land_soft" android:clickable="true" android:focusable="true" android:layout_weight="0" android:layout_marginStart="0dp" android:foreground="?android:attr/selectableItemBackground" android:layout_marginTop="8dp">
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_gravity="center" android:gravity="center" android:orientation="horizontal">
+              <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@drawable/land_icon_rotate_ccw" ns1:tint="#3F3EED" android:layout_marginEnd="10dp" />
+              <TextView android:layout_width="wrap_content" android:layout_height="match_parent" android:gravity="center" android:text="@string/library_restore" android:fontFamily="@font/retail_sans" android:textSize="18sp" android:textColor="#3F3EED" android:textStyle="bold" android:includeFontPadding="false" />
+            </LinearLayout>
+          </FrameLayout>
+          <LinearLayout android:id="@+id/learnImagePackage" android:layout_width="match_parent" android:layout_weight="0" android:layout_height="52dp" android:layout_marginStart="0dp" android:background="@drawable/land_soft" android:gravity="center" android:clickable="true" android:focusable="true" android:layout_marginTop="8dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textStyle="bold" android:textColor="#3F3EED" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/library_image_learning" />
+          </LinearLayout>
+        </LinearLayout>
+      </LinearLayout>
+    </ScrollView>
+  </LinearLayout>
+</LinearLayout>

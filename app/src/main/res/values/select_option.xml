@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="zh">
+    <string name="select_option_empty">暂无可选项，请返回页面刷新</string>
+    <string name="select_option_unavailable">选项已不可用，请重新打开选择</string>
+</resources>

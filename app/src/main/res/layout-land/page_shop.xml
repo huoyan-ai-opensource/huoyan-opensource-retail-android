@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="#F2F4F8">
+  <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal" android:paddingLeft="@dimen/ui_page_horizontal" android:paddingRight="@dimen/ui_page_horizontal" android:paddingTop="@dimen/ui_page_vertical" android:paddingBottom="@dimen/ui_page_vertical">
+    <ScrollView android:layout_width="0dp" android:layout_height="match_parent" android:fillViewport="true" android:clipToPadding="false" android:layout_weight="1">
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/ui_card_padding" android:background="@drawable/land_card">
+        <TextView android:layout_width="match_parent" android:layout_height="35dp" android:textSize="24sp" android:textColor="#293A51" android:includeFontPadding="false" android:gravity="center_vertical" android:text="@string/land_shop_receipt_details" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+        <Space android:layout_width="1dp" android:layout_height="20dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:text="@string/settings_system_shop_name" android:fontFamily="@font/retail_sans" />
+        <Space android:layout_width="1dp" android:layout_height="10dp" />
+        <EditText android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/shop_name" android:textSize="18sp" android:textColor="#293A51" android:textColorHint="#6E7C90" android:includeFontPadding="false" android:singleLine="true" android:inputType="text" android:paddingHorizontal="16dp" android:background="@drawable/land_field" android:hint="@string/settings_system_shop_name_input_hint" android:fontFamily="@font/retail_sans" />
+        <Space android:layout_width="1dp" android:layout_height="20dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:text="@string/settings_system_shop_phone" android:fontFamily="@font/retail_sans" />
+        <Space android:layout_width="1dp" android:layout_height="10dp" />
+        <EditText android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/shopPhone" android:textSize="18sp" android:textColor="#293A51" android:textColorHint="#6E7C90" android:includeFontPadding="false" android:singleLine="true" android:inputType="phone" android:paddingHorizontal="16dp" android:background="@drawable/land_field" android:hint="@string/land_shop_phone_hint" android:fontFamily="@font/retail_sans" />
+        <Space android:layout_width="1dp" android:layout_height="20dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:text="@string/settings_system_shop_address" android:fontFamily="@font/retail_sans" />
+        <Space android:layout_width="1dp" android:layout_height="10dp" />
+        <EditText android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/shopAddress" android:textSize="18sp" android:textColor="#293A51" android:textColorHint="#6E7C90" android:includeFontPadding="false" android:singleLine="true" android:inputType="textPostalAddress" android:paddingHorizontal="16dp" android:background="@drawable/land_field" android:hint="@string/settings_system_shop_address_input_hint" android:fontFamily="@font/retail_sans" />
+        <Space android:layout_width="1dp" android:layout_height="20dp" />
+      </LinearLayout>
+    </ScrollView>
+  </LinearLayout>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="80dp" android:orientation="horizontal" android:gravity="center_vertical" android:background="#FFFFFF" android:paddingHorizontal="@dimen/ui_page_horizontal">
+    <Space android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
+    <TextView android:layout_width="144dp" android:layout_height="52dp" android:id="@+id/shopLogin" android:textSize="18sp" android:textColor="#3F3EED" android:includeFontPadding="false" android:gravity="center" android:background="@drawable/land_soft" android:clickable="true" android:focusable="true" android:layout_marginStart="16dp" android:text="@string/settings_system_shop_login" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+    <TextView android:layout_width="200dp" android:layout_height="52dp" android:id="@+id/saveShop" android:textSize="18sp" android:textColor="#FFFFFF" android:includeFontPadding="false" android:gravity="center" android:background="@drawable/land_primary" android:clickable="true" android:focusable="true" android:layout_marginStart="16dp" android:text="@string/land_save_shop" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+  </LinearLayout>
+</LinearLayout>

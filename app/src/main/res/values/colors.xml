@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="home_checkout_primary">#3F3EED</color>
+    <color name="home_checkout_action_ready">#EDF0FF</color>
+    <color name="home_checkout_missing">#C93636</color>
+    <color name="home_checkout_action_missing">#A92727</color>
+    <color name="home_checkout_unactivated">#F4C542</color>
+    <color name="home_checkout_action_unactivated">#B57B12</color>
+    <color name="home_checkout_starting">#66758B</color>
+    <color name="home_checkout_action_starting">#536176</color>
+</resources>

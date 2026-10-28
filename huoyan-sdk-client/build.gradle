@@ -1,0 +1,88 @@
+plugins {
+    id 'com.android.library'
+}
+
+android {
+    namespace 'cc.huoyan.sdk.client'
+    compileSdk 33
+    defaultConfig {
+        minSdk 24
+    }
+    buildFeatures {
+        buildConfig false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+dependencies {
+    // 普通 JAR 不内嵌这些运行时依赖；宿主须声明同组依赖，或使用 clientDistribution 的 libs。
+    implementation libs.java.websocket       // WebSocket 通信；传递引入 SLF4J。
+    implementation libs.fastjson             // SDK 协议 JSON 编解码。
+    implementation libs.okhttp3              // SDK APK 下载；传递引入 Okio。
+    implementation libs.kotlin.stdlib.jdk8   // OkHttp/Okio 运行时，统一 Kotlin 版本。
+    // 仅编译期 API 标注，不随发行 ZIP 提供。
+    compileOnly 'androidx.annotation:annotation:1.2.0'
+    testImplementation libs.junit
+}
+
+// Android 插件仅用于编译 Binder/AIDL；JAR 携带 Java 配置资源，不包含 Android res。
+def clientJar = tasks.register('clientJar', Jar) {
+    dependsOn 'compileReleaseJavaWithJavac', 'verifySdkBoundary'
+    archiveFileName = 'huoyan-sdk-client-2.0.0.jar'
+    destinationDirectory = layout.buildDirectory.dir('outputs/jar')
+    from layout.buildDirectory.dir('intermediates/javac/release/classes')
+    from 'src/main/resources'
+    from('consumer-rules.pro') {
+        into 'META-INF/proguard'
+    }
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+// 显式重新打包并替换 app 的 SDK JAR；app 构建不依赖本任务或 SDK 源码编译。
+tasks.register('updateAppSdkJar', Copy) {
+    group = 'distribution'
+    description = '重新打包火眼 SDK JAR 并更新 app/src/main/libs 中的接入文件。'
+    from clientJar
+    into rootProject.file('app/src/main/libs')
+}
+
+// 独立编译第三方示例，仅使用生成的 JAR 和 Android SDK，不链接零售 app。
+def compileExample = tasks.register('compileExample', JavaCompile) {
+    dependsOn clientJar
+    source fileTree('samples') { include '**/*.java' }
+    classpath = files(clientJar.flatMap { it.archiveFile }) + files(android.bootClasspath)
+    destinationDirectory = layout.buildDirectory.dir('example-classes')
+    sourceCompatibility = '11'
+    targetCompatibility = '11'
+    options.encoding = 'UTF-8'
+}
+
+tasks.register('clientDistribution', Zip) {
+    dependsOn compileExample
+    archiveFileName = 'huoyan-sdk-client-2.0.0.zip'
+    destinationDirectory = layout.buildDirectory.dir('distributions')
+    from(clientJar) { into 'libs' }
+    from(configurations.releaseRuntimeClasspath) { into 'libs'; include '*.jar' }
+    from 'README.md', 'INTEGRATION_GUIDE.md', 'consumer-rules.pro'
+    from('samples') { into 'samples' }
+    preserveFileTimestamps = false
+    reproducibleFileOrder = true
+}
+
+// 独立交付边界：JAR 不能反向引用零售应用，也不能拥有页面/资源。
+tasks.register('verifySdkBoundary') {
+    inputs.files(fileTree('src/main/java') { include '**/*.java' })
+    doLast {
+        fileTree('src/main/java').matching { include '**/*.java' }.each { source ->
+            def text = source.getText('UTF-8')
+            if (text.contains('cc.huoyan.retail') || text =~ /import\s+[^;]*\.R;/
+                    || text =~ /import\s+(android\.app\.Activity|android\.widget\.|androidx\.fragment\.)/) {
+                throw new GradleException("JAR 边界越界: ${source}")
+            }
+        }
+    }
+}

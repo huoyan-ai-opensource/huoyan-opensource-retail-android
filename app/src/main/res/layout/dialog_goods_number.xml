@@ -1,0 +1,14 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#70142033" android:padding="16dp">
+    <cc.huoyan.retail.common.ui.BoundedDialogLayout android:id="@+id/boundedCheckoutDialog" android:layout_width="420dp" android:layout_height="wrap_content" android:layout_gravity="center" android:orientation="vertical" android:padding="20dp" android:background="@drawable/land_card">
+        <TextView android:id="@+id/keyboardTitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center" android:textSize="22sp" android:textStyle="bold" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="12dp" android:gravity="center_vertical">
+            <TextView android:id="@+id/goodsNumberValue" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:gravity="center" android:background="@drawable/land_field" android:textSize="28sp" android:textColor="#3F3EED" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+            <TextView android:id="@+id/clear" android:layout_width="72dp" android:layout_height="match_parent" android:layout_marginStart="8dp" android:gravity="center" android:text="@string/button_clear" android:textSize="18sp" android:textColor="@color/white" android:background="@drawable/keypad_clear" android:clickable="true" android:focusable="true" />
+        </LinearLayout>
+        <include layout="@layout/checkout_numeric_keyboard" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginTop="12dp">
+            <TextView android:id="@+id/cancel" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:gravity="center" android:text="@string/button_cancel" android:textSize="18sp" android:textColor="#293A51" android:background="@drawable/land_secondary" android:clickable="true" android:focusable="true" />
+            <TextView android:id="@+id/confirm" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:layout_marginStart="12dp" android:gravity="center" android:text="@string/button_ok" android:textSize="18sp" android:textColor="@color/white" android:background="@drawable/land_primary" android:clickable="true" android:focusable="true" />
+        </LinearLayout>
+    </cc.huoyan.retail.common.ui.BoundedDialogLayout>
+</FrameLayout>

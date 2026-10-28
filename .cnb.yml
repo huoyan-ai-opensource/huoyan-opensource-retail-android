@@ -1,0 +1,29 @@
+# 推送 2.0.0 或 v2.0.0 格式的 tag 后构建，普通分支推送不触发。
+$:
+  tag_push:
+    - name: Android Release
+      runner:
+        tags: cnb:arch:amd64
+        cpus: 4
+      docker:
+        build: .cnb/Dockerfile
+      env:
+        TZ: Asia/Shanghai
+      stages:
+        - name: 单元测试与 Release 打包
+          script: |
+            set -eu
+            tag="${CNB_BRANCH:?缺少构建 tag}"
+            bash gradlew --no-daemon --console=plain \
+              "-PappVersionName=${tag#v}" \
+              :app:testDebugUnitTest :app:assembleRelease
+            test -n "$(find app/build/outputs/apk/release -name '*.apk' -print -quit)"
+        - name: 创建或更新 Release
+          type: git:release
+          options:
+            overlying: true
+        - name: 上传 Release APK
+          image: cnbcool/attachments:latest
+          settings:
+            attachments:
+              - app/build/outputs/apk/release/*.apk

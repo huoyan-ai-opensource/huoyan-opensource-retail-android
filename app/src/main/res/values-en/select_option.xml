@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="select_option_empty">No options available. Go back and refresh.</string>
+    <string name="select_option_unavailable">This option is no longer available. Please reopen the selection.</string>
+</resources>

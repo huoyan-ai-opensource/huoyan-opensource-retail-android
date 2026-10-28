@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="GoodsFormInput">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">@dimen/dp_24</item>
+        <item name="android:layout_marginStart">@dimen/dp_10</item>
+        <item name="android:background">@drawable/bg_grey_radius_3</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingStart">@dimen/dp_8</item>
+        <item name="android:paddingEnd">@dimen/dp_8</item>
+        <item name="android:textColor">#293A51</item>
+        <item name="android:textColorHint">#6B79A8</item>
+        <item name="android:textSize">@dimen/sp_7</item>
+    </style>
+</resources>

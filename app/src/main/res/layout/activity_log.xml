@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2F3243"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/dp_10"
+    android:paddingTop="@dimen/dp_9"
+    android:paddingBottom="@dimen/dp_10"
+    tools:context=".diagnostics.LogActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_white_radius_5"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/topLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/dp_7"
+            android:paddingVertical="@dimen/dp_6">
+
+            <TextView
+                android:id="@+id/quit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="197"
+                android:background="@drawable/btn_main_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_6"
+                android:text="@string/button_back"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_9"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/dp_20"
+                android:layout_weight="1150"
+                android:gravity="center"
+                android:text="@string/settings_system_log"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_9"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="197"
+                android:background="@drawable/btn_main_bg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:paddingVertical="@dimen/dp_6"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_9"
+                android:textStyle="bold"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:background="#EAEFF4" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pathRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/dp_8" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="@dimen/dp_8" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,22 @@
+<resources>
+    <string name="learning_title">Learning management</string>
+    <string name="learning_help">Help</string>
+    <string name="learning_add_goods">Add product</string>
+    <string name="learning_images">Learned images</string>
+    <string name="learning_edit">Edit</string>
+    <string name="learning_delete">Delete</string>
+    <string name="learning_capture">Capture</string>
+    <string name="learning_empty">No learned images. Tap Capture to add one.</string>
+    <string name="learning_select">Select a product first</string>
+    <string name="learning_loading">Loading learned images…</string>
+    <string name="learning_retry">Could not load images. Tap to retry.</string>
+    <string name="learning_new">New photo</string>
+    <string name="learning_remove_image">Delete this learned image</string>
+    <string name="learning_understood">Got it</string>
+    <string name="learning_guide_dont_show_again">Do not show automatically again</string>
+    <string name="learning_current_goods">Current product</string>
+
+    <string name="learning_load_more">Swipe up for more images</string>
+    <string name="learning_loading_more">Loading more images…</string>
+    <string name="learning_more_retry">Could not load images. Tap to retry.</string>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical" android:gravity="center_horizontal"
+    android:background="@drawable/bg_white_radius_5" android:padding="20dp">
+    <TextView android:id="@+id/text" android:layout_width="match_parent"
+        android:layout_height="wrap_content" android:gravity="center"
+        android:text="@string/scan_qrcode_hint" android:textColor="#293A51"
+        android:textSize="20sp" android:textStyle="bold" />
+    <FrameLayout android:id="@+id/scanPreview" android:layout_width="match_parent"
+        android:layout_height="240dp" android:layout_marginTop="20dp"
+        android:background="#000000">
+        <cc.huoyan.retail.device.camera.AutoFitTextureView
+            android:id="@+id/surfaceView" android:layout_width="match_parent"
+            android:layout_height="match_parent" android:layout_gravity="center" />
+    </FrameLayout>
+    <TextView android:id="@+id/scanSwitchCamera" android:layout_width="match_parent"
+        android:layout_height="48dp" android:layout_marginTop="16dp" android:gravity="center"
+        android:background="@drawable/land_soft" android:text="@string/scan_switch_camera"
+        android:textColor="#3F3EED" android:textSize="18sp" android:textStyle="bold" android:includeFontPadding="false" android:fontFamily="@font/retail_sans" android:clickable="true" android:focusable="true" />
+</LinearLayout>

@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="#F2F4F8" android:padding="0dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="80dp" android:background="#FFFFFF" android:gravity="center_vertical" android:paddingHorizontal="24dp">
+        <ImageView android:layout_width="36dp" android:layout_height="36dp" android:src="@mipmap/ic_launcher" android:importantForAccessibility="no" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:text="@string/home_title" android:textColor="#293A51" android:textSize="24sp" android:textStyle="bold" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+        <View android:layout_width="1dp" android:layout_height="32dp" android:layout_marginHorizontal="24dp" android:background="#E7EBF1" />
+        <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:orientation="vertical" android:gravity="center_vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/homeStoreSubtitle" android:maxLines="1" android:ellipsize="end" android:textStyle="bold" />
+            <TextClock android:includeFontPadding="false" android:gravity="center_vertical" android:layout_width="wrap_content" android:layout_height="24dp" android:format12Hour="yyyy-MM-dd E  HH:mm:ss" android:format24Hour="yyyy-MM-dd E  HH:mm:ss" android:textSize="13sp" android:textColor="#6E7C90" android:fontFamily="@font/retail_sans" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="wrap_content" android:layout_height="48dp" android:gravity="center" android:paddingHorizontal="12dp" android:background="@drawable/land_soft" android:id="@+id/homeCloudStatus" android:clickable="true" android:focusable="true" android:layout_marginEnd="16dp">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="#8795A8" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="●" android:id="@+id/homeCloudDot" android:layout_marginEnd="8dp" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="14sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_title" android:id="@+id/homeCloudLabel" />
+        </LinearLayout>
+        <TextView android:id="@+id/aboutDevice" android:layout_width="128dp" android:layout_height="48dp" android:gravity="center" android:text="@string/home_about_device" android:textColor="#3F3EED" android:textSize="16sp" android:textStyle="bold" android:background="@drawable/land_soft" android:clickable="true" android:focusable="true" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:layout_marginStart="32dp" android:layout_marginEnd="32dp" android:layout_marginBottom="24dp" android:orientation="horizontal" android:layout_marginTop="24dp">
+        <LinearLayout android:id="@+id/enterCheckout" android:layout_width="0dp" android:layout_weight="28" android:layout_height="match_parent" android:orientation="vertical" android:paddingStart="@dimen/home_checkout_padding" android:paddingEnd="@dimen/home_checkout_padding" android:paddingTop="32dp" android:background="@drawable/home_checkout_card" android:clickable="true" android:focusable="true" android:paddingBottom="32dp" android:foreground="?android:attr/selectableItemBackground">
+            <ImageView android:layout_width="52dp" android:layout_height="52dp" android:src="@drawable/home_icon_product_scan" android:importantForAccessibility="no" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="46dp" android:layout_marginTop="24dp" android:text="@string/home_checkout" android:textColor="#FFFFFF" android:textSize="32sp" android:textStyle="bold" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="24dp" android:text="@string/home_checkout_subtitle" android:textColor="#FFFFFF" android:textSize="18sp" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/homeActivationHint" />
+            <Space android:layout_width="1dp" android:layout_height="0dp" android:layout_weight="1" />
+            <LinearLayout android:id="@+id/homeCheckoutButton" android:layout_width="match_parent" android:layout_height="52dp" android:gravity="center" android:background="@drawable/land_soft">
+                <ImageView android:id="@+id/homeCheckoutArrow" android:layout_width="22dp" android:layout_height="22dp" android:src="@drawable/land_icon_arrow_right" android:importantForAccessibility="no" />
+                <TextView android:layout_width="wrap_content" android:layout_height="52dp" android:gravity="center" android:text="@string/home_enter_checkout" android:textColor="#3F3EED" android:textSize="18sp" android:textStyle="bold" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:layout_marginStart="10dp" android:id="@+id/homeCheckoutAction" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="72" android:layout_marginStart="24dp" android:orientation="vertical" android:background="#F2F4F8">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal">
+                <include layout="@layout/home_feature_sdk" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="0dp" />
+                <include layout="@layout/home_feature_recognition" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="16dp" />
+                <include layout="@layout/home_feature_learning" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="16dp" />
+            </LinearLayout>
+            <Space android:layout_width="1dp" android:layout_height="16dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal">
+                <include layout="@layout/home_feature_camera" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="0dp" />
+                <include layout="@layout/home_feature_scale" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="16dp" />
+                <include layout="@layout/home_feature_print" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="16dp" />
+            </LinearLayout>
+            <Space android:layout_width="1dp" android:layout_height="16dp" />
+            <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal">
+                <include layout="@layout/home_feature_goods" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="0dp" />
+                <include layout="@layout/home_feature_shop" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="16dp" />
+                <include layout="@layout/home_feature_maintenance" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <FrameLayout android:layout_width="match_parent" android:layout_height="64dp">
+        <cc.huoyan.retail.common.ui.BrandWatermarkView android:layout_width="match_parent" android:layout_height="match_parent" android:importantForAccessibility="no" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_gravity="bottom" android:layout_marginHorizontal="@dimen/ui_page_horizontal" android:layout_marginBottom="16dp" android:orientation="horizontal" android:gravity="center_vertical">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_weight="1">
+                <LinearLayout android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:orientation="vertical">
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12sp" android:textColor="#66758B" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/homeClientVersion" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="5dp" android:orientation="horizontal" android:gravity="center_vertical">
+                        <ProgressBar android:id="@+id/homeSdkStartupProgress" style="?android:attr/progressBarStyleSmall" android:layout_width="12dp" android:layout_height="12dp" android:layout_marginEnd="6dp" android:indeterminate="true" android:indeterminateTint="#3F3EED" android:importantForAccessibility="no" />
+                        <TextView android:id="@+id/homeSdkVersion" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/home_sdk_starting" android:textSize="12sp" android:textColor="#66758B" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:accessibilityLiveRegion="polite" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center" android:orientation="horizontal">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12sp" android:textColor="#66758B" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/home_copyright" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1" android:gravity="end">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12sp" android:textColor="#66758B" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/homeSerial" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12sp" android:textColor="#66758B" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/homeConnection" android:layout_marginTop="5dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

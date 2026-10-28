@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cloud_benefit_body_1">汇聚门店经营信息，帮助了解日常经营动态与商品销售情况，为商品管理和经营安排提供参考，更好把握销售机会。</string>
+    <string name="cloud_benefit_body_2">统一管理云端商品资料，按需同步商品与识别库到当前设备，减少重复录入与学习，让门店之间的资料维护更省心。</string>
+    <string name="cloud_benefit_body_3">了解云端服务与运营工具，结合门店实际需求探索合适的经营方式。扫码咨询服务详情、适用场景与开通流程。</string>
+</resources>

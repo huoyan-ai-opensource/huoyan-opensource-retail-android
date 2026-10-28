@@ -1,0 +1,7 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="zh">
+    <string name="activation_input_title">输入激活码</string>
+    <string name="activation_input_description">请输入 16 位激活码，每 4 位自动分组</string>
+    <string name="activation_keyboard_hint">仅大写字母与数字，不含 0、I、O</string>
+    <string name="activation_clear">清空</string>
+    <string name="activation_backspace">退格，长按连续删除</string>
+</resources>

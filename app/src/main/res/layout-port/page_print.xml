@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="#F2F4F8">
+  <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="true">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingLeft="@dimen/ui_page_horizontal" android:paddingRight="@dimen/ui_page_horizontal" android:paddingTop="@dimen/ui_page_vertical" android:paddingBottom="@dimen/ui_page_vertical">
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/ui_card_padding" android:background="@drawable/land_card" android:layout_marginStart="0dp" android:layout_marginTop="0dp">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="72dp" android:gravity="center_vertical">
+          <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="20sp" android:textColor="#293A51" android:includeFontPadding="false" android:text="@string/settings_system_print_module" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+            <Space android:layout_width="1dp" android:layout_height="6dp" />
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="15sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:lineSpacingExtra="3dp" android:text="@string/land_printing_hint" android:fontFamily="@font/retail_sans" />
+          </LinearLayout>
+          <cc.huoyan.retail.common.ui.LandscapeSwitch android:layout_width="52dp" android:layout_height="48dp" android:id="@+id/printModule" android:showText="false" android:thumb="@drawable/land_switch_thumb" android:track="@drawable/land_switch_track" android:splitTrack="false" android:switchMinWidth="52dp" android:thumbTint="@null" android:trackTint="@null" android:padding="0dp" />
+        </LinearLayout>
+        <Space android:layout_width="1dp" android:layout_height="16dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="64dp" android:id="@+id/printInitNameLayout" android:orientation="horizontal" android:gravity="center_vertical">
+          <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/settings_system_printer_type" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="0dp" android:layout_weight="1.5" android:layout_marginStart="12dp" android:layout_height="wrap_content" android:id="@+id/printerTypeName" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_placeholder" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="24dp" android:layout_height="wrap_content" android:textSize="26sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_chevron" android:fontFamily="@font/retail_sans" />
+        </LinearLayout>
+        <Space android:layout_width="1dp" android:layout_height="16dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="64dp" android:id="@+id/printerModelLayout" android:orientation="horizontal" android:gravity="center_vertical">
+          <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/settings_system_printer_model" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="0dp" android:layout_weight="1.5" android:layout_marginStart="12dp" android:layout_height="wrap_content" android:id="@+id/printerModel" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:maxLines="2" android:ellipsize="end" android:text="@string/land_placeholder" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="24dp" android:layout_height="wrap_content" android:textSize="26sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_chevron" android:fontFamily="@font/retail_sans" />
+        </LinearLayout>
+        <Space android:layout_width="1dp" android:layout_height="16dp" />
+        <include layout="@layout/printer_paper_setting" />
+        <Space android:layout_width="1dp" android:layout_height="16dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/printerConnection" android:orientation="horizontal" android:gravity="center_vertical">
+          <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/land_connection_type" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end|center_vertical" android:text="@string/land_usb" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="24dp" android:layout_height="wrap_content" android:textSize="26sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_chevron" android:fontFamily="@font/retail_sans" />
+        </LinearLayout>
+        <Space android:layout_width="1dp" android:layout_height="16dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="48dp" android:id="@+id/printerStatus" android:textSize="16sp" android:textColor="#27835B" android:includeFontPadding="false" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:background="@drawable/land_success" android:visibility="invisible" android:fontFamily="@font/retail_sans" />
+        <TextView android:layout_width="0dp" android:layout_height="0dp" android:id="@+id/printerInitName" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:visibility="gone" android:fontFamily="@font/retail_sans" />
+      </LinearLayout>
+    </LinearLayout>
+  </ScrollView>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="88dp" android:orientation="horizontal" android:gravity="center_vertical" android:background="#FFFFFF" android:paddingHorizontal="@dimen/ui_page_horizontal">
+    <TextView android:layout_width="0dp" android:layout_height="56dp" android:id="@+id/communicationTest" android:textSize="18sp" android:textColor="#3F3EED" android:includeFontPadding="false" android:gravity="center" android:background="@drawable/land_soft" android:clickable="true" android:focusable="true" android:layout_marginStart="0dp" android:text="@string/settings_system_printer_test_connection" android:textStyle="bold" android:fontFamily="@font/retail_sans" android:layout_weight="1" />
+    <TextView android:layout_width="0dp" android:layout_height="56dp" android:id="@+id/printTest" android:textSize="18sp" android:textColor="#FFFFFF" android:includeFontPadding="false" android:gravity="center" android:background="@drawable/land_primary" android:clickable="true" android:focusable="true" android:layout_marginStart="12dp" android:text="@string/settings_system_printer_test_print" android:textStyle="bold" android:fontFamily="@font/retail_sans" android:layout_weight="1" />
+  </LinearLayout>
+</LinearLayout>

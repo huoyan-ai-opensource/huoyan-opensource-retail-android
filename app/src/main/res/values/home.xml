@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="zh">
+  <string name="home_title">火眼识别</string>
+  <string name="home_about_device">关于设备</string>
+  <string name="home_checkout">识别收银</string>
+  <string name="home_checkout_subtitle">识别、称重、计件与打印</string>
+  <string name="home_enter_checkout">进入收银</string>
+  <string name="home_back">返回首页</string>
+  <string name="home_camera_title">相机设置</string>
+  <string name="home_camera_subtitle">画面与分辨率</string>
+  <string name="home_scale_title">称重设置</string>
+  <string name="home_scale_subtitle">串口与重量测试</string>
+  <string name="home_print_title">打印设置</string>
+  <string name="home_print_subtitle">连接与试打</string>
+  <string name="home_recognition_title">识别配置</string>
+  <string name="home_recognition_subtitle">场景与识别参数</string>
+  <string name="home_sdk_title">SDK 连接</string>
+  <string name="home_sdk_subtitle">本机与局域网</string>
+  <string name="home_shop_title">店铺信息</string>
+  <string name="home_shop_subtitle">小票抬头</string>
+  <string name="home_goods_title">学习与识别库</string>
+  <string name="home_goods_subtitle">备份与恢复</string>
+  <string name="home_maintenance_title">系统维护</string>
+  <string name="home_maintenance_subtitle">授权、更新与日志</string>
+  <string name="home_more_features">↑  上拉查看更多功能</string>
+  <string name="home_sdk_starting">正在启动 SDK，请稍候…</string>
+</resources>

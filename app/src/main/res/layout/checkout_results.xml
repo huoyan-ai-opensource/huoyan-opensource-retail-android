@@ -1,0 +1,9 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/recognitionResults" android:background="#F2F4F8" android:padding="12dp">
+  <cc.huoyan.retail.checkout.RecognitionWatermarkView android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/resultWatermark" android:importantForAccessibility="no" />
+  <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/emptyPanel" android:gravity="center" android:orientation="vertical" android:padding="16dp">
+    <ImageView android:layout_width="match_parent" android:layout_height="160dp" android:id="@+id/trayGuide" android:scaleType="fitCenter" android:contentDescription="@string/checkout_place_tray" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/checkout_place_tray" android:textSize="18sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/emptyTitle" android:gravity="center" android:textStyle="bold" android:layout_marginTop="8dp" />
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/checkout_wait_hint" android:textSize="13sp" android:textColor="#6E7C90" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/emptyHint" android:gravity="center" android:layout_marginTop="8dp" />
+  </LinearLayout>
+  <androidx.recyclerview.widget.RecyclerView android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/resultRecycler" android:clipToPadding="false" android:padding="8dp" />
+</FrameLayout>

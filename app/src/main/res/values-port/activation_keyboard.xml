@@ -1,0 +1,7 @@
+<resources>
+    <dimen name="activation_dialog_width">496dp</dimen>
+    <dimen name="activation_key_width">48dp</dimen>
+    <dimen name="activation_key_height">48dp</dimen>
+    <dimen name="activation_key_gap">5dp</dimen>
+    <dimen name="activation_section_gap">16dp</dimen>
+</resources>

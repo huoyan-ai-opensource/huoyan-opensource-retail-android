@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_92"
+        android:layout_margin="@dimen/dp_4"
+        android:padding="@dimen/dp_1">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/pluName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#293A51"
+                android:textSize="@dimen/sp_10"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textColor="#D65A56"
+                android:textSize="@dimen/sp_9"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 顶栏独立于图片测量，PLU 与选中标识分占左右，不互相覆盖。 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layoutDirection="ltr"
+            android:gravity="top"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/plu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="@dimen/dp_2"
+                android:ellipsize="end"
+                android:background="#3F3EED"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/dp_6"
+                android:paddingVertical="@dimen/dp_1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_10"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/selectedTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_fa6400"
+                android:paddingHorizontal="@dimen/dp_3"
+                android:paddingVertical="@dimen/dp_2"
+                android:text="@string/study_selected_mark"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_7"
+                android:textStyle="bold"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </FrameLayout>
+</FrameLayout>

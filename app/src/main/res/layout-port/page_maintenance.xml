@@ -1,0 +1,46 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="#F2F4F8">
+  <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="false">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingHorizontal="@dimen/ui_page_horizontal" android:paddingVertical="@dimen/ui_page_vertical">
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/ui_card_padding" android:background="@drawable/land_card">
+        <TextView android:layout_width="match_parent" android:layout_height="35dp" android:textSize="24sp" android:textColor="#293A51" android:includeFontPadding="false" android:gravity="center_vertical" android:text="@string/land_title_maintenance" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+        <Space android:layout_width="1dp" android:layout_height="@dimen/ui_gap" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/openAuthorization" android:orientation="horizontal" android:gravity="center_vertical">
+          <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/land_title_authorization" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="0dp" android:layout_weight="2" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_view_license" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="24dp" android:layout_height="wrap_content" android:textSize="26sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_chevron" android:fontFamily="@font/retail_sans" />
+        </LinearLayout>
+        <Space android:layout_width="1dp" android:layout_height="@dimen/ui_gap" />
+        <Space android:layout_width="1dp" android:layout_height="@dimen/ui_gap" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/handleInstall" android:orientation="horizontal" android:gravity="center_vertical">
+          <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/land_install_sdk" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="0dp" android:layout_weight="2" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_download_sdk" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="24dp" android:layout_height="wrap_content" android:textSize="26sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_chevron" android:fontFamily="@font/retail_sans" />
+        </LinearLayout>
+        <Space android:layout_width="1dp" android:layout_height="@dimen/ui_gap" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/handleClientInstall" android:orientation="horizontal" android:gravity="center_vertical">
+          <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/land_install_client" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="0dp" android:layout_weight="2" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_download_client" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="24dp" android:layout_height="wrap_content" android:textSize="26sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_chevron" android:fontFamily="@font/retail_sans" />
+        </LinearLayout>
+        <Space android:layout_width="1dp" android:layout_height="@dimen/ui_gap" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/languageSetting" android:orientation="horizontal" android:gravity="center_vertical">
+          <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/language_setting" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="0dp" android:layout_weight="2" android:layout_height="wrap_content" android:id="@+id/languageValue" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:fontFamily="@font/retail_sans" />
+          <TextView android:layout_width="24dp" android:layout_height="wrap_content" android:textSize="26sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/land_chevron" android:fontFamily="@font/retail_sans" />
+        </LinearLayout>
+        <Space android:layout_width="1dp" android:layout_height="@dimen/ui_gap" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="@dimen/ui_inner_card_padding" android:background="@drawable/land_field" android:id="@+id/exitGuardCard">
+          <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="@string/checkout_exit_guard" android:textSize="18sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:labelFor="@id/exitPasswordEnabled" />
+            <cc.huoyan.retail.common.ui.LandscapeSwitch android:layout_width="52dp" android:layout_height="48dp" android:id="@+id/exitPasswordEnabled" android:contentDescription="@string/checkout_exit_guard" android:showText="false" android:thumb="@drawable/land_switch_thumb" android:track="@drawable/land_switch_track" android:splitTrack="false" android:switchMinWidth="52dp" android:thumbTint="@null" android:trackTint="@null" android:padding="0dp" />
+          </LinearLayout>
+          <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/checkout_exit_guard_hint" android:textSize="16sp" android:textColor="#6E7C90" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:layout_marginTop="8dp" android:layout_marginBottom="@dimen/ui_gap_small" />
+          <TextView android:layout_width="match_parent" android:layout_height="48dp" android:text="@string/checkout_password_setting" android:textSize="16sp" android:textColor="#3F3EED" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/setExitPassword" android:gravity="center_vertical" android:clickable="true" android:focusable="true" />
+        </LinearLayout>
+      </LinearLayout>
+    </LinearLayout>
+  </ScrollView>
+  <LinearLayout android:layout_width="match_parent" android:layout_height="88dp" android:gravity="end|center_vertical" android:paddingHorizontal="@dimen/ui_page_horizontal" android:background="#FFFFFF">
+    <TextView android:layout_width="match_parent" android:layout_height="56dp" android:id="@+id/handleQuit" android:textSize="18sp" android:textColor="#D7493D" android:includeFontPadding="false" android:gravity="center" android:background="@drawable/land_danger" android:clickable="true" android:focusable="true" android:text="@string/settings_system_quit_app" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+  </LinearLayout>
+</LinearLayout>

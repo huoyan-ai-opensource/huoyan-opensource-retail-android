@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="@dimen/dp_260"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_white_radius_5"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/dp_20"
+        android:paddingVertical="@dimen/dp_20">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="#293A51"
+            android:textSize="@dimen/sp_12"
+            android:textStyle="bold" />
+
+        <cc.huoyan.retail.common.ui.TextProgressBar
+            android:id="@+id/progressBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginTop="@dimen/dp_8"
+            android:max="100"
+            android:progressDrawable="@drawable/activate_progress_bar"
+            android:indeterminateTint="#3F3EED" />
+
+        <TextView
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:layout_marginTop="@dimen/dp_8"
+            android:background="@drawable/btn_white_stroke_979797_radius_3"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:paddingHorizontal="@dimen/dp_44"
+            android:paddingVertical="@dimen/dp_8"
+            android:text="@string/button_close"
+            android:textColor="#555555"
+            android:textSize="@dimen/sp_8" />
+    </LinearLayout>
+</LinearLayout>

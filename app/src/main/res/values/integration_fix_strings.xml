@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="zh">
+    <string name="status_print_done_auto_resume">打印完成，10 秒后恢复识别</string>
+    <string name="goods_tare_label">皮重（g）</string>
+    <string name="goods_tare_invalid">皮重请输入非负整数克</string>
+    <string name="checkout_price_required">商品价格不能为空</string>
+    <string name="password_processing">正在处理…</string>
+    <string name="unit_g">g</string>
+    <string name="receipt_shared_weight">合并称重</string>
+</resources>

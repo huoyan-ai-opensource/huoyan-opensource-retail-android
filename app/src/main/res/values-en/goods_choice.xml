@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="goods_choice_price">$%1$s/%2$s</string>
+    <string name="goods_similar_badge">Similar</string>
+    <string name="goods_similar_description">Similar product</string>
+</resources>

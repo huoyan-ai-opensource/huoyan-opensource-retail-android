@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="zh">
+<string name="learning_title">学习管理</string><string name="learning_help">操作指导</string><string name="learning_add_goods">新增商品</string>
+<string name="learning_images">已学图片</string>
+<string name="learning_edit">编辑</string><string name="learning_delete">删除</string><string name="learning_capture">拍照学习</string>
+<string name="learning_empty">暂无学习图片，点击「拍照学习」添加</string><string name="learning_select">请先选择商品</string><string name="learning_loading">正在读取学习图片…</string><string name="learning_retry">图片读取失败，点击重试</string><string name="learning_new">本次拍照</string><string name="learning_remove_image">删除这张学习图片</string>
+<string name="learning_understood">知道了</string>
+<string name="learning_guide_dont_show_again">下次不再自动弹出</string>
+    <string name="learning_current_goods">当前商品</string>
+
+    <string name="learning_load_more">上拉加载更多图片</string>
+    <string name="learning_loading_more">正在加载更多图片…</string>
+    <string name="learning_more_retry">图片加载失败，点击重试</string>
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activation_expiry_title">Activation expires soon</string>
+    <plurals name="activation_expiry_days">
+        <item quantity="one">Your activation expires in %1$d day.</item>
+        <item quantity="other">Your activation expires in %1$d days.</item>
+    </plurals>
+    <string name="activation_expiry_less_than_day">Your activation expires in less than 1 day.</string>
+    <string name="activation_expiry_message">%1$s\nExpires at: %2$s\n\n%3$s</string>
+    <string name="activation_expiry_advice">Please contact your service provider to renew before expiry.</string>
+    <string name="activation_expiry_urgent">Please contact your service provider as soon as possible to renew.</string>
+    <string name="activation_expiry_renew">Renew</string>
+    <string name="activation_expiry_later">Remind me later</string>
+</resources>

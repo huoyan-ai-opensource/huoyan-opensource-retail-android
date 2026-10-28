@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="64dp" android:background="#FFFFFF">
+    <TextView style="@style/PageNavigationTitle" android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/navTitle" android:gravity="center" android:paddingHorizontal="144dp" />
+    <TextView android:layout_width="112dp" android:layout_height="48dp" android:id="@+id/navBack" android:textSize="16sp" android:textColor="#3F3EED" android:includeFontPadding="false" android:gravity="center" android:layout_marginStart="16dp" android:layout_marginTop="8dp" android:background="@drawable/land_soft" android:drawableStart="@drawable/land_icon_arrow_left" android:paddingHorizontal="10dp" android:clickable="true" android:focusable="true" android:text="@string/home_back" android:fontFamily="@font/retail_sans" />
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:layout_gravity="bottom" android:background="#E7EBF1" />
+</FrameLayout>

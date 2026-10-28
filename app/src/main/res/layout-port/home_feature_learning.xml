@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/homeLearning" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="horizontal" android:gravity="center_vertical" android:padding="14dp" android:background="@drawable/home_feature_card" android:clickable="true" android:focusable="true" android:foreground="?android:attr/selectableItemBackground">
+    <ImageView android:layout_width="28dp" android:layout_height="28dp" android:src="@drawable/land_icon_products" android:importantForAccessibility="no" />
+    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="12dp" android:orientation="vertical" android:layout_weight="1">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="0dp" android:gravity="center_vertical" android:text="@string/goods_management_title" android:textColor="#293A51" android:textSize="18sp" android:textStyle="bold" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:maxLines="2" android:ellipsize="end" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="0dp" android:gravity="center_vertical" android:layout_marginTop="4dp" android:text="@string/goods_management_subtitle" android:textColor="#6E7C90" android:textSize="12sp" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:maxLines="2" android:ellipsize="end" />
+    </LinearLayout>
+</LinearLayout>

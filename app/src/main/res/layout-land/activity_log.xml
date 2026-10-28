@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="#F2F4F8">
+  <include layout="@layout/land_page_navigation" />
+  <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:orientation="vertical" android:background="#F2F4F8" android:layout_weight="1">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal" android:paddingLeft="32dp" android:paddingRight="32dp" android:paddingTop="16dp" android:paddingBottom="24dp">
+      <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="376" android:orientation="vertical" android:padding="24dp" android:background="@drawable/land_card">
+        <TextView android:layout_width="match_parent" android:layout_height="35dp" android:textSize="24sp" android:textColor="#293A51" android:includeFontPadding="false" android:gravity="center_vertical" android:text="@string/land_log_files" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+        <Space android:layout_width="1dp" android:layout_height="16dp" />
+        <androidx.recyclerview.widget.RecyclerView android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/pathRecycler" />
+        <Space android:layout_width="1dp" android:layout_height="16dp" />
+        <androidx.recyclerview.widget.RecyclerView android:layout_width="match_parent" android:layout_height="0dp" android:id="@+id/recyclerView" android:layout_weight="1" />
+      </LinearLayout>
+      <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="816" android:orientation="vertical" android:padding="24dp" android:background="@drawable/land_card" android:layout_marginStart="24dp">
+        <TextView android:layout_width="match_parent" android:layout_height="35dp" android:textSize="24sp" android:textColor="#293A51" android:includeFontPadding="false" android:gravity="center_vertical" android:text="@string/land_log_content" android:textStyle="bold" android:id="@+id/logFileTitle" android:fontFamily="@font/retail_sans" />
+        <Space android:layout_width="1dp" android:layout_height="24dp" />
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:lineSpacingExtra="3dp" android:text="@string/land_file_content" android:fontFamily="@font/retail_sans" />
+        <Space android:layout_width="1dp" android:layout_height="24dp" />
+        <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+          <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/logFileContent" android:textSize="16sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:textIsSelectable="true" android:lineSpacingExtra="8dp" android:text="@string/land_log_select_hint" android:fontFamily="@font/retail_sans" />
+        </ScrollView>
+      </LinearLayout>
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

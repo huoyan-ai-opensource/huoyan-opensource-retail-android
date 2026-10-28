@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recognition_restore_defaults">Restore defaults</string>
+    <string name="settings_unsaved_title">Unsaved settings</string>
+    <string name="settings_unsaved_message">You have unsaved changes. Discard them and leave, or save the settings before leaving.</string>
+    <string name="settings_discard_exit">Discard and leave</string>
+    <string name="scan_switch_camera">Switch camera</string>
+    <string name="shop_binding_required_title">Bind a shop first</string>
+    <string name="shop_binding_open">Bind shop</string>
+    <string name="learning_bind_shop_first">This device is not bound to a shop. Open Shop information on the home screen and scan the shop code before learning the image package.</string>
+    <string name="cloud_sync_bind_shop_first">This device is not bound to a shop. Open Shop information on the home screen and scan the shop code before syncing products or the recognition library.</string>
+    <string name="recognition_restore_title">Restore default parameters?</string>
+    <string name="recognition_restore_message">Reset confidence, IoU and sensitivity to their defaults. Save the settings to apply them. Automatically saved switches are unchanged.</string>
+    <string name="recognition_restore_confirm">Restore defaults</string>
+    <string name="recognition_sensitivity_title">Image change recognition sensitivity</string>
+    <string name="recognition_sensitivity_hint">Higher sensitivity triggers recognition with smaller changes in the image</string>
+    <string-array name="recognition_sensitivity_names">
+        <item>Very low</item><item>Low</item><item>Standard</item><item>High</item><item>Very high</item>
+    </string-array>
+</resources>

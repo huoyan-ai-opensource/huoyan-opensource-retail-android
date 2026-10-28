@@ -1,0 +1,32 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="zh">
+    <string name="land_title_camera">相机设置</string>
+    <string name="land_title_scale">称重设置</string>
+    <string name="land_title_print">打印设置</string>
+    <string name="land_title_goods">学习与识别库</string>
+    <string name="land_title_authorization">设备授权</string>
+    <string name="land_title_sdk">SDK 连接</string>
+    <string name="land_title_shop">店铺信息</string>
+    <string name="land_title_recognition">识别配置</string>
+    <string name="land_title_maintenance">系统维护</string>
+    <string name="land_title_logs">日志</string>
+    <string name="land_serial_copied">序列号已复制</string>
+    <string name="land_sdk_connected">SDK 已连接</string>
+    <string name="sdk_connection_saved">SDK 连接已保存（%1$s）</string>
+    <string name="land_sdk_save_first">请先保存连接，再检查 SDK 是否启动</string>
+    <string name="land_camera_connected">● 已连接</string>
+    <string name="land_scale_stable">● 读数稳定</string>
+    <string name="land_scale_unstable">● 等待读数稳定</string>
+    <string name="land_scale_connected">秤已连接 · 正在读取重量</string>
+    <string name="land_plu_read_only">商品 PLU（不可修改）</string>
+    <string name="land_log_truncated">\n仅展示前 256 KB，可从设备存储读取完整文件。</string>
+    <string name="land_goods_plu">商品 PLU</string>
+    <string name="land_goods_name">商品名称</string>
+    <string name="goods_price_weight">商品单价（元/kg）</string>
+    <string name="goods_price_count">商品单价（元/个）</string>
+    <string name="land_goods_pricing">计价方式</string>
+    <item type="layout" name="dialog_learning_guide">@layout/dialog_alert</item>
+    <string name="land_guide_step_1">1. 切换商品：按名称、首字母或 PLU 搜索选择。</string>
+    <string name="land_guide_step_2">2. 拍照学习：拍照即生效，新图片排在最前。</string>
+    <string name="land_guide_step_3">3. 管理图片：点 × 删单张；「遗忘」清空当前商品图片。</string>
+    <string name="land_guide_step_4">4. 保存学习：提交学习反馈并刷新图片。</string>
+</resources>

@@ -1,0 +1,4 @@
+<resources>
+    <item name="sdk_image_request" type="id" />
+    <item name="sdk_image_goods" type="id" />
+</resources>

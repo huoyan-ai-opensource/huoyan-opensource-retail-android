@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 可用宽度达到 1100dp 时恢复宽横屏样式。 -->
+    <style name="HomeFeatureCard" parent="HomeFeatureCardWide" />
+    <style name="HomeFeatureText" parent="HomeFeatureTextWide" />
+    <dimen name="home_checkout_padding">32dp</dimen>
+    <dimen name="home_feature_icon_size">28dp</dimen>
+    <dimen name="home_feature_title_height">29dp</dimen>
+    <dimen name="home_feature_title_size">20sp</dimen>
+    <dimen name="home_feature_subtitle_height">20dp</dimen>
+    <dimen name="home_feature_subtitle_gap">8dp</dimen>
+    <integer name="home_feature_text_gravity">16</integer>
+</resources>

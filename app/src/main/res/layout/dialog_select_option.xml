@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical" android:padding="24dp" android:background="@drawable/land_card">
+    <TextView android:id="@+id/selectTitle" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="32dp" android:gravity="center_vertical" android:textSize="24sp" android:textStyle="bold"
+        android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false"
+        android:accessibilityHeading="true" />
+    <TextView android:id="@+id/selectSubtitle" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp"
+        android:visibility="gone" android:textSize="16sp" android:textColor="#6E7C90"
+        android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+    <ListView android:id="@+id/selectOptions" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" android:choiceMode="singleChoice" android:divider="@android:color/transparent"
+        android:dividerHeight="8dp" android:scrollbars="vertical" />
+    <TextView android:id="@+id/selectEmpty" android:layout_width="match_parent" android:layout_height="128dp"
+        android:gravity="center" android:visibility="gone" android:text="@string/select_option_empty"
+        android:textSize="18sp" android:textColor="#6E7C90" android:fontFamily="@font/retail_sans" />
+    <TextView android:id="@+id/selectCancel" android:layout_width="match_parent" android:layout_height="52dp"
+        android:layout_marginTop="20dp" android:gravity="center" android:text="@string/button_cancel"
+        android:textSize="18sp" android:textStyle="bold" android:textColor="#293A51"
+        android:fontFamily="@font/retail_sans" android:background="@drawable/land_field"
+        android:clickable="true" android:focusable="true" />
+</LinearLayout>

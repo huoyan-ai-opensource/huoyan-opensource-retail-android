@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="84dp" android:gravity="center_vertical">
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="20sp" android:textColor="#293A51" android:includeFontPadding="false" android:text="@string/settings_delete_recognition_result" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+                    <Space android:layout_width="1dp" android:layout_height="6dp" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="15sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:lineSpacingExtra="3dp" android:text="@string/delete_recognition_result_hint" android:fontFamily="@font/retail_sans" />
+                </LinearLayout>
+                <cc.huoyan.retail.common.ui.LandscapeSwitch android:layout_width="52dp" android:layout_height="48dp" android:id="@+id/deleteRecognitionResult" android:contentDescription="@string/settings_delete_recognition_result" android:showText="false" android:thumb="@drawable/land_switch_thumb" android:track="@drawable/land_switch_track" android:splitTrack="false" android:switchMinWidth="52dp" android:thumbTint="@null" android:trackTint="@null" android:padding="0dp" />
+            </LinearLayout>

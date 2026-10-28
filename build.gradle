@@ -1,0 +1,25 @@
+buildscript {
+    repositories {
+        google()
+        // CNB 共享出口访问 Maven Central 会触发 429，改用 Central 镜像
+        maven { url "https://maven.aliyun.com/repository/central" }
+    }
+    dependencies {
+        classpath libs.gradle
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        // CNB 共享出口访问 Maven Central 会触发 429，改用 Central 镜像
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://jitpack.io" }
+        maven { url "https://maven.wysaid.org/" }
+        maven { url 'https://gitee.com/liuchaoya/libcommon/raw/master/repository/' }
+    }
+}
+
+tasks.register('clean', Delete) {
+    delete rootProject.buildDir
+}

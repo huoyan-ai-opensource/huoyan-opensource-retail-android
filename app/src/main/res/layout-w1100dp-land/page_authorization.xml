@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="#F2F4F8">
+  <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal" android:paddingLeft="@dimen/ui_page_horizontal" android:paddingRight="@dimen/ui_page_horizontal" android:paddingTop="@dimen/ui_page_vertical" android:paddingBottom="@dimen/ui_page_vertical">
+    <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="584" android:orientation="vertical" android:padding="@dimen/ui_card_padding" android:background="@drawable/land_card">
+      <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="false">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+          <TextView android:layout_width="match_parent" android:layout_height="35dp" android:textSize="24sp" android:textColor="#293A51" android:includeFontPadding="false" android:gravity="center_vertical" android:text="@string/land_device_information" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+          <Space android:layout_width="1dp" android:layout_height="8dp" />
+          <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/panel_client_version" android:fontFamily="@font/retail_sans" />
+            <TextView android:layout_width="300dp" android:layout_height="wrap_content" android:id="@+id/app_version" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:maxLines="1" android:ellipsize="middle" android:text="@string/land_placeholder" android:fontFamily="@font/retail_sans" />
+          </LinearLayout>
+          <Space android:layout_width="1dp" android:layout_height="8dp" />
+          <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/land_sdk_version" android:fontFamily="@font/retail_sans" />
+            <TextView android:layout_width="300dp" android:layout_height="wrap_content" android:id="@+id/sdk_version" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:maxLines="1" android:ellipsize="middle" android:text="@string/land_placeholder" android:fontFamily="@font/retail_sans" />
+          </LinearLayout>
+          <Space android:layout_width="1dp" android:layout_height="8dp" />
+          <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/panel_device_model" android:fontFamily="@font/retail_sans" />
+            <TextView android:layout_width="300dp" android:layout_height="wrap_content" android:id="@+id/device_model" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:maxLines="1" android:ellipsize="middle" android:text="@string/land_placeholder" android:fontFamily="@font/retail_sans" />
+          </LinearLayout>
+          <Space android:layout_width="1dp" android:layout_height="8dp" />
+          <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/panel_hardware_serial" android:fontFamily="@font/retail_sans" />
+            <TextView android:layout_width="300dp" android:layout_height="wrap_content" android:id="@+id/hardware_serial" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:maxLines="1" android:ellipsize="middle" android:text="@string/land_placeholder" android:fontFamily="@font/retail_sans" />
+          </LinearLayout>
+          <Space android:layout_width="1dp" android:layout_height="8dp" />
+        </LinearLayout>
+      </ScrollView>
+      <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:orientation="horizontal" android:gravity="center_vertical" android:background="@drawable/land_field" android:paddingHorizontal="16dp" android:layout_marginTop="12dp">
+        <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/panel_cloud_service" android:fontFamily="@font/retail_sans" />
+        <cc.huoyan.retail.common.ui.LandscapeSwitch android:layout_width="52dp" android:layout_height="48dp" android:id="@+id/cloudServiceSwitch" android:thumb="@drawable/land_switch_thumb" android:track="@drawable/land_switch_track" android:splitTrack="false" android:thumbTint="@null" android:trackTint="@null" android:switchMinWidth="52dp" android:padding="0dp" />
+      </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="608" android:orientation="vertical" android:background="@drawable/land_card" android:layout_marginStart="24dp" android:padding="@dimen/ui_card_padding">
+      <ScrollView android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:fillViewport="false">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+          <TextView android:layout_width="match_parent" android:layout_height="35dp" android:textSize="24sp" android:textColor="#293A51" android:includeFontPadding="false" android:gravity="center_vertical" android:text="@string/land_license_status" android:textStyle="bold" android:fontFamily="@font/retail_sans" />
+          <Space android:layout_width="1dp" android:layout_height="8dp" />
+          <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/panel_activation_status" android:fontFamily="@font/retail_sans" />
+            <TextView android:layout_width="300dp" android:layout_height="wrap_content" android:id="@+id/active_status" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/text_unavailable" android:fontFamily="@font/retail_sans" />
+          </LinearLayout>
+          <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/panel_activation_time" android:fontFamily="@font/retail_sans" />
+            <TextView android:layout_width="300dp" android:layout_height="wrap_content" android:id="@+id/service_start_time" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/text_unavailable" android:fontFamily="@font/retail_sans" />
+          </LinearLayout>
+          <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="8dp">
+            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/panel_activation_expire" android:fontFamily="@font/retail_sans" />
+            <TextView android:layout_width="300dp" android:layout_height="wrap_content" android:id="@+id/service_expire_time" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/text_unavailable" android:fontFamily="@font/retail_sans" />
+          </LinearLayout>
+          <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:orientation="horizontal" android:gravity="center_vertical">
+            <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="18sp" android:textColor="#293A51" android:includeFontPadding="false" android:layout_weight="1" android:gravity="center_vertical" android:text="@string/panel_activation_serial_type" android:fontFamily="@font/retail_sans" />
+            <TextView android:layout_width="300dp" android:layout_height="wrap_content" android:id="@+id/serial_type" android:textSize="18sp" android:textColor="#6E7C90" android:includeFontPadding="false" android:gravity="end" android:text="@string/text_unavailable" android:fontFamily="@font/retail_sans" />
+          </LinearLayout>
+          <Space android:layout_width="1dp" android:layout_height="8dp" />
+        </LinearLayout>
+      </ScrollView>
+      <TextView android:layout_width="match_parent" android:layout_height="52dp" android:id="@+id/activate" android:textSize="16sp" android:textColor="#FFFFFF" android:includeFontPadding="false" android:gravity="center" android:background="@drawable/land_primary" android:clickable="true" android:focusable="true" android:text="@string/land_activate_device" android:fontFamily="@font/retail_sans" android:layout_marginTop="12dp" />
+    </LinearLayout>
+  </LinearLayout>
+</LinearLayout>

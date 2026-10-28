@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:orientation="vertical" android:background="#F2F4F8">
+    <FrameLayout android:id="@+id/learningHeader" android:layout_width="match_parent" android:layout_height="64dp" android:background="#FFFFFF">
+        <TextView android:id="@+id/quit" android:layout_width="112dp" android:layout_height="48dp" android:layout_marginStart="16dp" android:layout_marginTop="8dp" android:text="@string/goods_management_title" android:textSize="16sp" android:textColor="#3F3EED" android:gravity="center" android:drawableStart="@drawable/land_icon_arrow_left" android:paddingHorizontal="10dp" android:background="@drawable/land_soft" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+        <TextView android:id="@+id/navTitle" style="@style/PageNavigationTitle" android:layout_width="wrap_content" android:layout_height="match_parent" android:layout_gravity="center" android:gravity="center" android:text="@string/learning_title" />
+        <TextView android:id="@+id/learningSwitchGoods" android:layout_width="112dp" android:layout_height="48dp" android:layout_gravity="end|center_vertical" android:gravity="center" android:text="@string/learning_switch_goods" android:textSize="16sp" android:textColor="#3F3EED" android:clickable="true" android:focusable="true" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:layout_marginEnd="16dp" android:background="@drawable/land_soft" />
+    </FrameLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:orientation="horizontal" android:paddingHorizontal="32dp" android:paddingTop="12dp" android:paddingBottom="12dp">
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="6" android:orientation="vertical" android:background="@drawable/land_card" android:padding="16dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="32dp" android:orientation="horizontal" android:gravity="center_vertical">
+                <TextView android:layout_width="wrap_content" android:layout_height="26dp" android:paddingHorizontal="8dp" android:gravity="center" android:background="@drawable/land_soft" android:text="@string/learning_current_goods" android:textSize="12sp" android:textColor="#3F3EED" android:singleLine="true" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+                <TextView android:id="@+id/selectedGoodsName" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_marginStart="8dp" android:gravity="center_vertical" android:textSize="18sp" android:textColor="#293A51" android:textStyle="bold" android:singleLine="true" android:ellipsize="end" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+            </LinearLayout>
+            <FrameLayout android:id="@+id/learningCameraStage" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:layout_marginTop="8dp">
+                <cc.huoyan.retail.learning.LearningPreviewFrame android:layout_width="match_parent" android:layout_height="match_parent" android:layout_gravity="center">
+                    <cc.huoyan.retail.device.camera.AutoFitTextureView android:id="@+id/imageView" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_gravity="center" />
+                    <cc.huoyan.retail.learning.StudyDrawView android:id="@+id/drawView" android:layout_width="match_parent" android:layout_height="match_parent" />
+                </cc.huoyan.retail.learning.LearningPreviewFrame>
+            </FrameLayout>
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="4" android:orientation="vertical" android:background="@drawable/land_card" android:padding="16dp" android:layout_marginStart="16dp" android:id="@+id/learningImagesCard">
+            <TextView android:layout_width="match_parent" android:layout_height="32dp" android:text="@string/learning_images" android:textSize="18sp" android:textColor="#293A51" android:textStyle="bold" />
+            <FrameLayout android:id="@+id/learningImageStage" android:layout_width="match_parent" android:layout_height="0dp" android:layout_marginTop="8dp" android:background="@drawable/study_soft" android:padding="4dp" android:layout_weight="1">
+                <androidx.recyclerview.widget.RecyclerView android:id="@+id/picRecycler" android:layout_width="match_parent" android:layout_height="match_parent" />
+                <LinearLayout android:id="@+id/learningEmpty" android:layout_width="match_parent" android:layout_height="match_parent" android:gravity="center" android:orientation="vertical">
+                    <ImageView android:layout_width="0dp" android:layout_height="0dp" android:src="@drawable/study_empty_image" android:visibility="gone" />
+                    <TextView android:id="@+id/learningEmptyText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="0dp" android:text="@string/learning_select" android:gravity="center" android:textSize="16sp" android:textColor="#6B79A8" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+                </LinearLayout>
+            </FrameLayout>
+            <TextView android:id="@+id/learningMoreImages" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="40dp" android:gravity="center" android:text="@string/learning_load_more" android:textSize="13sp" android:textColor="#3F3EED" android:background="@drawable/land_soft" android:clickable="true" android:focusable="true" android:visibility="gone" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/learningActions" android:layout_width="match_parent" android:layout_height="80dp" android:gravity="end|center_vertical" android:paddingHorizontal="32dp" android:background="#FFFFFF">
+        <LinearLayout android:id="@+id/learningActionButtons" android:layout_width="0dp" android:layout_height="52dp" android:layout_weight="1" android:layout_marginStart="0dp">
+            <TextView android:id="@+id/capture" android:layout_width="0dp" android:layout_height="52dp" android:gravity="center" android:background="@drawable/btn_main_bg" android:text="@string/learning_capture" android:textSize="16sp" android:textColor="#FFFFFF" android:clickable="true" android:focusable="true" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:layout_weight="1" />
+            <TextView android:id="@+id/clearStudy" android:layout_width="0dp" android:layout_height="52dp" android:layout_marginStart="12dp" android:gravity="center" android:background="@drawable/btn_fa6400_radius_3" android:text="@string/button_forget" android:textSize="16sp" android:textColor="#FFFFFF" android:clickable="true" android:focusable="true" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:layout_weight="1" />
+            <TextView android:id="@+id/saveStudy" android:layout_width="0dp" android:layout_height="52dp" android:layout_marginStart="12dp" android:gravity="center" android:background="@drawable/btn_main_bg" android:text="@string/button_save_learning" android:textSize="16sp" android:textColor="#FFFFFF" android:clickable="true" android:focusable="true" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:layout_weight="1" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

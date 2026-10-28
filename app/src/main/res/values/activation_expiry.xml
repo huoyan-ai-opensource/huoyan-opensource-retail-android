@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="zh">
+    <string name="activation_expiry_title">激活码即将到期</string>
+    <plurals name="activation_expiry_days">
+        <item quantity="other">您的激活码将在 %1$d 天后到期。</item>
+    </plurals>
+    <string name="activation_expiry_less_than_day">激活码有效期已不足 1 天。</string>
+    <string name="activation_expiry_message">%1$s\n到期时间：%2$s\n\n%3$s</string>
+    <string name="activation_expiry_advice">请及时联系服务商续期，以免影响使用。</string>
+    <string name="activation_expiry_urgent">请尽快联系服务商续期，以免影响使用。</string>
+    <string name="activation_expiry_renew">去续期</string>
+    <string name="activation_expiry_later">稍后提醒</string>
+</resources>

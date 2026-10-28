@@ -1,0 +1,12 @@
+<resources>
+  <!-- 页面留白沿用原设置页基准，禁止由旧 sw 尺寸表倍增。 -->
+  <dimen name="ui_page_horizontal">20dp</dimen>
+  <dimen name="ui_page_vertical">16dp</dimen>
+  <dimen name="ui_card_padding">20dp</dimen>
+  <!-- SDK 连接面板沿用已有较紧凑内边距。 -->
+  <dimen name="ui_connection_card_padding">16dp</dimen>
+  <dimen name="ui_inner_card_padding">12dp</dimen>
+  <dimen name="ui_gap_small">8dp</dimen>
+  <dimen name="ui_gap">12dp</dimen>
+  <dimen name="ui_gap_large">16dp</dimen>
+</resources>

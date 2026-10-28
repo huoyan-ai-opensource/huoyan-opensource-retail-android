@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="home_rotation_pending">Waiting for key rotation approval</string>
+    <string name="home_waiting_review">Awaiting approval</string>
+    <string name="home_restoring_service">Restoring service</string>
+    <string name="home_checkout_unavailable">Unavailable</string>
+    <string name="home_service_unavailable">Recognition service is unavailable</string>
+    <string name="home_checkout_starting">Starting SDK…</string>
+    <string name="home_checkout_starting_hint">Connecting to recognition service, please wait</string>
+    <string name="goods_input_too_long">Name: up to 64 characters. Price: up to 11 characters.</string>
+    <string name="model_version">Model version: %1$s</string>
+    <string name="model_version_unknown">Model version: —</string>
+    <string name="home_activation_required">Activate this device before use</string>
+    <string name="home_activate_now">Activate now</string>
+    <string name="sdk_local_help">Use the SDK on this device. No IP address is needed.</string>
+    <string name="cloud_enable">Enable cloud service</string>
+    <string name="cloud_retry">Retry</string>
+    <string name="cloud_state_retry">Cloud status unavailable. Please retry.</string>
+    <string name="cloud_sync_goods">Sync products</string>
+    <string name="cloud_sync_images">Sync recognition library</string>
+    <string name="cloud_sync_hint">Download cloud products and learning images to this device.</string>
+    <string name="cloud_sync_images_confirm">Download cloud learning images and update the recognition library on this device?</string>
+    <string name="cloud_sync_complete">Sync complete</string>
+    <string name="cloud_sync_partial">Synced %1$d items; %2$d failed or skipped. Check and retry.</string>
+    <string name="cloud_sync_incomplete">Incomplete product pages. Local products were not updated.</string>
+    <string name="cloud_scope_changed">Connection or shop changed. Please sync again.</string>
+    <string name="cloud_working">Working. The operation continues if you close this dialog.</string>
+    <string name="printer_connecting">Connecting to printer. Please wait.</string>
+    <string name="printer_connect_timeout">Connection timed out. Check the printer type and device, then retry.</string>
+    <string name="printer_selection_saved">Printer configuration changed. Test the connection.</string>
+    <string name="sdk_discovery_empty">Tap LAN discovery to find devices</string>
+    <string name="cloud_not_filled">Not provided</string>
+    <string name="cloud_shop_address">Address: %1$s</string>
+    <string name="cloud_shop_phone">Phone: %1$s</string>
+    <string name="cloud_enable_hint">Enable the service to sync cloud products and recognition data.</string>
+    <string name="cloud_benefit_title_1">Keep track of business</string>
+    <string name="cloud_benefit_body_1">Bring store information together to explore sales opportunities.</string>
+    <string name="cloud_benefit_title_2">Coordinate your stores</string>
+    <string name="cloud_benefit_body_2">Manage product details centrally for smoother collaboration.</string>
+    <string name="cloud_benefit_title_3">Explore marketing tools</string>
+    <string name="cloud_benefit_body_3">Discover cloud tools and new ways to reach customers.</string>
+    <string name="home_sdk_missing">SDK not installed. Install it to activate this device.</string>
+    <string name="home_install_now">Install now</string>
+</resources>

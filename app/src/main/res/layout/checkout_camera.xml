@@ -1,0 +1,10 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:id="@+id/cameraPreviewArea" android:background="#283342">
+  <cc.huoyan.retail.device.camera.AutoFitTextureView android:id="@+id/surfaceView" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_gravity="center" />
+  <cc.huoyan.retail.checkout.MainDrawView android:id="@+id/drawView" android:layout_width="match_parent" android:layout_height="match_parent" />
+  <cc.huoyan.retail.checkout.RecognizeResultPreviewView android:id="@+id/previewView" android:layout_width="match_parent" android:layout_height="match_parent" android:visibility="gone" />
+  <LinearLayout android:background="@drawable/bg_grey_radius_2" android:id="@+id/recognizeStatus" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="start|top" android:layout_marginStart="16dp" android:layout_marginTop="16dp" android:gravity="center_vertical" android:paddingHorizontal="10dp" android:paddingVertical="6dp">
+    <ImageView android:id="@+id/recognizeIcon" android:layout_width="14dp" android:layout_height="14dp" android:layout_marginEnd="10dp" android:background="@drawable/bg_red_round" />
+    <TextView android:id="@+id/recognizeText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/status_sdk_disconnected" android:textColor="#FFFFFF" android:textSize="14sp" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+  </LinearLayout>
+  <TextView android:id="@+id/version" android:layout_width="wrap_content" android:layout_height="48dp" android:layout_gravity="end|bottom" android:clickable="true" android:focusable="true" android:gravity="center" android:minWidth="72dp" android:minHeight="48dp" android:text="@string/version_placeholder" android:textColor="#FFFFFF" android:textSize="14sp" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:paddingHorizontal="16dp" android:background="@android:color/transparent" />
+</FrameLayout>

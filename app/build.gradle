@@ -1,0 +1,216 @@
+import com.android.build.api.instrumentation.AsmClassVisitorFactory
+import com.android.build.api.instrumentation.ClassContext
+import com.android.build.api.instrumentation.ClassData
+import com.android.build.api.instrumentation.InstrumentationParameters
+import com.android.build.api.instrumentation.InstrumentationScope
+import org.objectweb.asm.ClassVisitor
+import org.objectweb.asm.MethodVisitor
+import org.objectweb.asm.Opcodes
+
+plugins {
+    id "com.android.application"
+}
+
+// CNB 按 tag 注入版本名；本地构建默认使用当前版本，versionCode 在 defaultConfig 中维护。
+def appVersionName = providers.gradleProperty('appVersionName').getOrElse('2.0.6')
+if (!(appVersionName ==~ /(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)/)) {
+    throw new GradleException('版本号必须为 MAJOR.MINOR.PATCH，例如 2.0.0；tag 可加 v 前缀。')
+}
+
+android {
+    namespace 'cc.huoyan.retail'
+    compileSdk project.properties.compileSdkVersion.toInteger()
+
+    defaultConfig {
+        applicationId "cc.huoyan.retail"
+        minSdk project.properties.minSdkVersion.toInteger()
+        targetSdk project.properties.targetSdkVersion.toInteger()
+        versionCode 7
+        versionName appVersionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++17 -D_GNU_SOURCE"  // 启用 GNU 扩展（CPU_SET 需要）
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'  // 指定目标 ABI
+            }
+        }
+
+    }
+
+    def propertiesFile = file("../local.properties")
+    def props = new Properties()
+
+    if (propertiesFile.exists()) {
+        propertiesFile.withInputStream { props.load(it) }
+    }
+    // 正式签名仅从未入库的 local.properties 读取；部分配置缺失时拒绝静默回退。
+    def signingKeys = ['signing.storeFile', 'signing.storePassword', 'signing.keyAlias', 'signing.keyPassword']
+    def hasReleaseSigning = signingKeys.any { props.containsKey(it) }
+    if (hasReleaseSigning && !signingKeys.every { props[it] }) {
+        throw new GradleException('正式签名配置不完整：请在 local.properties 中填写 ' + signingKeys.join(', '))
+    }
+    signingConfigs {
+        // 随开源仓库公开的非商业实验签名，仅用于测试 Release；密码不是生产凭据。
+        demoRelease {
+            storeFile rootProject.file('signing/xinhai-debug-demo.jks')
+            storeType 'JKS'
+            storePassword 'xinhai-debug-demo'
+            keyAlias 'xinhai-debug-demo'
+            keyPassword 'xinhai-debug-demo'
+        }
+        if (hasReleaseSigning) {
+            release {
+                storeFile file(props['signing.storeFile'])
+                storePassword props['signing.storePassword']
+                keyAlias props['signing.keyAlias']
+                keyPassword props['signing.keyPassword']
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+            debuggable true
+            jniDebuggable true
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // 本地与 CNB 默认共用开源实验签名；商业发布必须完整配置独立的正式签名。
+            signingConfig hasReleaseSigning ? signingConfigs.release : signingConfigs.demoRelease
+            debuggable false
+            jniDebuggable false
+        }
+
+    }
+
+    applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach {
+            outputFileName = "huoyan-retail-" + versionName + "-" + versionCode + "-" +
+                    new Date().format("yyyyMMddHHmmss") + "-" + variant.buildType.name + ".apk"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"  // 指定 CMake 构建脚本路径
+            version "3.22.1"  // 推荐使用较新版本
+        }
+    }
+
+    ndkVersion "25.2.9519653"
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
+}
+
+
+// Launcher 由系统读取资源：默认名称使用英文，中文资源保留版本号。
+def localizedAppNameDir = layout.buildDirectory.dir('generated/localizedAppName')
+def generateLocalizedAppName = tasks.register('generateLocalizedAppName') {
+    inputs.property('versionName', appVersionName)
+    outputs.dir(localizedAppNameDir)
+    doLast {
+        ['values': "fieryeyes Recognition v${appVersionName}",
+         'values-zh': "火眼识别客户端v${appVersionName}"].each { folder, label ->
+            def resDir = new File(localizedAppNameDir.get().asFile, folder)
+            resDir.mkdirs()
+            new File(resDir, 'app_name.xml').setText(
+                    "<resources xmlns:tools=\"http://schemas.android.com/tools\" tools:locale=\"${folder == 'values' ? 'en' : 'zh'}\"><string name=\"app_name\">${label}</string></resources>\n", 'UTF-8')
+        }
+    }
+}
+android.sourceSets.main.res.srcDir(localizedAppNameDir)
+tasks.named('preBuild').configure { dependsOn(generateLocalizedAppName) }
+
+
+dependencies {
+    // 火眼 SDK 以已打包的普通 JAR 接入；更新命令：:huoyan-sdk-client:updateAppSdkJar。
+    implementation files('src/main/libs/huoyan-sdk-client-2.0.0.jar')
+    // 以下原由 SDK module 透传；本地 JAR 不携带依赖元数据，须由宿主显式提供。
+    implementation libs.java.websocket       // JAR：WebSocket 通信；传递引入 SLF4J。
+    implementation libs.fastjson             // JAR：SDK 协议 JSON 编解码。
+    implementation libs.okhttp3              // JAR：SDK APK 下载；传递引入 Okio。
+    implementation libs.kotlin.stdlib.jdk8   // JAR 的 OkHttp/Okio 运行时，统一 Kotlin 版本。
+
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.constraintlayout
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
+    androidTestImplementation libs.espresso.core
+
+    implementation libs.gson
+    implementation libs.eventbus
+    implementation files('src/main/libs/AclasDriverSdk.jar')
+    implementation files('src/main/libs/pinyin/pinyin4j-2.5.0.jar')
+    implementation libs.recyclerview
+    implementation libs.core
+    implementation libs.androidx.work.work.runtime3
+    implementation libs.xcrash
+    implementation 'com.herohan:UVCAndroid:1.0.6'
+}
+
+// UVCAndroid 1.0.6 的 USBMonitor 在后台直接调用系统枚举接口。
+// 只替换这四处调用，保留上游相机/native 实现；升级依赖时调用数变化会使构建失败。
+abstract class UsbMonitorCompatVisitor implements AsmClassVisitorFactory<InstrumentationParameters.None> {
+    @Override
+    boolean isInstrumentable(ClassData data) {
+        return data.className == 'com.serenegiant.usb.USBMonitor'
+    }
+
+    @Override
+    ClassVisitor createClassVisitor(ClassContext context, ClassVisitor next) {
+        return new ClassVisitor(Opcodes.ASM9, next) {
+            private int replacements
+
+            @Override
+            MethodVisitor visitMethod(int access, String name, String descriptor,
+                                      String signature, String[] exceptions) {
+                MethodVisitor delegate = super.visitMethod(access, name, descriptor, signature, exceptions)
+                return new MethodVisitor(Opcodes.ASM9, delegate) {
+                    @Override
+                    void visitMethodInsn(int opcode, String owner, String method,
+                                         String desc, boolean isInterface) {
+                        if (opcode == Opcodes.INVOKEVIRTUAL && owner == 'android/hardware/usb/UsbManager'
+                                && method == 'getDeviceList' && desc == '()Ljava/util/HashMap;') {
+                            replacements++
+                            super.visitMethodInsn(Opcodes.INVOKESTATIC,
+                                    'cc/huoyan/retail/device/camera/UsbDeviceEnumerator', method,
+                                    '(Landroid/hardware/usb/UsbManager;)Ljava/util/HashMap;', false)
+                        } else {
+                            super.visitMethodInsn(opcode, owner, method, desc, isInterface)
+                        }
+                    }
+                }
+            }
+
+            @Override
+            void visitEnd() {
+                if (replacements != 4) {
+                    throw new IllegalStateException("USBMonitor compatibility patch expected 4 calls, found " + replacements)
+                }
+                super.visitEnd()
+            }
+        }
+    }
+}
+
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        variant.instrumentation.transformClassesWith(UsbMonitorCompatVisitor, InstrumentationScope.ALL) {}
+    }
+}

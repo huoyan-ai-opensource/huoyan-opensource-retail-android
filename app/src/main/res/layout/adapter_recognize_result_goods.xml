@@ -1,0 +1,22 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/main" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="@dimen/dp_5">
+  <LinearLayout android:id="@+id/cardContent" android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="@dimen/dp_48" android:background="@drawable/bg_similar_choice_item" android:clickable="true" android:focusable="true" android:gravity="center_vertical" android:orientation="horizontal">
+    <View android:id="@+id/colorBlock" android:layout_width="@dimen/dp_5" android:layout_height="match_parent" />
+    <LinearLayout android:id="@+id/goodsInfoArea" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/dp_6" android:layout_weight="1" android:gravity="center_vertical" android:orientation="vertical" android:paddingTop="@dimen/dp_3" android:paddingBottom="@dimen/dp_3">
+      <TextView android:id="@+id/goodsName" android:layout_width="match_parent" android:layout_height="wrap_content" android:ellipsize="end" android:maxLines="2" android:textColor="#293A51" android:textSize="@dimen/sp_9" android:textStyle="bold" />
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/dp_2" android:gravity="center_vertical" android:orientation="horizontal">
+        <TextView android:id="@+id/goodsPlu" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:ellipsize="end" android:maxLines="1" android:textColor="#89000000" android:textSize="@dimen/sp_8" />
+      </LinearLayout>
+      <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="@dimen/dp_2" android:gravity="center_vertical" android:orientation="horizontal">
+        <TextView android:id="@+id/goodsPrice" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:ellipsize="end" android:maxLines="1" android:textColor="#B54708" android:textSize="@dimen/sp_8" android:textStyle="bold" />
+      </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/countArea" android:layout_width="@dimen/dp_42" android:layout_height="wrap_content" android:gravity="center" android:orientation="vertical" android:paddingTop="@dimen/dp_3" android:paddingBottom="@dimen/dp_3">
+      <TextView android:id="@+id/goodsCount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#293A51" android:textSize="@dimen/sp_18" android:textStyle="bold" />
+      <TextView android:id="@+id/goodsCountUnit" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#89000000" android:textSize="@dimen/sp_8" android:visibility="gone" />
+    </LinearLayout>
+    <LinearLayout android:layout_width="60dp" android:layout_height="wrap_content" android:layout_marginStart="@dimen/dp_4" android:layout_marginEnd="@dimen/dp_6" android:orientation="vertical" android:paddingTop="@dimen/dp_3" android:paddingBottom="@dimen/dp_3">
+      <TextView android:id="@+id/modifyCount" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/btn_main_bg" android:clickable="true" android:focusable="true" android:gravity="center" android:text="@string/label_modify" android:textColor="@color/white" android:textSize="@dimen/sp_8" android:textStyle="bold" />
+      <TextView android:id="@+id/deleteGoods" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginTop="@dimen/dp_2" android:background="@drawable/bg_recognition_delete" android:clickable="true" android:focusable="true" android:gravity="center" android:text="@string/label_delete_recognition" android:textColor="#B42318" android:textSize="@dimen/sp_8" android:textStyle="bold" android:visibility="gone" />
+    </LinearLayout>
+  </LinearLayout>
+</FrameLayout>

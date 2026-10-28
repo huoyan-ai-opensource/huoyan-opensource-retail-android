@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="64dp" android:id="@+id/countWeightTypeLayout" android:orientation="horizontal">
+  <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:id="@+id/netWeightCard" android:layout_weight="1" android:orientation="vertical" android:padding="10dp" android:background="@drawable/bg_checkout_net" android:clickable="true" android:focusable="true" android:layout_marginStart="0dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+      <View android:layout_width="6dp" android:layout_height="6dp" android:id="@+id/connectLine" android:background="@drawable/bg_red_round" android:layout_marginEnd="4dp" />
+      <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/checkout_net" android:textSize="12sp" android:textColor="#637187" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:layout_weight="1" />
+      <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="kg" android:textSize="11sp" android:textColor="#637187" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+    </LinearLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="—" android:textSize="25sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/weightTv" android:textStyle="bold" android:maxLines="1" android:autoSizeTextType="uniform" android:autoSizeMinTextSize="16sp" android:autoSizeMaxTextSize="25sp" android:autoSizeStepGranularity="1sp" />
+  </LinearLayout>
+  <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:id="@+id/tareWeightCard" android:layout_weight="1" android:orientation="vertical" android:padding="10dp" android:background="@drawable/bg_checkout_tare" android:clickable="true" android:focusable="true" android:layout_marginStart="8dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+      <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/checkout_tare" android:textSize="12sp" android:textColor="#637187" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:layout_weight="1" />
+      <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="kg" android:textSize="11sp" android:textColor="#637187" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+    </LinearLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="—" android:textSize="25sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/tareWeight" android:textStyle="bold" android:maxLines="1" android:autoSizeTextType="uniform" android:autoSizeMinTextSize="16sp" android:autoSizeMaxTextSize="25sp" android:autoSizeStepGranularity="1sp" />
+  </LinearLayout>
+  <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:id="@+id/grossWeightCard" android:layout_weight="1" android:orientation="vertical" android:padding="10dp" android:background="@drawable/bg_checkout_gross" android:clickable="true" android:focusable="true" android:layout_marginStart="8dp">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:gravity="center_vertical">
+      <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:text="@string/checkout_gross" android:textSize="12sp" android:textColor="#637187" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:layout_weight="1" />
+      <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="kg" android:textSize="11sp" android:textColor="#637187" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
+    </LinearLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="—" android:textSize="25sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/grossWeight" android:textStyle="bold" android:maxLines="1" android:autoSizeTextType="uniform" android:autoSizeMinTextSize="16sp" android:autoSizeMaxTextSize="25sp" android:autoSizeStepGranularity="1sp" />
+  </LinearLayout>
+</LinearLayout>

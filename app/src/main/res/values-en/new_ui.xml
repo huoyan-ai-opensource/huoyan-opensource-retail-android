@@ -1,0 +1,54 @@
+<resources>
+    <string name="goods_management_title">Products</string>
+    <string name="goods_management_subtitle">Details and learning</string>
+    <string name="goods_management_open">Manage products</string>
+    <string name="goods_management_hint">Manage product details and select a product to learn.</string>
+    <string name="goods_management_search_hint">Name / Initials / PLU</string>
+    <string name="goods_search_title">Switch learning product</string>
+    <string name="goods_search_instruction">Search by initials or digits · Tap a product to switch</string>
+    <string name="goods_search_empty">No products found. Try other initials or a product code.</string>
+    <string name="goods_enter_learning">Learning</string>
+    <string name="goods_input_chinese">System keyboard</string>
+    <string name="goods_input_letters">Letters / digits</string>
+    <string name="goods_delete_named">Delete “%1$s”?\nPLU %2$s\n\nProduct details and learned samples will be deleted. This cannot be undone.</string>
+    <string name="goods_operation_failed">Operation failed: %1$s</string>
+    <string name="goods_loading">Loading products…</string>
+    <string name="goods_no_items">No products yet. Add a product to get started.</string>
+    <string name="cloud_loading">Checking cloud status</string>
+    <string name="cloud_enabled">Cloud enabled</string>
+    <string name="cloud_disabled">Cloud disabled</string>
+    <string name="cloud_error">Cloud unavailable</string>
+    <string name="cloud_title">Cloud services</string>
+    <string name="cloud_benefits">Keep track of your business\nBring store information together to explore sales opportunities.\n\nCoordinate your stores\nManage product details centrally for smoother collaboration.\n\nExplore marketing tools\nDiscover cloud tools and new ways to reach customers.</string>
+    <string name="cloud_qr_placeholder">QR placeholder</string>
+    <string name="cloud_qr_caption">Scan to learn more\nService details · Activation</string>
+    <string name="home_client_version">Client: v%1$s</string>
+    <string name="home_sdk_version">SDK: %1$s</string>
+    <string name="home_serial">SN: %1$s</string>
+    <string name="home_connection">SDK connection: %1$s</string>
+    <string name="home_copyright">广州芯海智控科技有限公司</string>
+    <string name="learning_busy">Learning in progress. Please wait.</string>
+    <string name="goods_clear">Clear</string>
+    <string name="goods_space">Space</string>
+    <string name="goods_done">Done</string>
+    <string name="goods_current">Current</string>
+    <string name="goods_columns_name">Product name</string>
+    <string name="goods_columns_price">Price / Unit</string>
+    <string name="goods_columns_actions">Actions</string>
+    <string name="goods_learn_short">Learning</string>
+
+    <string name="goods_management_sort">Sort</string>
+    <string name="goods_management_pricing">Pricing</string>
+    <string name="goods_management_sort_value">Sort · %1$s</string>
+    <string name="goods_management_pricing_value">Pricing · %1$s</string>
+    <string-array name="goods_management_sort_options">
+        <item>Newest</item><item>Name A–Z</item><item>PLU A–Z</item><item>Price: low to high</item><item>Price: high to low</item>
+            <item>Images: low to high</item><item>Images: high to low</item>
+    </string-array>
+    <string-array name="goods_management_pricing_options">
+        <item>All</item><item>Weight</item><item>Count</item>
+    </string-array>
+    <string name="learning_switch_goods">Switch product</string>
+    <string name="goods_columns_learned">Learned images</string>
+    <string name="goods_management_filter">Filter</string>
+</resources>

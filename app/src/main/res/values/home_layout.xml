@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 宽横屏保留图标与文字并排；窄横屏按窗口宽度重排。 -->
+    <style name="HomeFeatureCardWide">
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:padding">20dp</item>
+    </style>
+    <style name="HomeFeatureTextWide">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginStart">16dp</item>
+    </style>
+    <style name="HomeFeatureCard" parent="HomeFeatureCardWide" />
+    <style name="HomeFeatureText" parent="HomeFeatureTextWide" />
+    <dimen name="home_checkout_padding">32dp</dimen>
+    <dimen name="home_feature_icon_size">28dp</dimen>
+    <dimen name="home_feature_title_height">29dp</dimen>
+    <dimen name="home_feature_title_size">20sp</dimen>
+    <dimen name="home_feature_subtitle_height">20dp</dimen>
+    <dimen name="home_feature_subtitle_gap">8dp</dimen>
+    <integer name="home_feature_text_gravity">16</integer>
+</resources>

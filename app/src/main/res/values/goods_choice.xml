@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="zh">
+    <integer name="goods_choice_columns">2</integer>
+    <string name="goods_choice_price">￥%1$s/%2$s</string>
+    <string name="goods_similar_badge">相似</string>
+    <string name="goods_similar_description">相似商品</string>
+</resources>

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+  <string name="home_title">fieryeyes Recognition</string>
+  <string name="home_about_device">About device</string>
+  <string name="home_checkout">Checkout</string>
+  <string name="home_checkout_subtitle">Recognize, weigh, count and print</string>
+  <string name="home_enter_checkout">Open checkout</string>
+  <string name="home_back">Home</string>
+  <string name="home_camera_title">Camera</string>
+  <string name="home_camera_subtitle">Image and resolution</string>
+  <string name="home_scale_title">Scale</string>
+  <string name="home_scale_subtitle">Port and weight test</string>
+  <string name="home_print_title">Printer</string>
+  <string name="home_print_subtitle">Connect and test</string>
+  <string name="home_recognition_title">Recognition</string>
+  <string name="home_recognition_subtitle">Scene and parameters</string>
+  <string name="home_sdk_title">SDK connection</string>
+  <string name="home_sdk_subtitle">Local and LAN</string>
+  <string name="home_shop_title">Shop details</string>
+  <string name="home_shop_subtitle">Receipt header</string>
+  <string name="home_goods_title">Learning and recognition library</string>
+  <string name="home_goods_subtitle">Backup and restore</string>
+  <string name="home_maintenance_title">Maintenance</string>
+  <string name="home_maintenance_subtitle">License, updates and logs</string>
+  <string name="home_more_features">↑  Swipe up for more features</string>
+  <string name="home_sdk_starting">Starting SDK, please wait…</string>
+</resources>

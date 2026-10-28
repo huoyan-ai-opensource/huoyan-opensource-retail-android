@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='utf-8'?>
+<cc.huoyan.retail.common.ui.BoundedDialogLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingLeft="20dp" android:paddingRight="20dp" android:paddingTop="12dp" android:paddingBottom="12dp" android:background="@drawable/land_card">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="48dp" android:gravity="center_vertical">
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:textSize="24sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_title" android:layout_weight="1" android:textStyle="bold" />
+        <TextView android:layout_width="wrap_content" android:layout_height="48dp" android:textSize="16sp" android:textColor="#3F3EED" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/button_close" android:id="@+id/close" android:gravity="center" android:paddingHorizontal="16dp" android:background="@drawable/land_soft" android:clickable="true" android:focusable="true" />
+    </LinearLayout>
+    <ScrollView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1" android:fillViewport="false">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/cloudMarketing">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="16dp" android:baselineAligned="false">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/cloudMarketingDetails">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:baselineAligned="false">
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/land_icon_store" android:importantForAccessibility="no" />
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1" android:layout_marginStart="12dp">
+                                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_benefit_title_1" />
+                                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="14sp" android:textColor="#6E7C90" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_benefit_body_1" android:layout_marginTop="4dp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                        <Space android:layout_width="1dp" android:layout_height="12dp" />
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:baselineAligned="false">
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/land_icon_store" android:importantForAccessibility="no" />
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1" android:layout_marginStart="12dp">
+                                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_benefit_title_2" />
+                                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="14sp" android:textColor="#6E7C90" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_benefit_body_2" android:layout_marginTop="4dp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                        <Space android:layout_width="1dp" android:layout_height="12dp" />
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:baselineAligned="false">
+                            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/land_icon_store" android:importantForAccessibility="no" />
+                            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:orientation="vertical" android:layout_weight="1" android:layout_marginStart="12dp">
+                                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_benefit_title_3" />
+                                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="14sp" android:textColor="#6E7C90" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_benefit_body_3" android:layout_marginTop="4dp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/cloudQrCard" android:layout_marginTop="20dp" android:padding="16dp" android:gravity="center_horizontal" android:background="@drawable/land_field">
+                        <LinearLayout android:layout_width="136dp" android:layout_height="136dp" android:orientation="vertical" android:background="#FFFFFF" android:gravity="center">
+                            <ImageView android:layout_width="76dp" android:layout_height="76dp" android:src="@drawable/land_icon_qr_code" android:importantForAccessibility="no" />
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="13sp" android:textColor="#8795A8" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_qr_placeholder" android:layout_marginTop="8dp" />
+                        </LinearLayout>
+                        <Space android:layout_width="1dp" android:layout_height="12dp" />
+                        <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="14sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_qr_caption" android:gravity="center" android:lineSpacingExtra="4dp" />
+                        <Space android:layout_width="1dp" android:layout_height="12dp" />
+                        <TextView android:layout_width="match_parent" android:layout_height="48dp" android:textSize="18sp" android:textColor="#FFFFFF" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/settings_system_shop_login" android:id="@+id/cloudLogin" android:gravity="center" android:background="@drawable/land_primary" android:clickable="true" android:focusable="true" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/cloudAccount" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="16dp" android:visibility="gone" android:baselineAligned="false">
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/cloudShopCard" android:padding="16dp" android:background="@drawable/land_field">
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/land_title_shop" android:id="@+id/cloudShopTitle" />
+                    <Space android:layout_width="1dp" android:layout_height="8dp" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/default_shop_name" android:id="@+id/cloudShopInfo" />
+                    <Space android:layout_width="1dp" android:layout_height="8dp" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/default_shop_address_value" android:id="@+id/cloudShopAddress" />
+                    <Space android:layout_width="1dp" android:layout_height="8dp" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_not_filled" android:id="@+id/cloudShopPhone" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="20dp" android:id="@+id/cloudOperations">
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="18sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_loading" android:id="@+id/cloudState" />
+                    <Space android:layout_width="1dp" android:layout_height="8dp" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="16sp" android:textColor="#6E7C90" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_enable_hint" android:id="@+id/cloudSyncHint" />
+                    <Space android:layout_width="1dp" android:layout_height="12dp" />
+                    <TextView android:layout_width="match_parent" android:layout_height="52dp" android:textSize="18sp" android:textColor="#FFFFFF" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_enable" android:id="@+id/cloudEnable" android:gravity="center" android:background="@drawable/land_primary" android:clickable="true" android:focusable="true" android:visibility="gone" />
+                    <TextView android:layout_width="match_parent" android:layout_height="52dp" android:textSize="18sp" android:textColor="#FFFFFF" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_retry" android:id="@+id/cloudRefresh" android:gravity="center" android:background="@drawable/land_primary" android:clickable="true" android:focusable="true" android:visibility="gone" />
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:id="@+id/cloudSyncActions" android:visibility="gone">
+                        <TextView android:layout_width="match_parent" android:layout_height="52dp" android:textSize="18sp" android:textColor="#FFFFFF" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_sync_goods" android:id="@+id/cloudSyncGoods" android:gravity="center" android:background="@drawable/land_primary" android:clickable="true" android:focusable="true" android:layout_marginTop="0dp" />
+                        <TextView android:layout_width="match_parent" android:layout_height="52dp" android:textSize="18sp" android:textColor="#FFFFFF" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/cloud_sync_images" android:id="@+id/cloudSyncImages" android:gravity="center" android:background="@drawable/land_primary" android:clickable="true" android:focusable="true" android:layout_marginTop="12dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</cc.huoyan.retail.common.ui.BoundedDialogLayout>

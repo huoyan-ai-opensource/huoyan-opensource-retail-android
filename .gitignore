@@ -1,0 +1,32 @@
+*.iml
+.idea/
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+**/build/
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+app/release/
+*.apk
+.gradle-project-cache/
+.gradle-user-home/
+# 正式签名私钥不入库；仅允许公开的非商业开源实验签名。
+*.jks
+*.keystore
+!/signing/xinhai-debug-demo.jks
+# Claude Code 本地配置（不入库，本地生效）
+.claude/
+# 临时验收日志、截图和历史构建产物。
+/docs/testing/
+/test-design/reports/
+/test-design/performance/
+/design/revisions/
+!app/src/main/res/drawable-nodpi/recognition_tray_still.png
