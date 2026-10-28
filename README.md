@@ -2,6 +2,8 @@
 
 火眼开源零售安卓客户端，支持 **生鲜 / 零食 / 烘焙 / 小碗菜** 的 AI 识别和收银。
 
+官网：[www.huoyan.cc](https://www.huoyan.cc)
+
 应用包名：`cc.huoyan.retail`；SDK JAR 包名：`cc.huoyan.sdk.client`。
 
 ## SDK JAR 对接

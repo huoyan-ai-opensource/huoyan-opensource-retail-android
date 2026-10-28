@@ -2,6 +2,8 @@
 
 [简体中文](README.md) | English
 
+Official website: [www.huoyan.cc](https://www.huoyan.cc)
+
 Call the Huoyan SDK through the JAR's Java methods. See the [English Integration Guide](INTEGRATION_GUIDE.en.md) / [Chinese Integration Guide](INTEGRATION_GUIDE.md) for setup. The reference client source is also provided; use it for calling examples or customize its screens directly.
 
 **Requirements: JAR 2.0.0, Android API 24+, Java 11.** Install the Huoyan SDK separately on the device providing recognition services, using a version that matches the JAR. When connecting to another device, the client device does not need a local Huoyan SDK installation. Register the client application's package name and obtain the required authorization before integrating. AIDL requires API 27+; use WebSocket on API 24–26.

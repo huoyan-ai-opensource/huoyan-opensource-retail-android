@@ -2,6 +2,8 @@
 
 简体中文 | [English](README.en.md)
 
+官网：[www.huoyan.cc](https://www.huoyan.cc)
+
 通过 JAR 的 Java 方法调用火眼 SDK，接入步骤见 [中文对接文档](INTEGRATION_GUIDE.md) / [English Integration Guide](INTEGRATION_GUIDE.en.md)。参考客户端源码同时提供，可参考调用方式或直接改造页面。
 
 **运行要求：JAR 2.0.0，Android API 24+，Java 11。** 火眼 SDK 单独安装在提供识别服务的设备上，并与 JAR 使用配套版本；连接另一台设备时，客户端设备无需安装火眼 SDK。接入前登记客户端包名并完成所需授权。AIDL 连接需要 API 27+，API 24～26 使用 WebSocket。
