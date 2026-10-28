@@ -57,4 +57,4 @@ adb -s DEVICE_SERIAL shell am instrument -w -r \
 
 方法顺序：`bindAndCreateGoodsThroughClient`（仅首次准备）、`learnThroughClientCamera`、`configureCheckoutThroughClient`、`checkoutThroughClient`（mode 分别为 normal / modified / deleted）。设备保留烘焙模型、测试商品与学习库，打印模块开启、称重关闭、删行开启、打印机选择 BTP-N90LF；原分辨率未改动。
 
-COS 配好后，应重新从客户端拍照和提交收银操作。当前学习小图上传是尽力执行、不自动重试，不能仅补配置后等待旧图片补传。先确认图片 PUT 与 item 创建，再对账 feedback 三张表、原图坐标、候选顺序和最终选择。截图及脱敏日志在本地 `design/qa-feedback-20261016/`，不入 Git。
+COS 配好后，应重新从客户端拍照和提交收银操作。当前学习小图上传是尽力执行、不自动重试，不能仅补配置后等待旧图片补传。先确认图片 PUT 与 item 创建，再对账 feedback 三张表、原图坐标、候选顺序和最终选择。历史截图和日志不随源码提供，复测时需重新采集。

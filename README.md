@@ -42,24 +42,8 @@ debug 使用 Android 构建工具在本机生成的调试签名。本地和 CNB 
 
 正式发布时，在不入库的 `local.properties` 中完整填写 `signing.storeFile`（建议绝对路径）、`signing.storePassword`、`signing.keyAlias`、`signing.keyPassword`，release 会改用该签名。正式签名私钥和密码不提交到仓库。
 
-### CNB tag 打包
-
-当前默认版本为 `2.0.6`，`versionCode` 为 `7`。根目录 `.cnb.yml` 在推送 tag 后使用 `.cnb/Dockerfile` 中的 JBR 17 和 Android SDK 环境，执行单元测试、构建 Release APK，并上传到该 tag 对应的 CNB Release 附件。
-
-tag 使用 `MAJOR.MINOR.PATCH` 或 `vMAJOR.MINOR.PATCH` 格式，例如 `2.0.0`、`v2.0.0`；APK 的 `versionName`、应用名称和文件名使用去掉 `v` 的版本号。其他格式会使构建失败。`versionCode` 取自 `app/build.gradle`，后续发布需手动递增。
-
-先提交 CI 配置及版本变更，再在目标提交上推送 tag：
-
-```bash
-git tag v2.0.6
-git push origin v2.0.6
-```
-
-产物为 `huoyan-retail-2.0.6-7-{时间戳}-release.apk`。CI 自动使用仓库内的 `xinhai-debug-demo` 实验签名，无需额外配置签名密钥；后续实验版本使用同一签名并递增 `versionCode` 后，可覆盖安装。
-
 ## 测试
 
 - 单元测试：`app/src/test/java`（纯 JUnit，金额/计价/结算逻辑）
-- 平台自动化（android-test-lab）：`test-design/scenarios/*.json`，真机 C50D 跑场景断言（toast/金额/UI）
 
 编码约定见 [AGENTS.md](AGENTS.md)。

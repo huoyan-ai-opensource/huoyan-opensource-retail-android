@@ -24,6 +24,9 @@ app/release/
 !/signing/xinhai-debug-demo.jks
 # Claude Code 本地配置（不入库，本地生效）
 .claude/
+# CNB 本地构建配置，不随源码提交。
+/.cnb/
+/.cnb.yml
 # 临时验收日志、截图和历史构建产物。
 /docs/testing/
 /test-design/reports/

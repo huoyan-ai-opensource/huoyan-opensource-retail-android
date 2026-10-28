@@ -45,9 +45,14 @@ CheckoutPresenter
 - 自动去皮仅用于开启称重模块后的锁定识别清单：同价称重商品按单件皮重（克）乘数量累加，不同价时不应用，删除或改品后重新计算。`CheckoutSession` 管理去皮互斥、失败抑制和本页自动皮重清理；识别变化比较总重，计价使用设备净重。`AclasScaleManager` 等待目标皮重回读及之后的稳定净重才确认命令，等待期间禁止打印，使用页面 LoadingDialog 和真实结果 Toast。
 - `SaleLine` 和小票不含数据库实体、识别框、Bitmap。`CheckoutRows` 负责把页面对象复制为业务输入；`checkout.domain` 不反向依赖页面、接入层或 Android。
 - `CheckoutGoodsLoader` 批量查询商品，保留未匹配行，通过 `GoodsVo` 交付给页面；缩略图由 View 在主线程创建。`LatestRefresh` 合并待执行查询，在重开会话、人工修改或页面退出后丢弃旧结果。
+- 商品查询同时读取原始命中和同框候选的 PLU，将名称固定到识别快照；候选无需入车，目录缺失时不以编码伪造名称。`FeedbackInputs` 使用该快照组装反馈，提交时不再同步查询商品。
 - `CheckoutOutput` 在提交时固定反馈内容，接管截图并负责回收。打印数据发送成功后的反馈失败不改判为打印失败；`CheckoutSession` 按打印任务和会话代次处理完成回调，旧回调不会结束新单。
 
 `MainActivity` 负责相机帧、SDK 识别调度、控件和生命周期。计价规则和可变会话状态放在业务层。
+
+`FrameChangeGate` 仅在称重关闭且画面变化识别开启时参与调度：首帧建立基线，相邻帧哈希的汉明距离严格大于阈值后启动一轮识别，随后静止的新帧也参与结果确认。`RecognitionSensitivity` 将 1–5 档映射为阈值 8、6、4、2、1，默认第 3 档；页面恢复、重新识别和相机代次变化时重置基线。
+
+`RecognitionLoop` 由新帧、SDK 就绪和业务恢复事件唤醒，在单一工作线程串行请求，只取最新帧并合并在途通知，不定时轮询。锁定、停止或报错后不继续调度；旧代次回执丢弃，停止后的相机通知不会自行重启识别。
 
 识别页的 `ScaleOperationsDialog` 复用页面秤连接，`SdkStatusDialog` 只读查询 SDK 状态；等待操作由子 `LoadingDialog` 管理。在途模型不持有页面。`RecognitionWatermarkView` 在列表背后绘制固定四角，空态动图由 Activity 的 Glide 生命周期管理。`settings/ExitPasswordDialog` 与 `ExitPasswordStore` 负责本机退出验证和维护页密码配置，系统返回与版本号三击使用同一验证入口。
 
@@ -120,8 +125,20 @@ bash gradlew :app:testDebugUnitTest :app:assembleDebug :app:assembleDebugAndroid
 
 设置设备测试也支持 `-e skipReceiptPrinting true`，保留设备枚举和连接验证，仅跳过测试票出纸。
 
+真实 SDK 验收用例默认跳过，须显式传入对应 instrumentation 参数：
+
+| 用例 | 启用参数 | 验证范围 |
+| --- | --- | --- |
+| `RealModelActivationDeviceTest` | `-e realModelTest true` | 真实激活与切换，会写入授权 |
+| `RealModelVersionDeviceTest` | `-e realModelVersionTest true` | AIDL、WS 及设置页模型版本，只读查询 |
+| `ShopDetailsDeviceTest` | `-e realShopDetailsTest true -e externalShopId <已核对的外部门店标识>` | 真实绑定、门店地址和电话及重启后的持久化 |
+
+反馈上报和跨模型识别库的历史未完成验收见 [反馈真机验收记录](feedback-item-real-device-20261016.md)。该记录保留失败证据与复测入口，不代表当前版本已经通过相应验收。
+
 ## SDK JAR 边界
 
 JAR 的分包与依赖规则见 [模块目录规则](../huoyan-sdk-client/ARCHITECTURE.md)。`app/sdk` 负责 `SdkChannelManager` 的宿主配置和线程及 `SdkGoodsImages` 的图片加载。`common/install/ApkInstallController` 统一处理 SDK 与客户端的下载、未知来源授权和系统安装器交互；客户端固定发行地址位于 `RetailConstants.CLIENT_LATEST_APK_URL`。
 
-SDK 返回 `RecognizeResult/RecognitionItem/RecognitionCandidate/DetectBox`；收银 `CheckoutRecognition/RecognitionSelection` 只组合原始回执和人工选择。`goods/SaleModeMapper` 和 `SdkClassMapping` 属于宿主商品业务。学习条目引用 JAR 框并保留本地图片编号与拍摄时间。旧 `iou/conf` 设置没有现行调用链，已移除无效控件和本地配置模型。
+SDK 返回 `RecognizeResult/RecognitionItem/RecognitionCandidate/DetectBox`；收银 `CheckoutRecognition/RecognitionSelection` 只组合原始回执和人工选择。`goods/SaleModeMapper` 和 `SdkClassMapping` 属于宿主商品业务。学习条目引用 JAR 框并保留本地图片编号与拍摄时间。
+
+PLU 字符串、反馈条目和学习小图的接口约定统一见 [JAR 对接文档](../huoyan-sdk-client/INTEGRATION_GUIDE.md#business-flows)。
