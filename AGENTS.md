@@ -1,5 +1,7 @@
 # AGENTS.md
 
+简体中文 | [English](Agents.en.md)
+
 本文件为 AI 编码代理（Claude Code / Codex / Hermes）在 `huoyan-opensource-retail-android` 仓库工作时的权威指南。**动手前先读本文件。**
 
 ## 重构与兼容约定
@@ -90,7 +92,7 @@ app/src/main/java/cc/huoyan/retail/
 
 正式签名私钥和密码不入库（.gitignore 排除 `*.jks`、`*.keystore`）。唯一例外是用户明确要求随库公开的 `signing/xinhai-debug-demo.jks`：该签名仅用于非商业的开源版本实验及测试 Release 打包，密码公开，不得用于商业发布。debug 使用本机自动生成的调试签名；本地和 CNB 的 release 默认使用上述固定实验签名，说明见 `signing/README.md`。正式 release 在未入库的 `local.properties` 中完整配置 `signing.storeFile`、`signing.storePassword`、`signing.keyAlias`、`signing.keyPassword`；不在构建脚本中保留正式签名的私钥路径或密码默认值。
 
-## UI 反推换算（huoyan-snacks 继承，C50D sw720dp）
+## UI 反推换算
 
 ### 弹窗与操作反馈规范
 
@@ -101,7 +103,7 @@ app/src/main/java/cc/huoyan/retail/
 - 仅当需求明确指定展示某项状态时，才允许在模块内显示该状态，例如云端服务的开启 / 关闭状态。例外仅适用于指定状态，不能据此追加其他请求进度或结果。
 - 云端服务中，门店登录与自动查询静默进行；开启服务、同步商品和同步识别库使用 LoadingDialog，结果使用 ToastEx；保留明确要求展示的云端服务状态。同步识别库的确认必须使用项目 AlertDialog。
 
-- dimens 引用：`px = N × 2 × density`（sw 翻倍映射，C50D density=1.5 → N×3）
+- `values-sw720dp` 中的 `dp_N` 资源：N 为资源名的数字后缀，`px = N × 2 × density`。例如 `dp_10` 定义为 `20dp`，在 C50D density=1.5 时为 30px；其他资源限定符按各自定义值换算。
 - 硬编码 dp：`px = N × density`（×1.5）
 - 色板：#F2F4F8（背景）/ #293A51（主文字）/ #3F3EED（强调蓝）/ #FA6400（警示橙）
 

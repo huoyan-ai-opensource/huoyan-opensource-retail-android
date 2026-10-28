@@ -48,4 +48,4 @@ For production releases, configure all four properties in the untracked `local.p
 
 - Unit tests: `app/src/test/java` (plain JUnit tests for money, pricing, and checkout logic)
 
-See [AGENTS.md](AGENTS.md) (Chinese) for coding conventions.
+See [Agents.en.md](Agents.en.md) for coding conventions.
