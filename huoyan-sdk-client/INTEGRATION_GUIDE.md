@@ -1,8 +1,10 @@
 # 火眼 SDK JAR 对接文档
 
+简体中文 | [English](INTEGRATION_GUIDE.en.md)
+
 **JAR 版本：2.0.0｜Android API 24+｜Java 11**
 
-火眼 SDK 单独安装，客户端通过 JAR 的 Java 方法调用 SDK。随附的零售客户端源码称为“参考客户端”。
+火眼 SDK 单独安装，客户端通过 JAR 的 Java 方法调用 SDK。单独提供的零售客户端源码称为“参考客户端”。
 
 [导入 JAR](#import-jar) · [连接与激活](#connect-sdk) · [业务调用](#business-flows) · [错误处理](#error-handling) · [参考客户端](#reference-client) · [主接口速查](#client-api) · [验收与排障](#verification) · [辅助 API](#helper-api)
 
@@ -13,11 +15,21 @@
 | 在现有应用中使用 JAR | 已有商品、相机或收银系统，只需增加识别能力 | 导入 JAR → 连接、激活 → 提交图片 → 处理识别结果 |
 | 基于参考客户端改造 | 希望沿用已有页面和零售流程 | [运行参考客户端](#reference-client) → 体验学习与收银 → 修改商品、设备及页面 |
 
-接入前向对接人员取得配套的 SDK 安装包和激活方式，确认设备支持并登记客户端包名。账号内置于交付 JAR，更换账号需取得对应 JAR，见第 5.1 节。
+接入前向对接人员取得配套的 SDK 安装包和激活方式，确认设备支持并登记客户端包名。账号内置于交付 JAR，更换账号需取得对应 JAR。
 
 先用一张固定图片试通流程。设备已经学过商品时可以直接识别；新设备先按第 4.1 节给一个商品拍照学习，再识别它。
 
-“学习”指把商品图片交给 SDK，一份学习成功的图片记录称为“样本”。模型就绪判断见第 3.2 节。
+“学习”指把商品图片交给 SDK，一份学习成功的图片记录称为“样本”。
+
+以下 Java 示例随 JAR 提供。
+
+| 示例 | 用途 |
+| --- | --- |
+| [RecognitionIntegrationExample.java](samples/RecognitionIntegrationExample.java) | 连接、检测识别、学习、样本、反馈及错误处理 |
+| [ActivationStatusExample.java](samples/ActivationStatusExample.java) | 未激活设备连接、单次激活提交；配合状态和授权查询 |
+| [SdkExample.java](samples/SdkExample.java) | 最小连接与调用 |
+| [SessionIntegrationExample.java](samples/SessionIntegrationExample.java) | 可选的共享连接与状态查询 |
+| [FeedbackIntegrationExample.java](samples/FeedbackIntegrationExample.java) | 识别反馈组合调用与文件保留 |
 
 <a id="import-jar"></a>
 
@@ -56,18 +68,13 @@ dependencies {
 
 两种依赖方式选一种。主 JAR 不内嵌第三方类，也不携带 Gradle 依赖元数据；完整 ZIP 包含运行时依赖，使用 Maven 时由 Gradle 解析。
 
-保留 JAR 中的 Java 资源 `raw/config`，不要通过 `packagingOptions` 排除它或在宿主添加同名资源；账号配置说明见 [README](README.md)。
+保留 JAR 中提供账号的 Java 资源 `raw/config`，不要通过 `packagingOptions` 排除它或在宿主添加同名资源。
 
 JAR 已附带混淆规则。需要手动添加时，将 `consumer-rules.pro` 放入 app 目录，在启用混淆的 buildType 中添加 `proguardFiles 'consumer-rules.pro'`。
 
-| 依赖 | 用途及引入方式 |
-| --- | --- |
-| Java-WebSocket 1.5.2 | 显式声明；JAR 的 WebSocket 通信 |
-| FastJSON 1.2.47 | 显式声明；JAR 的 SDK 协议 JSON 编解码 |
-| OkHttp 4.10.0 | 显式声明；JAR 的 SDK APK 下载 |
-| Kotlin 标准库 JDK8 1.8.20 | 显式声明；统一 OkHttp/Okio 所需的 Kotlin 运行时版本，并引入 JDK7、stdlib、stdlib-common 及 JetBrains annotations |
-| SLF4J API 1.7.25 | Java-WebSocket 运行时所需的传递依赖，由 Gradle 自动引入，无需直接声明 |
-| Okio / Okio JVM 3.0.0 | OkHttp 的传递依赖 |
+Java-WebSocket 用于 WS 通信，FastJSON 用于协议 JSON 编解码，OkHttp 用于 SDK APK 下载。显式声明 Kotlin JDK8 标准库以统一 OkHttp/Okio 的运行时版本。
+
+Gradle 自动引入传递依赖，无需重复声明：Java-WebSocket 引入 SLF4J API 1.7.25；OkHttp 引入 Okio / Okio JVM 3.0.0；Kotlin JDK8 引入 JDK7、stdlib、stdlib-common 和 JetBrains annotations。
 
 ### 2.2 Android 配置
 
@@ -142,7 +149,7 @@ try (HuoyanSdkClient client = RecognitionIntegrationExample.openReady(context, c
 
 片段需导入 `cc.huoyan.sdk.client.*`、`cc.huoyan.sdk.client.model.RecognitionItem`、`java.util.List` 及 `example.RecognitionIntegrationExample`；调用方处理 `IOException`、`InterruptedException` 和本地参数异常，中断时恢复线程中断标记。
 
-示例的 `openReady` 负责连接和初始化，检查识别能力及模型状态；超时或模型未就绪时抛出异常。示例 `recognize()` 将 JAR 的 `RecognizeResult` 解包为条目列表。JAR 调用顺序如下：
+示例方法 `openReady()` 按下列顺序连接、初始化并检查识别能力和模型状态；超时或模型未就绪时抛出异常。示例方法 `recognize()` 将 JAR 的 `RecognizeResult` 解包为条目列表。
 
 ```text
 HuoyanSdkClient.create(context, config)
@@ -154,13 +161,15 @@ HuoyanSdkClient.create(context, config)
   → recognize() / learn() / batchLearn()
 ```
 
-`isConnected()` 只表示通信连接成功。`initialize()` 不等于激活完成；状态 `READY`、`OFFLINE` 表示火眼 SDK 已启动，**识别与学习通过 `SdkStatus.modelReady(status)` 判断**。其中 `OFFLINE` 是本地可用但设备身份尚未与云端校准的状态，仍须确认证书有效、模型就绪且密钥未丢失；不需要等待联网才使用本地能力。
+`isConnected()` 只确认通信连接，`initialize()` 不等于激活完成，`READY` / `OFFLINE` 只确认 SDK 已启动。**识别与学习统一用 `SdkStatus.modelReady(status)` 判断**；离线条件见第 3.4 节。
 
-`initialize()` 自动携带宿主 APK 的 `versionName`，覆盖首次初始化、重连后的初始化和显式重试；包信息不可查时不伪造版本。须使用支持该初始化签名的配套 SDK，协议字段及上报方式见 [README](README.md)。
+`initialize()` 自动读取宿主 APK 的 `versionName`，无需手填；包信息不可查时不伪造版本。首次初始化、重连后的初始化和显式重试均携带该版本：AIDL 调用 `init(String appVersion)`，WS 发送 `params.app_version`。SDK 保存版本并随后续心跳上报，宿主无需另发上报请求；须使用支持该签名的配套 SDK。
+
+自动重连后仍需宿主调用 `initialize()` 并重新检查模型状态，见第 6.1 节。
 
 <a id="activation"></a>
 
-### 3.3 激活火眼 SDK
+### 3.3 激活与切换模型
 
 首次激活按激活码选模型；已激活设备切换模型时查询当前设备授权。
 
@@ -171,7 +180,7 @@ HuoyanSdkClient.create(context, config)
 | 取得激活码 | 用户手输激活码，或从二维码中取出 serial 字段（激活码） |
 | 选择模型 | 正常激活后台调用 `queryLicenseModels(activationCode)`，切换调用 `queryDeviceModels()`，按返回顺序显示动态名称，保留点选项的 `modelCode` |
 | 提交激活 | 在后台线程调用 `activate(activationCode, modelCode)` 一次，取消选择不提交 |
-| 展示准备进度 | 另一后台线程查询 `getDownloadProgress()`，并调用 `getStatus()` 查询状态 |
+| 展示准备进度 | 另一后台线程并行查询 `getDownloadProgress()` 和 `getStatus()` |
 | 完成 | 检查激活结果；状态查询成功且 modelReady=true 后允许识别/学习，并刷新授权信息 |
 
 激活页面使用 [ActivationStatusExample.java](samples/ActivationStatusExample.java) 的 `openConnected(context, config)`。第 3.2 节的 `openReady()` 在模型未就绪时会关闭连接并抛异常，不适用于首次激活。
@@ -195,9 +204,9 @@ if (result == null || result.getCode() == HuoyanSdkClient.RESULT_UNKNOWN) {
 
 双查询接口对应 SDK 壳 0.1.3（AIDL api_version=3）。`LicenseModels.code/reason` 表示查询结果；`models` 每项包含 `modelCode/modelName/chip/current`，数量、名称和顺序不固定，`current=true` 标识当前模型。
 
-切换模型时，用同一客户端 `getCertInfo().getActivationSerial()` 返回的序列号与所选 modelCode 调用 `activate()`。缺少序列号则在选模后补输或扫码，保留所选模型再提交。选择当前项或取消均不写入；切换独立于本地配置保存。
+切换模型时，先用同一客户端调用 `getCertInfo().getActivationSerial()` 取得序列号，再将序列号与所选 modelCode 传给 `activate()`。缺少序列号则在选模后补输或扫码，保留所选模型再提交。选择当前项或取消均不写入；切换独立于本地配置保存。
 
-`activate()` 返回 `BaseResult`（code/reason），模型状态和证书需另行查询；门店绑定使用 `bindDevice()`。已提交请求的生命周期见第 6.1 节。`getDownloadProgress()` 返回模型下载进度：
+`activate()` 返回 `BaseResult`（code/reason），模型状态和证书需另行查询。`getDownloadProgress()` 返回模型下载进度：
 
 | `DownloadProgress` 方法 | 类型/单位 | 含义 |
 | --- | --- | --- |
@@ -244,7 +253,7 @@ Boolean/Long 为 null 表示未取得信息，不能当作 false/0。查询失�
 | `REGISTERED` | 已注册，激活/准备流程尚未完成 | 查询授权信息，按实际状态引导激活或等待 |
 | `NOT_ACTIVATED` | 未激活 | 引导输入激活码 |
 | `READY` | 火眼 SDK 已启动 | 继续确认 modelReady=true |
-| `OFFLINE` | 本地可用，设备身份尚未与云端校准 | 证书有效、modelReady=true 且密钥未丢失时可识别/学习；继续读状态等待 SDK 自动恢复 READY |
+| `OFFLINE` | 本地可用，设备身份尚未与云端校准 | `SdkStatus.modelReady(status)` 要求 modelReady=true、certificateValid=true 且 keyLost 不为 true；满足即可识别/学习，无需等待联网 |
 | `MODEL_PREPARING` | 模型正在准备 | 展示下载进度或“准备中”提示，继续查询 |
 | `MODEL_NOT_READY` | 模型未就绪 | 暂停识别/学习，结合 recentError 排查 |
 | `STOPPED` | 火眼 SDK 已停止 | 恢复连接/服务后重新确认状态 |
@@ -260,11 +269,11 @@ Boolean/Long 为 null 表示未取得信息，不能当作 false/0。查询失�
 | `DISABLED` | 火眼 SDK 已禁用 | 联系对接人员确认授权或使用策略 |
 | null / 未识别的新值 | 尚未确认状态或新增状态 | 保留返回值供排查，不默认当成 READY；检查 modelReady |
 
-`OFFLINE` 不等于客户端与 SDK 断连，也不代表证书过期。激活、切换模型、反馈、上传、同步以及开启云服务后的商品写入仍按各自的云端结果处理；不要因离线自动关闭云服务或将失败改成本地成功。
+`SdkStatus.shellStarted()` 同时识别 `READY` 和 `OFFLINE`。离线时继续读状态，SDK 联网校准后自动恢复 READY，宿主不重复初始化。`OFFLINE` 不等于客户端与 SDK 断连，也不代表证书过期。激活、切换模型、反馈、上传、同步以及开启云服务后的商品写入仍按各自的云端结果处理；不要因离线自动关闭云服务或将失败改成本地成功。
 
 ### 3.5 查询授权信息与 SDK 版本
 
-通过 `client.getCapabilities()` 返回的 `Capability` 读取 SDK 安装包版本，不依赖激活或模型就绪。版本查询与授权查询独立处理，证书不可用不阻止版本展示。
+`client.getCapabilities()` 返回 `Capability`，从中读取 SDK 安装包版本，不依赖激活或模型就绪。版本查询与授权查询独立处理，证书不可用不阻止版本展示。
 
 | `Capability` 方法 | 类型 | 内容及空值处理 |
 | --- | --- | --- |
@@ -287,17 +296,7 @@ Boolean/Long 为 null 表示未取得信息，不能当作 false/0。查询失�
 | `hasNextRenewAt()` / `getNextRenewAt()` | boolean / long，秒 | 先检查 hasNextRenewAt，再使用下次续期时间 |
 | `getExpiresAt()` | long，秒时间戳 | 到期时间；0 可能表示无数据或永久授权，页面显示“未提供到期时间”，不要直接显示“永久有效” |
 
-```java
-CertInfo cert = client.getCertInfo();
-if (cert != null && cert.getCode() == 0) {
-    String licenseType = cert.getLicenseType();
-    Date activatedAt = cert.getActivatedAt() > 0
-            ? new Date(cert.getActivatedAt() * 1000L) : null;
-    // 按客户端时区格式化 activatedAt；续期字段先检查对应 has 方法。
-}
-```
-
-示例需导入 `cc.huoyan.sdk.client.model.CertInfo` 及 `java.util.Date`。CertInfo 时间为**秒**，StatusSnapshot 的 stateUpdatedAt 为**毫秒**。授权续期由 SDK 处理，JAR 只提供续期信息查询。
+CertInfo 时间为**秒**，转换为 Java Date 时乘以 `1000L`，按客户端时区格式化；StatusSnapshot 的 stateUpdatedAt 为**毫秒**。授权续期由 SDK 处理，JAR 只提供续期信息查询。
 
 ### 3.6 查询支持的功能
 
@@ -339,11 +338,11 @@ List<Long> uids = RecognitionIntegrationExample.successfulUids(result);
 | --- | --- | --- |
 | `learn(image, clazz)` | 单目标图片；火眼 SDK 选取最高检测分框学习 | `LearnResult`，code=0 且 uid>0 |
 | `batchLearn(image, clazz)` | 同类多个目标合拍，所有框学到同一分类 | `ItemLearnBatch`，每个框检查 code=0 且 uid>0 |
-| `detect(image)` | 学习前需要画框预览 | 检测框列表；实际学习仍以学习返回为准 |
+| `detect(image)` | 学习前需要画框预览 | `DetectResult` 中的检测框；实际学习仍以学习返回为准 |
 
 批量学习允许部分成功；整体 code=0 且框列表为空表示未检测到目标。若 3 个框中只有 2 个成功，保留这 2 个 UID 并显示剩余失败原因，不自动重学整张图。
 
-学习成功后就能用于识别，无需再调用保存方法。关闭页面不会撤销已学样本；需要撤销时使用本次成功 UID 调用 `forgetSample(uid)`。
+学习成功后即可识别，无需再调用 SDK 保存接口；调用方记录本次成功 UID，撤销时用它调用 `forgetSample(uid)`。
 
 ### 4.2 收银识别与商品匹配
 
@@ -370,7 +369,7 @@ List<Long> uids = RecognitionIntegrationExample.successfulUids(result);
 
 连续识别可在上一张处理完后取相机最新图片，避免排队。宿主决定结果接受条件、人工确认时的暂停策略及计价；改品时分别保存原始结果与最终选择，供反馈使用。
 
-### 4.3 查看、补学与删除样本
+### 4.3 查看与删除样本
 
 | 需求 | 调用 |
 | --- | --- |
@@ -408,11 +407,11 @@ FeedBackUploadHelper.submit(client, submission, worker, completion);
 | 商品 A 改为 B | 1 | 最终选择 B |
 | 删除目标（含改品后删除） | 2 | 空对象 `{}` |
 
-构造参数 `feedbackType` 只接受 0/1，最终上报值由 JAR 按 items 计算：全部正常为 0，存在修改或删除为 1。因此示例传入 `FEEDBACK_TYPE_NORMAL` 也能提交改品或删除结果。
+构造参数 `feedbackType` 只接受 0/1，最终上报值由 JAR 按 items 计算：全部正常为 0，存在修改或删除为 1。示例传入 `FEEDBACK_TYPE_NORMAL` 也能提交改品或删除结果。
 
 学习小图的上传和云端登记由 SDK 自动完成，客户端不提交学习 feedback，也不直接调用小图 HTTP 接口。
 
-反馈图片须为 JPEG/PNG 且不超过 8 MiB。`KEEP` 保留源文件；`DELETE_ON_SUCCESS` 只在提交成功且文件未改变时删除专用临时图片。失败或结果未知时保留文件。后台读取和提交，更新界面需切回主线程。重试时复用同一个 `FeedbackSubmission`，沿用 requestId 和上传 URL；成功后不会再次提交。
+反馈图片须为 JPEG/PNG 且不超过 8 MiB。`KEEP` 保留源文件；`DELETE_ON_SUCCESS` 只在提交成功且文件未改变时删除专用临时图片。失败或结果未知时保留文件。重试时复用同一个 `FeedbackSubmission`，沿用 requestId 和上传 URL；成功后不会再次提交。结果未知时不要自动重试，见第 6.2 节。
 
 ### 4.5 图片与框的坐标对应
 
@@ -427,7 +426,7 @@ FeedBackUploadHelper.submit(client, submission, worker, completion);
 
 反馈 width/height 是框的宽高，不是整张图尺寸。存在缩放、旋转、镜像时保存图像变换并还原；预览绘制还需考虑控件缩放和留白。不要将上一帧的框用于另一张图。
 
-## 5. 其他可选功能
+## 5. 门店、商品与其他功能
 
 ### 5.1 门店绑定
 
@@ -465,7 +464,7 @@ new GoodsSave(name, plu, image, ingredientsList, shelfLife, pinyin,
 
 创建时 name/plu 必填；更新时可选字段传 null 表示不修改，数值 0 是实际值。`price` 为 Long 类型的整数分，`tareWeight` 为 Long 类型的克；saleMode 为 0 按个、1 按重量；status 为 1 上架、2 下架；sort 小在前。category 等业务分类按对接项目约定。
 
-`listGoods(syncTimestamp, current, size)` 查询服务器上的商品。syncTimestamp 传 0 表示查询全部商品；本次数据全部保存到自己的数据库后，再保存返回的 syncTimestamp，下次用它查询之后的变更。`downloadGoods(size)` 将商品同步到火眼 SDK 本地数据中，不会写入客户端数据库，也不等于图片已学习。
+自有商品数据库接入使用 `listGoods(syncTimestamp, current, size)` 查询服务器商品。syncTimestamp 传 0 查询全部商品；本次数据全部存入自有数据库后，再保存返回的 syncTimestamp，下次查询后续变更。`downloadGoods(size)` 将商品同步到火眼 SDK 本地数据中，不会写入客户端数据库，也不等于图片已学习。
 
 批量更新或删除即使整体 code=0，也需每一项检查结果。商品同步需检查最终阶段、失败原因和增删改统计。多数商品方法使用 String ID，`downloadImagesAndLearnByGoodsId` 使用正 long 数组，转换前检查范围。
 
@@ -507,7 +506,7 @@ SDK 请求会阻塞等待结果，与图片转换一样须在后台执行。更�
 
 ### 6.2 返回结果与处理原则
 
-先检查结果非 null，再检查 code=0，最后读取状态、列表或每一项结果。错误时保留 code/reason。需要日志可通过 `config.withLog((tag, message) -> ...)` 接入。
+先检查结果非 null，再检查 code=0，最后读取状态、列表或每一项结果；SDK 版本信息可从错误回执读取，见第 3.5 节。错误时保留 code/reason。日志通过 `config.withLog((tag, message) -> ...)` 接入。
 
 | 结果 | 处理 |
 | --- | --- |
@@ -543,7 +542,7 @@ AIDL 调用没有可强制终止的超时；不要将等待结束等同于操作
 
 参考客户端面向生鲜、零食、烘焙和小碗菜。建议先跑通“新增商品 → 拍照学习 → 收银识别 → 人工确认”，再改造页面或提取 JAR 调用。
 
-参考客户端已经配置好 JAR 依赖，不必再按第 2 节重复导入。构建时将 Gradle JDK 设置为 JBR-17，并配置 Android SDK；在源码根目录执行 `bash gradlew :app:assembleDebug`，生成的 APK 位于 `app/build/outputs/apk/`。安装到已部署配套火眼 SDK 的设备后，从设置页面确认连接方式。设备选型及相机、秤、打印机接线按实际项目确认。
+参考客户端已经配置好 JAR 依赖，不必再按第 2 节重复导入。构建时将 Gradle JDK 设置为 JBR-17，并配置 Android SDK；在源码根目录执行 `bash gradlew :app:assembleDebug`，生成的 APK 位于 `app/build/outputs/apk/`。按第 3.1 节选择本机或远端 SDK 部署，安装客户端后在设置页面确认连接方式。设备选型及相机、秤、打印机接线按实际项目确认。
 
 app 构建使用 `app/src/main/libs/huoyan-sdk-client-2.0.0.jar`，不依赖 SDK module。修改 SDK 源码后，先执行 `bash gradlew :huoyan-sdk-client:updateAppSdkJar` 替换此 JAR（包括内置账号配置），再构建 app。
 
@@ -562,15 +561,7 @@ app 构建使用 `app/src/main/libs/huoyan-sdk-client-2.0.0.jar`，不依赖 SDK
 | 样本图片展示 | `sdk/SdkGoodsImages.java` | 使用返回 URL、缓存，图片变化后重新查询 |
 | 相机、秤、打印设备 | `device/` | 按实际硬件替换设备接入 |
 
-参考客户端的等待使用 LoadingDialog，操作结果使用 ToastEx，页面不追加内部诊断状态。以下 Java 示例随 JAR 提供。
-
-| 示例 | 用途 |
-| --- | --- |
-| [RecognitionIntegrationExample.java](samples/RecognitionIntegrationExample.java) | 连接、检测识别、学习、样本、反馈及错误处理 |
-| [ActivationStatusExample.java](samples/ActivationStatusExample.java) | 未激活设备连接、单次激活提交；配合状态和授权查询 |
-| [SdkExample.java](samples/SdkExample.java) | 最小连接与调用 |
-| [SessionIntegrationExample.java](samples/SessionIntegrationExample.java) | 可选的共享连接与状态查询 |
-| [FeedbackIntegrationExample.java](samples/FeedbackIntegrationExample.java) | 识别反馈组合调用与文件保留 |
+参考客户端的等待使用 LoadingDialog，操作结果使用 ToastEx，页面不追加内部诊断状态。
 
 <a id="client-api"></a>
 
@@ -654,7 +645,7 @@ app 构建使用 `app/src/main/libs/huoyan-sdk-client-2.0.0.jar`，不依赖 SDK
 
 按实际接入范围验证以下流程。
 
-1. 确认 JAR 与火眼 SDK 配套、应用包名已登记，连接成功后取得 modelReady=true。
+1. 确认 JAR 与火眼 SDK 配套、应用包名已登记，连接成功后确认 `SdkStatus.modelReady(status)` 为 true。
 2. 验证识别：使用已学商品的固定图片，核对分类与商品；覆盖无目标和未匹配商品。接入学习功能时，先学一个分类并保存成功 UID，再识别。
 3. 接入样本管理时验证分页、图片展示和单样本删除；只有明确成功才刷新为已删除状态。
 4. 接入相机后核对裁剪、旋转、画框位置，以及页面退出后旧结果不会更新新页面。
@@ -701,7 +692,7 @@ app 构建使用 `app/src/main/libs/huoyan-sdk-client-2.0.0.jar`，不依赖 SDK
 
 | 方法或构造器 | 返回 | 用法与约束 |
 | --- | --- | --- |
-| `SdkConnection.await(HuoyanSdkClient client, long timeoutMillis, long pollMillis, BooleanSupplier active)` | `boolean` | 后台调用 connect 并等待连接；连接成功返回 true，超时、取消或中断返回 false；保留中断标记，不关闭客户端；timeoutMillis≥0、pollMillis>0 |
+| `SdkConnection.await(HuoyanSdkClient client, long timeoutMillis, long pollMillis, BooleanSupplier active)` | `boolean` | 后台调用 connect 并等待连接；连接成功返回 true，超时、取消或中断返回 false；该方法保留中断标记且不关闭客户端；timeoutMillis≥0、pollMillis>0 |
 | `new SdkSession(SdkConfig config, Function<SdkConfig, HuoyanSdkClient> factory)` | `SdkSession` | 延迟创建客户端；工厂不持有页面，可使用应用 Context 创建客户端 |
 | `SdkSession.getConfig()` | `SdkConfig` | 返回当前配置，不触发连接 |
 | `SdkSession.getClient()` | `HuoyanSdkClient` | 首次调用时通过工厂创建，之后复用；不自动 connect |
@@ -751,7 +742,7 @@ app 构建使用 `app/src/main/libs/huoyan-sdk-client-2.0.0.jar`，不依赖 SDK
 | `ImageFlowProgress.learningStarted()` | `boolean` | code=0 且处于学习/成功阶段或 current>0 时为 true；用于选择等待进度，不代表最终成功 |
 | `ImageFlowProgress.outcome()` | `ImageFlowProgress.Outcome` | 解释最终操作回执为 SUCCESS、PARTIAL_SUCCESS、FAILURE、NOT_EXECUTED、UNKNOWN；下载或学习失败数量>0 可得到部分成功 |
 
-`SdkOperations` 不自动重试。进度查询与长操作应使用不同后台线程；轮询进度不能替代最终操作回执。`outcome()` 不把 skippedCount 单独判为部分成功，宿主仍须读取跳过数量与原因。第 6.2 节的原始结果码仍需保留，例如 `IMAGE_UNAVAILABLE` 表示图像请求未发送，不能只依赖通用分类推断所有错误的发送状态。
+`SdkOperations` 不自动重试，轮询进度不能替代最终操作回执。`outcome()` 不把 skippedCount 单独判为部分成功，宿主仍须读取跳过数量与原因。第 6.2 节的原始结果码仍需保留，例如 `IMAGE_UNAVAILABLE` 表示图像请求未发送，不能只依赖通用分类推断所有错误的发送状态。
 
 ### 10.5 样本分页与图片地址缓存
 
@@ -808,8 +799,8 @@ app 构建使用 `app/src/main/libs/huoyan-sdk-client-2.0.0.jar`，不依赖 SDK
 | `DetectBoxParser.parse(float[] points, DetectGeometry geometry)` | `DetectBoxParser.DetectRect` | BBOX 读取前 4 值 `[left,top,right,bottom]`；OBB 读取前 8 值四顶点并取外接矩形；null 或长度不足返回 null，不自动猜格式 |
 | `DetectBoxParser.DetectRect.of(float x1, float y1, float x2, float y2)` | `DetectRect` | 用 min/max 归一化两对角点；结果通过公开只读字段 left/top/right/bottom 读取 |
 | `FeedbackBounds.fromPoints(float[] points, int imageWidth, int imageHeight)` | `int[]` | 顶点取外接框、四舍五入，输出 `[x,y,width,height]`；正尺寸时裁剪到边界；null、少于两点、奇数长度或非有限坐标返回全零框 |
-| `SdkStatus.shellStarted(StatusSnapshot status)` | `boolean` | 仅在有效回执 code=0 且 sdkState=READY 时为 true；不确认模型可用 |
-| `SdkStatus.modelReady(StatusSnapshot status)` | `boolean` | 有效回执 code=0 且 modelReady=true 时为 true |
+| `SdkStatus.shellStarted(StatusSnapshot status)` | `boolean` | 仅在有效回执 code=0 且 sdkState 为 READY 或 OFFLINE 时为 true；不确认模型可用 |
+| `SdkStatus.modelReady(StatusSnapshot status)` | `boolean` | 要求有效回执 code=0 且 modelReady=true；OFFLINE 还须 certificateValid=true 且 keyLost 不为 true |
 | `SdkStatus.issue(int initCode, StatusSnapshot status)` | `SdkIssue` | 结合初始化码和状态分类问题，优先处理未连接；模型就绪返回 NONE |
 | `SdkError.fromCode(int code)` | `SdkError` | LOCAL_DISCONNECTED / NOT_EXECUTED→NOT_CONNECTED，RESULT_UNKNOWN→RESULT_UNKNOWN，-3→NOT_INITIALIZED，-42/-50→NOT_ACTIVATED，其余→OTHER；不用于判断成功 |
 | `SdkError.defaultMessage()` / `SdkIssue.defaultMessage()` | `String` | 返回默认中文说明，保留原始 code/reason；宿主可映射本地化文案 |

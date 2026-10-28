@@ -6,7 +6,7 @@
 
 ## SDK JAR 对接
 
-[火眼 SDK JAR 对接文档](huoyan-sdk-client/INTEGRATION_GUIDE.md) · [Java 接入示例](huoyan-sdk-client/samples/RecognitionIntegrationExample.java)
+[火眼 SDK JAR 对接文档](huoyan-sdk-client/INTEGRATION_GUIDE.md) · [English Integration Guide](huoyan-sdk-client/INTEGRATION_GUIDE.en.md) · [Java 接入示例](huoyan-sdk-client/samples/RecognitionIntegrationExample.java)
 
 可以在现有应用中调用 JAR，也可以直接改造本客户端。JAR 负责与火眼 SDK 通信。
 

@@ -67,7 +67,7 @@ tasks.register('clientDistribution', Zip) {
     destinationDirectory = layout.buildDirectory.dir('distributions')
     from(clientJar) { into 'libs' }
     from(configurations.releaseRuntimeClasspath) { into 'libs'; include '*.jar' }
-    from 'README.md', 'INTEGRATION_GUIDE.md', 'consumer-rules.pro'
+    from 'README.md', 'README.en.md', 'INTEGRATION_GUIDE.md', 'INTEGRATION_GUIDE.en.md', 'consumer-rules.pro'
     from('samples') { into 'samples' }
     preserveFileTimestamps = false
     reproducibleFileOrder = true
