@@ -72,4 +72,4 @@ Debug 使用本机调试签名；默认 Release 使用公开的[实验签名](si
 
 普通问题和 PR 可在 [GitHub](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android) 提交，CNB 上的原有仓库也保留。报告问题时附所用平台和提交号；已有跨平台讨论时附原链接。激活码、账号和安全漏洞通过[私密反馈渠道](SECURITY.md)处理。
 
-GitHub 分支和 PR 自动检查构建与测试，版本 tag 触发 GitHub 发布。CNB 发布流程在 CNB 仓库维护；两端的提交、tag 和附件分别管理，操作方式见[发布说明](docs/releasing.md)。编码代理约定见 [AGENTS.md](AGENTS.md)。
+GitHub 构建检查与版本发布均由维护者手动触发，推送分支、PR 或版本 tag 不自动构建和发布。CNB 发布流程在 CNB 仓库维护；两端的提交、tag 和附件分别管理，操作方式见[发布说明](docs/releasing.md)。编码代理约定见 [AGENTS.md](AGENTS.md)。

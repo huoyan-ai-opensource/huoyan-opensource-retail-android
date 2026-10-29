@@ -43,4 +43,6 @@ Default Release APKs use a publicly shared experimental signing key, restricted 
 
 [GitHub Releases](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/releases) and [CNB Releases](https://cnb.cool/xinhaizhikong/xlabs/huoyan-opensource-retail-android/-/releases) are separate publishing destinations. CNB publishing is maintained in the CNB repository. If no release assets are available on a platform, build from source. App, client JAR and SDK versions are independently managed; see the [compatibility notes](docs/version-compatibility.md) and [changelog](CHANGELOG.md).
 
+GitHub build checks and releases are started manually by maintainers. Branch pushes, pull requests and version tags do not automatically start a build or publish a release. See the [release guide](docs/releasing.md).
+
 For activation, package registration or private support, contact HuoYan through the [official website](https://www.huoyan.cc). Report ordinary bugs through [GitHub Issues](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/issues). Do not post activation codes, account credentials or security vulnerabilities publicly; see [security reporting](SECURITY.md).

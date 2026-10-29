@@ -1,14 +1,18 @@
 name: Android 实验版本发布
 
 on:
-  push:
-    tags: ['v*', '[0-9]*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '要发布的现有版本 tag，例如 v2.0.6'
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release-${{ inputs.tag }}
   cancel-in-progress: false
 
 jobs:
@@ -16,14 +20,20 @@ jobs:
     name: 测试与 Release 打包
     runs-on: ubuntu-22.04
     timeout-minutes: 45
+    outputs:
+      source_sha: ${{ steps.source.outputs.sha }}
     env:
       TZ: Asia/Shanghai
-      RELEASE_TAG: ${{ github.ref_name }}
+      RELEASE_TAG: ${{ inputs.tag }}
     steps:
       - name: 获取源码
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
+          ref: refs/tags/${{ inputs.tag }}
+      - name: 记录源码版本
+        id: source
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: 校验版本 tag
         shell: bash
         run: |
@@ -38,6 +48,8 @@ jobs:
           java-version: '17'
       - name: 设置 Android SDK
         uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+        with:
+          packages: platform-tools
       - name: 安装项目构建组件
         run: sdkmanager "platform-tools" "platforms;android-33" "build-tools;30.0.3" "ndk;25.2.9519653" "cmake;3.22.1"
       - name: 测试与打包
@@ -86,7 +98,8 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
-      RELEASE_TAG: ${{ github.ref_name }}
+      RELEASE_TAG: ${{ inputs.tag }}
+      RELEASE_COMMIT: ${{ needs.build.outputs.source_sha }}
     steps:
       - name: 获取已验证附件
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
@@ -96,7 +109,7 @@ jobs:
       - name: 发布实验版本
         shell: bash
         run: |
-          printf '本版本由提交 `%s` 构建。\n\nAPK 使用随仓库公开的实验签名，仅供非商业开源实验和测试，不能用于商业发布。识别功能仍需联系火眼激活。\n\n附件包含 App APK、SDK JAR 交付 ZIP 和 SHA256SUMS。配套版本和升级说明请参阅仓库 CHANGELOG.md 与 docs/version-compatibility.md。\n' "$GITHUB_SHA" > release-notes.md
+          printf '本版本由提交 `%s` 构建。\n\nAPK 使用随仓库公开的实验签名，仅供非商业开源实验和测试，不能用于商业发布。识别功能仍需联系火眼激活。\n\n附件包含 App APK、SDK JAR 交付 ZIP 和 SHA256SUMS。配套版本和升级说明请参阅仓库 CHANGELOG.md 与 docs/version-compatibility.md。\n' "$RELEASE_COMMIT" > release-notes.md
           gh release create "$RELEASE_TAG" --repo "$GH_REPO" --verify-tag \
             --title "火眼识物客户端 ${RELEASE_TAG}" --generate-notes \
             --notes-file release-notes.md release/*

@@ -1,9 +1,6 @@
 name: Android 检查
 
 on:
-  push:
-    branches: ['**']
-  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -32,6 +29,8 @@ jobs:
           java-version: '17'
       - name: 设置 Android SDK
         uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407 # v3
+        with:
+          packages: platform-tools
       - name: 安装项目构建组件
         run: sdkmanager "platform-tools" "platforms;android-33" "build-tools;30.0.3" "ndk;25.2.9519653" "cmake;3.22.1"
       - name: 测试、编译示例与 App
