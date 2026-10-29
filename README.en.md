@@ -12,6 +12,7 @@ The project's own App and client JAR source code is available for everyone to us
 | --- | --- |
 | Run the complete App | [Quick start](QUICKSTART.md) in Chinese: install the App and SDK, activate a model, wait for readiness, create and learn a product, then recognize it |
 | Integrate the client JAR into your App | [English integration guide](huoyan-sdk-client/INTEGRATION_GUIDE.en.md), [SDK overview](huoyan-sdk-client/README.en.md), and [Java example](huoyan-sdk-client/samples/RecognitionIntegrationExample.java) |
+| Read the Word integration guide offline | [English](app/src/main/libs/huoyan-sdk-client-2.0.0-integration-guide.en.docx) · [Chinese](app/src/main/libs/huoyan-sdk-client-2.0.0-接入指南.docx) |
 | Build or contribute | [Build setup](docs/build.md), [testing](docs/testing.md), and [contributing](CONTRIBUTING.md) in Chinese |
 
 The App package is `cc.huoyan.retail`; the client JAR package is `cc.huoyan.sdk.client`; the separately installed recognition SDK package is `cc.huoyan`.
@@ -41,7 +42,7 @@ Default Release APKs use a publicly shared experimental signing key, restricted 
 
 ## Releases and support
 
-[GitHub Releases](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/releases) and [CNB Releases](https://cnb.cool/xinhaizhikong/xlabs/huoyan-opensource-retail-android/-/releases) are separate publishing destinations. CNB publishing is maintained in the CNB repository. If no release assets are available on a platform, build from source. App, client JAR and SDK versions are independently managed; see the [compatibility notes](docs/version-compatibility.md) and [changelog](CHANGELOG.md).
+Download the App APK, client JAR ZIP and SHA-256 checksums from [GitHub Releases](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/releases), or build from source. App, client JAR and SDK versions are independently managed; see the [compatibility notes](docs/version-compatibility.md) and [changelog](CHANGELOG.md).
 
 GitHub build checks and releases are started manually by maintainers. Branch pushes, pull requests and version tags do not automatically start a build or publish a release. See the [release guide](docs/releasing.md).
 

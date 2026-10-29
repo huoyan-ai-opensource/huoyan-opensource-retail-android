@@ -32,7 +32,7 @@
 
 ## 下载与激活
 
-App APK、JAR 交付 ZIP 和 SHA-256 摘要通过 [GitHub Releases](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/releases) 或 [CNB Releases](https://cnb.cool/xinhaizhikong/xlabs/huoyan-opensource-retail-android/-/releases) 提供；某平台暂无附件时，可按[构建指南](docs/build.md)从源码构建。
+App APK、JAR 交付 ZIP 和 SHA-256 摘要通过 [GitHub Releases](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/releases) 提供，也可按[构建指南](docs/build.md)从源码构建。
 
 识物 SDK 的当前默认[下载入口](http://f.huoyan.cc/apk/object_sdk_lastest.apk)也已集成在 App 安装引导中。下载前通过[官网](https://www.huoyan.cc)联系火眼，确认设备、芯片、包名登记、激活和模型支持。下载入口沿用既有文件名 `lastest`，不表示任意版本都配套；版本关系见[兼容说明](docs/version-compatibility.md)。
 
@@ -67,9 +67,9 @@ Debug 使用本机调试签名；默认 Release 使用公开的[实验签名](si
 | 运行与使用 | [快速开始](QUICKSTART.md) · [硬件](docs/hardware.md) · [常见问题](docs/faq.md) |
 | 开发与交付 | [构建](docs/build.md) · [测试](docs/testing.md) · [版本兼容](docs/version-compatibility.md) · [发布](docs/releasing.md) · [更新记录](CHANGELOG.md) |
 | JAR 交付 | [架构](huoyan-sdk-client/ARCHITECTURE.md) · [账号配置与出包](huoyan-sdk-client/PACKAGING.md) |
-| Word 对接文档 | [识物 JAR 2.0.0 接入指南](app/src/main/libs/huoyan-sdk-client-2.0.0-接入指南.docx)，与 JAR 一同放在 `app/src/main/libs` |
+| Word 对接文档 | [中文接入指南](app/src/main/libs/huoyan-sdk-client-2.0.0-接入指南.docx) · [English Integration Guide](app/src/main/libs/huoyan-sdk-client-2.0.0-integration-guide.en.docx)，与 JAR 一同放在 `app/src/main/libs` |
 | 支持与贡献 | [联系与支持](SUPPORT.md) · [贡献指南](CONTRIBUTING.md) · [安全问题](SECURITY.md) · [交流约定](CODE_OF_CONDUCT.md) |
 
 普通问题和 PR 可在 [GitHub](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android) 提交，CNB 上的原有仓库也保留。报告问题时附所用平台和提交号；已有跨平台讨论时附原链接。激活码、账号和安全漏洞通过[私密反馈渠道](SECURITY.md)处理。
 
-GitHub 构建检查与版本发布均由维护者手动触发，推送分支、PR 或版本 tag 不自动构建和发布。CNB 发布流程在 CNB 仓库维护；两端的提交、tag 和附件分别管理，操作方式见[发布说明](docs/releasing.md)。编码代理约定见 [AGENTS.md](AGENTS.md)。
+GitHub 构建检查与版本发布均由维护者手动触发，推送分支、PR 或版本 tag 不自动构建和发布，操作方式见[发布说明](docs/releasing.md)。编码代理约定见 [AGENTS.md](AGENTS.md)。
