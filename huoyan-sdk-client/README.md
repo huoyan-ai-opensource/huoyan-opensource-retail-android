@@ -17,7 +17,7 @@
 | `INTEGRATION_GUIDE.en.md` | 英文版接入步骤、参数和结果说明 |
 | `README.md` / `README.en.md` | 中英文交付说明 |
 | `consumer-rules.pro` | 混淆配置 |
-| `docs/huoyan-sdk-client-2.0.0-接入指南.docx` | 可离线阅读的中文版 Word 接入指南 |
+| `docs/huoyan-sdk-client-2.0.0-integration-guide.zh-CN.docx` | 可离线阅读的中文版 Word 接入指南 |
 | `docs/huoyan-sdk-client-2.0.0-integration-guide.en.docx` | 可离线阅读的英文版 Word 接入指南 |
 | `USAGE.md` / `THIRD_PARTY_NOTICES.md` | 使用、激活及第三方组件说明 |
 | `docs/licenses/` | 第三方许可原文及中文参考译文汇总 |

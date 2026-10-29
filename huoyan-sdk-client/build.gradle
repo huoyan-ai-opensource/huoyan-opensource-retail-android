@@ -70,7 +70,7 @@ tasks.register('clientDistribution', Zip) {
     from 'README.md', 'README.en.md', 'INTEGRATION_GUIDE.md', 'INTEGRATION_GUIDE.en.md', 'consumer-rules.pro'
     from rootProject.file('USAGE.md'), rootProject.file('THIRD_PARTY_NOTICES.md')
     from(rootProject.file('docs/licenses')) { into 'docs/licenses' }
-    from(rootProject.file('app/src/main/libs/huoyan-sdk-client-2.0.0-接入指南.docx')) { into 'docs' }
+    from(rootProject.file('app/src/main/libs/huoyan-sdk-client-2.0.0-integration-guide.zh-CN.docx')) { into 'docs' }
     from(rootProject.file('app/src/main/libs/huoyan-sdk-client-2.0.0-integration-guide.en.docx')) { into 'docs' }
     from('samples') { into 'samples' }
     preserveFileTimestamps = false

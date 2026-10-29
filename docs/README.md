@@ -11,7 +11,7 @@
 | [测试指南](testing.md) | 单元测试、设备测试及真实授权和外设测试边界 |
 | [发布指南](releasing.md) | GitHub 发布、附件、版本和验证 |
 | [SDK 接入指南](../huoyan-sdk-client/INTEGRATION_GUIDE.md) / [English](../huoyan-sdk-client/INTEGRATION_GUIDE.en.md) | JAR 依赖、通信、激活、业务接口、状态和错误处理 |
-| [Word 中文接入指南](../app/src/main/libs/huoyan-sdk-client-2.0.0-接入指南.docx) / [English](../app/src/main/libs/huoyan-sdk-client-2.0.0-integration-guide.en.docx) | 与 JAR 一同交付的中英文完整对接文档 |
+| [Word 中文接入指南](../app/src/main/libs/huoyan-sdk-client-2.0.0-integration-guide.zh-CN.docx) / [English](../app/src/main/libs/huoyan-sdk-client-2.0.0-integration-guide.en.docx) | 与 JAR 一同交付的中英文完整对接文档 |
 | [Java 示例](../huoyan-sdk-client/samples/RecognitionIntegrationExample.java) | 在自己的 App 中调用识别、学习、样本和反馈 |
 | [版本与升级](version-compatibility.md) | App、JAR、SDK 壳、模型配套及签名升级注意事项 |
 | [设备与外设](hardware.md) | Android、USB UVC 相机、Aclas 秤、USB ESC/POS 和权限 |

@@ -12,7 +12,7 @@ The project's own App and client JAR source code is available for everyone to us
 | --- | --- |
 | Run the complete App | [Quick start](QUICKSTART.md) in Chinese: install the App and SDK, activate a model, wait for readiness, create and learn a product, then recognize it |
 | Integrate the client JAR into your App | [English integration guide](huoyan-sdk-client/INTEGRATION_GUIDE.en.md), [SDK overview](huoyan-sdk-client/README.en.md), and [Java example](huoyan-sdk-client/samples/RecognitionIntegrationExample.java) |
-| Read the Word integration guide offline | [English](app/src/main/libs/huoyan-sdk-client-2.0.0-integration-guide.en.docx) · [Chinese](app/src/main/libs/huoyan-sdk-client-2.0.0-接入指南.docx) |
+| Read the Word integration guide offline | [English](app/src/main/libs/huoyan-sdk-client-2.0.0-integration-guide.en.docx) · [Chinese](app/src/main/libs/huoyan-sdk-client-2.0.0-integration-guide.zh-CN.docx) |
 | Build or contribute | [Build setup](docs/build.md), [testing](docs/testing.md), and [contributing](CONTRIBUTING.md) in Chinese |
 
 The App package is `cc.huoyan.retail`; the client JAR package is `cc.huoyan.sdk.client`; the separately installed recognition SDK package is `cc.huoyan`.
