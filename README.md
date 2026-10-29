@@ -32,7 +32,7 @@
 
 ## 下载与激活
 
-App APK、JAR 交付 ZIP 和 SHA-256 摘要通过 [GitHub Releases](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/releases) 提供，也可按[构建指南](docs/build.md)从源码构建。
+App APK、JAR 交付 ZIP、中英文 Word 接入指南和 SHA-256 摘要通过 [GitHub Releases](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/releases) 提供。ZIP 内和 Assets 中的两份 Word 均使用项目原始文件名，交付约定见[发布规则](docs/releasing.md)。也可按[构建指南](docs/build.md)从源码构建。
 
 识物 SDK 的当前默认[下载入口](http://f.huoyan.cc/apk/object_sdk_lastest.apk)也已集成在 App 安装引导中。下载前通过[官网](https://www.huoyan.cc)联系火眼，确认设备、芯片、包名登记、激活和模型支持。下载入口沿用既有文件名 `lastest`，不表示任意版本都配套；版本关系见[兼容说明](docs/version-compatibility.md)。
 

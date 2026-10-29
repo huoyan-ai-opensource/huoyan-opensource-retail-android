@@ -2,6 +2,12 @@ plugins {
     id 'com.android.library'
 }
 
+// JAR、交付 ZIP 和两份 Word 指南共享版本；App 的 JAR 依赖须同步更新。
+def sdkClientVersion = '2.0.0'
+def integrationGuides = ['zh-CN', 'en'].collect { language ->
+    rootProject.file("app/src/main/libs/huoyan-sdk-client-${sdkClientVersion}-integration-guide.${language}.docx")
+}
+
 android {
     namespace 'cc.huoyan.sdk.client'
     compileSdk 33
@@ -31,7 +37,7 @@ dependencies {
 // Android 插件仅用于编译 Binder/AIDL；JAR 携带 Java 配置资源，不包含 Android res。
 def clientJar = tasks.register('clientJar', Jar) {
     dependsOn 'compileReleaseJavaWithJavac', 'verifySdkBoundary'
-    archiveFileName = 'huoyan-sdk-client-2.0.0.jar'
+    archiveFileName = "huoyan-sdk-client-${sdkClientVersion}.jar"
     destinationDirectory = layout.buildDirectory.dir('outputs/jar')
     from layout.buildDirectory.dir('intermediates/javac/release/classes')
     from 'src/main/resources'
@@ -63,18 +69,26 @@ def compileExample = tasks.register('compileExample', JavaCompile) {
 
 tasks.register('clientDistribution', Zip) {
     dependsOn compileExample
-    archiveFileName = 'huoyan-sdk-client-2.0.0.zip'
+    archiveFileName = "huoyan-sdk-client-${sdkClientVersion}.zip"
     destinationDirectory = layout.buildDirectory.dir('distributions')
     from(clientJar) { into 'libs' }
     from(configurations.releaseRuntimeClasspath) { into 'libs'; include '*.jar' }
     from 'README.md', 'README.en.md', 'INTEGRATION_GUIDE.md', 'INTEGRATION_GUIDE.en.md', 'consumer-rules.pro'
     from rootProject.file('USAGE.md'), rootProject.file('THIRD_PARTY_NOTICES.md')
     from(rootProject.file('docs/licenses')) { into 'docs/licenses' }
-    from(rootProject.file('app/src/main/libs/huoyan-sdk-client-2.0.0-integration-guide.zh-CN.docx')) { into 'docs' }
-    from(rootProject.file('app/src/main/libs/huoyan-sdk-client-2.0.0-integration-guide.en.docx')) { into 'docs' }
+    from(integrationGuides) { into 'docs' }
     from('samples') { into 'samples' }
     preserveFileTimestamps = false
     reproducibleFileOrder = true
+    inputs.files(integrationGuides)
+    doFirst {
+        // CopySpec 会忽略不存在的源文件，发包前必须明确拦截缺失或空白指南。
+        integrationGuides.each { guide ->
+            if (!guide.isFile() || guide.length() == 0) {
+                throw new GradleException("缺少有效的中英文 Word 接入指南：${guide.name}")
+            }
+        }
+    }
 }
 
 // 独立交付边界：JAR 不能反向引用零售应用，也不能拥有页面/资源。

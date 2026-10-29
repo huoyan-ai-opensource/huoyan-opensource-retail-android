@@ -42,7 +42,7 @@ Default Release APKs use a publicly shared experimental signing key, restricted 
 
 ## Releases and support
 
-Download the App APK, client JAR ZIP and SHA-256 checksums from [GitHub Releases](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/releases), or build from source. App, client JAR and SDK versions are independently managed; see the [compatibility notes](docs/version-compatibility.md) and [changelog](CHANGELOG.md).
+Download the App APK, client JAR ZIP, Chinese and English Word integration guides, and SHA-256 checksums from [GitHub Releases](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/releases), or build from source. Both Word guides retain their project filenames inside the ZIP and as separate Release Assets; see the [release requirements](docs/releasing.md) (Chinese). App, client JAR and SDK versions are independently managed; see the [compatibility notes](docs/version-compatibility.md) and [changelog](CHANGELOG.md).
 
 GitHub build checks and releases are started manually by maintainers. Branch pushes, pull requests and version tags do not automatically start a build or publish a release. See the [release guide](docs/releasing.md).
 

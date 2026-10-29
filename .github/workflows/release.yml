@@ -62,12 +62,25 @@ jobs:
             :app:assembleRelease :app:assembleDebugAndroidTest
           python3 -m unittest discover -s huoyan-sdk-client/tools -p 'test_*.py'
       - name: 整理附件与校验摘要
+        shell: bash
         run: |
+          archives=(huoyan-sdk-client/build/distributions/*.zip)
+          if [[ ${#archives[@]} -ne 1 || ! -f "${archives[0]}" ]]; then
+            echo '必须且只能有一个本次构建的客户端交付 ZIP。' >&2
+            exit 1
+          fi
+          archive="${archives[0]}"
+          client_name=$(basename "$archive" .zip)
           mkdir -p build/distributions/release
           cp app/build/outputs/apk/release/*.apk build/distributions/release/
-          cp huoyan-sdk-client/build/distributions/*.zip build/distributions/release/
+          cp "$archive" build/distributions/release/
+          for language in zh-CN en; do
+            guide="${client_name}-integration-guide.${language}.docx"
+            unzip -p "$archive" "docs/$guide" > "build/distributions/release/$guide"
+            cmp "app/src/main/libs/$guide" "build/distributions/release/$guide"
+          done
           cd build/distributions/release
-          sha256sum -- *.apk *.zip > SHA256SUMS
+          sha256sum -- *.apk *.zip *.docx > SHA256SUMS
       - name: 保存测试报告
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
@@ -109,7 +122,8 @@ jobs:
       - name: 发布实验版本
         shell: bash
         run: |
-          printf '本版本由提交 `%s` 构建。\n\nAPK 使用随仓库公开的实验签名，仅供非商业开源实验和测试，不能用于商业发布。识别功能仍需联系火眼激活。\n\n附件包含 App APK、SDK JAR 交付 ZIP 和 SHA256SUMS。配套版本和升级说明请参阅仓库 CHANGELOG.md 与 docs/version-compatibility.md。\n' "$RELEASE_COMMIT" > release-notes.md
+          printf '本版本由提交 `%s` 构建。\n\nAPK 使用随仓库公开的实验签名，仅供非商业开源实验和测试，不能用于商业发布。识别功能仍需联系火眼激活。\n\n附件包含 App APK、SDK JAR 交付 ZIP、中英文 Word 接入指南和 SHA256SUMS。两份 Word 在 ZIP 的 docs/ 与 Assets 中使用项目原始文件名，内容一致。配套版本和升级说明请参阅仓库 CHANGELOG.md 与 docs/version-compatibility.md。\n' "$RELEASE_COMMIT" > release-notes.md
+          # 不追加 #label，Assets 直接展示项目原始文件名。
           gh release create "$RELEASE_TAG" --repo "$GH_REPO" --verify-tag \
             --title "火眼识物客户端 ${RELEASE_TAG}" --generate-notes \
             --notes-file release-notes.md release/*

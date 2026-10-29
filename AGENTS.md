@@ -40,6 +40,16 @@ gradlew 可能无执行位，用 `bash gradlew` 调用。
 
 Windows 使用 `.\gradlew.bat`；完整环境、Android Studio 和多平台命令见 [构建指南](docs/build.md)。
 
+## 发布交付约定（强制）
+
+- 客户端 Word 接入指南统一命名为 `huoyan-sdk-client-<JAR版本>-integration-guide.zh-CN.docx`（中文）和 `huoyan-sdk-client-<JAR版本>-integration-guide.en.docx`（英文），源文件保存在 `app/src/main/libs/`。
+- `huoyan-sdk-client-<JAR版本>.zip` 的 `docs/` 和 GitHub Release Assets 必须同时提供这两份文档；文件名、版本和内容必须与项目源文件一致，缺少任一语言不得发包。
+- Release Assets 直接显示完整文件名，不设置自定义 `label`，不以“英文接入指南 English”等展示名替代，也不在上传时追加 `#label`。
+- `SHA256SUMS` 覆盖所有实际发布附件（摘要清单自身除外）。附件变化后同步更新摘要和发布说明；同时核对 README、打包配置及文档下载链接。
+- JAR 版本在 `huoyan-sdk-client/build.gradle` 的 `sdkClientVersion` 中维护；升级时同步 App JAR 依赖、两份指南源文件名、接入文档及兼容表，不能使用 App 版本替代 JAR 版本。
+- 下载和发布统一使用 GitHub Releases，不恢复已弃用的 CNB Release 入口。Actions 仅手动触发，不启用 push、PR 或 tag 自动构建与发布。
+- 修改发布工作流前先在本地执行该工作流的整组测试与构建，修改后检查实际交付产物；不能将本地验证表述为 GitHub 工作流已经通过。完整步骤见 [版本与发布](docs/releasing.md)。
+
 ## 架构（页面 MVP 边界拆分）
 
 页面采用轻量 MVP，底层保留既有单例 Manager；源码按业务职责组织：

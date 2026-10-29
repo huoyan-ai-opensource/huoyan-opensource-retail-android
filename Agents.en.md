@@ -40,6 +40,16 @@ Use `bash gradlew` because the wrapper may not have executable permission.
 
 On Windows, use `.\gradlew.bat`. See the [build guide](docs/build.md) (Chinese) for toolchain setup, Android Studio, and commands for each platform.
 
+## Release delivery requirements
+
+- Name the Word integration guides `huoyan-sdk-client-<JAR-version>-integration-guide.zh-CN.docx` (Chinese) and `huoyan-sdk-client-<JAR-version>-integration-guide.en.docx` (English). Keep the source files in `app/src/main/libs/`.
+- Include both guides in `docs/` inside `huoyan-sdk-client-<JAR-version>.zip` and as separate GitHub Release Assets. Their filenames, versions, and contents must match the project source files. Do not publish a package missing either language.
+- Display the full filenames in Release Assets. Do not set custom asset labels, replace filenames with display names such as “英文接入指南 English”, or append `#label` when uploading.
+- Include every published attachment except the checksum file itself in `SHA256SUMS`. When attachments change, update the checksums and release notes, and check the READMEs, packaging configuration, and document download links.
+- Maintain the JAR version in `sdkClientVersion` in `huoyan-sdk-client/build.gradle`. When upgrading it, also update the App's JAR dependency, both guide source filenames, integration documentation, and compatibility table. Do not use the App version as the JAR version.
+- Use GitHub Releases for downloads and publication. Do not restore the retired CNB Release links. Actions must remain manually triggered; do not enable builds or releases on push, pull requests, or tags.
+- Before modifying a release workflow, run its full test and build commands locally, then check the actual deliverables after the change. Do not describe local validation as a successful GitHub workflow run. See [Releasing](docs/releasing.md) (Chinese) for the full procedure.
+
 ## Architecture and MVP boundaries
 
 Pages use lightweight MVP, while the underlying singleton managers remain in place. Source packages follow business responsibilities:
