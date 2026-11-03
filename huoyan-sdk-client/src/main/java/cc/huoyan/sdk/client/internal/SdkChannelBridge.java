@@ -163,6 +163,9 @@ public interface SdkChannelBridge {
      */
     LearnResultParcel itemLearn(ImageRequestParcel image, String clazz);
 
+    /** 导入已有图片并学习；仅本地保存，不上传云端，载体由通道负责释放。 */
+    LearnResultParcel importLearn(ImageRequestParcel image, String clazz);
+
     /**
      * 批量学习（SDK 组合口，尾插）：大图一次传入，SDK 内 detect 一次 +
      * 全部检测框逐框裁切学习（单 clazz——所有框学到同一分类，同商品多框多角度

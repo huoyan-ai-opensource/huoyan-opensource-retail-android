@@ -70,6 +70,9 @@ public interface HuoyanSdkClient extends AutoCloseable {
     /** 将图像学习到指定分类编码，返回样本 UID；工作线程调用，不自动重试。 */
     LearnResult learn(SdkImage image, String clazz);
 
+    /** 导入已有小图并本地学习，返回新 UID；保留本地图片，不再次上传或登记云端样本。 */
+    LearnResult importLearn(SdkImage image, String clazz);
+
     /** 检测大图并逐框学习到同一分类；每框返回独立结果，允许部分成功。 */
     ItemLearnBatch batchLearn(SdkImage image, String clazz);
 

@@ -250,13 +250,14 @@ public class WsSdkBridgeWireTest {
             server.data = new JSONObject();
             byte[] rgb = new byte[1076 * 756 * 3];
             for (int i = 0; i < rgb.length; i++) rgb[i] = (byte) (i * 31);
-            for (String cmd : new String[]{"detect", "recognize", "itemLearn", "batchLearn"}) {
+            for (String cmd : new String[]{"detect", "recognize", "itemLearn", "importLearn", "batchLearn"}) {
                 ImageRequestParcel image = bridge.createImageRequest(rgb, 1076, 756);
                 assertNull(image.getSharedMemory());
                 switch (cmd) {
                     case "detect": assertEquals(0, bridge.detect(image).getCode()); break;
                     case "recognize": assertEquals(0, bridge.recognize(image, 0).getCode()); break;
                     case "itemLearn": assertEquals(0, bridge.itemLearn(image, "101").getCode()); break;
+                    case "importLearn": assertEquals(0, bridge.importLearn(image, "101").getCode()); break;
                     default: assertEquals(0, bridge.batchLearn(image, "101").getCode()); break;
                 }
                 JSONObject request = server.take(cmd);

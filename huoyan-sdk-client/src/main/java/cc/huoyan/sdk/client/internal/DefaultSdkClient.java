@@ -218,6 +218,16 @@ public final class DefaultSdkClient implements HuoyanSdkClient {
                 : ModelMapper.fromWire(transport.itemLearn(request, clazz));
     }
 
+    /** 导入学习单独发送，不能回退到会重新上传云端图片的普通学习。 */
+    @Override
+    public LearnResult importLearn(SdkImage image, String clazz) {
+        cc.huoyan.sdk.client.operation.SdkInputs.clazz(clazz);
+        ImageRequestParcel request = learningCarrier(image);
+        return request == null
+                ? new LearnResult(IMAGE_UNAVAILABLE, "当前系统或通道无法承载此图像", 0L)
+                : ModelMapper.fromWire(transport.importLearn(request, clazz));
+    }
+
     @Override
     public ItemLearnBatch batchLearn(SdkImage image, String clazz) {
         cc.huoyan.sdk.client.operation.SdkInputs.clazz(clazz);

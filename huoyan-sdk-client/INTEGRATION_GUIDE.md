@@ -337,6 +337,7 @@ List<Long> uids = RecognitionIntegrationExample.successfulUids(result);
 | 方法 | 适合的图片 | 成功结果 |
 | --- | --- | --- |
 | `learn(image, clazz)` | 单目标图片；火眼 SDK 选取最高检测分框学习 | `LearnResult`，code=0 且 uid>0 |
+| `importLearn(image, clazz)` | 云端已有的小图，本地学习并保存图片，不再次上传/登记云端样本 | `LearnResult`，code=0 且 uid>0；需配套的新版 APK/JAR |
 | `batchLearn(image, clazz)` | 同类多个目标合拍，所有框学到同一分类 | `ItemLearnBatch`，每个框检查 code=0 且 uid>0 |
 | `detect(image)` | 学习前需要画框预览 | `DetectResult` 中的检测框；实际学习仍以学习返回为准 |
 
@@ -600,6 +601,7 @@ app 构建使用 `app/src/main/libs/huoyan-sdk-client-2.0.0.jar`，不依赖 SDK
 | `recognize(SdkImage)` / `recognize(Bitmap)` | `RecognizeResult` | 方向正确的图片 |
 | `recognize(SdkImage, int rotate)` | `RecognizeResult` | rotate 仅 0/90/180/270 |
 | `learn(SdkImage, String clazz)` / `learn(Bitmap, String clazz)` | `LearnResult` | 一个样本 UID，clazz 为 1–50 位英文字母与数字字符串 |
+| `importLearn(SdkImage, String clazz)` | `LearnResult` | 导入已有小图，只在本地学习和保存图片；需要有效证书、工作线程调用，不自动重试；URL通过listImages查询 |
 | `batchLearn(SdkImage, String clazz)` | `ItemLearnBatch` | 所有目标学到同一分类，逐个检查 code/uid |
 | `listClasses(int page, int size)` | `ItemClazzList` | 1-based，0 使用默认 1/100 |
 | `listImages(String clazz, int page, int size)` | `ItemClazzImagePage` | UID、图片可用状态、URL |

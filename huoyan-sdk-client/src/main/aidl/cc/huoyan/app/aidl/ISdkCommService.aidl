@@ -316,4 +316,8 @@ interface ISdkCommService {
     LicenseModelsParcel queryLicenseModels(String activationCode);
     // 无参查询当前设备绑定授权的支持模型，不依赖本地激活码。
     LicenseModelsParcel queryDeviceModels();
+    // 导入云端已有小图：与 itemLearn 相同的载体和 UID 回执，保留本地原图，
+    // 不再次上传 COS、不登记 item；需要有效证书和学习权限，不自动重试。
+    // 图片 URL 通过 getItemClazzImages 查询，既有方法顺序保持不变。
+    LearnResultParcel importLearn(in ImageRequestParcel image, String clazz);
 }

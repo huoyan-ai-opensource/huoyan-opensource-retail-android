@@ -134,6 +134,11 @@ public final class SdkChannelFakes {
         }
 
         @Override
+        public LearnResult importLearn(SdkImage image, String clazz) {
+            return null;
+        }
+
+        @Override
         public ItemLearnBatch batchLearn(SdkImage image, String clazz) {
             return null;
         }

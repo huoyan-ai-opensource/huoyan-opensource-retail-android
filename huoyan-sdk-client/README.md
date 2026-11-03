@@ -10,6 +10,8 @@
 
 账号由 JAR 内的 Java 资源 `raw/config` 提供。打包 APK 时请保留该文件，不要在宿主添加同名资源或通过 `packagingOptions` 排除它。
 
+当前源码新增 `importLearn(image, clazz)`：对云端已有小图进行本地学习并保存样本图，不再次上传 COS 或登记云端样本；普通 `learn/batchLearn` 上传行为不变。调用需使用包含该接口的配套 SDK APK 和重新构建的 JAR，既有发行包不自动获得该能力。新 UID 可用于查询图片和遗忘；整批去重、合并和替换由宿主处理。
+
 | 交付内容 | 用途 |
 | --- | --- |
 | `libs/` | 主 JAR 及运行所需的其他 JAR |

@@ -163,6 +163,12 @@ final class FakeSdkCommService implements ISdkCommService {
     }
 
     @Override
+    public LearnResultParcel importLearn(ImageRequestParcel image, String clazz) throws RemoteException {
+        touch("importLearn");
+        return learnResult;
+    }
+
+    @Override
     public ItemLearnBatchParcel batchLearn(ImageRequestParcel image, String clazz) throws RemoteException {
         touch("batchLearn");
         return batchLearnResult;

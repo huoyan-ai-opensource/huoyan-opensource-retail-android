@@ -10,6 +10,8 @@ Call the Huoyan SDK through the JAR's Java methods. See the [English Integration
 
 The Java resource `raw/config` inside the JAR supplies the account. Preserve it when packaging the APK; do not add a resource with the same path in the host or exclude it through `packagingOptions`.
 
+The current source adds `importLearn(image, clazz)` for learning existing cloud sample images locally. It saves a local sample image without uploading to COS or registering another cloud item. Normal `learn/batchLearn` uploads are unchanged. Use a matching SDK APK and a rebuilt JAR that include this method; existing releases do not gain it automatically. The returned UID supports image queries and forgetting. The host manages batch deduplication, merging and replacement.
+
 | Delivery item | Purpose |
 | --- | --- |
 | `libs/` | Main JAR and other required runtime JARs |

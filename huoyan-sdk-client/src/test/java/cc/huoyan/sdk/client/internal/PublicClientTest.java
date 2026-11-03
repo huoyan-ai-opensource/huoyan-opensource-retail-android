@@ -121,8 +121,29 @@ public class PublicClientTest {
         assertEquals(HuoyanSdkClient.IMAGE_UNAVAILABLE, client.recognize(image).getCode());
         assertEquals(HuoyanSdkClient.IMAGE_UNAVAILABLE, client.detect(image).getCode());
         assertEquals(HuoyanSdkClient.IMAGE_UNAVAILABLE, client.learn(image, "1").getCode());
+        assertEquals(HuoyanSdkClient.IMAGE_UNAVAILABLE, client.importLearn(image, "1").getCode());
         assertEquals(HuoyanSdkClient.IMAGE_UNAVAILABLE, client.batchLearn(image, "1").getCode());
         assertEquals(0, calls.get());
+    }
+
+    @Test public void importLearningPreservesUidAndNeverFallsBackOrRetries() {
+        AtomicInteger imports = new AtomicInteger();
+        HuoyanSdkClient client = new DefaultSdkClient(transport((method, args) -> {
+            if (method.equals("createImageRequest"))
+                return new ImageRequestParcel(null, (byte[]) args[0], 3, 1, 1, 1);
+            if (method.equals("importLearn")) {
+                assertEquals("001A", args[1]);
+                return imports.incrementAndGet() == 1
+                        ? new LearnResultParcel(0, null, 9007199254740993L)
+                        : new LearnResultParcel(HuoyanSdkClient.RESULT_UNKNOWN, "结果未知", 0L);
+            }
+            throw new AssertionError("导入学习不能调用普通学习：" + method);
+        }), false, "1.2.3");
+        SdkImage image = SdkImage.rgb888(new byte[3], 1, 1);
+        assertEquals(9007199254740993L, client.importLearn(image, "001A").getUid());
+        assertEquals(HuoyanSdkClient.RESULT_UNKNOWN, client.importLearn(image, "001A").getCode());
+        assertEquals(2, imports.get());
+        assertThrows(IllegalArgumentException.class, () -> client.importLearn(image, "非法PLU"));
     }
 
     @Test public void publicSignaturesNeverExposeWireOrRetailTypes() {

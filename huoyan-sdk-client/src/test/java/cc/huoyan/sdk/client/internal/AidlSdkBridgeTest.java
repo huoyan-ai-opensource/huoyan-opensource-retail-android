@@ -149,7 +149,8 @@ public class AidlSdkBridgeTest {
             }
             method.invoke(bridge, defaultArgs(method.getParameterTypes()));
         }
-        assertEquals("41 业务方法全部透达到服务", 41, service.invoked.size());
+        assertEquals("42 业务方法全部透达到服务", 42, service.invoked.size());
+        assertTrue(service.invoked.contains("importLearn"));
         assertTrue(service.invoked.contains("recognize"));
         assertTrue(service.invoked.contains("batchLearn"));
         assertTrue(service.invoked.contains("bindDevice"));
@@ -199,8 +200,8 @@ public class AidlSdkBridgeTest {
             Object result = method.invoke(bridge, defaultArgs(method.getParameterTypes()));
             assertPlaceholder(method, result, cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN);
         }
-        assertEquals("每个方法各触发一次重连标记", 41, scheduler.posted.size());
-        assertEquals(41, service.invoked.size());
+        assertEquals("每个方法各触发一次重连标记", 42, scheduler.posted.size());
+        assertEquals(42, service.invoked.size());
         assertEquals("四个新增绑定/商品方法各有一条事务失败打点", 4, bizLogs.size());
         assertTrue("打点形如 [Biz] aidl_<method>_remote_error result=unknown",
                 bizLogs.contains("[Biz] aidl_bindDevice_remote_error result=unknown")
@@ -279,6 +280,10 @@ public class AidlSdkBridgeTest {
         ImageRequestParcel learnCarrier = AidlSdkBridge.newSharedMemoryRequest(ramp(2 * 3 * 3), 2, 3);
         bridge.itemLearn(learnCarrier, "1");
         assertTrue("itemLearn 调用返回后须 close 载体", isCarrierClosed(learnCarrier));
+
+        ImageRequestParcel importCarrier = AidlSdkBridge.newSharedMemoryRequest(ramp(2 * 3 * 3), 2, 3);
+        bridge.importLearn(importCarrier, "1");
+        assertTrue("importLearn 调用返回后须 close 载体", isCarrierClosed(importCarrier));
 
         ImageRequestParcel batchLearnCarrier = AidlSdkBridge.newSharedMemoryRequest(ramp(2 * 3 * 3), 2, 3);
         bridge.batchLearn(batchLearnCarrier, "1");

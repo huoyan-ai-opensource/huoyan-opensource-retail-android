@@ -24,7 +24,7 @@ public class SdkChannelBridgeTest {
             new HashSet<>(Arrays.asList("connect", "disconnect", "isConnected", "createImageRequest", "createJpegImageRequest", "createEncodedImageRequest", "createPhotoRequest"));
 
     /** 桥已暴露的业务方法数（初始化、识别、分页、备份及商品写入）。 */
-    private static final int EXPECTED_BUSINESS_METHOD_COUNT = 41;
+    private static final int EXPECTED_BUSINESS_METHOD_COUNT = 42;
 
     private Class<?> loadAidlContract() {
         try {
@@ -42,7 +42,7 @@ public class SdkChannelBridgeTest {
         for (Method m : contract.getDeclaredMethods()) {
             aidlNames.add(m.getName());
         }
-        assertEquals("SDK 契约业务方法数应为 41（同步 SDK Issue #113）", 41, aidlNames.size());
+        assertEquals("SDK 契约业务方法数应为 42（含导入学习）", 42, aidlNames.size());
 
         Set<String> bridgeBusinessNames = new HashSet<>();
         for (Method m : SdkChannelBridge.class.getDeclaredMethods()) {
@@ -50,7 +50,7 @@ public class SdkChannelBridgeTest {
                 bridgeBusinessNames.add(m.getName());
             }
         }
-        assertEquals("Bridge 业务方法数应为 41", EXPECTED_BUSINESS_METHOD_COUNT, bridgeBusinessNames.size());
+        assertEquals("Bridge 业务方法数应为 42", EXPECTED_BUSINESS_METHOD_COUNT, bridgeBusinessNames.size());
         assertEquals("JAR 必须覆盖全部 SDK 方法", aidlNames, bridgeBusinessNames);
     }
 
@@ -169,7 +169,7 @@ public class SdkChannelBridgeTest {
                 "batchDeleteGoods",
                 "backupRecognitionData",
                 "getRecognitionDataInfo",
-                "restoreRecognitionData"};
+                "restoreRecognitionData", "queryLicenseModels", "queryDeviceModels", "importLearn"};
         Class<?> stub = Class.forName("cc.huoyan.app.aidl.ISdkCommService$Stub");
         for (int i = 0; i < methods.length; i++) {
             java.lang.reflect.Field transaction = stub.getDeclaredField("TRANSACTION_" + methods[i]);

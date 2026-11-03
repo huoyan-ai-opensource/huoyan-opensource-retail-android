@@ -69,6 +69,8 @@ public final class WsV2Codec {
     public static final String CMD_DETECT = "detect";
     /** 学习样本命令名（需图）。 */
     public static final String CMD_ITEM_LEARN = "itemLearn";
+    /** 导入已有小图，不再次上传和登记云端样本。 */
+    public static final String CMD_IMPORT_LEARN = "importLearn";
     /**
      * 批量学习命令名（需图）：镜像 AIDL batchLearn(image, clazz)——
      * SDK 组合一次 detect + 全框逐框 itemLearn，响应 data.boxes[] 每框独立结果
@@ -388,7 +390,8 @@ public final class WsV2Codec {
      */
     public static boolean requiresImage(String cmd) {
         return CMD_DETECT.equals(cmd) || CMD_RECOGNIZE.equals(cmd)
-                || CMD_ITEM_LEARN.equals(cmd) || CMD_BATCH_LEARN.equals(cmd) || CMD_UPLOAD_PHOTO.equals(cmd);
+                || CMD_ITEM_LEARN.equals(cmd) || CMD_IMPORT_LEARN.equals(cmd)
+                || CMD_BATCH_LEARN.equals(cmd) || CMD_UPLOAD_PHOTO.equals(cmd);
     }
 
     private static void writeIntBigEndian(byte[] target, int offset, int value) {

@@ -351,6 +351,17 @@ public final class WsSdkBridge implements SdkChannelBridge {
 
     @Override
     public LearnResultParcel itemLearn(ImageRequestParcel image, String clazz) {
+        return learn(image, clazz, WsV2Codec.CMD_ITEM_LEARN);
+    }
+
+    /** 导入图片使用独立命令，普通学习上传规则不变。 */
+    @Override
+    public LearnResultParcel importLearn(ImageRequestParcel image, String clazz) {
+        return learn(image, clazz, WsV2Codec.CMD_IMPORT_LEARN);
+    }
+
+    /** 两类小图学习共用参数和图像传输，写请求均不自动重放。 */
+    private LearnResultParcel learn(ImageRequestParcel image, String clazz, String command) {
         if (!isConnected()) {
             return new LearnResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", 0L);
         }
@@ -358,7 +369,7 @@ public final class WsSdkBridge implements SdkChannelBridge {
         if (payload.errorReason != null) {
             return new LearnResultParcel(WsParcelMapper.ERR_ARGS, payload.errorReason, 0L);
         }
-        WsV2Codec.Response response = request(WsV2Codec.CMD_ITEM_LEARN,
+        WsV2Codec.Response response = request(command,
                 WsParcelMapper.buildLearnParams(clazz, payload.width, payload.height),
                 payload.bytes, REQUEST_TIMEOUT_MS);
         return response == null ? new LearnResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", 0L) : WsParcelMapper.learn(response);

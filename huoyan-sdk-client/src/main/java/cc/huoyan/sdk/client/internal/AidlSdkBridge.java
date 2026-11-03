@@ -275,13 +275,25 @@ public final class AidlSdkBridge implements SdkChannelBridge {
 
     @Override
     public LearnResultParcel itemLearn(ImageRequestParcel image, String clazz) {
+        return learn(image, clazz, false);
+    }
+
+    /** 通过新增尾部事务导入图片，不回退普通学习。 */
+    @Override
+    public LearnResultParcel importLearn(ImageRequestParcel image, String clazz) {
+        return learn(image, clazz, true);
+    }
+
+    /** 学习共用断连分类和载体释放；上传语义由所选远程方法固定。 */
+    private LearnResultParcel learn(ImageRequestParcel image, String clazz, boolean imported) {
         try {
             ISdkCommService service = service();
             if (service == null) {
                 return new LearnResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", 0L);
             }
             try {
-                LearnResultParcel receipt = service.itemLearn(image, clazz);
+                LearnResultParcel receipt = imported
+                        ? service.importLearn(image, clazz) : service.itemLearn(image, clazz);
             return receipt == null ? new LearnResultParcel(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN, "调用已发出，结果未知", 0L) : receipt;
             } catch (RemoteException e) {
                 onRemoteException();

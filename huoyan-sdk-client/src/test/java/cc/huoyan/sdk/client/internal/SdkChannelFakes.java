@@ -211,6 +211,11 @@ final class SdkChannelFakes {
         }
 
         @Override
+        public LearnResultParcel importLearn(ImageRequestParcel image, String clazz) {
+            return null;
+        }
+
+        @Override
         public ItemLearnBatchParcel batchLearn(ImageRequestParcel image, String clazz) {
             return null;
         }

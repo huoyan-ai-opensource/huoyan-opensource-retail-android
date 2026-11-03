@@ -337,6 +337,7 @@ List<Long> uids = RecognitionIntegrationExample.successfulUids(result);
 | Method | Suitable images | Successful result |
 | --- | --- | --- |
 | `learn(image, clazz)` | A single object; the Huoyan SDK learns the box with the highest detection score | `LearnResult` with code=0 and uid>0 |
+| `importLearn(image, clazz)` | An existing cloud sample crop; learns and saves locally without another upload or cloud item registration | `LearnResult` with code=0 and uid>0; requires matching APK/JAR builds |
 | `batchLearn(image, clazz)` | Multiple objects of the same class in one image; all boxes are learned into that class | `ItemLearnBatch`; check code=0 and uid>0 for each box |
 | `detect(image)` | A box preview is needed before learning | Boxes in `DetectResult`; the learning response determines actual learning results |
 
@@ -600,6 +601,7 @@ The tables below list the public methods of `HuoyanSdkClient`. Types are in `cc.
 | `recognize(SdkImage)` / `recognize(Bitmap)` | `RecognizeResult` | Correctly oriented image |
 | `recognize(SdkImage, int rotate)` | `RecognizeResult` | rotate accepts only 0/90/180/270 |
 | `learn(SdkImage, String clazz)` / `learn(Bitmap, String clazz)` | `LearnResult` | One sample UID; clazz is a 1–50-character ASCII letter/digit string |
+| `importLearn(SdkImage, String clazz)` | `LearnResult` | Learns an existing crop and saves its image locally; requires a valid certificate and a worker thread; no automatic retries. Query the image URL through listImages |
 | `batchLearn(SdkImage, String clazz)` | `ItemLearnBatch` | Learn all objects into the same class; check code/uid individually |
 | `listClasses(int page, int size)` | `ItemClazzList` | 1-based; 0 uses defaults of 1/100 |
 | `listImages(String clazz, int page, int size)` | `ItemClazzImagePage` | UID, image availability, and URL |
