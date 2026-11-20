@@ -2,7 +2,7 @@
 
 简体中文 | [English](INTEGRATION_GUIDE.en.md)
 
-**JAR 版本：2.0.0｜Android API 24+｜Java 11**
+**JAR 版本：2.0.1｜Android API 24+｜Java 11**
 
 火眼 SDK 单独安装，客户端通过 JAR 的 Java 方法调用 SDK。单独提供的零售客户端源码称为“参考客户端”。
 
@@ -58,7 +58,7 @@ dependencies {
 
 ```groovy
 dependencies {
-    implementation files('libs/huoyan-sdk-client-2.0.0.jar')
+    implementation files('libs/huoyan-sdk-client-2.0.1.jar')
     implementation 'org.java-websocket:Java-WebSocket:1.5.2'
     implementation 'com.alibaba:fastjson:1.2.47'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
@@ -545,7 +545,7 @@ AIDL 调用没有可强制终止的超时；不要将等待结束等同于操作
 
 参考客户端已经配置好 JAR 依赖，不必再按第 2 节重复导入。构建时将 Gradle JDK 设置为 JBR-17，并配置 Android SDK；在源码根目录执行 `bash gradlew :app:assembleDebug`，生成的 APK 位于 `app/build/outputs/apk/`。按第 3.1 节选择本机或远端 SDK 部署，安装客户端后在设置页面确认连接方式。设备选型及相机、秤、打印机接线按实际项目确认。
 
-app 构建使用 `app/src/main/libs/huoyan-sdk-client-2.0.0.jar`，不依赖 SDK module。修改 SDK 源码后，先执行 `bash gradlew :huoyan-sdk-client:updateAppSdkJar` 替换此 JAR（包括内置账号配置），再构建 app。
+app 构建使用 `app/src/main/libs/huoyan-sdk-client-2.0.1.jar`，不依赖 SDK module。修改 SDK 源码后，先执行 `bash gradlew :huoyan-sdk-client:updateAppSdkJar` 替换此 JAR（包括内置账号配置），再构建 app。
 
 以下 Java 路径相对于 `app/src/main/java/cc/huoyan/retail/`。
 

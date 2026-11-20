@@ -8,9 +8,9 @@
 
 | 项目 | 当前版本 | 配置位置 |
 | --- | --- | --- |
-| App versionName | 2.0.6 | `app/build.gradle` 的 `appVersionName` 默认值；CI 可用 `-PappVersionName` 覆盖 |
-| App versionCode | 7 | `app/build.gradle` 的 `defaultConfig.versionCode`，发布新安装包需递增 |
-| SDK JAR | 2.0.0 | `huoyan-sdk-client/build.gradle` 中的 `sdkClientVersion`；App 依赖需同步更新 |
+| App versionName | 2.0.7 | `app/build.gradle` 的 `appVersionName` 默认值；CI 可用 `-PappVersionName` 覆盖 |
+| App versionCode | 8 | `app/build.gradle` 的 `defaultConfig.versionCode`，发布新安装包需递增 |
+| SDK JAR | 2.0.1 | `huoyan-sdk-client/build.gradle` 中的 `sdkClientVersion`；App 依赖需同步更新 |
 | SDK 壳 | 由配套 SDK 发布维护 | 运行时查询版本，见兼容表 |
 
 App、JAR、SDK 壳是不同产物，可以独立版本。JAR 版本变化时同时检查模块产物名、App JAR 依赖、接入文档和兼容表，不能只改 App 版本。
@@ -21,8 +21,8 @@ App、JAR、SDK 壳是不同产物，可以独立版本。JAR 版本变化时同
 
 | 语言 | 项目源文件名 / Release Assets 文件名 | ZIP 内路径 |
 | --- | --- | --- |
-| 中文 | `huoyan-sdk-client-2.0.0-integration-guide.zh-CN.docx` | `docs/huoyan-sdk-client-2.0.0-integration-guide.zh-CN.docx` |
-| 英文 | `huoyan-sdk-client-2.0.0-integration-guide.en.docx` | `docs/huoyan-sdk-client-2.0.0-integration-guide.en.docx` |
+| 中文 | `huoyan-sdk-client-2.0.1-integration-guide.zh-CN.docx` | `docs/huoyan-sdk-client-2.0.1-integration-guide.zh-CN.docx` |
+| 英文 | `huoyan-sdk-client-2.0.1-integration-guide.en.docx` | `docs/huoyan-sdk-client-2.0.1-integration-guide.en.docx` |
 
 后续版本固定沿用 `huoyan-sdk-client-<JAR版本>-integration-guide.zh-CN.docx` 和 `huoyan-sdk-client-<JAR版本>-integration-guide.en.docx` 的格式：
 
@@ -45,7 +45,7 @@ App、JAR、SDK 壳是不同产物，可以独立版本。JAR 版本变化时同
 本地只打包不会创建远程 Release：
 
 ```bash
-bash gradlew --no-daemon --console=plain -PappVersionName=2.0.6 :app:testDebugUnitTest :huoyan-sdk-client:testDebugUnitTest :huoyan-sdk-client:compileExample :huoyan-sdk-client:clientDistribution :app:assembleRelease :app:assembleDebugAndroidTest
+bash gradlew --no-daemon --console=plain -PappVersionName=2.0.7 :app:testDebugUnitTest :huoyan-sdk-client:testDebugUnitTest :huoyan-sdk-client:compileExample :huoyan-sdk-client:clientDistribution :app:assembleRelease :app:assembleDebugAndroidTest
 python3 -m unittest discover -s huoyan-sdk-client/tools -p 'test_*.py'
 ```
 
@@ -67,8 +67,8 @@ python3 -m unittest discover -s huoyan-sdk-client/tools -p 'test_*.py'
 若选择手动运行 GitHub 发布工作流，先由维护者确认目标提交并推送版本 tag，例如：
 
 ```bash
-git tag v2.0.6
-git push <指向GitHub的remote名> v2.0.6
+git tag v2.0.7
+git push <指向GitHub的remote名> v2.0.7
 ```
 
 示例 remote 名是占位符。推送后仍需进入 Actions，手动运行“Android 实验版本发布”，在 `tag` 输入框填写该 tag；仅推送 tag 不会发布。不要重复发布已经公开的版本；若 Release 已存在，创建步骤会失败，应检查现状后决定修正方式，避免静默替换用户已下载的产物。构建失败可查看 Actions 日志及测试报告；不能将编译失败的版本标为已发布。

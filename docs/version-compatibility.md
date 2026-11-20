@@ -6,8 +6,8 @@ App、SDK 客户端 JAR、独立 SDK APK 和模型分别发布，版本号不要
 
 | 部分 | 当前基线 | 查看位置 |
 | --- | --- | --- |
-| 零售 App | 默认 `2.0.6`，`versionCode=7`，包名 `cc.huoyan.retail` | `app/build.gradle`；App 首页与设备授权页 |
-| SDK 客户端 JAR | `2.0.0`，Java 11，Android API 24+ | `app/src/main/libs/huoyan-sdk-client-2.0.0.jar`；`huoyan-sdk-client/build.gradle` |
+| 零售 App | 默认 `2.0.7`，`versionCode=8`，包名 `cc.huoyan.retail` | `app/build.gradle`；App 首页与设备授权页 |
+| SDK 客户端 JAR | `2.0.1`，Java 11，Android API 24+ | `app/src/main/libs/huoyan-sdk-client-2.0.1.jar`；`huoyan-sdk-client/build.gradle` |
 | 独立 SDK APK | 需配套火眼识物 SDK，包名 `cc.huoyan` | App 的 SDK 版本信息或 JAR `getCapabilities()` |
 | 授权模型查询协议 | 接入指南以 SDK 壳 `0.1.3`、AIDL `api_version=3` 介绍双查询接口 | [激活与切换模型](../huoyan-sdk-client/INTEGRATION_GUIDE.md#connect-sdk) |
 | 模型 | 按设备芯片、授权和所选场景交付 | 授权模型列表及 `getModelVersion()`；不是 APK 版本 |

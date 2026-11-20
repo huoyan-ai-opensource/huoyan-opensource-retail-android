@@ -37,7 +37,7 @@ SDK 应用版本通过 `getCapabilities()` 的 `sdkVersionName/sdkVersionCode` �
 
 `clientJar` 先执行 `verifySdkBoundary`，检查是否反向引用零售包或 UI 资源；`compileExample` 仅用交付 JAR 和 Android bootclasspath 编译示例。`clientDistribution` 随包发布运行时依赖。
 
-零售 app 通过 `files('src/main/libs/huoyan-sdk-client-2.0.0.jar')` 接入，不依赖 SDK module。修改 SDK 源码或资源后，执行 `:huoyan-sdk-client:updateAppSdkJar` 替换 app 中的 JAR；app 构建不会自动更新它。
+零售 app 通过 `files('src/main/libs/huoyan-sdk-client-2.0.1.jar')` 接入，不依赖 SDK module。修改 SDK 源码或资源后，执行 `:huoyan-sdk-client:updateAppSdkJar` 替换 app 中的 JAR；app 构建不会自动更新它。
 
 普通 JAR 不携带第三方类或 Gradle 依赖元数据，宿主依赖见 [接入配置](INTEGRATION_GUIDE.md#21-依赖与编译配置)。SDK 工程中的 `androidx.annotation` 为 `compileOnly` 编译期依赖，JUnit 仅用于测试，均不随发行 ZIP 提供。
 

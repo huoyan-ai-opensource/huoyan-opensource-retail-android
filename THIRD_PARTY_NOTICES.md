@@ -70,7 +70,7 @@ This software is based in part on the work of the Independent JPEG Group.
 
 | 文件 | 当前构建用途 | 来源及授权说明 |
 | --- | --- | --- |
-| `app/src/main/libs/huoyan-sdk-client-2.0.0.jar` | App 显式引用的火眼客户端 JAR | 本仓库 `huoyan-sdk-client` module 生成；识别 SDK 激活及使用规则见 [USAGE.md](USAGE.md)和[接入指南](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/blob/main/huoyan-sdk-client/INTEGRATION_GUIDE.md) |
+| `app/src/main/libs/huoyan-sdk-client-2.0.1.jar` | App 显式引用的火眼客户端 JAR | 本仓库 `huoyan-sdk-client` module 生成；识别 SDK 激活及使用规则见 [USAGE.md](USAGE.md)和[接入指南](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/blob/main/huoyan-sdk-client/INTEGRATION_GUIDE.md) |
 | `app/src/main/libs/AclasDriverSdk.jar` | App 显式引用的 Aclas 外设驱动 | 供应商组件；仓库未附独立许可证文本，使用及再分发范围应以供应商提供的授权为准，不能从本项目源码开放规则推导 |
 | `app/src/main/jniLibs/arm64-v8a/libAclasArmPos.so`、`armeabi-v7a/libAclasArmPos.so` | 随 App 打包的 Aclas native 驱动 | 与供应商 JAR 同样单独确认授权 |
 | `app/src/main/libs/pinyin/pinyin4j-2.5.0.jar` | App 显式引用的拼音库 | 本地文件的来源与原始许可文本尚需确认，详见下文 |

@@ -76,8 +76,8 @@ macOS 安装 JDK 后也可用 `/usr/libexec/java_home -v 17` 查找其路径。W
 | --- | --- | --- |
 | 调试 App | `bash gradlew :app:assembleDebug` | `app/build/outputs/apk/debug/*.apk` |
 | Release App | `bash gradlew :app:assembleRelease` | `app/build/outputs/apk/release/*.apk` |
-| 独立 JAR | `bash gradlew :huoyan-sdk-client:clientJar` | `huoyan-sdk-client/build/outputs/jar/huoyan-sdk-client-2.0.0.jar` |
-| 完整 JAR 交付包 | `bash gradlew :huoyan-sdk-client:clientDistribution` | `huoyan-sdk-client/build/distributions/huoyan-sdk-client-2.0.0.zip` |
+| 独立 JAR | `bash gradlew :huoyan-sdk-client:clientJar` | `huoyan-sdk-client/build/outputs/jar/huoyan-sdk-client-2.0.1.jar` |
+| 完整 JAR 交付包 | `bash gradlew :huoyan-sdk-client:clientDistribution` | `huoyan-sdk-client/build/distributions/huoyan-sdk-client-2.0.1.zip` |
 | 更新 App 中的 JAR | `bash gradlew :huoyan-sdk-client:updateAppSdkJar` | 替换 `app/src/main/libs` 中对应 JAR |
 
 APK 文件名为 `huoyan-retail-{versionName}-{versionCode}-{时间戳}-{buildType}.apk`。构建成功不代表已激活或模型已就绪，安装后的步骤见[快速开始](../QUICKSTART.md)。

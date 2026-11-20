@@ -34,7 +34,7 @@ Windows PowerShell 在项目根目录执行以下任务，先按构建指南配�
 .\gradlew.bat :huoyan-sdk-client:testDebugUnitTest :huoyan-sdk-client:compileExample :huoyan-sdk-client:clientDistribution
 ```
 
-App 使用已经打包的 `app/src/main/libs/huoyan-sdk-client-2.0.0.jar`，构建 App 不会自动重打 SDK。需要让 App 使用本次 JAR 改动时，先执行 `:huoyan-sdk-client:updateAppSdkJar`，再验证 App，并检查提交中确实包含计划交付的 JAR。
+App 使用已经打包的 `app/src/main/libs/huoyan-sdk-client-2.0.1.jar`，构建 App 不会自动重打 SDK。需要让 App 使用本次 JAR 改动时，先执行 `:huoyan-sdk-client:updateAppSdkJar`，再验证 App，并检查提交中确实包含计划交付的 JAR。
 
 设备测试位于 `app/src/androidTest/java`。在已连接的测试设备上执行 `:app:connectedDebugAndroidTest` 前，先阅读相关测试类的前置条件：部分用例需要真实 SDK、已激活的测试设备、商品或外设，也可能修改测试数据。不要在生产设备上直接运行整套用例。完整说明见[构建与测试](docs/build.md)。
 

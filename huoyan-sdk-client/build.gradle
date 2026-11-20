@@ -3,7 +3,7 @@ plugins {
 }
 
 // JAR、交付 ZIP 和两份 Word 指南共享版本；App 的 JAR 依赖须同步更新。
-def sdkClientVersion = '2.0.0'
+def sdkClientVersion = '2.0.1'
 def integrationGuides = ['zh-CN', 'en'].collect { language ->
     rootProject.file("app/src/main/libs/huoyan-sdk-client-${sdkClientVersion}-integration-guide.${language}.docx")
 }

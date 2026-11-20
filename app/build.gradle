@@ -11,8 +11,8 @@ plugins {
     id "com.android.application"
 }
 
-// CNB 按 tag 注入版本名；本地构建默认使用当前版本，versionCode 在 defaultConfig 中维护。
-def appVersionName = providers.gradleProperty('appVersionName').getOrElse('2.0.6')
+// 发布工作流按 tag 注入版本名，本地构建使用当前版本。
+def appVersionName = providers.gradleProperty('appVersionName').getOrElse('2.0.7')
 if (!(appVersionName ==~ /(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)/)) {
     throw new GradleException('版本号必须为 MAJOR.MINOR.PATCH，例如 2.0.0；tag 可加 v 前缀。')
 }
@@ -25,7 +25,7 @@ android {
         applicationId "cc.huoyan.retail"
         minSdk project.properties.minSdkVersion.toInteger()
         targetSdk project.properties.targetSdkVersion.toInteger()
-        versionCode 7
+        versionCode 8
         versionName appVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -138,7 +138,7 @@ tasks.named('preBuild').configure { dependsOn(generateLocalizedAppName) }
 
 dependencies {
     // 火眼 SDK 以已打包的普通 JAR 接入；更新命令：:huoyan-sdk-client:updateAppSdkJar。
-    implementation files('src/main/libs/huoyan-sdk-client-2.0.0.jar')
+    implementation files('src/main/libs/huoyan-sdk-client-2.0.1.jar')
     // 以下原由 SDK module 透传；本地 JAR 不携带依赖元数据，须由宿主显式提供。
     implementation libs.java.websocket       // JAR：WebSocket 通信；传递引入 SLF4J。
     implementation libs.fastjson             // JAR：SDK 协议 JSON 编解码。

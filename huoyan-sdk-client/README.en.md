@@ -6,7 +6,7 @@ Official website: [www.huoyan.cc](https://www.huoyan.cc)
 
 Call the Huoyan SDK through the JAR's Java methods. See the [English Integration Guide](INTEGRATION_GUIDE.en.md) / [Chinese Integration Guide](INTEGRATION_GUIDE.md) for setup. The reference client source is also provided; use it for calling examples or customize its screens directly.
 
-**Requirements: JAR 2.0.0, Android API 24+, Java 11.** Install the Huoyan SDK separately on the device providing recognition services, using a version that matches the JAR. When connecting to another device, the client device does not need a local Huoyan SDK installation. Register the client application's package name and obtain the required authorization before integrating. AIDL requires API 27+; use WebSocket on API 24–26.
+**Requirements: JAR 2.0.1, Android API 24+, Java 11.** Install the Huoyan SDK separately on the device providing recognition services, using a version that matches the JAR. When connecting to another device, the client device does not need a local Huoyan SDK installation. Register the client application's package name and obtain the required authorization before integrating. AIDL requires API 27+; use WebSocket on API 24–26.
 
 The Java resource `raw/config` inside the JAR supplies the account. Preserve it when packaging the APK; do not add a resource with the same path in the host or exclude it through `packagingOptions`.
 
@@ -19,8 +19,8 @@ The current source adds `importLearn(image, clazz)` for learning existing cloud 
 | `INTEGRATION_GUIDE.en.md` | Integration steps, parameters, and result handling in English |
 | `README.md` / `README.en.md` | Delivery notes in Chinese and English |
 | `consumer-rules.pro` | Obfuscation configuration |
-| `docs/huoyan-sdk-client-2.0.0-integration-guide.zh-CN.docx` | Offline Word integration guide in Chinese |
-| `docs/huoyan-sdk-client-2.0.0-integration-guide.en.docx` | Offline Word integration guide in English |
+| `docs/huoyan-sdk-client-2.0.1-integration-guide.zh-CN.docx` | Offline Word integration guide in Chinese |
+| `docs/huoyan-sdk-client-2.0.1-integration-guide.en.docx` | Offline Word integration guide in English |
 | `USAGE.md` / `THIRD_PARTY_NOTICES.md` | Usage, activation and third-party component notices in Chinese |
 | `docs/licenses/` | Collected original license texts and Chinese reference translations |
 | `samples/` | Java calling examples |

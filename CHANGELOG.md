@@ -2,7 +2,11 @@
 
 这里记录 App 的主要变化。App、客户端 JAR 和 SDK 壳分别管理版本，配套关系见[版本兼容表](docs/version-compatibility.md)。条目根据源码提交整理，不代表每个平台都已上传对应 Release；可下载版本以各平台实际发布附件为准。
 
-## 未发布
+## 2.0.7 — 2026-11-20
+
+- 系统维护新增 SDK 权限入口。收银、激活、商品和学习操作遇到缺权回执时，会引导用户为识物 SDK 授权。
+- 界面统一使用按屏宽适配的数字尺寸，修复竖屏系统维护开关的滑块裁切。App 安装版本号为 `8`。
+- 客户端 JAR 升至 `2.0.1`，新增 `importLearn`，可将云端已有的小图导入本地识别库，避免再次上传同一张图片。
 
 - GitHub 构建检查与版本发布改为手动触发，修正 Android SDK 安装步骤默认请求旧 `tools` 包导致的失败。
 - 补充完整 App 快速开始、构建与测试、硬件、排障、版本兼容和文档导航。
@@ -15,7 +19,7 @@
 - 关闭打印模块时支持确认识别结果，无需通过打印操作完成确认。
 - 补充无打印确认相关的单元测试和设备测试。
 
-源码依据：[4bf5578](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/commit/4bf5578097e9f43359e8e8ba5984adf5826e1a69)。当前默认 `versionCode` 为 `7`。
+源码依据：[4bf5578](https://github.com/huoyan-ai-opensource/huoyan-opensource-retail-android/commit/4bf5578097e9f43359e8e8ba5984adf5826e1a69)。该版本的 `versionCode` 为 `7`。
 
 ## 2.0.5 — 2026-10-28
 

@@ -2,7 +2,7 @@
 
 [简体中文](INTEGRATION_GUIDE.md) | English
 
-**JAR version: 2.0.0 | Android API 24+ | Java 11**
+**JAR version: 2.0.1 | Android API 24+ | Java 11**
 
 The Huoyan SDK is installed separately. Client applications call the SDK through the JAR's Java methods. The retail application source, provided separately, is called the “reference client.”
 
@@ -58,7 +58,7 @@ To import only the main JAR and let Gradle manage the other dependencies, use:
 
 ```groovy
 dependencies {
-    implementation files('libs/huoyan-sdk-client-2.0.0.jar')
+    implementation files('libs/huoyan-sdk-client-2.0.1.jar')
     implementation 'org.java-websocket:Java-WebSocket:1.5.2'
     implementation 'com.alibaba:fastjson:1.2.47'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
@@ -545,7 +545,7 @@ The reference client covers fresh produce, snacks, bakery products, and small-po
 
 The reference client already includes JAR dependencies; do not import them again using section 2. Set the Gradle JDK to JBR-17 and configure the Android SDK. Run `bash gradlew :app:assembleDebug` from the source root; the APK is generated under `app/build/outputs/apk/`. Choose local or remote SDK deployment as described in section 3.1, install the client, and confirm its connection mode in Settings. Confirm device selection and camera, scale, and printer wiring for your project.
 
-The app build uses `app/src/main/libs/huoyan-sdk-client-2.0.0.jar` and does not depend on the SDK module. After modifying SDK source, first run `bash gradlew :huoyan-sdk-client:updateAppSdkJar` to replace this JAR, including its embedded account configuration, then build the app.
+The app build uses `app/src/main/libs/huoyan-sdk-client-2.0.1.jar` and does not depend on the SDK module. After modifying SDK source, first run `bash gradlew :huoyan-sdk-client:updateAppSdkJar` to replace this JAR, including its embedded account configuration, then build the app.
 
 The Java paths below are relative to `app/src/main/java/cc/huoyan/retail/`.
 
