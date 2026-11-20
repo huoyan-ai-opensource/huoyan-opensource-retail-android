@@ -1,10 +1,12 @@
 package cc.huoyan.retail.checkout.integration;
 
 import org.junit.Test;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+
 import static org.junit.Assert.*;
 
 public class LatestRefreshTest {
@@ -13,7 +15,8 @@ public class LatestRefreshTest {
     private final List<Integer> commits = new ArrayList<>();
     private final LatestRefresh<Integer> refresh = new LatestRefresh<>(worker::add, main::add);
 
-    @Test public void newRequestSupersedesResultAlreadyQueuedOnMain() {
+    @Test
+    public void newRequestSupersedesResultAlreadyQueuedOnMain() {
         refresh.submit(() -> 1, commits::add, e -> fail());
         worker.remove().run();
         refresh.submit(() -> 2, commits::add, e -> fail());
@@ -23,7 +26,8 @@ public class LatestRefreshTest {
         assertEquals(java.util.Collections.singletonList(2), commits);
     }
 
-    @Test public void newFrameDuringQueryWinsAndOlderQueryNeverCommits() {
+    @Test
+    public void newFrameDuringQueryWinsAndOlderQueryNeverCommits() {
         refresh.submit(() -> {
             refresh.submit(() -> 2, commits::add, e -> fail());
             refresh.submit(() -> 3, commits::add, e -> fail());
@@ -34,7 +38,8 @@ public class LatestRefreshTest {
         assertEquals(java.util.Collections.singletonList(3), commits);
     }
 
-    @Test public void resetOrManualEditInvalidatesInFlightResult() {
+    @Test
+    public void resetOrManualEditInvalidatesInFlightResult() {
         refresh.submit(() -> 1, commits::add, e -> fail());
         worker.remove().run();
         refresh.invalidate();
@@ -42,7 +47,8 @@ public class LatestRefreshTest {
         assertTrue(commits.isEmpty());
     }
 
-    @Test public void coalescesPendingFramesAndIgnoresDestroyedPage() {
+    @Test
+    public void coalescesPendingFramesAndIgnoresDestroyedPage() {
         for (int i = 0; i < 100; i++) {
             final int value = i;
             refresh.submit(() -> value, commits::add, e -> fail());
@@ -56,8 +62,12 @@ public class LatestRefreshTest {
         assertTrue(worker.isEmpty());
     }
 
-    @Test public void recoversAfterFailedQuery() {
-        refresh.submit(() -> { throw new IllegalStateException(); }, commits::add, e -> {});
+    @Test
+    public void recoversAfterFailedQuery() {
+        refresh.submit(() -> {
+            throw new IllegalStateException();
+        }, commits::add, e -> {
+        });
         worker.remove().run();
         main.remove().run();
         refresh.submit(() -> 2, commits::add, e -> fail());

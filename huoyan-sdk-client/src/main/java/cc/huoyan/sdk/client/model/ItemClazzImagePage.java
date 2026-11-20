@@ -20,9 +20,11 @@ public final class ItemClazzImagePage {
     private final int pages;
     private final List<ItemClazzImage> items;
 
-    /** 构造图片分页回执。 */
+    /**
+     * 构造图片分页回执。
+     */
     public ItemClazzImagePage(int code, String reason, long total, int current,
-            int size, int pages, List<ItemClazzImage> items) {
+                              int size, int pages, List<ItemClazzImage> items) {
         this.code = code;
         this.reason = reason;
         this.total = total;
@@ -34,37 +36,51 @@ public final class ItemClazzImagePage {
                 : Collections.unmodifiableList(new ArrayList<>(items));
     }
 
-    /** 取得回执码，0 表示成功。 */
+    /**
+     * 取得回执码，0 表示成功。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 取得错误说明。 */
+    /**
+     * 取得错误说明。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 取得记录总数。 */
+    /**
+     * 取得记录总数。
+     */
     public long getTotal() {
         return total;
     }
 
-    /** 取得当前页码。 */
+    /**
+     * 取得当前页码。
+     */
     public int getCurrent() {
         return current;
     }
 
-    /** 取得页大小。 */
+    /**
+     * 取得页大小。
+     */
     public int getSize() {
         return size;
     }
 
-    /** 取得总页数。 */
+    /**
+     * 取得总页数。
+     */
     public int getPages() {
         return pages;
     }
 
-    /** 取得当前页图片记录。 */
+    /**
+     * 取得当前页图片记录。
+     */
     public List<ItemClazzImage> getItems() {
         return items;
     }

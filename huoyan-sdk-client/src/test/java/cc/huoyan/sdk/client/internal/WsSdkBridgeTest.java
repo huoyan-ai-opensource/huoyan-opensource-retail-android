@@ -149,6 +149,7 @@ public class WsSdkBridgeTest {
 
         assertNotNull(WsSdkBridge.toRgbPayload(image).errorReason);
     }
+
     @Test
     public void wsLargeRgbRetainsOriginalBytesWithoutSharedMemory() {
         byte[] rgb = new byte[1076 * 756 * 3];

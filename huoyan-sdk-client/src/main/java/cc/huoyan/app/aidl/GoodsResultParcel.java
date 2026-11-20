@@ -30,7 +30,9 @@ public final class GoodsResultParcel implements Parcelable {
         return reason;
     }
 
-    /** 创建/更新后的商品终态；错误时 null。 */
+    /**
+     * 创建/更新后的商品终态；错误时 null。
+     */
     public GoodsParcel getRecord() {
         return record;
     }

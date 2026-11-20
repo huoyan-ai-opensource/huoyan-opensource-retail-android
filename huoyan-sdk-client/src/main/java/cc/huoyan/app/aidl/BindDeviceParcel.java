@@ -28,22 +28,30 @@ public final class BindDeviceParcel implements Parcelable {
         this.shopNo = shopNo;
     }
 
-    /** 归属账号标识（必填，正整数）。 */
+    /**
+     * 归属账号标识（必填，正整数）。
+     */
     public long getAccountId() {
         return accountId;
     }
 
-    /** 门店标识（必填，app_shop_id）。 */
+    /**
+     * 门店标识（必填，app_shop_id）。
+     */
     public String getShopId() {
         return shopId;
     }
 
-    /** 门店名称（可选）；null/空白经请求 DTO 构造期以 shopId 回填。 */
+    /**
+     * 门店名称（可选）；null/空白经请求 DTO 构造期以 shopId 回填。
+     */
     public String getShopName() {
         return shopName;
     }
 
-    /** 门店编号（可选）；null = 不传（后端自动生成）。 */
+    /**
+     * 门店编号（可选）；null = 不传（后端自动生成）。
+     */
     public String getShopNo() {
         return shopNo;
     }

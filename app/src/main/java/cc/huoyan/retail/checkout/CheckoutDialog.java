@@ -1,16 +1,27 @@
 package cc.huoyan.retail.checkout;
 
 import androidx.fragment.app.DialogFragment;
+
 import cc.huoyan.retail.common.ui.LandscapeDialogWindow;
 import cc.huoyan.retail.common.ui.LoadingDialog;
 import cc.huoyan.retail.R;
 
-/** 识别页自定义弹窗的窗口与等待提示；等待由子 FragmentManager 管理。 */
+/**
+ * 识别页自定义弹窗的窗口与等待提示；等待由子 FragmentManager 管理。
+ */
 public abstract class CheckoutDialog extends DialogFragment {
-    /** 保留尚未执行的加载事务，避免短时间内重复添加遮罩。 */
+    /**
+     * 保留尚未执行的加载事务，避免短时间内重复添加遮罩。
+     */
     private LoadingDialog pendingLoading;
-    /** 窗口由横竖屏 XML 绘制遮罩。 */
-    @Override public void onStart() { super.onStart(); LandscapeDialogWindow.apply(this);
+
+    /**
+     * 窗口由横竖屏 XML 绘制遮罩。
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
+        LandscapeDialogWindow.apply(this);
         if (getView() != null) {
             android.view.View fixed = getView().findViewById(R.id.checkoutDialogCard);
             cc.huoyan.retail.common.ui.BoundedDialogLayout card = getView().findViewById(R.id.boundedCheckoutDialog);
@@ -23,8 +34,12 @@ public abstract class CheckoutDialog extends DialogFragment {
                         - getView().getPaddingLeft() - getView().getPaddingRight());
                 fixed.setLayoutParams(params);
             }
-        } }
-    /** 跟随在途状态恢复等待提示，禁止重复提交。 */
+        }
+    }
+
+    /**
+     * 跟随在途状态恢复等待提示，禁止重复提交。
+     */
     protected void showBusy(boolean busy, int textRes) {
         setCancelable(!busy);
         DialogFragment existing = (DialogFragment) getChildFragmentManager().findFragmentByTag("operationLoading");
@@ -39,6 +54,13 @@ public abstract class CheckoutDialog extends DialogFragment {
             pendingLoading = null;
         }
     }
-    /** 子弹窗由 FragmentManager 恢复，不保留旧视图所属实例。 */
-    @Override public void onDestroyView() { pendingLoading = null; super.onDestroyView(); }
+
+    /**
+     * 子弹窗由 FragmentManager 恢复，不保留旧视图所属实例。
+     */
+    @Override
+    public void onDestroyView() {
+        pendingLoading = null;
+        super.onDestroyView();
+    }
 }

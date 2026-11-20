@@ -23,10 +23,15 @@ import java.util.Collections;
 import java.util.List;
 
 
-/** 页面清单映射、计件分发与混合结算回归。 */
+/**
+ * 页面清单映射、计件分发与混合结算回归。
+ */
 public class CheckoutRowsTest {
-    /** SDK 商品的整数克皮重随清单复制，后续商品修改不污染业务快照。 */
-    @Test public void saleLineCopiesTareInGrams() {
+    /**
+     * SDK 商品的整数克皮重随清单复制，后续商品修改不污染业务快照。
+     */
+    @Test
+    public void saleLineCopiesTareInGrams() {
         GoodsVo row = vo("W", 0);
         row.getGoods().setTareWeight(25);
         cc.huoyan.retail.checkout.domain.SaleLine line = CheckoutRows.toSaleLines(
@@ -69,7 +74,11 @@ public class CheckoutRowsTest {
 
     private static GoodsEntity goods(String plu, int unit, int price) {
         GoodsEntity goods = new GoodsEntity();
-        goods.setGoodsId("1"); goods.setPlu(plu); goods.setName("name-" + plu); goods.setPrice(price); goods.setUnit(unit);
+        goods.setGoodsId("1");
+        goods.setPlu(plu);
+        goods.setName("name-" + plu);
+        goods.setPrice(price);
+        goods.setUnit(unit);
         return goods;
     }
 

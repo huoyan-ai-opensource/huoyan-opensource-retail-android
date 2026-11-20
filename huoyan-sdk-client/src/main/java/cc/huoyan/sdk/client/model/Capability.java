@@ -28,15 +28,21 @@ public final class Capability {
     private final boolean learn;
     private final boolean itemForget;
     private final boolean itemQuery;
-    /** SDK 应用版本名，缺失时为 unknown。 */
+    /**
+     * SDK 应用版本名，缺失时为 unknown。
+     */
     private final String sdkVersionName;
-    /** SDK 应用版本码，缺失时为 -1。 */
+    /**
+     * SDK 应用版本码，缺失时为 -1。
+     */
     private final int sdkVersionCode;
 
-    /** 固定能力与 SDK 应用版本；缺失版本归一为 unknown/-1。 */
+    /**
+     * 固定能力与 SDK 应用版本；缺失版本归一为 unknown/-1。
+     */
     public Capability(int code, String reason, int apiVersion, boolean sharedMemoryImage,
-            boolean detect, boolean recognize, boolean learn, boolean itemForget, boolean itemQuery,
-            String sdkVersionName, int sdkVersionCode) {
+                      boolean detect, boolean recognize, boolean learn, boolean itemForget, boolean itemQuery,
+                      String sdkVersionName, int sdkVersionCode) {
         this.code = code;
         this.reason = reason;
         this.apiVersion = apiVersion;
@@ -50,57 +56,79 @@ public final class Capability {
         this.sdkVersionCode = sdkVersionCode;
     }
 
-    /** 结果码；0 表示请求成功。 */
+    /**
+     * 结果码；0 表示请求成功。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 接口契约版本（与 {@code getApiVersion()} 同源）。 */
+    /**
+     * 接口契约版本（与 {@code getApiVersion()} 同源）。
+     */
     public int getApiVersion() {
         return apiVersion;
     }
 
-    /** SharedMemory 传图（API 27+）主路径是否可用。 */
+    /**
+     * SharedMemory 传图（API 27+）主路径是否可用。
+     */
     public boolean isSharedMemoryImage() {
         return sharedMemoryImage;
     }
 
-    /** 纯检测画框（detect）是否可用。 */
+    /**
+     * 纯检测画框（detect）是否可用。
+     */
     public boolean isDetect() {
         return detect;
     }
 
-    /** 识别闭环（recognize）是否可用。 */
+    /**
+     * 识别闭环（recognize）是否可用。
+     */
     public boolean isRecognize() {
         return recognize;
     }
 
-    /** 学习（learn）是否可用。 */
+    /**
+     * 学习（learn）是否可用。
+     */
     public boolean isItemLearn() {
         return learn;
     }
 
-    /** 遗忘（itemForget/itemForgetByUid）是否可用。 */
+    /**
+     * 遗忘（itemForget/itemForgetByUid）是否可用。
+     */
     public boolean isItemForget() {
         return itemForget;
     }
 
-    /** 已学查询（getItemClazzList/getItemClazzDetail）是否可用。 */
+    /**
+     * 已学查询（getItemClazzList/getItemClazzDetail）是否可用。
+     */
     public boolean isItemQuery() {
         return itemQuery;
     }
 
-    /** 返回 SDK 应用版本名；unknown 表示未取得版本。 */
+    /**
+     * 返回 SDK 应用版本名；unknown 表示未取得版本。
+     */
     public String getSdkVersionName() {
         return sdkVersionName;
     }
 
-    /** 返回 SDK 应用版本码；-1 表示未取得版本。 */
+    /**
+     * 返回 SDK 应用版本码；-1 表示未取得版本。
+     */
     public int getSdkVersionCode() {
         return sdkVersionCode;
     }

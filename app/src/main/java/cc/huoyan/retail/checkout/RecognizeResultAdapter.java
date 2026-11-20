@@ -33,7 +33,9 @@ public class RecognizeResultAdapter extends RetailAdapter<GoodsVo> {
         void onPreviewVisibleChanged(GoodsVo goodsVo);
     }
 
-    /** 称重卡片底色（浅蓝，与 bg_recognize_weight_card 一致，价格冲突红描边分支复用） */
+    /**
+     * 称重卡片底色（浅蓝，与 bg_recognize_weight_card 一致，价格冲突红描边分支复用）
+     */
 
     private OnGoodsVoActionListener actionListener;
     private Map<String, Integer> goodsColorMap = new LinkedHashMap<>();
@@ -42,26 +44,38 @@ public class RecognizeResultAdapter extends RetailAdapter<GoodsVo> {
     private Set<String> blockedPlus = new LinkedHashSet<>();
     private double currentWeightKg;
     private boolean editingEnabled = true;
-    /** 配置开关与识别锁定共同控制入口显隐。 */
+    /**
+     * 配置开关与识别锁定共同控制入口显隐。
+     */
     private boolean deletionVisible;
-    /** 主线程整行删除回调，生命周期与收银页一致。 */
+    /**
+     * 主线程整行删除回调，生命周期与收银页一致。
+     */
     private Consumer<GoodsVo> deleteGoodsListener;
 
     public RecognizeResultAdapter() {
         super(R.layout.adapter_recognize_result_goods);
     }
 
-    /** 锁定打印中及已结算清单的编辑入口。 */
+    /**
+     * 锁定打印中及已结算清单的编辑入口。
+     */
     public void setEditingEnabled(boolean enabled) {
         if (editingEnabled == enabled) return;
         editingEnabled = enabled;
         notifyItemRangeChanged(0, getItemCount());
     }
 
-    /** 主线程绑定删除结果的交互入口。 */
-    public void setOnDeleteGoodsClickListener(Consumer<GoodsVo> listener) { deleteGoodsListener = listener; }
+    /**
+     * 主线程绑定删除结果的交互入口。
+     */
+    public void setOnDeleteGoodsClickListener(Consumer<GoodsVo> listener) {
+        deleteGoodsListener = listener;
+    }
 
-    /** 关闭时回收删除按钮占位，仍保留原修改按钮。 */
+    /**
+     * 关闭时回收删除按钮占位，仍保留原修改按钮。
+     */
     public void setDeletionVisible(boolean visible) {
         if (deletionVisible == visible) return;
         deletionVisible = visible;
@@ -151,7 +165,8 @@ public class RecognizeResultAdapter extends RetailAdapter<GoodsVo> {
         deleteButton.setAlpha(editingEnabled ? 1f : 0.45f);
         deleteButton.setContentDescription(getContext().getString(R.string.delete_recognition_result_description, goods.getName()));
         deleteButton.setOnClickListener(v -> {
-            if (deletionVisible && editingEnabled && deleteGoodsListener != null) deleteGoodsListener.accept(item);
+            if (deletionVisible && editingEnabled && deleteGoodsListener != null)
+                deleteGoodsListener.accept(item);
         });
         // 拦截称重商品（称重模块未启用）无法计价，改重量无意义 → 禁用「改」按钮（用户 2026-08-25 指示）
         TextView modifyButton = holder.getView(R.id.modifyCount);

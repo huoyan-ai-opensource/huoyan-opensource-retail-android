@@ -1,13 +1,16 @@
 package cc.huoyan.retail.sdk;
 
 import cc.huoyan.sdk.client.HuoyanSdkClient;
+
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.SystemClock;
+
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+
 import cc.huoyan.retail.checkout.MainActivity;
 import cc.huoyan.retail.device.camera.CameraFrame;
 import cc.huoyan.retail.device.camera.NV21ToBitmap;
@@ -15,21 +18,28 @@ import cc.huoyan.retail.device.camera.NV21ToBitmap;
 import cc.huoyan.retail.common.FileUtil;
 import cc.huoyan.sdk.client.model.*;
 import cc.huoyan.sdk.client.SdkImage;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
-/** 同帧真机 A/B：真实相机捕获，保留尺寸及方向，错误回执不计为识别性能样本。 */
+/**
+ * 同帧真机 A/B：真实相机捕获，保留尺寸及方向，错误回执不计为识别性能样本。
+ */
 @RunWith(AndroidJUnit4.class)
 public class BitmapJpegDeviceTest {
-    /** 比较 RGB、旧 JPEG 和直接 JPEG 编码，并在可用真实 SDK 上交替识别。 */
+    /**
+     * 比较 RGB、旧 JPEG 和直接 JPEG 编码，并在可用真实 SDK 上交替识别。
+     */
     @Test
     public void compareSameFrame() throws Exception {
         Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
@@ -60,7 +70,11 @@ public class BitmapJpegDeviceTest {
             Method stop = MainActivity.class.getDeclaredMethod("stopDetect");
             stop.setAccessible(true);
             instrumentation.runOnMainSync(() -> {
-                try { stop.invoke(activity); } catch (Exception e) { throw new RuntimeException(e); }
+                try {
+                    stop.invoke(activity);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             });
             NV21ToBitmap converter = new NV21ToBitmap(instrumentation.getTargetContext());
             Bitmap full = converter.nv21ToBitmap(nv21, width, height);
@@ -68,7 +82,10 @@ public class BitmapJpegDeviceTest {
                 Bitmap originalCrop = FileUtil.corpRecognizeBitmap(full);
                 crop = originalCrop.copy(Bitmap.Config.ARGB_8888, false);
                 if (originalCrop != full) originalCrop.recycle();
-            } finally { full.recycle(); converter.release(); }
+            } finally {
+                full.recycle();
+                converter.release();
+            }
             report.put("sourceWidth", width).put("sourceHeight", height)
                     .put("width", crop.getWidth()).put("height", crop.getHeight());
             try (FileOutputStream out = new FileOutputStream(new File(dir, "reference.png"))) {
@@ -101,7 +118,8 @@ public class BitmapJpegDeviceTest {
                 HuoyanSdkClient candidate = HuoyanSdkClient.create(androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().getTargetContext(), cc.huoyan.sdk.client.SdkConfig.websocket("ws://" + host + ":18086/ws"));
                 candidate.connect();
                 deadline = SystemClock.elapsedRealtime() + 12000;
-                while (!candidate.isConnected() && SystemClock.elapsedRealtime() < deadline) SystemClock.sleep(100);
+                while (!candidate.isConnected() && SystemClock.elapsedRealtime() < deadline)
+                    SystemClock.sleep(100);
                 BaseResult init = candidate.isConnected() ? candidate.initialize() : null;
                 attempts.put(new JSONObject().put("host", host).put("connected", candidate.isConnected())
                         .put("code", init == null ? -999 : init.getCode())
@@ -159,7 +177,10 @@ public class BitmapJpegDeviceTest {
                     | ((rgb[i * 3 + 1] & 255) << 8) | (rgb[i * 3 + 2] & 255);
         }
         Bitmap reconstructed = Bitmap.createBitmap(pixels, width, height, Bitmap.Config.ARGB_8888);
-        try { return bridge.jpegImage(reconstructed); }
-        finally { reconstructed.recycle(); }
+        try {
+            return bridge.jpegImage(reconstructed);
+        } finally {
+            reconstructed.recycle();
+        }
     }
 }

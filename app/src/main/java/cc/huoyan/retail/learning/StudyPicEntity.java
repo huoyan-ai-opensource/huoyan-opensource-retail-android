@@ -71,7 +71,9 @@ public class StudyPicEntity {
         this.captureTimestamp = captureTimestamp;
     }
 
-    /** v2 学习样本句柄（itemLearn 回执 uid；0=无句柄）。 */
+    /**
+     * v2 学习样本句柄（itemLearn 回执 uid；0=无句柄）。
+     */
     public long getUid() {
         return uid;
     }

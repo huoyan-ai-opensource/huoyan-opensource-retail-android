@@ -28,17 +28,23 @@ public final class DownloadProgressParcel implements Parcelable {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 已收字节。 */
+    /**
+     * 已收字节。
+     */
     public long getDownloaded() {
         return downloaded;
     }
 
-    /** manifest 声明总字节；0=未知。 */
+    /**
+     * manifest 声明总字节；0=未知。
+     */
     public long getTotal() {
         return total;
     }

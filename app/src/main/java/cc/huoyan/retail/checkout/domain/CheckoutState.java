@@ -5,9 +5,12 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-/** 同一次状态发布的不可变快照，可由识别线程读取。 */
+/**
+ * 同一次状态发布的不可变快照，可由识别线程读取。
+ */
 public final class CheckoutState {
-    public enum Phase { IDLE_EMPTY, DETECTING, WEIGHT_STABILIZING, LOCKED_VALID, LOCKED_PRICE_MISSING, LOCKED_PRICE_CONFLICT, SOLD_OR_REPORTED }
+    public enum Phase {IDLE_EMPTY, DETECTING, WEIGHT_STABILIZING, LOCKED_VALID, LOCKED_PRICE_MISSING, LOCKED_PRICE_CONFLICT, SOLD_OR_REPORTED}
+
     public final Phase phase;
     public final boolean weighingEnabled;
     public final boolean scaleConnected;
@@ -23,14 +26,18 @@ public final class CheckoutState {
     public final BigDecimal saleWeightKg;
     public final WeightedSaleResult receipt;
     public final Set<String> priceConflictPlus;
-    /** 自动去皮在途，阻止编辑、重识别与打印。 */
+    /**
+     * 自动去皮在途，阻止编辑、重识别与打印。
+     */
     public final boolean automaticTarePending;
-    /** 商品皮重尚未得到实际设备读数确认，禁止使用旧净重结算。 */
+    /**
+     * 商品皮重尚未得到实际设备读数确认，禁止使用旧净重结算。
+     */
     public final boolean automaticTareRequired;
 
     CheckoutState(Phase phase, boolean weighingEnabled, boolean connected, boolean locked,
-            boolean printing, int stableReads, BigDecimal currentWeight, BigDecimal saleWeight,
-            WeightedSaleResult receipt, Set<String> conflicts, boolean tarePending, boolean tareRequired) {
+                  boolean printing, int stableReads, BigDecimal currentWeight, BigDecimal saleWeight,
+                  WeightedSaleResult receipt, Set<String> conflicts, boolean tarePending, boolean tareRequired) {
         this.phase = phase;
         this.weighingEnabled = weighingEnabled;
         scaleConnected = connected;

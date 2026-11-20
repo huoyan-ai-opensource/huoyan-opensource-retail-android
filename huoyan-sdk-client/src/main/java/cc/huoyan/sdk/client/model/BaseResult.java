@@ -12,18 +12,24 @@ public final class BaseResult {
     private final int code;
     private final String reason;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public BaseResult(int code, String reason) {
         this.code = code;
         this.reason = reason;
     }
 
-    /** 结果码；0 表示请求成功。 */
+    /**
+     * 结果码；0 表示请求成功。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }

@@ -20,7 +20,9 @@ public final class ItemLearnBox {
     private final int code;
     private final String reason;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public ItemLearnBox(int x, int y, int w, int h, double score, long uid, int code, String reason) {
         this.x = x;
         this.y = y;
@@ -32,42 +34,58 @@ public final class ItemLearnBox {
         this.reason = reason;
     }
 
-    /** 框左上角 x（画布绝对坐标，detect 原始口径）。 */
+    /**
+     * 框左上角 x（画布绝对坐标，detect 原始口径）。
+     */
     public int getX() {
         return x;
     }
 
-    /** 框左上角 y（画布绝对坐标）。 */
+    /**
+     * 框左上角 y（画布绝对坐标）。
+     */
     public int getY() {
         return y;
     }
 
-    /** 框宽（像素）。 */
+    /**
+     * 框宽（像素）。
+     */
     public int getW() {
         return w;
     }
 
-    /** 框高（像素）。 */
+    /**
+     * 框高（像素）。
+     */
     public int getH() {
         return h;
     }
 
-    /** 框置信度（detect 透传；无置信度输出的路径为 0）。 */
+    /**
+     * 框置信度（detect 透传；无置信度输出的路径为 0）。
+     */
     public double getScore() {
         return score;
     }
 
-    /** 该框学习入库的新 UID（code=0 时有效；0=裁片无检测条目）。 */
+    /**
+     * 该框学习入库的新 UID（code=0 时有效；0=裁片无检测条目）。
+     */
     public long getUid() {
         return uid;
     }
 
-    /** 该框学习结果码（0=成功；非 0=该框失败，独立于其他框）。 */
+    /**
+     * 该框学习结果码（0=成功；非 0=该框失败，独立于其他框）。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 该框失败说明；code=0 时为 null。 */
+    /**
+     * 该框失败说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }

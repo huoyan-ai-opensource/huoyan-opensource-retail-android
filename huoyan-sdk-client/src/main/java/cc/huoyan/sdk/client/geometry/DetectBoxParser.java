@@ -1,15 +1,24 @@
 package cc.huoyan.sdk.client.geometry;
+
 import cc.huoyan.sdk.client.geometry.DetectGeometry;
 
-/** 按显式坐标布局计算轴对齐外接矩形，不猜测 SDK 模型格式。 */
+/**
+ * 按显式坐标布局计算轴对齐外接矩形，不猜测 SDK 模型格式。
+ */
 public final class DetectBoxParser {
 
-    /** 四顶点的扁平坐标长度。 */
+    /**
+     * 四顶点的扁平坐标长度。
+     */
     private static final int OBB_VALUE_COUNT = 8;
-    /** 两对角点的坐标长度。 */
+    /**
+     * 两对角点的坐标长度。
+     */
     private static final int BBOX_VALUE_COUNT = 4;
 
-    /** 静态几何工具。 */
+    /**
+     * 静态几何工具。
+     */
     private DetectBoxParser() {
     }
 
@@ -66,16 +75,26 @@ public final class DetectBoxParser {
      * 统一外接矩形（轴对齐），float 坐标，满足 left&lt;=right、top&lt;=bottom。
      */
     public static final class DetectRect {
-        /** 左边界。 */
+        /**
+         * 左边界。
+         */
         public final float left;
-        /** 上边界。 */
+        /**
+         * 上边界。
+         */
         public final float top;
-        /** 右边界。 */
+        /**
+         * 右边界。
+         */
         public final float right;
-        /** 下边界。 */
+        /**
+         * 下边界。
+         */
         public final float bottom;
 
-        /** 保存已归一化的外接矩形。 */
+        /**
+         * 保存已归一化的外接矩形。
+         */
         private DetectRect(float left, float top, float right, float bottom) {
             this.left = left;
             this.top = top;

@@ -8,7 +8,9 @@ import cc.huoyan.sdk.client.SdkConfig.Channel;
 
 import org.junit.Test;
 
-/** SDK 通道映射与门店绑定校验。 */
+/**
+ * SDK 通道映射与门店绑定校验。
+ */
 public class SystemFragmentTest {
 
     @Test

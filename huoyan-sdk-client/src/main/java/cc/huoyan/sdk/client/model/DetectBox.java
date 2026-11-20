@@ -14,7 +14,9 @@ public final class DetectBox {
     private final int h;
     private final double score;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public DetectBox(int x, int y, int w, int h, double score) {
         this.x = x;
         this.y = y;
@@ -23,32 +25,44 @@ public final class DetectBox {
         this.score = score;
     }
 
-    /** 框左上角 x（画布绝对坐标）。 */
+    /**
+     * 框左上角 x（画布绝对坐标）。
+     */
     public int getX() {
         return x;
     }
 
-    /** 框左上角 y（画布绝对坐标）。 */
+    /**
+     * 框左上角 y（画布绝对坐标）。
+     */
     public int getY() {
         return y;
     }
 
-    /** 框宽（像素）。 */
+    /**
+     * 框宽（像素）。
+     */
     public int getW() {
         return w;
     }
 
-    /** 框高（像素）。 */
+    /**
+     * 框高（像素）。
+     */
     public int getH() {
         return h;
     }
 
-    /** 框置信度；后端无置信度输出时为 0。 */
+    /**
+     * 框置信度；后端无置信度输出时为 0。
+     */
     public double getScore() {
         return score;
     }
 
-    /** 返回有效轴对齐框坐标副本；无面积时返回 null。 */
+    /**
+     * 返回有效轴对齐框坐标副本；无面积时返回 null。
+     */
     public float[] getPoints() {
         if (w <= 0 || h <= 0) return null;
         float[] points = new float[]{x, y, (long) x + w, (long) y + h};

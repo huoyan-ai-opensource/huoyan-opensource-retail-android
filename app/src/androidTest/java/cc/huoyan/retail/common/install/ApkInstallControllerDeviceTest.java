@@ -35,20 +35,33 @@ import java.util.function.BooleanSupplier;
 
 import static org.junit.Assert.*;
 
-/** 实机验证维护入口、下载互斥、后台完成和失败；不确认安装，不改业务配置。 */
+/**
+ * 实机验证维护入口、下载互斥、后台完成和失败；不确认安装，不改业务配置。
+ */
 @RunWith(AndroidJUnit4.class)
 public class ApkInstallControllerDeviceTest {
-    /** 通过主线程执行页面和弹窗操作。 */
+    /**
+     * 通过主线程执行页面和弹窗操作。
+     */
     private final Instrumentation ins = InstrumentationRegistry.getInstrumentation();
-    /** 每例独立打开的系统维护页面。 */
+    /**
+     * 每例独立打开的系统维护页面。
+     */
     private SettingsPageActivity page;
-    /** 当前例持有的安装控制器，结束时取消所有请求。 */
+    /**
+     * 当前例持有的安装控制器，结束时取消所有请求。
+     */
     private ApkInstallController controller;
-    /** 本例已经完整下载的临时文件，验证后删除。 */
+    /**
+     * 本例已经完整下载的临时文件，验证后删除。
+     */
     private File downloaded;
 
-    /** 打开维护页并取得真实页面使用的下载会话。 */
-    @Before public void openMaintenance() {
+    /**
+     * 打开维护页并取得真实页面使用的下载会话。
+     */
+    @Before
+    public void openMaintenance() {
         page = (SettingsPageActivity) ins.startActivitySync(new Intent(ins.getTargetContext(),
                 SettingsPageActivity.class).putExtra("page", "maintenance")
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
@@ -57,8 +70,11 @@ public class ApkInstallControllerDeviceTest {
                 page.getSupportFragmentManager().findFragmentById(R.id.pageContent), "apkInstall"));
     }
 
-    /** 关闭本例页面、任务与临时文件，不修改用户商品或偏好。 */
-    @After public void closeMaintenance() {
+    /**
+     * 关闭本例页面、任务与临时文件，不修改用户商品或偏好。
+     */
+    @After
+    public void closeMaintenance() {
         ins.runOnMainSync(() -> {
             if (controller != null) controller.onDestroy();
             if (page != null) page.finish();
@@ -67,8 +83,11 @@ public class ApkInstallControllerDeviceTest {
         if (downloaded != null) downloaded.delete();
     }
 
-    /** 两入口共享一个任务；取消加载后不能残留遮罩或接收过期下载结果。 */
-    @Test public void maintenanceClientEntryUsesFixedUrlAndBlocksDuplicateSdkRequest() throws Exception {
+    /**
+     * 两入口共享一个任务；取消加载后不能残留遮罩或接收过期下载结果。
+     */
+    @Test
+    public void maintenanceClientEntryUsesFixedUrlAndBlocksDuplicateSdkRequest() throws Exception {
         assertNotNull(page.findViewById(R.id.handleClientInstall));
         capture("maintenance");
         ins.runOnMainSync(() -> {
@@ -95,8 +114,11 @@ public class ApkInstallControllerDeviceTest {
         });
     }
 
-    /** 完整后台下载保存真实文件及客户端身份，重建会话不串用 SDK 地址或名称。 */
-    @Test public void backgroundDownloadRestoresClientPackageWithoutOpeningInstaller() throws Exception {
+    /**
+     * 完整后台下载保存真实文件及客户端身份，重建会话不串用 SDK 地址或名称。
+     */
+    @Test
+    public void backgroundDownloadRestoresClientPackageWithoutOpeningInstaller() throws Exception {
         byte[] payload = "isolated-install-test".getBytes(StandardCharsets.UTF_8);
         try (ReplyServer server = new ReplyServer(200, payload)) {
             ins.runOnMainSync(() -> {
@@ -128,8 +150,11 @@ public class ApkInstallControllerDeviceTest {
         }
     }
 
-    /** HTTP 失败只产生错误 Toast，关闭等待弹窗，随后允许用户再次发起下载。 */
-    @Test public void failedDownloadClosesLoadingAndCanRetry() throws Exception {
+    /**
+     * HTTP 失败只产生错误 Toast，关闭等待弹窗，随后允许用户再次发起下载。
+     */
+    @Test
+    public void failedDownloadClosesLoadingAndCanRetry() throws Exception {
         try (ReplyServer server = new ReplyServer(404, new byte[0]);
              ReplyServer retry = new ReplyServer(200, new byte[]{1})) {
             ins.runOnMainSync(() -> controller.downloadAndInstall(server.url(), R.string.apk_name_client));
@@ -153,8 +178,11 @@ public class ApkInstallControllerDeviceTest {
         }
     }
 
-    /** SDK 与客户端都按网络字节推进同一个进度条，关闭按钮取消各自当前任务。 */
-    @Test public void sdkAndClientShareRealProgressBarAndCloseAction() throws Exception {
+    /**
+     * SDK 与客户端都按网络字节推进同一个进度条，关闭按钮取消各自当前任务。
+     */
+    @Test
+    public void sdkAndClientShareRealProgressBarAndCloseAction() throws Exception {
         for (int label : new int[]{R.string.apk_name_sdk, R.string.apk_name_client}) {
             try (ReplyServer server = new ReplyServer(200, new byte[]{1, 2}, true)) {
                 ins.runOnMainSync(() -> {
@@ -192,8 +220,11 @@ public class ApkInstallControllerDeviceTest {
         }
     }
 
-    /** 显式启用时下载线上客户端并验证完整 APK，不打开安装器或覆盖当前应用。 */
-    @Test public void publishedClientDownloadsWhenRequested() throws Exception {
+    /**
+     * 显式启用时下载线上客户端并验证完整 APK，不打开安装器或覆盖当前应用。
+     */
+    @Test
+    public void publishedClientDownloadsWhenRequested() throws Exception {
         org.junit.Assume.assumeTrue("true".equals(InstrumentationRegistry.getArguments()
                 .getString("downloadPublishedClient")));
         ins.runOnMainSync(() -> {
@@ -216,7 +247,9 @@ public class ApkInstallControllerDeviceTest {
         });
     }
 
-    /** 在 UI 线程读取内部会话状态，验证生命周期而不替换实际下载器。 */
+    /**
+     * 在 UI 线程读取内部会话状态，验证生命周期而不替换实际下载器。
+     */
     private static Object field(Object object, String name) {
         try {
             java.lang.reflect.Field field = object.getClass().getDeclaredField(name);
@@ -227,7 +260,9 @@ public class ApkInstallControllerDeviceTest {
         }
     }
 
-    /** 有界等待异步回调，失败时保留明确断言。 */
+    /**
+     * 有界等待异步回调，失败时保留明确断言。
+     */
     private void await(BooleanSupplier condition) {
         long deadline = SystemClock.elapsedRealtime() + 10000;
         while (SystemClock.elapsedRealtime() < deadline) {
@@ -237,7 +272,9 @@ public class ApkInstallControllerDeviceTest {
         assertTrue("下载回调应在 10 秒内结束", condition.getAsBoolean());
     }
 
-    /** 保存当前真实窗口截图，文件名区分本轮横竖屏。 */
+    /**
+     * 保存当前真实窗口截图，文件名区分本轮横竖屏。
+     */
     private void capture(String name) throws Exception {
         File dir = new File(page.getExternalFilesDir(null), "client-install-qa");
         assertTrue(dir.isDirectory() || dir.mkdirs());
@@ -251,23 +288,37 @@ public class ApkInstallControllerDeviceTest {
         }
     }
 
-    /** 仅监听设备回环地址的单次 HTTP 回执，避免测试依赖公网或真实安装包。 */
+    /**
+     * 仅监听设备回环地址的单次 HTTP 回执，避免测试依赖公网或真实安装包。
+     */
     private static final class ReplyServer implements AutoCloseable {
-        /** 临时端口，仅供当前测试的下载器访问。 */
+        /**
+         * 临时端口，仅供当前测试的下载器访问。
+         */
         private final ServerSocket socket;
-        /** 测试明确放行后才返回，保证可覆盖暂停和重复点击。 */
+        /**
+         * 测试明确放行后才返回，保证可覆盖暂停和重复点击。
+         */
         private final CountDownLatch reply = new CountDownLatch(1);
-        /** 分段测试在半包时等待，便于断言真实中间进度。 */
+        /**
+         * 分段测试在半包时等待，便于断言真实中间进度。
+         */
         private final CountDownLatch finishReply = new CountDownLatch(1);
-        /** 后台 HTTP 响应线程，关闭时回收。 */
+        /**
+         * 后台 HTTP 响应线程，关闭时回收。
+         */
         private final Thread worker;
 
-        /** 创建单次服务，不解析或修改任何应用配置。 */
+        /**
+         * 创建单次服务，不解析或修改任何应用配置。
+         */
         ReplyServer(int code, byte[] bytes) throws Exception {
             this(code, bytes, false);
         }
 
-        /** 可在半包处暂停，完整下载与普通错误用例保持一次返回。 */
+        /**
+         * 可在半包处暂停，完整下载与普通错误用例保持一次返回。
+         */
         ReplyServer(int code, byte[] bytes, boolean pauseHalfway) throws Exception {
             socket = new ServerSocket(0, 1, java.net.InetAddress.getByName("127.0.0.1"));
             worker = new Thread(() -> {
@@ -290,13 +341,18 @@ public class ApkInstallControllerDeviceTest {
             worker.start();
         }
 
-        /** 返回当前测试唯一的本机 URL。 */
+        /**
+         * 返回当前测试唯一的本机 URL。
+         */
         String url() {
             return "http://127.0.0.1:" + socket.getLocalPort() + "/client.apk";
         }
 
-        /** 释放等待及端口，并确保测试线程退出。 */
-        @Override public void close() throws Exception {
+        /**
+         * 释放等待及端口，并确保测试线程退出。
+         */
+        @Override
+        public void close() throws Exception {
             reply.countDown();
             finishReply.countDown();
             socket.close();

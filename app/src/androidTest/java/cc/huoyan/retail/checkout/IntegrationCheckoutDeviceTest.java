@@ -5,27 +5,40 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.TextView;
+
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+
 import cc.huoyan.retail.R;
 import cc.huoyan.retail.checkout.domain.*;
 import cc.huoyan.retail.pricing.PricingMode;
 import cc.huoyan.retail.config.ModuleConfig;
 import cc.huoyan.retail.data.GoodsEntity;
+
 import java.lang.reflect.Field;
 import java.util.Collections;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import static org.junit.Assert.*;
 
-/** 真实主线程验证收银计时与去皮输入；不调用打印或秤写命令。 */
+/**
+ * 真实主线程验证收银计时与去皮输入；不调用打印或秤写命令。
+ */
 @RunWith(AndroidJUnit4.class)
 public class IntegrationCheckoutDeviceTest {
-    /** 主线程同步入口。 */
+    /**
+     * 主线程同步入口。
+     */
     private final Instrumentation ins = InstrumentationRegistry.getInstrumentation();
-    /** 真实按钮在打印关闭时仍提交确认，开关仅改变输出选择；不访问打印机或云端。 */
-    @Test public void disabledPrinterShowsConfirmationAndCompletesSale() {
+
+    /**
+     * 真实按钮在打印关闭时仍提交确认，开关仅改变输出选择；不访问打印机或云端。
+     */
+    @Test
+    public void disabledPrinterShowsConfirmationAndCompletesSale() {
         String language = cc.huoyan.retail.common.LocalePreferenceUtil.getLanguageCode(ins.getTargetContext());
         cc.huoyan.retail.common.LocalePreferenceUtil.setLanguageCode(ins.getTargetContext(),
                 InstrumentationRegistry.getArguments().getString("language", language));
@@ -45,17 +58,21 @@ public class IntegrationCheckoutDeviceTest {
                 session.replaceLines(Collections.singletonList(new SaleLine("TEST", "确认结果测试", 100, 0, 1,
                         PricingMode.COUNT, false, false, null)));
                 GoodsEntity goods = new GoodsEntity();
-                goods.setName("确认结果测试"); goods.setPlu("TEST"); goods.setUnit(5); goods.setPrice(100);
+                goods.setName("确认结果测试");
+                goods.setPlu("TEST");
+                goods.setUnit(5);
+                goods.setPrice(100);
                 setField(presenter, "rows", Collections.singletonList(new GoodsVo(1, 100, goods, Collections.emptyList())));
                 setField(presenter, "output", new CheckoutPresenter.Output() {
                     /** 捕获真实页面传入的输出模式，延迟回调以验证防重与等待弹窗。 */
                     public void submit(SalePrintJob job, boolean printEnabled, CheckoutRecognition response,
-                            java.util.List<GoodsVo> rows, java.util.List<GoodsVo> deleted,
-                            java.util.function.Consumer<Exception> completion) {
+                                       java.util.List<GoodsVo> rows, java.util.List<GoodsVo> deleted,
+                                       java.util.function.Consumer<Exception> completion) {
                         assertFalse(printEnabled);
                         submissions.incrementAndGet();
                         finish.set(completion);
                     }
+
                     /** 本例不执行删除操作。 */
                     public void submitDeletion(CheckoutRecognition response, java.util.List<GoodsVo> deleted) {
                         fail("Unexpected deletion");
@@ -104,49 +121,80 @@ public class IntegrationCheckoutDeviceTest {
             ModuleConfig.setWeighingEnabled(ins.getTargetContext(), previousWeighing);
         }
     }
-    /** 用已完成打印的会话夹具验证十秒前不重启、十秒后自动恢复。 */
-    @Test public void countPrintResumesAfterTenSeconds() {
-        try (ActivityScenario<MainActivity> scene = ActivityScenario.launch(new Intent(ins.getTargetContext(),MainActivity.class))) {
+
+    /**
+     * 用已完成打印的会话夹具验证十秒前不重启、十秒后自动恢复。
+     */
+    @Test
+    public void countPrintResumesAfterTenSeconds() {
+        try (ActivityScenario<MainActivity> scene = ActivityScenario.launch(new Intent(ins.getTargetContext(), MainActivity.class))) {
             scene.onActivity(a -> {
-                CheckoutPresenter presenter = (CheckoutPresenter) field(a,"presenter");
-                CheckoutSession session = (CheckoutSession) field(presenter,"checkout");
-                session.setWeighingEnabled(false); session.lockRecognition();
-                session.replaceLines(Collections.singletonList(new SaleLine("TEST","计件夹具",100,0,1,PricingMode.COUNT,false,false,null)));
-                SalePrintJob job = session.beginPrint(); session.finishPrint(job,true);
-                a.showSaleStatus(CheckoutPresenter.SaleStatus.PRINTED,session.state());
+                CheckoutPresenter presenter = (CheckoutPresenter) field(a, "presenter");
+                CheckoutSession session = (CheckoutSession) field(presenter, "checkout");
+                session.setWeighingEnabled(false);
+                session.lockRecognition();
+                session.replaceLines(Collections.singletonList(new SaleLine("TEST", "计件夹具", 100, 0, 1, PricingMode.COUNT, false, false, null)));
+                SalePrintJob job = session.beginPrint();
+                session.finishPrint(job, true);
+                a.showSaleStatus(CheckoutPresenter.SaleStatus.PRINTED, session.state());
             });
             SystemClock.sleep(9000);
-            scene.onActivity(a -> assertEquals(CheckoutState.Phase.SOLD_OR_REPORTED,((CheckoutPresenter)field(a,"presenter")).state().phase));
+            scene.onActivity(a -> assertEquals(CheckoutState.Phase.SOLD_OR_REPORTED, ((CheckoutPresenter) field(a, "presenter")).state().phase));
             SystemClock.sleep(1600);
-            scene.onActivity(a -> assertNotEquals(CheckoutState.Phase.SOLD_OR_REPORTED,((CheckoutPresenter)field(a,"presenter")).state().phase));
+            scene.onActivity(a -> assertNotEquals(CheckoutState.Phase.SOLD_OR_REPORTED, ((CheckoutPresenter) field(a, "presenter")).state().phase));
         }
     }
-    /** 清空恢复整数零，旋转恢复也保留该值，不发送硬件命令。 */
-    @Test public void tareClearKeepsZeroAcrossRecreation() {
-        try(ActivityScenario<MainActivity> scene=ActivityScenario.launch(new Intent(ins.getTargetContext(),MainActivity.class))) {
-            scene.onActivity(a -> new ScaleOperationsDialog().showNow(a.getSupportFragmentManager(),"tareFixture"));
+
+    /**
+     * 清空恢复整数零，旋转恢复也保留该值，不发送硬件命令。
+     */
+    @Test
+    public void tareClearKeepsZeroAcrossRecreation() {
+        try (ActivityScenario<MainActivity> scene = ActivityScenario.launch(new Intent(ins.getTargetContext(), MainActivity.class))) {
+            scene.onActivity(a -> new ScaleOperationsDialog().showNow(a.getSupportFragmentManager(), "tareFixture"));
             ins.waitForIdleSync();
             scene.onActivity(a -> {
-                ScaleOperationsDialog dialog=(ScaleOperationsDialog)a.getSupportFragmentManager().findFragmentByTag("tareFixture");
-                View root=dialog.requireView(); root.findViewById(R.id.clearInput).performClick();
-                assertEquals("0",((TextView)root.findViewById(R.id.tareInput)).getText().toString());
+                ScaleOperationsDialog dialog = (ScaleOperationsDialog) a.getSupportFragmentManager().findFragmentByTag("tareFixture");
+                View root = dialog.requireView();
+                root.findViewById(R.id.clearInput).performClick();
+                assertEquals("0", ((TextView) root.findViewById(R.id.tareInput)).getText().toString());
             });
-            scene.recreate(); ins.waitForIdleSync();
-            scene.onActivity(a -> assertEquals("0",((TextView)((ScaleOperationsDialog)a.getSupportFragmentManager()
+            scene.recreate();
+            ins.waitForIdleSync();
+            scene.onActivity(a -> assertEquals("0", ((TextView) ((ScaleOperationsDialog) a.getSupportFragmentManager()
                     .findFragmentByTag("tareFixture")).requireView().findViewById(R.id.tareInput)).getText().toString()));
         }
     }
-    /** 仅测试读取现有状态机；不增加生产调试入口。 */
-    private Object field(Object object,String name) {
-        try { Field field=object.getClass().getDeclaredField(name); field.setAccessible(true); return field.get(object); }
-        catch(ReflectiveOperationException error) { throw new AssertionError(error); }
+
+    /**
+     * 仅测试读取现有状态机；不增加生产调试入口。
+     */
+    private Object field(Object object, String name) {
+        try {
+            Field field = object.getClass().getDeclaredField(name);
+            field.setAccessible(true);
+            return field.get(object);
+        } catch (ReflectiveOperationException error) {
+            throw new AssertionError(error);
+        }
     }
-    /** 仅在测试主线程替换边界依赖与内存夹具，不新增生产注入入口。 */
+
+    /**
+     * 仅在测试主线程替换边界依赖与内存夹具，不新增生产注入入口。
+     */
     private void setField(Object object, String name, Object value) {
-        try { Field field = object.getClass().getDeclaredField(name); field.setAccessible(true); field.set(object, value); }
-        catch (ReflectiveOperationException error) { throw new AssertionError(error); }
+        try {
+            Field field = object.getClass().getDeclaredField(name);
+            field.setAccessible(true);
+            field.set(object, value);
+        } catch (ReflectiveOperationException error) {
+            throw new AssertionError(error);
+        }
     }
-    /** 保存当前窗口的确认入口截图，供横竖屏视觉验收。 */
+
+    /**
+     * 保存当前窗口的确认入口截图，供横竖屏视觉验收。
+     */
     private void captureConfirmation() {
         SystemClock.sleep(300);
         android.graphics.Bitmap bitmap = ins.getUiAutomation().takeScreenshot();
@@ -154,7 +202,10 @@ public class IntegrationCheckoutDeviceTest {
                 "confirm-results-" + bitmap.getWidth() + "x" + bitmap.getHeight() + ".png");
         try (java.io.FileOutputStream stream = new java.io.FileOutputStream(file)) {
             bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG, 100, stream);
-        } catch (java.io.IOException error) { throw new AssertionError(error); }
-        finally { bitmap.recycle(); }
+        } catch (java.io.IOException error) {
+            throw new AssertionError(error);
+        } finally {
+            bitmap.recycle();
+        }
     }
 }

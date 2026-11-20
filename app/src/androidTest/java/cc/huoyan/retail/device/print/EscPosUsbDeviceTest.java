@@ -5,25 +5,35 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.TextView;
+
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+
 import cc.huoyan.retail.checkout.domain.WeightedSaleResult;
 import cc.huoyan.retail.R;
 import cc.huoyan.retail.settings.SettingsPageActivity;
 import cc.huoyan.retail.common.ui.ToastTestProbe;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+
 import static org.junit.Assert.*;
 
-/** 实机验证系统 USB 连接及现有小票位图；默认不出纸，显式参数才允许试打。 */
+/**
+ * 实机验证系统 USB 连接及现有小票位图；默认不出纸，显式参数才允许试打。
+ */
 @RunWith(AndroidJUnit4.class)
 public class EscPosUsbDeviceTest {
-    /** 真实设置页使用新协议，连接回执只提示一次，重建不残留加载框。 */
-    @Test public void settingsConnectsAndRecreatesWithoutInlineStatus() throws Exception {
+    /**
+     * 真实设置页使用新协议，连接回执只提示一次，重建不残留加载框。
+     */
+    @Test
+    public void settingsConnectsAndRecreatesWithoutInlineStatus() throws Exception {
         String selected = PrinterManager.getInstance().resolveSelection(PrinterManager.getInstance().devices());
         assertNotNull("先在设置中选择打印设备", selected);
         String name = PrinterManager.displayName(selected);
@@ -64,8 +74,11 @@ public class EscPosUsbDeviceTest {
         }
     }
 
-    /** 厂商 SDK 已移除；原生 USB 能枚举、申请权限、占用接口并执行无出纸预检。 */
-    @Test public void connectsWithoutVendorSdk() throws Exception {
+    /**
+     * 厂商 SDK 已移除；原生 USB 能枚举、申请权限、占用接口并执行无出纸预检。
+     */
+    @Test
+    public void connectsWithoutVendorSdk() throws Exception {
         assertThrows(ClassNotFoundException.class, () -> Class.forName("POSSDKAPI.SDK"));
         PrinterManager manager = PrinterManager.getInstance();
         List<String> devices = manager.devices();
@@ -79,8 +92,11 @@ public class EscPosUsbDeviceTest {
         }
     }
 
-    /** 真实 Android 字体与条码渲染保留 320 点宽，并可转换为 ESC/POS 完整指令。 */
-    @Test public void rendersExistingReceiptIntoEscPos() throws Exception {
+    /**
+     * 真实 Android 字体与条码渲染保留 320 点宽，并可转换为 ESC/POS 完整指令。
+     */
+    @Test
+    public void rendersExistingReceiptIntoEscPos() throws Exception {
         WeightedSaleResult result = new WeightedSaleResult("render-test", new BigDecimal("0.500"),
                 2000, 1000, 1, 1, Collections.singletonList(
                 new WeightedSaleResult.Item("00001", "测试商品", 2000, 1, false, "00001", cc.huoyan.retail.pricing.PricingMode.WEIGHT)));
@@ -122,7 +138,8 @@ public class EscPosUsbDeviceTest {
                 assertTrue("位图应包含可打印的文字或条码", ink);
             }
         } finally {
-            header.recycle(); footer.recycle();
+            header.recycle();
+            footer.recycle();
         }
     }
 }

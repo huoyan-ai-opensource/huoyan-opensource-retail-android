@@ -3,7 +3,9 @@ package cc.huoyan.sdk.client.internal;
 import cc.huoyan.app.aidl.PhotoUploadResultParcel;
 
 import com.alibaba.fastjson.JSONObject;
+
 import android.content.Context;
+
 import cc.huoyan.sdk.client.SdkLog;
 import cc.huoyan.sdk.client.internal.ws.WsParcelMapper;
 import cc.huoyan.sdk.client.internal.ws.WsPendingTable;
@@ -16,7 +18,9 @@ import org.java_websocket.handshake.ServerHandshake;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+
 import cc.huoyan.app.aidl.*;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -69,10 +73,14 @@ public final class WsSdkBridge implements SdkChannelBridge {
 
     private static final String LOG_TAG = "WsSdkBridge";
 
-    /** 常规命令的本地响应等待上限，不作为 SDK 命令参数。 */
+    /**
+     * 常规命令的本地响应等待上限，不作为 SDK 命令参数。
+     */
     private static final long REQUEST_TIMEOUT_MS = 35_000L;
 
-    /** 反馈/上传 SDK 内预算 60 秒，另留 5 秒接收回执。 */
+    /**
+     * 反馈/上传 SDK 内预算 60 秒，另留 5 秒接收回执。
+     */
     private static final long FEEDBACK_TIMEOUT_MS = 65_000L;
 
     /**
@@ -81,13 +89,19 @@ public final class WsSdkBridge implements SdkChannelBridge {
      */
     private static final long BIND_TIMEOUT_MS = 60_000L;
 
-    /** 初始化可能包含证书恢复、模型准备；仅限制本地传输等待，不向 SDK 传超时参数。 */
+    /**
+     * 初始化可能包含证书恢复、模型准备；仅限制本地传输等待，不向 SDK 传超时参数。
+     */
     private static final long INIT_TIMEOUT_MS = 125_000L;
 
-    /** 断线重连初始退避。 */
+    /**
+     * 断线重连初始退避。
+     */
     private static final long RECONNECT_INITIAL_MS = 1_000L;
 
-    /** 断线重连退避上限。 */
+    /**
+     * 断线重连退避上限。
+     */
     private static final long RECONNECT_MAX_MS = 10_000L;
 
     private final WsV2Codec.Endpoint endpoint;
@@ -109,12 +123,15 @@ public final class WsSdkBridge implements SdkChannelBridge {
     private volatile ScheduledExecutorService reconnectExecutor;
     private volatile long reconnectDelay = RECONNECT_INITIAL_MS;
 
-    /** 用调用方上下文连接 WS；本机端点通过绑定拉起 SDK。 */
+    /**
+     * 用调用方上下文连接 WS；本机端点通过绑定拉起 SDK。
+     */
     public WsSdkBridge(Context context, WsV2Codec.Endpoint endpoint, SdkLog log) {
         this(endpoint, message -> log.log(LOG_TAG, message), () -> true,
                 () -> {
                     if (!LocalSdkEndpoint.isLocal(endpoint.getHost())) return null;
-                    if (android.os.Build.VERSION.SDK_INT >= 27) return new AidlSdkBridge(context, log);
+                    if (android.os.Build.VERSION.SDK_INT >= 27)
+                        return new AidlSdkBridge(context, log);
                     // 低版本不创建含 SharedMemory 契约的 AIDL 实现；显式启动通讯服务拉起 WS。
                     try {
                         context.startService(new android.content.Intent().setClassName(
@@ -127,35 +144,45 @@ public final class WsSdkBridge implements SdkChannelBridge {
     }
 
     WsSdkBridge() {
-        this(WsV2Codec.Endpoint.def(), message -> { });
+        this(WsV2Codec.Endpoint.def(), message -> {
+        });
     }
 
     WsSdkBridge(WsV2Codec.Endpoint endpoint) {
-        this(endpoint, message -> { });
+        this(endpoint, message -> {
+        });
     }
 
     WsSdkBridge(WsV2Codec.Endpoint endpoint, EventLog eventLog) {
         this(endpoint, eventLog, () -> false, () -> null);
     }
 
-    /** 注入应用就绪条件，便于通过回环服务验证真实 WS 请求。 */
+    /**
+     * 注入应用就绪条件，便于通过回环服务验证真实 WS 请求。
+     */
     WsSdkBridge(WsV2Codec.Endpoint endpoint, EventLog eventLog, BooleanSupplier applicationReady) {
         this(endpoint, eventLog, applicationReady, () -> null);
     }
 
-    /** 注入本机服务拉起器；远端 WS 的工厂返回 null，不绑定本机 SDK。 */
+    /**
+     * 注入本机服务拉起器；远端 WS 的工厂返回 null，不绑定本机 SDK。
+     */
     WsSdkBridge(WsV2Codec.Endpoint endpoint, EventLog eventLog, BooleanSupplier applicationReady,
-            java.util.function.Supplier<SdkChannelBridge> localServiceFactory) {
+                java.util.function.Supplier<SdkChannelBridge> localServiceFactory) {
         this.endpoint = endpoint;
         this.eventLog = eventLog;
         this.applicationReady = applicationReady;
         this.localServiceFactory = localServiceFactory;
     }
 
-    /** [Biz] 打点出口：生产为 android Log（由调用方控制调试日志），单测注入记录实现。 */
+    /**
+     * [Biz] 打点出口：生产为 android Log（由调用方控制调试日志），单测注入记录实现。
+     */
     interface EventLog {
 
-        /** 打一条业务打点（消息形如 {@code [Biz] key=value}）。 */
+        /**
+         * 打一条业务打点（消息形如 {@code [Biz] key=value}）。
+         */
         void biz(String message);
     }
 
@@ -217,7 +244,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return started.get() && connected;
     }
 
-    /** 显式发送携带宿主版本的初始化命令，传输等待时间不作为协议参数。 */
+    /**
+     * 显式发送携带宿主版本的初始化命令，传输等待时间不作为协议参数。
+     */
     @Override
     public BaseResultParcel init(String appVersion) {
         JSONObject params = new JSONObject();
@@ -257,15 +286,21 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? null : WsParcelMapper.downloadProgress(response);
     }
 
-    /** 无参查询当前设备支持的授权模型。 */
-    @Override public cc.huoyan.app.aidl.LicenseModelsParcel queryDeviceModels() {
+    /**
+     * 无参查询当前设备支持的授权模型。
+     */
+    @Override
+    public cc.huoyan.app.aidl.LicenseModelsParcel queryDeviceModels() {
         WsV2Codec.Response response = request(WsV2Codec.CMD_QUERY_DEVICE_MODELS,
                 null, null, INIT_TIMEOUT_MS);
         return response == null ? null : WsParcelMapper.licenseModels(response);
     }
 
-    /** 按激活码查询支持模型，适用于正常激活。 */
-    @Override public cc.huoyan.app.aidl.LicenseModelsParcel queryLicenseModels(String activationCode) {
+    /**
+     * 按激活码查询支持模型，适用于正常激活。
+     */
+    @Override
+    public cc.huoyan.app.aidl.LicenseModelsParcel queryLicenseModels(String activationCode) {
         WsV2Codec.Response response = request(WsV2Codec.CMD_QUERY_LICENSE_MODELS,
                 WsParcelMapper.buildLicenseModelsParams(activationCode), null, INIT_TIMEOUT_MS);
         return response == null ? null : WsParcelMapper.licenseModels(response);
@@ -285,13 +320,17 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? new BaseResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送") : WsParcelMapper.base(response);
     }
 
-    /** 识别和检测默认从裁剪位图直接编码 JPEG90，减少 WS 传输字节数。 */
+    /**
+     * 识别和检测默认从裁剪位图直接编码 JPEG90，减少 WS 传输字节数。
+     */
     @Override
     public ImageRequestParcel createImageRequest(android.graphics.Bitmap bitmap) {
         return createJpegImageRequest(bitmap);
     }
 
-    /** 构造 WS 图像载体：保留 RGB888 兼容契约。 */
+    /**
+     * 构造 WS 图像载体：保留 RGB888 兼容契约。
+     */
     @Override
     public ImageRequestParcel createImageRequest(byte[] rgbFrame, int width, int height) {
         if (width <= 0 || height <= 0 || rgbFrame == null
@@ -354,13 +393,17 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return learn(image, clazz, WsV2Codec.CMD_ITEM_LEARN);
     }
 
-    /** 导入图片使用独立命令，普通学习上传规则不变。 */
+    /**
+     * 导入图片使用独立命令，普通学习上传规则不变。
+     */
     @Override
     public LearnResultParcel importLearn(ImageRequestParcel image, String clazz) {
         return learn(image, clazz, WsV2Codec.CMD_IMPORT_LEARN);
     }
 
-    /** 两类小图学习共用参数和图像传输，写请求均不自动重放。 */
+    /**
+     * 两类小图学习共用参数和图像传输，写请求均不自动重放。
+     */
     private LearnResultParcel learn(ImageRequestParcel image, String clazz, String command) {
         if (!isConnected()) {
             return new LearnResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", 0L);
@@ -425,14 +468,17 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? new BaseResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送") : WsParcelMapper.base(response);
     }
 
-    /** 先发送 uploadPhoto JSON 声明，再发送同 requestId 的 JPEG/PNG 二进制帧。 */
+    /**
+     * 先发送 uploadPhoto JSON 声明，再发送同 requestId 的 JPEG/PNG 二进制帧。
+     */
     @Override
     public PhotoUploadResultParcel uploadPhoto(ImageRequestParcel image) {
-        if (!isConnected()) return new PhotoUploadResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", null);
+        if (!isConnected())
+            return new PhotoUploadResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", null);
         if (image == null || image.getBytes() == null || image.getBytes().length == 0
                 || image.getSharedMemory() != null || image.getShmKey() != null
                 || (image.getFormat() != ImageRequestParcel.FORMAT_JPEG
-                    && image.getFormat() != ImageRequestParcel.FORMAT_PNG)) {
+                && image.getFormat() != ImageRequestParcel.FORMAT_PNG)) {
             return new PhotoUploadResultParcel(-7, "需 JPEG/PNG 字节载体", null);
         }
         int size = image.getSize() == 0 ? image.getBytes().length : image.getSize();
@@ -446,7 +492,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? new PhotoUploadResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", null) : WsParcelMapper.photoUpload(response);
     }
 
-    /** 调用 SDK 的 getItemClazzImages，保留服务端回执。 */
+    /**
+     * 调用 SDK 的 getItemClazzImages，保留服务端回执。
+     */
     @Override
     public ItemClazzImagePageParcel getItemClazzImages(String clazz, int page, int size) {
         WsV2Codec.Response response = request(WsV2Codec.CMD_GET_ITEM_CLAZZ_IMAGES,
@@ -454,7 +502,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? null : WsParcelMapper.clazzImages(response);
     }
 
-    /** 调用 SDK 的 getFailedImages，保留服务端回执。 */
+    /**
+     * 调用 SDK 的 getFailedImages，保留服务端回执。
+     */
     @Override
     public FailedImagesResultParcel getFailedImages() {
         WsV2Codec.Response response = request(WsV2Codec.CMD_GET_FAILED_IMAGES,
@@ -462,7 +512,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? null : WsParcelMapper.failedImages(response);
     }
 
-    /** 查询 SDK 持久化的云端服务开关。 */
+    /**
+     * 查询 SDK 持久化的云端服务开关。
+     */
     @Override
     public CloudStatusParcel getCloudStatus() {
         WsV2Codec.Response response = request(WsV2Codec.CMD_GET_CLOUD_STATUS,
@@ -470,7 +522,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? null : WsParcelMapper.cloudStatus(response);
     }
 
-    /** 设置云端服务开关，保留 SDK 返回的终态或拒绝原因。 */
+    /**
+     * 设置云端服务开关，保留 SDK 返回的终态或拒绝原因。
+     */
     @Override
     public CloudStatusParcel setCloudStatus(boolean enabled) {
         JSONObject params = new JSONObject();
@@ -480,7 +534,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? new CloudStatusParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", false) : WsParcelMapper.cloudStatus(response);
     }
 
-    /** 调用 SDK 的 backupRecognitionData，保留服务端回执。 */
+    /**
+     * 调用 SDK 的 backupRecognitionData，保留服务端回执。
+     */
     @Override
     public BaseResultParcel backupRecognitionData() {
         WsV2Codec.Response response = request(WsV2Codec.CMD_BACKUP_RECOGNITION_DATA,
@@ -488,7 +544,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? new BaseResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送") : WsParcelMapper.base(response);
     }
 
-    /** 调用 SDK 的 getRecognitionDataInfo，保留服务端回执。 */
+    /**
+     * 调用 SDK 的 getRecognitionDataInfo，保留服务端回执。
+     */
     @Override
     public RecognitionDataInfoParcel getRecognitionDataInfo() {
         WsV2Codec.Response response = request(WsV2Codec.CMD_GET_RECOGNITION_DATA_INFO,
@@ -496,7 +554,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? null : WsParcelMapper.recognitionDataInfo(response);
     }
 
-    /** 调用 SDK 的 restoreRecognitionData，保留服务端回执。 */
+    /**
+     * 调用 SDK 的 restoreRecognitionData，保留服务端回执。
+     */
     @Override
     public BaseResultParcel restoreRecognitionData() {
         WsV2Codec.Response response = request(WsV2Codec.CMD_RESTORE_RECOGNITION_DATA,
@@ -504,7 +564,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? new BaseResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送") : WsParcelMapper.base(response);
     }
 
-    /** 调用小图包下载学习（长任务独立超时，失败不重发）。 */
+    /**
+     * 调用小图包下载学习（长任务独立超时，失败不重发）。
+     */
     @Override
     public ImageFlowProgressParcel downloadImagesAndLearn() {
         WsV2Codec.Response response = request(WsV2Codec.CMD_DOWNLOAD_IMAGES_AND_LEARN,
@@ -512,7 +574,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? new ImageFlowProgressParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", false, null, 0, 0, 0, 0, null, 0, null) : WsParcelMapper.imageFlow(response, true);
     }
 
-    /** 调用小图包阶段进度查询。 */
+    /**
+     * 调用小图包阶段进度查询。
+     */
     @Override
     public ImageFlowProgressParcel getImageDownloadProgress() {
         WsV2Codec.Response response = request(WsV2Codec.CMD_GET_IMAGE_DOWNLOAD_PROGRESS,
@@ -520,7 +584,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? null : WsParcelMapper.imageFlow(response, false);
     }
 
-    /** 调用小图包阶段进度查询。 */
+    /**
+     * 调用小图包阶段进度查询。
+     */
     @Override
     public ImageFlowProgressParcel getImageLearnProgress() {
         WsV2Codec.Response response = request(WsV2Codec.CMD_GET_IMAGE_LEARN_PROGRESS,
@@ -612,7 +678,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
 
     // ================= 连接与重连 =================
 
-    /** 建立新连接（每次重连新建客户端实例；连接失败经 onClose/onError 进退避）。 */
+    /**
+     * 建立新连接（每次重连新建客户端实例；连接失败经 onClose/onError 进退避）。
+     */
     private void openConnection() {
         if (!started.get()) {
             return;
@@ -670,7 +738,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 传输层失守（onClose/onError 均达）：断开态落定 + 在途作废 + 退避重连。 */
+    /**
+     * 传输层失守（onClose/onError 均达）：断开态落定 + 在途作废 + 退避重连。
+     */
     private void onTransportLost(String detail) {
         connected = false;
         int dropped = pending.failAll(detail);
@@ -678,7 +748,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         scheduleReconnect();
     }
 
-    /** 指数退避重连调度（CAS 防 onClose/onError 双达重复调度）。 */
+    /**
+     * 指数退避重连调度（CAS 防 onClose/onError 双达重复调度）。
+     */
     private void scheduleReconnect() {
         if (!started.get()) {
             return;
@@ -710,19 +782,19 @@ public final class WsSdkBridge implements SdkChannelBridge {
     /**
      * 发送一条 v2 命令并等待响应（阻塞调用线程）。
      *
-     * @param cmd      命令名
-     * @param params   命令参数；null=无参
-     * @param image    图像字节；非 null 时 text 声明后紧随 binary 帧（需图命令）
+     * @param cmd       命令名
+     * @param params    命令参数；null=无参
+     * @param image     图像字节；非 null 时 text 声明后紧随 binary 帧（需图命令）
      * @param timeoutMs 等待响应超时
      * @return 响应；未连接/发送失败返回 null；超时/在途断线返回
-     *         code=RESULT_UNKNOWN 的本地错误响应
+     * code=RESULT_UNKNOWN 的本地错误响应
      */
     private WsV2Codec.Response request(String cmd, JSONObject params, byte[] image, long timeoutMs) {
         return request(cmd, params, image, timeoutMs, nextRequestId(), System.nanoTime());
     }
 
     private WsV2Codec.Response request(String cmd, JSONObject params, byte[] image, long timeoutMs,
-            String requestId, long startedAt) {
+                                       String requestId, long startedAt) {
         boolean trace = WsV2Codec.CMD_RECOGNIZE.equals(cmd);
         if (!isConnected()) {
             if (trace) timing(requestId, "transport_end", startedAt, "outcome=disconnected");
@@ -808,7 +880,8 @@ public final class WsSdkBridge implements SdkChannelBridge {
     }
 
     static ImagePayload toImagePayload(ImageRequestParcel image) {
-        if (image == null || image.getFormat() != ImageRequestParcel.FORMAT_JPEG) return toRgbPayload(image);
+        if (image == null || image.getFormat() != ImageRequestParcel.FORMAT_JPEG)
+            return toRgbPayload(image);
         byte[] bytes = image.getBytes();
         if (bytes == null || image.getSharedMemory() != null || image.getShmKey() != null) {
             return ImagePayload.error("WS JPEG 只支持 bytes 载体");
@@ -821,14 +894,18 @@ public final class WsSdkBridge implements SdkChannelBridge {
                 image.getWidth(), image.getHeight());
     }
 
-    /** 连接内唯一 requestId：会话纪元 + 单调序号（已回执 id 不复用，规避在途冲突）。 */
+    /**
+     * 连接内唯一 requestId：会话纪元 + 单调序号（已回执 id 不复用，规避在途冲突）。
+     */
     private String nextRequestId() {
         return sessionEpoch.incrementAndGet() + "-" + requestSeq.incrementAndGet();
     }
 
     // ================= 图像载体映射 =================
 
-    /** WS 通道图像载荷：bytes+几何（errorReason=null 可上线）或不可映射原因。 */
+    /**
+     * WS 通道图像载荷：bytes+几何（errorReason=null 可上线）或不可映射原因。
+     */
     static final class ImagePayload {
 
         final byte[] bytes;
@@ -852,7 +929,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** WS 只接收 RGB 字节；独立校验几何和有效长度，AIDL 的 1MB 内联限制不适用。 */
+    /**
+     * WS 只接收 RGB 字节；独立校验几何和有效长度，AIDL 的 1MB 内联限制不适用。
+     */
     static ImagePayload toRgbPayload(ImageRequestParcel image) {
         if (image == null) {
             return ImagePayload.error("图像载体不能为空");
@@ -881,6 +960,7 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return ImagePayload.ok(effective < bytes.length ? Arrays.copyOf(bytes, effective) : bytes,
                 image.getWidth(), image.getHeight());
     }
+
     private static JSONObject params(Object... pairs) {
         JSONObject result = new JSONObject(true);
         for (int i = 0; i < pairs.length; i += 2) {
@@ -889,7 +969,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return result;
     }
 
-    /** 调用 SDK listGoods，保留参数和回执，不自动重试。 */
+    /**
+     * 调用 SDK listGoods，保留参数和回执，不自动重试。
+     */
     @Override
     public GoodsListResultParcel listGoods(long syncTimestamp, int current, int size) {
         if (!isConnected()) return null;
@@ -897,15 +979,20 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? null : WsParcelMapper.goodsList(response);
     }
 
-    /** 调用 SDK downloadGoods，保留参数和回执，不自动重试。 */
+    /**
+     * 调用 SDK downloadGoods，保留参数和回执，不自动重试。
+     */
     @Override
     public GoodsDownloadResultParcel downloadGoods(int size) {
-        if (!isConnected()) return new GoodsDownloadResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", null, null, 0, 0, 0, 0, 0, 0, 0, false, 0, null);
+        if (!isConnected())
+            return new GoodsDownloadResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", null, null, 0, 0, 0, 0, 0, 0, 0, false, 0, null);
         WsV2Codec.Response response = request("downloadGoods", params("size", size), null, REQUEST_TIMEOUT_MS);
         return response == null ? new GoodsDownloadResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", null, null, 0, 0, 0, 0, 0, 0, 0, false, 0, null) : WsParcelMapper.goodsDownload(response);
     }
 
-    /** 调用 SDK getDownloadGoodsProgress，保留参数和回执，不自动重试。 */
+    /**
+     * 调用 SDK getDownloadGoodsProgress，保留参数和回执，不自动重试。
+     */
     @Override
     public GoodsDownloadProgressParcel getDownloadGoodsProgress() {
         if (!isConnected()) return null;
@@ -913,15 +1000,20 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? null : WsParcelMapper.goodsDownloadProgress(response);
     }
 
-    /** 调用 SDK downloadImagesAndLearnByGoodsId，保留参数和回执，不自动重试。 */
+    /**
+     * 调用 SDK downloadImagesAndLearnByGoodsId，保留参数和回执，不自动重试。
+     */
     @Override
     public ImageFlowProgressParcel downloadImagesAndLearnByGoodsId(long[] goodsIds) {
-        if (!isConnected()) return new ImageFlowProgressParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", false, null, 0, 0, 0, 0, null, 0, null);
+        if (!isConnected())
+            return new ImageFlowProgressParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", false, null, 0, 0, 0, 0, null, 0, null);
         WsV2Codec.Response response = request("downloadImagesAndLearnByGoodsId", params("goods_ids", goodsIds), null, TimeUnit.MINUTES.toMillis(30));
         return response == null ? new ImageFlowProgressParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", false, null, 0, 0, 0, 0, null, 0, null) : WsParcelMapper.imageFlow(response, true);
     }
 
-    /** 调用 SDK getGoods，保留参数和回执，不自动重试。 */
+    /**
+     * 调用 SDK getGoods，保留参数和回执，不自动重试。
+     */
     @Override
     public GoodsResultParcel getGoods(String goodsId) {
         if (!isConnected()) return null;
@@ -929,7 +1021,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? null : WsParcelMapper.goods(response);
     }
 
-    /** 调用 SDK queryGoods，保留参数和回执，不自动重试。 */
+    /**
+     * 调用 SDK queryGoods，保留参数和回执，不自动重试。
+     */
     @Override
     public GoodsQueryResultParcel queryGoods(String keyword, String name, String plu, int isDeleted, int current, int size, String sortBy, String sortOrder) {
         if (!isConnected()) return null;
@@ -937,7 +1031,9 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? null : WsParcelMapper.goodsQuery(response);
     }
 
-    /** 调用 SDK getGoodsCount，保留参数和回执，不自动重试。 */
+    /**
+     * 调用 SDK getGoodsCount，保留参数和回执，不自动重试。
+     */
     @Override
     public GoodsCountResultParcel getGoodsCount(String keyword, String name, String plu, int isDeleted) {
         if (!isConnected()) return null;
@@ -945,18 +1041,24 @@ public final class WsSdkBridge implements SdkChannelBridge {
         return response == null ? null : WsParcelMapper.goodsCount(response);
     }
 
-    /** 调用 SDK batchUpdateGoods，保留参数和回执，不自动重试。 */
+    /**
+     * 调用 SDK batchUpdateGoods，保留参数和回执，不自动重试。
+     */
     @Override
     public GoodsBatchResultParcel batchUpdateGoods(String[] goodsIds, GoodsSaveParcel changes) {
-        if (!isConnected()) return new GoodsBatchResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", java.util.Collections.emptyList());
+        if (!isConnected())
+            return new GoodsBatchResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", java.util.Collections.emptyList());
         WsV2Codec.Response response = request("batchUpdateGoods", params("goods_ids", goodsIds, "changes", changes == null ? null : WsParcelMapper.buildGoodsSaveParams(changes)), null, REQUEST_TIMEOUT_MS);
         return response == null ? new GoodsBatchResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", java.util.Collections.emptyList()) : WsParcelMapper.goodsBatch(response);
     }
 
-    /** 调用 SDK batchDeleteGoods，保留参数和回执，不自动重试。 */
+    /**
+     * 调用 SDK batchDeleteGoods，保留参数和回执，不自动重试。
+     */
     @Override
     public GoodsBatchResultParcel batchDeleteGoods(String[] goodsIds) {
-        if (!isConnected()) return new GoodsBatchResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", java.util.Collections.emptyList());
+        if (!isConnected())
+            return new GoodsBatchResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", java.util.Collections.emptyList());
         WsV2Codec.Response response = request("batchDeleteGoods", params("goods_ids", goodsIds), null, REQUEST_TIMEOUT_MS);
         return response == null ? new GoodsBatchResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", java.util.Collections.emptyList()) : WsParcelMapper.goodsBatch(response);
     }

@@ -35,9 +35,9 @@ public final class GoodsDownloadProgressParcel implements Parcelable {
     private final String failReason;
 
     public GoodsDownloadProgressParcel(int code, String reason, boolean active, String phase,
-            long current, long total, long successCount, long failCount, long addedCount,
-            long updatedCount, long deletedCount, boolean hasChanges, String syncMode,
-            long syncTimestamp, String failReason) {
+                                       long current, long total, long successCount, long failCount, long addedCount,
+                                       long updatedCount, long deletedCount, boolean hasChanges, String syncMode,
+                                       long syncTimestamp, String failReason) {
         this.code = code;
         this.reason = reason;
         this.active = active;
@@ -63,22 +63,30 @@ public final class GoodsDownloadProgressParcel implements Parcelable {
         return reason;
     }
 
-    /** 同步进行中（FETCHING/APPLYING）；无任务（IDLE）恒 false。 */
+    /**
+     * 同步进行中（FETCHING/APPLYING）；无任务（IDLE）恒 false。
+     */
     public boolean isActive() {
         return active;
     }
 
-    /** IDLE/FETCHING/APPLYING/SUCCESS/FAILED（终态停留可查）。 */
+    /**
+     * IDLE/FETCHING/APPLYING/SUCCESS/FAILED（终态停留可查）。
+     */
     public String getPhase() {
         return phase;
     }
 
-    /** 已处理商品行数（含跨页重复与无效行；非页码）。 */
+    /**
+     * 已处理商品行数（含跨页重复与无效行；非页码）。
+     */
     public long getCurrent() {
         return current;
     }
 
-    /** 本次商品总数（0 = 未知/未开始）。 */
+    /**
+     * 本次商品总数（0 = 未知/未开始）。
+     */
     public long getTotal() {
         return total;
     }
@@ -103,22 +111,30 @@ public final class GoodsDownloadProgressParcel implements Parcelable {
         return deletedCount;
     }
 
-    /** 本次本地库是否有变更。 */
+    /**
+     * 本次本地库是否有变更。
+     */
     public boolean isHasChanges() {
         return hasChanges;
     }
 
-    /** 同步模式（full/incremental；未开始为 null）。 */
+    /**
+     * 同步模式（full/incremental；未开始为 null）。
+     */
     public String getSyncMode() {
         return syncMode;
     }
 
-    /** 已提交游标（进行中/失败保留旧值；成功为本次回执值）。 */
+    /**
+     * 已提交游标（进行中/失败保留旧值；成功为本次回执值）。
+     */
     public long getSyncTimestamp() {
         return syncTimestamp;
     }
 
-    /** 失败原因（仅 FAILED 非 null）。 */
+    /**
+     * 失败原因（仅 FAILED 非 null）。
+     */
     public String getFailReason() {
         return failReason;
     }
@@ -211,14 +227,14 @@ public final class GoodsDownloadProgressParcel implements Parcelable {
 
     public static final Creator<GoodsDownloadProgressParcel> CREATOR =
             new Creator<GoodsDownloadProgressParcel>() {
-        @Override
-        public GoodsDownloadProgressParcel createFromParcel(Parcel parcel) {
-            return new GoodsDownloadProgressParcel(parcel);
-        }
+                @Override
+                public GoodsDownloadProgressParcel createFromParcel(Parcel parcel) {
+                    return new GoodsDownloadProgressParcel(parcel);
+                }
 
-        @Override
-        public GoodsDownloadProgressParcel[] newArray(int size) {
-            return new GoodsDownloadProgressParcel[size];
-        }
-    };
+                @Override
+                public GoodsDownloadProgressParcel[] newArray(int size) {
+                    return new GoodsDownloadProgressParcel[size];
+                }
+            };
 }

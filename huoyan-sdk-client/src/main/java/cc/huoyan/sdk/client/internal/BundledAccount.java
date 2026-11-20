@@ -4,15 +4,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/** 读取发行 JAR 的归属账号；不依赖 Android 资源或宿主配置。 */
+/**
+ * 读取发行 JAR 的归属账号；不依赖 Android 资源或宿主配置。
+ */
 final class BundledAccount {
-    /** JAR 内固定资源路径，打包 APK 时必须保留。 */
+    /**
+     * JAR 内固定资源路径，打包 APK 时必须保留。
+     */
     private static final String CONFIG_PATH = "/raw/config";
 
-    /** 工具类不创建实例。 */
-    private BundledAccount() { }
+    /**
+     * 工具类不创建实例。
+     */
+    private BundledAccount() {
+    }
 
-    /** 每次绑定读取发行配置；不缓存宿主状态，缺失或无效时禁止发起绑定。 */
+    /**
+     * 每次绑定读取发行配置；不缓存宿主状态，缺失或无效时禁止发起绑定。
+     */
     static long getAccountId() {
         try (InputStream input = BundledAccount.class.getResourceAsStream(CONFIG_PATH)) {
             return readAccountId(input);
@@ -21,7 +30,9 @@ final class BundledAccount {
         }
     }
 
-    /** 解析正整数账号并保留完整 long 精度；流由调用者关闭。 */
+    /**
+     * 解析正整数账号并保留完整 long 精度；流由调用者关闭。
+     */
     static long readAccountId(InputStream input) throws IOException {
         if (input == null) {
             throw new IllegalStateException("JAR 内缺少 raw/config");

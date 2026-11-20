@@ -15,7 +15,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-/** SDK WebSocket 服务发现的协议和地址验证。 */
+/**
+ * SDK WebSocket 服务发现的协议和地址验证。
+ */
 public class SdkDiscoveryTest {
     @Test
     public void buildsFixedEndpointFromIpOnly() {

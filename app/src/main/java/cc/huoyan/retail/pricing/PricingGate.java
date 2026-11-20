@@ -24,7 +24,9 @@ public final class PricingGate {
      */
     public enum BlockReason {
 
-        /** 称重模块未开启，无法对 WEIGHT 商品计价。 */
+        /**
+         * 称重模块未开启，无法对 WEIGHT 商品计价。
+         */
         WEIGHING_DISABLED
     }
 
@@ -37,10 +39,14 @@ public final class PricingGate {
      */
     public enum GateResult {
 
-        /** 放行。 */
+        /**
+         * 放行。
+         */
         PASS(null),
 
-        /** 拦截，原因为 {@link BlockReason#WEIGHING_DISABLED}。 */
+        /**
+         * 拦截，原因为 {@link BlockReason#WEIGHING_DISABLED}。
+         */
         BLOCK(BlockReason.WEIGHING_DISABLED);
 
         private final BlockReason reason;

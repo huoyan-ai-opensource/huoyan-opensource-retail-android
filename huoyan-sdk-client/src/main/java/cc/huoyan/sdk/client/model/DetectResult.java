@@ -15,7 +15,9 @@ public final class DetectResult {
     private final String reason;
     private final List<DetectBox> boxes;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public DetectResult(int code, String reason, List<DetectBox> boxes) {
         this.code = code;
         this.reason = reason;
@@ -23,17 +25,23 @@ public final class DetectResult {
                 Objects.requireNonNull(boxes, "boxes 不能为空")));
     }
 
-    /** 结果码；0 表示请求成功。 */
+    /**
+     * 结果码；0 表示请求成功。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 检测框列表（code=0 时有效；无目标为空列表）。 */
+    /**
+     * 检测框列表（code=0 时有效；无目标为空列表）。
+     */
     public List<DetectBox> getBoxes() {
         return boxes;
     }

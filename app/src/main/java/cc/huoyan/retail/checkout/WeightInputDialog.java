@@ -33,9 +33,13 @@ import java.math.RoundingMode;
  */
 public class WeightInputDialog extends DialogFragment {
 
-    /** 重量小数位数上限（与秤读数 3 位小数口径一致） */
+    /**
+     * 重量小数位数上限（与秤读数 3 位小数口径一致）
+     */
     public static final int MAX_DECIMAL_PLACES = 3;
-    /** 输入文本长度上限（含小数点，兜底防超长） */
+    /**
+     * 输入文本长度上限（含小数点，兜底防超长）
+     */
     public static final int MAX_INPUT_LENGTH = 10;
 
     private double weightKg;
@@ -125,7 +129,9 @@ public class WeightInputDialog extends DialogFragment {
         });
     }
 
-    /** 首次按键进入编辑态：丢弃预填值从头输入（与计件键盘语义一致）。 */
+    /**
+     * 首次按键进入编辑态：丢弃预填值从头输入（与计件键盘语义一致）。
+     */
     private void startEditing() {
         if (!editingStarted) {
             editingStarted = true;
@@ -167,8 +173,8 @@ public class WeightInputDialog extends DialogFragment {
     /**
      * 追加数字键：小数位已达 3 位（处于小数部分）或超长时忽略输入，其余原样追加。
      *
-     * @param input  当前输入文本
-     * @param digit  数字字符
+     * @param input 当前输入文本
+     * @param digit 数字字符
      * @return 追加后的输入文本（不满足条件时返回原文）
      */
     public static String appendDigit(String input, String digit) {

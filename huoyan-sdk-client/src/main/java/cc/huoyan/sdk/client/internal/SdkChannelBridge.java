@@ -1,7 +1,9 @@
 package cc.huoyan.sdk.client.internal;
 
 import cc.huoyan.app.aidl.PhotoUploadResultParcel;
+
 import java.util.List;
+
 import cc.huoyan.app.aidl.*;
 
 import cc.huoyan.app.aidl.BaseResultParcel;
@@ -35,11 +37,12 @@ import cc.huoyan.app.aidl.StatusSnapshotParcel;
  * {@code SDKManager} 语义收敛，回执类型直接复用 SDK Parcelable（错误经回执
  * {@code code}（0=成功）+ {@code reason} 返回，不抛异常）；连接生命周期参照
  * 文档模板 {@code SdkCommBinding}（bind/断线重连/close）。
-
  */
 public interface SdkChannelBridge {
 
-    /** 本地哨兵：通道未连接/连接断开（非服务端回执码，不与 SDK 侧 0/负值/40004 冲突）。 */
+    /**
+     * 本地哨兵：通道未连接/连接断开（非服务端回执码，不与 SDK 侧 0/负值/40004 冲突）。
+     */
     int LOCAL_DISCONNECTED = Integer.MIN_VALUE;
 
     /**
@@ -48,7 +51,9 @@ public interface SdkChannelBridge {
      */
     void connect();
 
-    /** 断开并停止重连（close/unbind 后不再有任何重连动作）。 */
+    /**
+     * 断开并停止重连（close/unbind 后不再有任何重连动作）。
+     */
     void disconnect();
 
     /**
@@ -60,6 +65,7 @@ public interface SdkChannelBridge {
 
     /**
      * 在后台线程触发/复用初始化，再通过 getStatus().getSdkState() 判断机器状态。
+     *
      * @return 永非 null：0 链路完成（可能未激活），-110 KEY_ROTATION 待审，
      * -111 初始化失败，-1 配置错误；本地断连返回 LOCAL_DISCONNECTED。
      */
@@ -93,12 +99,19 @@ public interface SdkChannelBridge {
      */
     DownloadProgressParcel getDownloadProgress();
 
-    /** 按激活码查询支持模型，适用于正常激活。 */
+    /**
+     * 按激活码查询支持模型，适用于正常激活。
+     */
     cc.huoyan.app.aidl.LicenseModelsParcel queryLicenseModels(String activationCode);
-    /** 无参查询当前设备绑定授权的支持模型。 */
+
+    /**
+     * 无参查询当前设备绑定授权的支持模型。
+     */
     cc.huoyan.app.aidl.LicenseModelsParcel queryDeviceModels();
 
-    /** 提交激活码和模型代码；保留断连、未知结果与真实回执，不自动重放。 */
+    /**
+     * 提交激活码和模型代码；保留断连、未知结果与真实回执，不自动重放。
+     */
     BaseResultParcel activate(String activationCode, String modelCode);
 
     /**
@@ -106,8 +119,8 @@ public interface SdkChannelBridge {
      * 返回对象必须交给同一个桥的图像方法，不可跨通道复用；调用结束前不得修改原始字节。
      *
      * @param rgbFrame 紧凑 RGB888，长度必须等于 width*height*3
-     * @param width 图像宽度，必须大于 0
-     * @param height 图像高度，必须大于 0
+     * @param width    图像宽度，必须大于 0
+     * @param height   图像高度，必须大于 0
      * @return 图像载体；本通道无法承载时返回 null
      */
     ImageRequestParcel createImageRequest(byte[] rgbFrame, int width, int height);
@@ -131,7 +144,9 @@ public interface SdkChannelBridge {
                 width, height);
     }
 
-    /** 将裁剪位图编码为 JPEG 90；尺寸和方向不变，不接管位图所有权。 */
+    /**
+     * 将裁剪位图编码为 JPEG 90；尺寸和方向不变，不接管位图所有权。
+     */
     default ImageRequestParcel createJpegImageRequest(android.graphics.Bitmap bitmap) {
         return JpegImages.encode(bitmap);
     }
@@ -157,13 +172,15 @@ public interface SdkChannelBridge {
     /**
      * 学习样本（clazz 分类编码 int64），成功回执携带新 uid。
      *
-     * @param image  图像载体
+     * @param image 图像载体
      * @param clazz 分类编码
      * @return 学习回执；未连接返回 null
      */
     LearnResultParcel itemLearn(ImageRequestParcel image, String clazz);
 
-    /** 导入已有图片并学习；仅本地保存，不上传云端，载体由通道负责释放。 */
+    /**
+     * 导入已有图片并学习；仅本地保存，不上传云端，载体由通道负责释放。
+     */
     LearnResultParcel importLearn(ImageRequestParcel image, String clazz);
 
     /**
@@ -203,25 +220,39 @@ public interface SdkChannelBridge {
      */
     ItemClazzListParcel getItemClazzList(int page, int size);
 
-    /** 查询类别下样本图片分页（page/size 为 0 时使用 SDK 默认值 1/100）。 */
+    /**
+     * 查询类别下样本图片分页（page/size 为 0 时使用 SDK 默认值 1/100）。
+     */
     ItemClazzImagePageParcel getItemClazzImages(String clazz, int page, int size);
 
-    /** 查询全部失败图片及 code/reason；断连返回 null，只有成功回执可将空列表视为无记录。 */
+    /**
+     * 查询全部失败图片及 code/reason；断连返回 null，只有成功回执可将空列表视为无记录。
+     */
     FailedImagesResultParcel getFailedImages();
 
-    /** 查询 SDK 持久化的云端服务开关；未连接或调用失败返回 null。 */
+    /**
+     * 查询 SDK 持久化的云端服务开关；未连接或调用失败返回 null。
+     */
     CloudStatusParcel getCloudStatus();
 
-    /** 设置云端服务开关；仅 code=0 时 enabled 为真实终态，当前 SDK 开启后不可关闭。 */
+    /**
+     * 设置云端服务开关；仅 code=0 时 enabled 为真实终态，当前 SDK 开启后不可关闭。
+     */
     CloudStatusParcel setCloudStatus(boolean enabled);
 
-    /** 备份识别数据；互斥冲突或引擎未就绪通过 code/reason 返回。 */
+    /**
+     * 备份识别数据；互斥冲突或引擎未就绪通过 code/reason 返回。
+     */
     BaseResultParcel backupRecognitionData();
 
-    /** 查询识别数据备份时间和版本；从未备份是正常空态。 */
+    /**
+     * 查询识别数据备份时间和版本；从未备份是正常空态。
+     */
     RecognitionDataInfoParcel getRecognitionDataInfo();
 
-    /** 从 SDK 固定备份恢复识别数据，SDK 负责校验、回滚和引擎重建。 */
+    /**
+     * 从 SDK 固定备份恢复识别数据，SDK 负责校验、回滚和引擎重建。
+     */
     BaseResultParcel restoreRecognitionData();
 
     /**
@@ -232,20 +263,28 @@ public interface SdkChannelBridge {
      */
     BaseResultParcel setBaseUrl(String url);
 
-    /** 提交已上传图片的反馈；URL 必须为 http(s)，归属由 SDK 的设备签名确定。 */
+    /**
+     * 提交已上传图片的反馈；URL 必须为 http(s)，归属由 SDK 的设备签名确定。
+     */
     BaseResultParcel submitFeedback(FeedbackParcel feedback);
 
-    /** 按当前通道构造 JPEG/PNG 字节载体；AIDL 大图使用共享内存，无法承载时返回 null。 */
+    /**
+     * 按当前通道构造 JPEG/PNG 字节载体；AIDL 大图使用共享内存，无法承载时返回 null。
+     */
     default ImageRequestParcel createPhotoRequest(byte[] bytes, int format) {
         return new ImageRequestParcel(null, bytes, bytes.length, 0, 0, format);
     }
 
-    /** 构造保留几何的编码图像载体；所有权只在单次调用期间有效。 */
+    /**
+     * 构造保留几何的编码图像载体；所有权只在单次调用期间有效。
+     */
     default ImageRequestParcel createEncodedImageRequest(byte[] bytes, int width, int height, int format) {
         return new ImageRequestParcel(null, bytes, bytes.length, width, height, format);
     }
 
-    /** 上传图片到线上并返回 URL；调用结束由桥释放载体，非零回执不得继续提交反馈。 */
+    /**
+     * 上传图片到线上并返回 URL；调用结束由桥释放载体，非零回执不得继续提交反馈。
+     */
     PhotoUploadResultParcel uploadPhoto(ImageRequestParcel image);
 
     // ================= 设备绑定与商品 CRUD（SDK 尾插契约） =================
@@ -304,37 +343,64 @@ public interface SdkChannelBridge {
      */
     BaseResultParcel deleteGoods(String goodsId);
 
-    /** 同步下载小图包并学习；后台调用，返回最终统计，失败不自动重试。 */
+    /**
+     * 同步下载小图包并学习；后台调用，返回最终统计，失败不自动重试。
+     */
     ImageFlowProgressParcel downloadImagesAndLearn();
-    /** 查询下载阶段进度；可与下载学习调用并行，未连接返回 null。 */
+
+    /**
+     * 查询下载阶段进度；可与下载学习调用并行，未连接返回 null。
+     */
     ImageFlowProgressParcel getImageDownloadProgress();
-    /** 查询学习阶段进度；可与下载学习调用并行，未连接返回 null。 */
+
+    /**
+     * 查询学习阶段进度；可与下载学习调用并行，未连接返回 null。
+     */
     ImageFlowProgressParcel getImageLearnProgress();
-    /** 分页读取云端商品目录；syncTimestamp=0 全量，增量游标由业务端管理。 */
+
+    /**
+     * 分页读取云端商品目录；syncTimestamp=0 全量，增量游标由业务端管理。
+     */
     GoodsListResultParcel listGoods(long syncTimestamp, int current, int size);
 
-    /** 将云端商品同步到 SDK 本地库，返回最终统计；不修改业务端数据库。 */
+    /**
+     * 将云端商品同步到 SDK 本地库，返回最终统计；不修改业务端数据库。
+     */
     GoodsDownloadResultParcel downloadGoods(int size);
 
-    /** 查询 SDK 商品同步进度；失败时保留上次已提交游标。 */
+    /**
+     * 查询 SDK 商品同步进度；失败时保留上次已提交游标。
+     */
     GoodsDownloadProgressParcel getDownloadGoodsProgress();
 
-    /** 按指定商品 ID 下载图片并重新学习；会替换这些分类的旧样本，不自动重试。 */
+    /**
+     * 按指定商品 ID 下载图片并重新学习；会替换这些分类的旧样本，不自动重试。
+     */
     ImageFlowProgressParcel downloadImagesAndLearnByGoodsId(long[] goodsIds);
 
-    /** 按商品 ID 查询 SDK 本地商品；不存在返回 404。 */
+    /**
+     * 按商品 ID 查询 SDK 本地商品；不存在返回 404。
+     */
     GoodsResultParcel getGoods(String goodsId);
 
-    /** 分页筛选 SDK 本地商品；isDeleted=-1 默认未删除，current/size=0 使用 SDK 默认值。 */
+    /**
+     * 分页筛选 SDK 本地商品；isDeleted=-1 默认未删除，current/size=0 使用 SDK 默认值。
+     */
     GoodsQueryResultParcel queryGoods(String keyword, String name, String plu, int isDeleted, int current, int size, String sortBy, String sortOrder);
 
-    /** 按条件统计 SDK 本地商品数量。 */
+    /**
+     * 按条件统计 SDK 本地商品数量。
+     */
     GoodsCountResultParcel getGoodsCount(String keyword, String name, String plu, int isDeleted);
 
-    /** 批量更新 SDK 本地商品；只覆盖提供字段，逐条检查 items 的结果。 */
+    /**
+     * 批量更新 SDK 本地商品；只覆盖提供字段，逐条检查 items 的结果。
+     */
     GoodsBatchResultParcel batchUpdateGoods(String[] goodsIds, GoodsSaveParcel changes);
 
-    /** 批量软删除 SDK 本地商品；整体成功仍须逐条检查 items。 */
+    /**
+     * 批量软删除 SDK 本地商品；整体成功仍须逐条检查 items。
+     */
     GoodsBatchResultParcel batchDeleteGoods(String[] goodsIds);
 
 }

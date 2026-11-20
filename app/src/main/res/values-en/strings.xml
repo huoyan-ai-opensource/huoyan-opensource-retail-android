@@ -422,4 +422,13 @@
     <string name="language_system">Follow system</string>
     <string name="language_simplified_chinese">Simplified Chinese</string>
     <string name="language_english">English</string>
+    <string name="sdk_permission_title">SDK permissions</string>
+    <string name="sdk_permission_overlay">Open overlay settings</string>
+    <string name="sdk_permission_install">Open app installation settings</string>
+    <string name="sdk_permission_return">Return to app</string>
+    <string name="sdk_permission_steps">Allow the Object SDK (cc.huoyan) to display over other apps and install unknown apps. If a list opens, select the Object SDK. Both permissions are also under Apps → Special app access in Android Settings.</string>
+    <string name="sdk_permission_overlay_only">Allow the Object SDK (cc.huoyan) to display over other apps. If a list opens, select the Object SDK.</string>
+    <string name="sdk_permission_remote">The SDK runs on another device. On that device, open Android Settings and allow the Object SDK (cc.huoyan) to display over other apps and install unknown apps.</string>
+    <string name="sdk_permission_not_installed">Install the Object SDK from System Maintenance before setting its permissions.</string>
+    <string name="sdk_permission_open_failed">Permission settings could not be opened. Open Android Settings and go to Apps → Special app access to grant permissions to the Object SDK.</string>
 </resources>

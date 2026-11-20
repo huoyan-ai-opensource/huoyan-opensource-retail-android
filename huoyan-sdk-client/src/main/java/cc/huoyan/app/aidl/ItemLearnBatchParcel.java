@@ -32,12 +32,16 @@ public final class ItemLearnBatchParcel implements Parcelable {
         return code;
     }
 
-    /** 整体错误说明；code=0 时为 null（每框错误说明在 boxes 元素内）。 */
+    /**
+     * 整体错误说明；code=0 时为 null（每框错误说明在 boxes 元素内）。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 每框结果列表（code=0 时有效；与 detect 框序一致，无框为空列表）。 */
+    /**
+     * 每框结果列表（code=0 时有效；与 detect 框序一致，无框为空列表）。
+     */
     public List<ItemLearnBoxParcel> getBoxes() {
         return boxes;
     }

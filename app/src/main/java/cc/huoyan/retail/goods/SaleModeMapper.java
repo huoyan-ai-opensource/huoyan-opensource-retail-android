@@ -8,17 +8,29 @@ package cc.huoyan.retail.goods;
  */
 public final class SaleModeMapper {
 
-    /** v2 销售方式：按个（计件） */
+    /**
+     * v2 销售方式：按个（计件）
+     */
     public static final int SALE_MODE_COUNT = 0;
-    /** v2 销售方式：按重量（称重） */
+    /**
+     * v2 销售方式：按重量（称重）
+     */
     public static final int SALE_MODE_WEIGHT = 1;
-    /** 本地计件 unit 语义（PricingMode.fromUnit：unit == 5 → COUNT） */
+    /**
+     * 本地计件 unit 语义（PricingMode.fromUnit：unit == 5 → COUNT）
+     */
     public static final int LOCAL_UNIT_COUNT = 5;
-    /** 本地称重 unit 语义（GoodsEntity 默认值，非 5 即称重 → WEIGHT） */
+    /**
+     * 本地称重 unit 语义（GoodsEntity 默认值，非 5 即称重 → WEIGHT）
+     */
     public static final int LOCAL_UNIT_WEIGHT = 0;
-    /** 计价单位标签：按个（计件商品，上传 v2 unit 字段与价格展示共用） */
+    /**
+     * 计价单位标签：按个（计件商品，上传 v2 unit 字段与价格展示共用）
+     */
     public static final String UNIT_LABEL_COUNT = "个";
-    /** 计价单位标签：kg（称重商品，本地称重链路按 kg 计价，见 WeightPricingStrategy） */
+    /**
+     * 计价单位标签：kg（称重商品，本地称重链路按 kg 计价，见 WeightPricingStrategy）
+     */
     public static final String UNIT_LABEL_WEIGHT = "kg";
 
     private SaleModeMapper() {

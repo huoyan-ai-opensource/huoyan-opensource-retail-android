@@ -16,24 +16,32 @@ public final class GoodsBatchResult {
     private final String reason;
     private final List<GoodsBatchItem> items;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public GoodsBatchResult(int code, String reason, List<GoodsBatchItem> items) {
         this.code = code;
         this.reason = reason;
         this.items = items == null ? Collections.<GoodsBatchItem>emptyList() : items;
     }
 
-    /** 读取 getCode 对应数据。 */
+    /**
+     * 读取 getCode 对应数据。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 读取 getReason 对应数据。 */
+    /**
+     * 读取 getReason 对应数据。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 逐条结果（与入参 goodsIds 等长同序；错误回执空列表）。 */
+    /**
+     * 逐条结果（与入参 goodsIds 等长同序；错误回执空列表）。
+     */
     public List<GoodsBatchItem> getItems() {
         return items;
     }

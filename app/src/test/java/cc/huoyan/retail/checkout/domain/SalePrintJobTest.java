@@ -1,10 +1,12 @@
 package cc.huoyan.retail.checkout.domain;
 
 import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.junit.Assert.*;
 
 public class SalePrintJobTest {
@@ -12,7 +14,8 @@ public class SalePrintJobTest {
         return new WeightedSaleResult(id, java.math.BigDecimal.ONE, amount, amount, 1, 1, Collections.emptyList());
     }
 
-    @Test public void changedPageDoesNotDiscardPrintedReceiptOrFeedback() throws Exception {
+    @Test
+    public void changedPageDoesNotDiscardPrintedReceiptOrFeedback() throws Exception {
         WeightedSaleResult original = receipt("old", 100);
         SalePrintJob job = new SalePrintJob(1, original);
         WeightedSaleResult[] page = {original};
@@ -30,7 +33,8 @@ public class SalePrintJobTest {
         assertEquals(500, page[0].getTotalAmountCent());
     }
 
-    @Test public void changedWeightWithinSessionDoesNotLoseCompletion() throws Exception {
+    @Test
+    public void changedWeightWithinSessionDoesNotLoseCompletion() throws Exception {
         SalePrintJob job = new SalePrintJob(1, receipt("same", 100));
         AtomicInteger reported = new AtomicInteger();
         WeightedSaleResult[] liveReceipt = {receipt("same", 100)};
@@ -43,28 +47,38 @@ public class SalePrintJobTest {
         assertEquals(1, reported.get());
     }
 
-    @Test public void feedbackFailureIsNotPrintFailure() throws Exception {
+    @Test
+    public void feedbackFailureIsNotPrintFailure() throws Exception {
         SalePrintJob job = new SalePrintJob(1, receipt("sale", 100));
         AtomicInteger feedbackErrors = new AtomicInteger();
-        job.execute(value -> {}, () -> { throw new IllegalStateException("feedback"); },
+        job.execute(value -> {
+                }, () -> {
+                    throw new IllegalStateException("feedback");
+                },
                 e -> feedbackErrors.incrementAndGet());
         assertEquals(1, feedbackErrors.get());
     }
 
-    @Test public void failedPrinterDoesNotReportSale() {
+    @Test
+    public void failedPrinterDoesNotReportSale() {
         SalePrintJob job = new SalePrintJob(1, receipt("sale", 100));
         AtomicInteger reported = new AtomicInteger();
-        assertThrows(Exception.class, () -> job.execute(value -> { throw new Exception("printer"); },
+        assertThrows(Exception.class, () -> job.execute(value -> {
+                    throw new Exception("printer");
+                },
                 reported::incrementAndGet, e -> fail()));
         assertEquals(0, reported.get());
     }
 
-    @Test public void jobCannotPrintTwice() throws Exception {
+    @Test
+    public void jobCannotPrintTwice() throws Exception {
         SalePrintJob job = new SalePrintJob(1, receipt("sale", 100));
         AtomicInteger prints = new AtomicInteger();
-        job.execute(value -> prints.incrementAndGet(), () -> {}, e -> fail());
+        job.execute(value -> prints.incrementAndGet(), () -> {
+        }, e -> fail());
         assertThrows(IllegalStateException.class, () -> job.execute(value -> prints.incrementAndGet(),
-                () -> {}, e -> fail()));
+                () -> {
+                }, e -> fail()));
         assertEquals(1, prints.get());
     }
 }

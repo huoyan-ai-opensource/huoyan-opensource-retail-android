@@ -28,7 +28,9 @@ public class NV21ToBitmap {
     private int frameWidth;
     private int frameHeight;
 
-    /** 转换 NV21，复用同尺寸的 RenderScript 资源，返回独立且由调用方回收的位图。 */
+    /**
+     * 转换 NV21，复用同尺寸的 RenderScript 资源，返回独立且由调用方回收的位图。
+     */
     public synchronized Bitmap nv21ToBitmap(byte[] nv21, int width, int height) {
         if (rs == null) throw new IllegalStateException("转换器已释放");
         if (inputAllocation == null || inputLength != nv21.length
@@ -77,7 +79,9 @@ public class NV21ToBitmap {
         return stream.toByteArray();
     }
 
-    /** 释放转换资源；与转换互斥，可重复调用。 */
+    /**
+     * 释放转换资源；与转换互斥，可重复调用。
+     */
     public synchronized void release() {
         releaseAllocations();
         if (yuvToRgbIntrinsic != null) {

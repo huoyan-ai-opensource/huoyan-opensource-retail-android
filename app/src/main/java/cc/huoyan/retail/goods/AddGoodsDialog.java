@@ -21,20 +21,28 @@ import cc.huoyan.retail.goods.SdkGoodsSource;
 import cc.huoyan.retail.common.ui.DebounceClickListener;
 import cc.huoyan.retail.common.ui.WindowUtil;
 
-/** 商品新增与编辑表单视图，校验和实体构建交由 Presenter。 */
+/**
+ * 商品新增与编辑表单视图，校验和实体构建交由 Presenter。
+ */
 public class AddGoodsDialog extends DialogFragment implements GoodsFormPresenter.View {
-    /** 过滤新增 PLU 的粘贴和程序输入；合法内容返回 null 保留输入法状态。 */
+    /**
+     * 过滤新增 PLU 的粘贴和程序输入；合法内容返回 null 保留输入法状态。
+     */
     private static CharSequence filterPlu(CharSequence source, int start, int end) {
         StringBuilder accepted = new StringBuilder();
         for (int i = start; i < end; i++) {
             char c = source.charAt(i);
-            if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9')) accepted.append(c);
+            if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'))
+                accepted.append(c);
         }
         return accepted.length() == end - start ? null : accepted.toString();
     }
 
-    /** 横屏使用与设计稿一致的居中弹窗和遮罩。 */
-    @Override public void onStart() {
+    /**
+     * 横屏使用与设计稿一致的居中弹窗和遮罩。
+     */
+    @Override
+    public void onStart() {
         super.onStart();
         LandscapeDialogWindow.apply(this);
         // 小横屏表单在软键盘出现时缩小滚动区，保留底部确认操作。
@@ -58,38 +66,60 @@ public class AddGoodsDialog extends DialogFragment implements GoodsFormPresenter
         }
     }
 
-    /** 将合法表单交给宿主提交 SDK。 */
+    /**
+     * 将合法表单交给宿主提交 SDK。
+     */
     private AddGoodsDialogListener listener;
-    /** 当前表单规则与异步校验。 */
+    /**
+     * 当前表单规则与异步校验。
+     */
     private GoodsFormPresenter presenter;
-    /** 仅用于SDK 商品查询，随视图销毁关闭。 */
+    /**
+     * 仅用于SDK 商品查询，随视图销毁关闭。
+     */
     private java.util.concurrent.ExecutorService worker;
-    /** 不引用页面的主线程投递器。 */
+    /**
+     * 不引用页面的主线程投递器。
+     */
     private final android.os.Handler ui = new android.os.Handler(android.os.Looper.getMainLooper());
-    /** 新增商品计价偏好；编辑商品不覆盖该值。 */
+    /**
+     * 新增商品计价偏好；编辑商品不覆盖该值。
+     */
     private static final String LAST_PRICING_COUNT = "last_new_goods_pricing_count";
-    /** 恢复后的编辑商品，仅用于初始表单回显。 */
+    /**
+     * 恢复后的编辑商品，仅用于初始表单回显。
+     */
     private GoodsEntity editingGoods;
 
-    /** 设置待编辑商品，PLU 保持不变以保留学习和 SDK 商品映射。 */
+    /**
+     * 设置待编辑商品，PLU 保持不变以保留学习和 SDK 商品映射。
+     */
     public void setEditingGoods(GoodsEntity goods) {
         Bundle args = new Bundle();
         args.putString("editingGoods", cc.huoyan.retail.common.GsonUtil.toJson(goods));
         setArguments(args);
     }
 
-    /** 向宿主交付校验通过的商品。 */
+    /**
+     * 向宿主交付校验通过的商品。
+     */
     public interface AddGoodsDialogListener {
-        /** 商品校验完成，由宿主执行实际保存。 */
+        /**
+         * 商品校验完成，由宿主执行实际保存。
+         */
         void onConfirm(GoodsEntity goods);
     }
 
-    /** 绑定宿主的商品保存入口。 */
+    /**
+     * 绑定宿主的商品保存入口。
+     */
     public void setListener(AddGoodsDialogListener listener) {
         this.listener = listener;
     }
 
-    /** 恢复编辑参数并绑定表单，不在控件回调中查询 SDK。 */
+    /**
+     * 恢复编辑参数并绑定表单，不在控件回调中查询 SDK。
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -155,7 +185,9 @@ public class AddGoodsDialog extends DialogFragment implements GoodsFormPresenter
         return view;
     }
 
-    /** 按当前计价方式同步单价单位与皮重可见性，重建时沿用控件恢复的选中项。 */
+    /**
+     * 按当前计价方式同步单价单位与皮重可见性，重建时沿用控件恢复的选中项。
+     */
     private void updatePricingFields(View root, int checked) {
         boolean count = checked == R.id.pricingTypeCount;
         root.findViewById(R.id.goodsTareField).setVisibility(count ? View.GONE : View.VISIBLE);
@@ -163,7 +195,9 @@ public class AddGoodsDialog extends DialogFragment implements GoodsFormPresenter
                 count ? R.string.goods_price_count : R.string.goods_price_weight);
     }
 
-    /** 关闭商品名称输入法，再打开当前字段的自定义键盘。 */
+    /**
+     * 关闭商品名称输入法，再打开当前字段的自定义键盘。
+     */
     private void openNumber(boolean tare, String current) {
         android.view.inputmethod.InputMethodManager input = (android.view.inputmethod.InputMethodManager)
                 requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE);
@@ -173,20 +207,41 @@ public class AddGoodsDialog extends DialogFragment implements GoodsFormPresenter
         GoodsNumberDialog.show(getChildFragmentManager(), tare, count, current);
     }
 
-    /** 显示本地化表单校验错误，保留当前输入。 */
-    @Override public void invalid(int resource) { cc.huoyan.retail.common.ui.ToastEx.showFailureToast(requireContext(), getString(resource)); }
-    /** 查询失败允许重试，不关闭表单。 */
-    @Override public void failed(String reason) {
+    /**
+     * 显示本地化表单校验错误，保留当前输入。
+     */
+    @Override
+    public void invalid(int resource) {
+        cc.huoyan.retail.common.ui.ToastEx.showFailureToast(requireContext(), getString(resource));
+    }
+
+    /**
+     * 查询失败允许重试，不关闭表单。
+     */
+    @Override
+    public void failed(String reason) {
+        if (cc.huoyan.retail.sdk.SdkPermissionGuide.showIfRequired(requireActivity(), reason))
+            return;
         cc.huoyan.retail.common.ui.ToastEx.showFailureToast(requireContext(), getString(R.string.goods_operation_failed, reason));
     }
-    /** 交付校验后的独立商品并关闭弹窗。 */
-    @Override public void accepted(GoodsEntity goods) {
+
+    /**
+     * 交付校验后的独立商品并关闭弹窗。
+     */
+    @Override
+    public void accepted(GoodsEntity goods) {
         if (listener != null) listener.onConfirm(goods);
         dismiss();
     }
-    /** 视图销毁后停止查询并释放 Presenter 引用。 */
-    @Override public void onDestroyView() {
-        presenter.detach(); worker.shutdownNow(); ui.removeCallbacksAndMessages(null);
+
+    /**
+     * 视图销毁后停止查询并释放 Presenter 引用。
+     */
+    @Override
+    public void onDestroyView() {
+        presenter.detach();
+        worker.shutdownNow();
+        ui.removeCallbacksAndMessages(null);
         super.onDestroyView();
     }
 }

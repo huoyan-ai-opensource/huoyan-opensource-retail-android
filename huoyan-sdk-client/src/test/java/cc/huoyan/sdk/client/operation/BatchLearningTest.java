@@ -31,8 +31,11 @@ public class BatchLearningTest {
                 new ArrayList<>(Arrays.asList(boxes)));
     }
 
-    /** 重复成功 UID 只能生成一次小图与反馈条目。 */
-    @Test public void repeatedUidKeepsFirstSuccessfulBox() {
+    /**
+     * 重复成功 UID 只能生成一次小图与反馈条目。
+     */
+    @Test
+    public void repeatedUidKeepsFirstSuccessfulBox() {
         ItemLearnBox first = box(101L, 0);
         List<ItemLearnBox> learned = BatchLearning.learnedBoxesOf(
                 batch(0, first, box(102L, 0), box(101L, 0)));

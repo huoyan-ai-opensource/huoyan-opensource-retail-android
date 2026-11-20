@@ -29,52 +29,72 @@ import java.util.Objects;
  */
 public final class ImageRequestParcel implements Parcelable {
 
-    /** 内联字节上限（AIDL 通道小图/降级路径边界；WS base64 通道另有 2MB 口径）。 */
+    /**
+     * 内联字节上限（AIDL 通道小图/降级路径边界；WS base64 通道另有 2MB 口径）。
+     */
     public static final int MAX_INLINE_BYTES = 1024 * 1024;
-    /** SharedMemory 有效字节接收上限，与 SDK 一致。 */
+    /**
+     * SharedMemory 有效字节接收上限，与 SDK 一致。
+     */
     public static final int MAX_SHARED_MEMORY_BYTES = 32 * 1024 * 1024;
 
-    /** 像素格式：RGB888 紧凑帧（HWC、已转正；当前唯一支持格式）。 */
+    /**
+     * 像素格式：RGB888 紧凑帧（HWC、已转正；当前唯一支持格式）。
+     */
     public static final int FORMAT_RGB888 = 1;
 
-    /** 像素格式：JPEG 原图（uploadPhoto 输入，不解析几何）。 */
+    /**
+     * 像素格式：JPEG 原图（uploadPhoto 输入，不解析几何）。
+     */
     public static final int FORMAT_JPEG = 2;
 
-    /** 像素格式：PNG 原图（多格式，不解析几何，解码得出尺寸）。 */
+    /**
+     * 像素格式：PNG 原图（多格式，不解析几何，解码得出尺寸）。
+     */
     public static final int FORMAT_PNG = 3;
 
     private final String shmKey;
 
-    /** SharedMemory 载体（API 27+ 大图主路径）；null=未使用。 */
+    /**
+     * SharedMemory 载体（API 27+ 大图主路径）；null=未使用。
+     */
     @RequiresApi(27)
     private final SharedMemory sharedMemory;
 
     private final byte[] bytes;
 
-    /** 区内/数组内有效字节数；0=未指定（bytes 载体视为全长，sharedMemory 载体非法）。 */
+    /**
+     * 区内/数组内有效字节数；0=未指定（bytes 载体视为全长，sharedMemory 载体非法）。
+     */
     private final int size;
 
     private final int width;
 
     private final int height;
 
-    /** 像素格式（{@link #FORMAT_RGB888}）；legacy shmKey 载体为 0。 */
+    /**
+     * 像素格式（{@link #FORMAT_RGB888}）；legacy shmKey 载体为 0。
+     */
     private final int format;
 
-    /** Legacy 形态（原契约）：shmKey/bytes 二选一，不携带几何信息。 */
+    /**
+     * Legacy 形态（原契约）：shmKey/bytes 二选一，不携带几何信息。
+     */
     public ImageRequestParcel(String shmKey, byte[] bytes) {
         this(shmKey, null, bytes, 0, 0, 0, 0);
     }
 
-    /** 全参形态：sharedMemory/bytes 恰选一 + 几何与格式（校验见 {@link #validate()}）。 */
+    /**
+     * 全参形态：sharedMemory/bytes 恰选一 + 几何与格式（校验见 {@link #validate()}）。
+     */
     @RequiresApi(27)
     public ImageRequestParcel(SharedMemory sharedMemory, byte[] bytes,
-            int size, int width, int height, int format) {
+                              int size, int width, int height, int format) {
         this(null, sharedMemory, bytes, size, width, height, format);
     }
 
     private ImageRequestParcel(String shmKey, SharedMemory sharedMemory, byte[] bytes,
-            int size, int width, int height, int format) {
+                               int size, int width, int height, int format) {
         this.shmKey = shmKey;
         this.sharedMemory = sharedMemory;
         this.bytes = bytes;
@@ -84,38 +104,52 @@ public final class ImageRequestParcel implements Parcelable {
         this.format = format;
     }
 
-    /** shmKey（legacy 共享内存区域键）；null 表示未使用该载体。 */
+    /**
+     * shmKey（legacy 共享内存区域键）；null 表示未使用该载体。
+     */
     public String getShmKey() {
         return shmKey;
     }
 
-    /** SharedMemory 载体（仅 API 27+ 非 null）；null 表示未使用该载体。 */
+    /**
+     * SharedMemory 载体（仅 API 27+ 非 null）；null 表示未使用该载体。
+     */
     @RequiresApi(27)
     public SharedMemory getSharedMemory() {
         return sharedMemory;
     }
 
-    /** 内联图像字节；null 表示未使用内联通道。 */
+    /**
+     * 内联图像字节；null 表示未使用内联通道。
+     */
     public byte[] getBytes() {
         return bytes;
     }
 
-    /** 有效字节数（0=未指定）。 */
+    /**
+     * 有效字节数（0=未指定）。
+     */
     public int getSize() {
         return size;
     }
 
-    /** 帧宽（像素；legacy shmKey 载体为 0）。 */
+    /**
+     * 帧宽（像素；legacy shmKey 载体为 0）。
+     */
     public int getWidth() {
         return width;
     }
 
-    /** 帧高（像素；legacy shmKey 载体为 0）。 */
+    /**
+     * 帧高（像素；legacy shmKey 载体为 0）。
+     */
     public int getHeight() {
         return height;
     }
 
-    /** 像素格式（{@link #FORMAT_RGB888}；legacy shmKey 载体为 0）。 */
+    /**
+     * 像素格式（{@link #FORMAT_RGB888}；legacy shmKey 载体为 0）。
+     */
     public int getFormat() {
         return format;
     }

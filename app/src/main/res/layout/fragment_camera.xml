@@ -6,7 +6,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/dp_0"
         android:layout_weight="95"
         android:gravity="center_vertical"
         android:paddingStart="@dimen/dp_10"
@@ -22,7 +22,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/dp_0"
         android:layout_weight="926"
         android:orientation="vertical">
 
@@ -55,7 +55,7 @@
 
                 <TextView
                     android:id="@+id/cameraType"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ellipsize="end"
@@ -86,6 +86,7 @@
                 android:textSize="@dimen/sp_7" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,7 +116,7 @@
 
                 <TextView
                     android:id="@+id/cameraName"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ellipsize="end"
@@ -181,7 +182,7 @@
 
                 <TextView
                     android:id="@+id/cameraResolution"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ellipsize="end"
@@ -309,7 +310,7 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="0dp"
+                    android:layout_height="@dimen/dp_0"
                     android:layout_weight="1">
 
                     <LinearLayout

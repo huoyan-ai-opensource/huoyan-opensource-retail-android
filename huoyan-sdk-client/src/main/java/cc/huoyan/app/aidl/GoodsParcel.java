@@ -37,11 +37,11 @@ public final class GoodsParcel implements Parcelable {
     private final String createTime;
 
     public GoodsParcel(String goodsId, String shopId, String name, String plu,
-            String baseGoodsId, String image, int category, String categoryName,
-            String unit, int saleMode, long price, long tareWeight,
-            String ingredientsList, String shelfLife, String pinyin, int status,
-            int sort, int isDeleted, String updateTime, String shopName,
-            String accountId, String accountName, String createTime) {
+                       String baseGoodsId, String image, int category, String categoryName,
+                       String unit, int saleMode, long price, long tareWeight,
+                       String ingredientsList, String shelfLife, String pinyin, int status,
+                       int sort, int isDeleted, String updateTime, String shopName,
+                       String accountId, String accountName, String createTime) {
         this.goodsId = goodsId;
         this.shopId = shopId;
         this.name = name;
@@ -67,7 +67,9 @@ public final class GoodsParcel implements Parcelable {
         this.createTime = createTime;
     }
 
-    /** 商品标识（十进制字符串，雪花 ID）。 */
+    /**
+     * 商品标识（十进制字符串，雪花 ID）。
+     */
     public String getGoodsId() {
         return goodsId;
     }
@@ -80,7 +82,9 @@ public final class GoodsParcel implements Parcelable {
         return name;
     }
 
-    /** 称重/店内码。 */
+    /**
+     * 称重/店内码。
+     */
     public String getPlu() {
         return plu;
     }
@@ -93,7 +97,9 @@ public final class GoodsParcel implements Parcelable {
         return image;
     }
 
-    /** 商品类别（0-8 枚举）。 */
+    /**
+     * 商品类别（0-8 枚举）。
+     */
     public int getCategory() {
         return category;
     }
@@ -102,22 +108,30 @@ public final class GoodsParcel implements Parcelable {
         return categoryName;
     }
 
-    /** 计价单位（如 500g/个/份）。 */
+    /**
+     * 计价单位（如 500g/个/份）。
+     */
     public String getUnit() {
         return unit;
     }
 
-    /** 销售方式（0 按个 / 1 按重量）。 */
+    /**
+     * 销售方式（0 按个 / 1 按重量）。
+     */
     public int getSaleMode() {
         return saleMode;
     }
 
-    /** 单价（整数分）。 */
+    /**
+     * 单价（整数分）。
+     */
     public long getPrice() {
         return price;
     }
 
-    /** 皮重（克）。 */
+    /**
+     * 皮重（克）。
+     */
     public long getTareWeight() {
         return tareWeight;
     }
@@ -134,17 +148,23 @@ public final class GoodsParcel implements Parcelable {
         return pinyin;
     }
 
-    /** 状态（1 上架 / 2 下架）。 */
+    /**
+     * 状态（1 上架 / 2 下架）。
+     */
     public int getStatus() {
         return status;
     }
 
-    /** 排序（小在前）。 */
+    /**
+     * 排序（小在前）。
+     */
     public int getSort() {
         return sort;
     }
 
-    /** 软删标志（1 = 已删——增量列表据此删本地；CRUD 回执恒 0）。 */
+    /**
+     * 软删标志（1 = 已删——增量列表据此删本地；CRUD 回执恒 0）。
+     */
     public int getIsDeleted() {
         return isDeleted;
     }
@@ -153,22 +173,30 @@ public final class GoodsParcel implements Parcelable {
         return updateTime;
     }
 
-    /** 门店名称（CRUD 回执冗余；列表形态 null）。 */
+    /**
+     * 门店名称（CRUD 回执冗余；列表形态 null）。
+     */
     public String getShopName() {
         return shopName;
     }
 
-    /** 归属客户标识（CRUD 回执；列表形态 null）。 */
+    /**
+     * 归属客户标识（CRUD 回执；列表形态 null）。
+     */
     public String getAccountId() {
         return accountId;
     }
 
-    /** 归属客户名称（CRUD 回执；列表形态 null）。 */
+    /**
+     * 归属客户名称（CRUD 回执；列表形态 null）。
+     */
     public String getAccountName() {
         return accountName;
     }
 
-    /** 建档时间（ISO-8601；CRUD 回执；列表形态 null）。 */
+    /**
+     * 建档时间（ISO-8601；CRUD 回执；列表形态 null）。
+     */
     public String getCreateTime() {
         return createTime;
     }

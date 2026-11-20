@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/dp_0"
         android:layout_weight="95"
         android:gravity="center_vertical">
 
@@ -56,7 +56,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/dp_0"
         android:layout_weight="926"
         android:orientation="vertical">
 
@@ -68,12 +68,10 @@
             android:visibility="gone">
 
 
-
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_0_5"
                 android:background="#EAEFF4" />
-
 
 
             <View
@@ -142,14 +140,14 @@
                 <TextView
                     android:id="@+id/sdkChannelPicker"
                     android:layout_width="wrap_content"
-                    android:layout_height="52dp"
+                    android:layout_height="@dimen/dp_26"
                     android:layout_marginStart="@dimen/dp_9"
-                    android:paddingHorizontal="16dp"
+                    android:paddingHorizontal="@dimen/dp_8"
                     android:gravity="center_vertical"
                     android:background="@drawable/land_field"
                     android:drawableEnd="@drawable/land_icon_chevron_right"
-                    android:drawablePadding="16dp"
-                    android:textSize="18sp"
+                    android:drawablePadding="@dimen/dp_8"
+                    android:textSize="@dimen/sp_9"
                     android:textColor="#293A51"
                     android:fontFamily="@font/retail_sans"
                     android:clickable="true"
@@ -159,7 +157,7 @@
                     android:id="@+id/wsSettings"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dp_24"
-                    android:minHeight="48dp"
+                    android:minHeight="@dimen/dp_24"
                     android:layout_marginStart="@dimen/dp_8"
                     android:paddingStart="@dimen/dp_8"
                     android:paddingEnd="@dimen/dp_8"
@@ -178,7 +176,8 @@
                 android:layout_height="@dimen/dp_0_5"
                 android:background="#EAEFF4" />
 
-            <LinearLayout android:clipToPadding="false"
+            <LinearLayout
+                android:clipToPadding="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_8"
@@ -201,9 +200,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_10"
                 android:layout_marginTop="@dimen/dp_9"
-                android:orientation="horizontal" android:gravity="end|center_vertical" android:layout_marginEnd="@dimen/dp_10">
+                android:orientation="horizontal"
+                android:gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/dp_10">
 
-                <TextView android:id="@+id/restoreRecognitionDefaults" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="12dp" android:padding="12dp" android:textStyle="bold" android:text="@string/recognition_restore_defaults" android:textColor="#3F3EED" android:background="@drawable/land_soft" android:clickable="true" android:focusable="true" />
+                <TextView
+                    android:id="@+id/restoreRecognitionDefaults"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_6"
+                    android:padding="@dimen/dp_6"
+                    android:textStyle="bold"
+                    android:text="@string/recognition_restore_defaults"
+                    android:textColor="#3F3EED"
+                    android:background="@drawable/land_soft"
+                    android:clickable="true"
+                    android:focusable="true" />
 
                 <TextView
                     android:id="@+id/saveSettings"
@@ -406,7 +418,6 @@
 
         </LinearLayout>
 
-        
 
         <LinearLayout
             android:id="@+id/otherLayout"
@@ -424,13 +435,15 @@
                 android:gravity="center_vertical"
                 android:paddingHorizontal="@dimen/dp_10"
                 android:paddingVertical="@dimen/dp_9">
+
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/language_setting"
                     android:textColor="#6B79A8"
                     android:textSize="@dimen/sp_8" />
+
                 <TextView
                     android:id="@+id/languageValue"
                     android:layout_width="wrap_content"

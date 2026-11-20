@@ -28,19 +28,29 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
-/** 用真实屏幕像素验证提示未被弹窗遮挡；不提交授权或其他业务写请求。 */
+/**
+ * 用真实屏幕像素验证提示未被弹窗遮挡；不提交授权或其他业务写请求。
+ */
 @RunWith(AndroidJUnit4.class)
 public class ToastLayerDeviceTest {
-    /** 测试线程通过仪器接口切换主线程及注入真实触摸。 */
+    /**
+     * 测试线程通过仪器接口切换主线程及注入真实触摸。
+     */
     private final Instrumentation ins = InstrumentationRegistry.getInstrumentation();
 
-    /** 每个用例清理提示和计时器，避免跨用例残留。 */
-    @After public void clearToast() {
+    /**
+     * 每个用例清理提示和计时器，避免跨用例残留。
+     */
+    @After
+    public void clearToast() {
         ins.runOnMainSync(ToastTestProbe::clear);
     }
 
-    /** 加载结束后连续错误提示必须显示在嵌套弹窗前方。 */
-    @Test public void errorsAboveNestedDialogsAfterLoading() throws Exception {
+    /**
+     * 加载结束后连续错误提示必须显示在嵌套弹窗前方。
+     */
+    @Test
+    public void errorsAboveNestedDialogsAfterLoading() throws Exception {
         try (ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class)) {
             scenario.onActivity(activity -> {
                 new AlertDialog("层级回归", "弹窗应位于提示下方", "确认", "取消", null)
@@ -61,8 +71,11 @@ public class ToastLayerDeviceTest {
         }
     }
 
-    /** 提示显示后再打开弹窗仍保持置顶；成功提示替换为错误时更新图标及文案。 */
-    @Test public void staysAboveLaterDialogsAndReplacesSuccess() throws Exception {
+    /**
+     * 提示显示后再打开弹窗仍保持置顶；成功提示替换为错误时更新图标及文案。
+     */
+    @Test
+    public void staysAboveLaterDialogsAndReplacesSuccess() throws Exception {
         try (ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class)) {
             scenario.onActivity(activity -> ToastEx.showSuccessToast(activity, "操作成功"));
             assertVisibleIcon("success", "操作成功");
@@ -79,8 +92,11 @@ public class ToastLayerDeviceTest {
         }
     }
 
-    /** 提示不抢焦点；即使覆盖确认框按钮，其下方真实点击仍可关闭弹窗。 */
-    @Test public void keepsDialogFocusAndPassesTouchesThrough() throws Exception {
+    /**
+     * 提示不抢焦点；即使覆盖确认框按钮，其下方真实点击仍可关闭弹窗。
+     */
+    @Test
+    public void keepsDialogFocusAndPassesTouchesThrough() throws Exception {
         Rect overlap = new Rect();
         try (ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class)) {
             scenario.onActivity(activity -> {
@@ -103,8 +119,11 @@ public class ToastLayerDeviceTest {
         }
     }
 
-    /** 应用上下文的后台回调可显示提示，离开或重建页面立即清理，不向后台回显。 */
-    @Test public void backgroundCallbackAndActivityLifecycle() throws Exception {
+    /**
+     * 应用上下文的后台回调可显示提示，离开或重建页面立即清理，不向后台回显。
+     */
+    @Test
+    public void backgroundCallbackAndActivityLifecycle() throws Exception {
         View[] shown = {null};
         try (ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(HomeActivity.class)) {
             // 测试线程不是主线程，模拟相机等应用级回调。
@@ -127,20 +146,26 @@ public class ToastLayerDeviceTest {
         }
     }
 
-    /** 等待窗口绘制与系统弹窗动画完成，避免只检测到已添加但尚未绘制的 View。 */
+    /**
+     * 等待窗口绘制与系统弹窗动画完成，避免只检测到已添加但尚未绘制的 View。
+     */
     private void settle() {
         ins.waitForIdleSync();
         SystemClock.sleep(350);
     }
 
-    /** 获取实际屏幕坐标，与 UiAutomation 全屏截图使用同一坐标系。 */
+    /**
+     * 获取实际屏幕坐标，与 UiAutomation 全屏截图使用同一坐标系。
+     */
     private Rect screenRect(View view) {
         int[] location = new int[2];
         view.getLocationOnScreen(location);
         return new Rect(location[0], location[1], location[0] + view.getWidth(), location[1] + view.getHeight());
     }
 
-    /** 注入真正的触屏事件，验证窗口穿透而非直接调用按钮监听。 */
+    /**
+     * 注入真正的触屏事件，验证窗口穿透而非直接调用按钮监听。
+     */
     private void tap(float x, float y) {
         long time = SystemClock.uptimeMillis();
         MotionEvent down = MotionEvent.obtain(time, time, MotionEvent.ACTION_DOWN, x, y, 0);
@@ -154,7 +179,9 @@ public class ToastLayerDeviceTest {
         }
     }
 
-    /** 将截图中的图标与自身渲染比较；被遮挡或被蒙层压暗都会失败，不能仅检查 attached。 */
+    /**
+     * 将截图中的图标与自身渲染比较；被遮挡或被蒙层压暗都会失败，不能仅检查 attached。
+     */
     private void assertVisibleIcon(String name, String message) throws Exception {
         settle();
         Rect[] bounds = {null};

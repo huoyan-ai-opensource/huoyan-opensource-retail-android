@@ -16,14 +16,20 @@ import java.util.Set;
 
 import cc.huoyan.app.aidl.BaseResultParcel;
 
-/** 守护桥方法签名、SDK 完整 Binder transaction 顺序和断连返回约定。 */
+/**
+ * 守护桥方法签名、SDK 完整 Binder transaction 顺序和断连返回约定。
+ */
 public class SdkChannelBridgeTest {
 
-    /** 通道本地方法（生命周期、图像构造，不属于 SDK 契约业务方法）。 */
+    /**
+     * 通道本地方法（生命周期、图像构造，不属于 SDK 契约业务方法）。
+     */
     private static final Set<String> LOCAL_METHODS =
             new HashSet<>(Arrays.asList("connect", "disconnect", "isConnected", "createImageRequest", "createJpegImageRequest", "createEncodedImageRequest", "createPhotoRequest"));
 
-    /** 桥已暴露的业务方法数（初始化、识别、分页、备份及商品写入）。 */
+    /**
+     * 桥已暴露的业务方法数（初始化、识别、分页、备份及商品写入）。
+     */
     private static final int EXPECTED_BUSINESS_METHOD_COUNT = 42;
 
     private Class<?> loadAidlContract() {
@@ -82,7 +88,8 @@ public class SdkChannelBridgeTest {
             bridge.connect();
             assertFalse(bridge.isConnected());
             for (Method m : SdkChannelBridge.class.getDeclaredMethods()) {
-                if (m.getName().equals("createImageRequest") || m.getName().equals("createJpegImageRequest") || m.getName().equals("createEncodedImageRequest") || m.getName().equals("createPhotoRequest")) continue; // 工厂入参和边界另有专测。
+                if (m.getName().equals("createImageRequest") || m.getName().equals("createJpegImageRequest") || m.getName().equals("createEncodedImageRequest") || m.getName().equals("createPhotoRequest"))
+                    continue; // 工厂入参和边界另有专测。
                 Object result = m.invoke(bridge, defaultArgs(m.getParameterTypes()));
                 Class<?> returnType = m.getReturnType();
                 if (returnType == void.class) {
@@ -109,7 +116,9 @@ public class SdkChannelBridgeTest {
         }
     }
 
-    /** 按参数类型构造占位实参：基本类型取零值，引用类型取 null。 */
+    /**
+     * 按参数类型构造占位实参：基本类型取零值，引用类型取 null。
+     */
     private static Object[] defaultArgs(Class<?>[] parameterTypes) {
         Object[] args = new Object[parameterTypes.length];
         for (int i = 0; i < parameterTypes.length; i++) {
@@ -128,6 +137,7 @@ public class SdkChannelBridgeTest {
         }
         return args;
     }
+
     @Test
     public void binderTransactionOrder_matchesCurrentShell() throws Exception {
         String[] methods = {

@@ -33,11 +33,15 @@ public final class SdkCommBinding {
     private static final String ACTION_BIND_SDK = "cc.huoyan.action.BIND_SDK";
     private static final String SDK_PACKAGE = "cc.huoyan";
 
-    /** 指数退避：500ms 起步，每失败一次翻倍，封顶 30s。 */
+    /**
+     * 指数退避：500ms 起步，每失败一次翻倍，封顶 30s。
+     */
     static final long BACKOFF_FIRST_MS = 500L;
     static final long BACKOFF_MAX_MS = 30_000L;
 
-    /** 本地哨兵：未连接/连接断开（非服务端回执，不与服务码段 0/负值/40004 冲突）。 */
+    /**
+     * 本地哨兵：未连接/连接断开（非服务端回执，不与服务码段 0/负值/40004 冲突）。
+     */
     public static final int LOCAL_DISCONNECTED = Integer.MIN_VALUE;
 
     /**
@@ -46,34 +50,52 @@ public final class SdkCommBinding {
      */
     interface BindOps {
 
-        /** 发起绑定（BIND_AUTO_CREATE）；false=SDK 未安装/组件不可用/包不可见；实现抛出的运行时异常由状态机折算为拒绝。 */
+        /**
+         * 发起绑定（BIND_AUTO_CREATE）；false=SDK 未安装/组件不可用/包不可见；实现抛出的运行时异常由状态机折算为拒绝。
+         */
         boolean bind(ServiceConnection connection);
 
-        /** 解绑（连接未注册时由调用方吞 IllegalArgumentException）。 */
+        /**
+         * 解绑（连接未注册时由调用方吞 IllegalArgumentException）。
+         */
         void unbind(ServiceConnection connection);
     }
 
-    /** 主线程调度抽象：生产为主线程 Handler，单测注入捕获式实现。 */
+    /**
+     * 主线程调度抽象：生产为主线程 Handler，单测注入捕获式实现。
+     */
     interface Scheduler {
 
-        /** 主线程即时执行。 */
+        /**
+         * 主线程即时执行。
+         */
         void post(Runnable task);
 
-        /** 主线程延迟执行。 */
+        /**
+         * 主线程延迟执行。
+         */
         void postDelayed(Runnable task, long delayMs);
 
-        /** 取消全部在途任务（close 时停掉退避重连）。 */
+        /**
+         * 取消全部在途任务（close 时停掉退避重连）。
+         */
         void cancelPending();
     }
 
-    /** [Biz] 打点出口：生产为 android Log（由调用方控制调试日志，平台 wait_log/assert_value 依赖），单测注入记录实现。 */
+    /**
+     * [Biz] 打点出口：生产为 android Log（由调用方控制调试日志，平台 wait_log/assert_value 依赖），单测注入记录实现。
+     */
     interface EventLog {
 
-        /** 打一条业务打点（消息形如 {@code [Biz] key=value}）。 */
+        /**
+         * 打一条业务打点（消息形如 {@code [Biz] key=value}）。
+         */
         void biz(String message);
     }
 
-    /** 生产绑定操作：applicationContext + 显式包名隐式 Intent + BIND_AUTO_CREATE。 */
+    /**
+     * 生产绑定操作：applicationContext + 显式包名隐式 Intent + BIND_AUTO_CREATE。
+     */
     private static final class ContextBindOps implements BindOps {
 
         private final Context appContext;
@@ -94,7 +116,9 @@ public final class SdkCommBinding {
         }
     }
 
-    /** 生产主线程调度：私有 Handler 仅承载本类的重连任务（cancelPending 可全量清）。 */
+    /**
+     * 生产主线程调度：私有 Handler 仅承载本类的重连任务（cancelPending 可全量清）。
+     */
     private static final class HandlerScheduler implements Scheduler {
 
         private final Handler main = new Handler(Looper.getMainLooper());
@@ -187,6 +211,7 @@ public final class SdkCommBinding {
 
     /**
      * 在后台线程触发/复用 SDK 初始化；连接成功不代表初始化完成。
+     *
      * @return 非空动作回执；断连或 Binder 失败返回本地哨兵并按需重连。
      */
     public BaseResultParcel init(String appVersion) {
@@ -208,12 +233,16 @@ public final class SdkCommBinding {
         }
     }
 
-    /** 本地断连动作回执。 */
+    /**
+     * 本地断连动作回执。
+     */
     private static BaseResultParcel localDisconnected(String reason) {
         return new BaseResultParcel(LOCAL_DISCONNECTED, reason);
     }
 
-    /** 停止使用并永不再连：取消退避任务 + 解绑。 */
+    /**
+     * 停止使用并永不再连：取消退避任务 + 解绑。
+     */
     public synchronized void close() {
         closed = true;
         main.cancelPending();
@@ -225,18 +254,24 @@ public final class SdkCommBinding {
         eventLog.biz("[Biz] aidl_disconnect=close");
     }
 
-    /** 当前服务代理（null=未连接）；Binder 同步事务，调用方须在后台线程执行。 */
+    /**
+     * 当前服务代理（null=未连接）；Binder 同步事务，调用方须在后台线程执行。
+     */
     synchronized ISdkCommService service() {
         return sdk;
     }
 
-    /** 桥接层 Binder 调用抛 RemoteException 后回调：标记断开 + 退避重连。 */
+    /**
+     * 桥接层 Binder 调用抛 RemoteException 后回调：标记断开 + 退避重连。
+     */
     void onRemoteException() {
         eventLog.biz("[Biz] aidl_remote_exception=1");
         markDisconnectedAndReconnect();
     }
 
-    /** 连接建立（onServiceConnected 回调）：缓存代理 + 退避计数清零。 */
+    /**
+     * 连接建立（onServiceConnected 回调）：缓存代理 + 退避计数清零。
+     */
     synchronized void connected(ISdkCommService service) {
         if (closed) {
             return;
@@ -246,7 +281,9 @@ public final class SdkCommBinding {
         eventLog.biz("[Biz] aidl_connected=1");
     }
 
-    /** 服务进程死亡（onServiceDisconnected）：清空死代理 + 退避重连兜底。 */
+    /**
+     * 服务进程死亡（onServiceDisconnected）：清空死代理 + 退避重连兜底。
+     */
     void serviceDisconnected() {
         synchronized (this) {
             sdk = null;
@@ -255,12 +292,16 @@ public final class SdkCommBinding {
         markDisconnectedAndReconnect();
     }
 
-    /** 宿主更新/卸载等导致绑定死亡（onBindingDied，API 28+）：同断线处理。 */
+    /**
+     * 宿主更新/卸载等导致绑定死亡（onBindingDied，API 28+）：同断线处理。
+     */
     void bindingDied() {
         serviceDisconnected();
     }
 
-    /** onBind 返回 null（契约级故障）：重连无意义，解绑并停止重连、上报人工介入。 */
+    /**
+     * onBind 返回 null（契约级故障）：重连无意义，解绑并停止重连、上报人工介入。
+     */
     void nullBinding() {
         synchronized (this) {
             sdk = null;
@@ -312,7 +353,9 @@ public final class SdkCommBinding {
         }, delayMs);
     }
 
-    /** SDK 契约 ServiceConnection 四回调（第 4 节表语义，逻辑移交上方包级方法以便单测直连）。 */
+    /**
+     * SDK 契约 ServiceConnection 四回调（第 4 节表语义，逻辑移交上方包级方法以便单测直连）。
+     */
     private final class SdkConnection implements ServiceConnection {
 
         @Override

@@ -275,7 +275,9 @@ public class SdkCommBindingTest {
         assertTrue(log.messages.contains("[Biz] aidl_disconnect=close"));
     }
 
-    /** 抛异常绑定替身：模拟 Context.bindService 抛准入异常（SecurityException / IllegalArgumentException 等）。 */
+    /**
+     * 抛异常绑定替身：模拟 Context.bindService 抛准入异常（SecurityException / IllegalArgumentException 等）。
+     */
     private static final class ThrowingBindOps implements SdkCommBinding.BindOps {
 
         private final RuntimeException failure;

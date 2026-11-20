@@ -32,9 +32,9 @@ public final class GoodsDownloadResultParcel implements Parcelable {
     private final String failReason;
 
     public GoodsDownloadResultParcel(int code, String reason, String phase, String syncMode,
-            long syncTimestamp, long total, long added, long updated, long deleted,
-            long successCount, long failCount, boolean hasChanges, int failCode,
-            String failReason) {
+                                     long syncTimestamp, long total, long added, long updated, long deleted,
+                                     long successCount, long failCount, boolean hasChanges, int failCode,
+                                     String failReason) {
         this.code = code;
         this.reason = reason;
         this.phase = phase;
@@ -59,22 +59,30 @@ public final class GoodsDownloadResultParcel implements Parcelable {
         return reason;
     }
 
-    /** 终态：SUCCESS（失败经 code≠0 返回，见类注释）。 */
+    /**
+     * 终态：SUCCESS（失败经 code≠0 返回，见类注释）。
+     */
     public String getPhase() {
         return phase;
     }
 
-    /** 同步模式（full/incremental）。 */
+    /**
+     * 同步模式（full/incremental）。
+     */
     public String getSyncMode() {
         return syncMode;
     }
 
-    /** 本次提交游标（epoch 秒；空商品也提交）。 */
+    /**
+     * 本次提交游标（epoch 秒；空商品也提交）。
+     */
     public long getSyncTimestamp() {
         return syncTimestamp;
     }
 
-    /** 本次商品总数（非页码）。 */
+    /**
+     * 本次商品总数（非页码）。
+     */
     public long getTotal() {
         return total;
     }
@@ -99,7 +107,9 @@ public final class GoodsDownloadResultParcel implements Parcelable {
         return failCount;
     }
 
-    /** 本次本地库是否有变更。 */
+    /**
+     * 本次本地库是否有变更。
+     */
     public boolean isHasChanges() {
         return hasChanges;
     }
@@ -196,14 +206,14 @@ public final class GoodsDownloadResultParcel implements Parcelable {
 
     public static final Creator<GoodsDownloadResultParcel> CREATOR =
             new Creator<GoodsDownloadResultParcel>() {
-        @Override
-        public GoodsDownloadResultParcel createFromParcel(Parcel parcel) {
-            return new GoodsDownloadResultParcel(parcel);
-        }
+                @Override
+                public GoodsDownloadResultParcel createFromParcel(Parcel parcel) {
+                    return new GoodsDownloadResultParcel(parcel);
+                }
 
-        @Override
-        public GoodsDownloadResultParcel[] newArray(int size) {
-            return new GoodsDownloadResultParcel[size];
-        }
-    };
+                @Override
+                public GoodsDownloadResultParcel[] newArray(int size) {
+                    return new GoodsDownloadResultParcel[size];
+                }
+            };
 }

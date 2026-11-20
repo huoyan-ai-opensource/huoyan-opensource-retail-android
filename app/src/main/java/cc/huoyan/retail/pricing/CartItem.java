@@ -21,25 +21,39 @@ import java.util.Objects;
  */
 public final class CartItem {
 
-    /** 商品 PLU 编码（同 SKU 多条目不合并，仅作展示/对账标识）。 */
+    /**
+     * 商品 PLU 编码（同 SKU 多条目不合并，仅作展示/对账标识）。
+     */
     private final String plu;
 
-    /** 商品名称（展示用）。 */
+    /**
+     * 商品名称（展示用）。
+     */
     private final String name;
 
-    /** 单价（单位：分/件 或 分/kg，按 {@link #pricingMode} 解释）。 */
+    /**
+     * 单价（单位：分/件 或 分/kg，按 {@link #pricingMode} 解释）。
+     */
     private final long unitPriceCent;
 
-    /** 计价方式。 */
+    /**
+     * 计价方式。
+     */
     private final PricingMode pricingMode;
 
-    /** 数量（件）：仅 COUNT 条目使用，非负整数值。 */
+    /**
+     * 数量（件）：仅 COUNT 条目使用，非负整数值。
+     */
     private final BigDecimal quantity;
 
-    /** 重量（kg）：仅 WEIGHT 条目使用，非负。 */
+    /**
+     * 重量（kg）：仅 WEIGHT 条目使用，非负。
+     */
     private final BigDecimal weightKg;
 
-    /** 计算后金额（单位：分）：入车时为 0，由 {@link CartCalculator} 回填。 */
+    /**
+     * 计算后金额（单位：分）：入车时为 0，由 {@link CartCalculator} 回填。
+     */
     private final long amountCent;
 
     /**
@@ -94,37 +108,51 @@ public final class CartItem {
         return new CartItem(plu, name, unitPriceCent, pricingMode, quantity, weightKg, amountCent);
     }
 
-    /** @return 商品 PLU 编码 */
+    /**
+     * @return 商品 PLU 编码
+     */
     public String getPlu() {
         return plu;
     }
 
-    /** @return 商品名称 */
+    /**
+     * @return 商品名称
+     */
     public String getName() {
         return name;
     }
 
-    /** @return 单价（单位：分/件 或 分/kg） */
+    /**
+     * @return 单价（单位：分/件 或 分/kg）
+     */
     public long getUnitPriceCent() {
         return unitPriceCent;
     }
 
-    /** @return 计价方式 */
+    /**
+     * @return 计价方式
+     */
     public PricingMode getPricingMode() {
         return pricingMode;
     }
 
-    /** @return 数量（件），仅 COUNT 条目有效；WEIGHT 条目为 null */
+    /**
+     * @return 数量（件），仅 COUNT 条目有效；WEIGHT 条目为 null
+     */
     public BigDecimal getQuantity() {
         return quantity;
     }
 
-    /** @return 重量（kg），仅 WEIGHT 条目有效；COUNT 条目为 null */
+    /**
+     * @return 重量（kg），仅 WEIGHT 条目有效；COUNT 条目为 null
+     */
     public BigDecimal getWeightKg() {
         return weightKg;
     }
 
-    /** @return 计算后金额（单位：分）；入车未计算时为 0 */
+    /**
+     * @return 计算后金额（单位：分）；入车未计算时为 0
+     */
     public long getAmountCent() {
         return amountCent;
     }

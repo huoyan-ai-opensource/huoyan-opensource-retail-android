@@ -17,7 +17,9 @@ import cc.huoyan.retail.recognition.DrawUtil;
 public class StudyPicAdapter extends RetailAdapter<StudyPicEntity> {
     private PicOnClickListener listener;
 
-    /** 使用指定布局复用学习列表行为。 */
+    /**
+     * 使用指定布局复用学习列表行为。
+     */
     protected StudyPicAdapter(int layout) {
         super(layout);
     }
@@ -26,7 +28,9 @@ public class StudyPicAdapter extends RetailAdapter<StudyPicEntity> {
         this.listener = listener;
     }
 
-    /** 条目离开复用缓存时释放缩略图请求，避免继续解码已不可见的图片。 */
+    /**
+     * 条目离开复用缓存时释放缩略图请求，避免继续解码已不可见的图片。
+     */
     @Override
     public void onViewRecycled(@NonNull RowViewHolder holder) {
         ImageView image = holder.getView(R.id.img);

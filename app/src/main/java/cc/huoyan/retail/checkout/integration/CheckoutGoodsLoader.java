@@ -7,6 +7,7 @@ import cc.huoyan.retail.data.GoodsEntity;
 import cc.huoyan.retail.checkout.RecognitionSelection;
 import cc.huoyan.retail.checkout.CheckoutRecognition;
 import cc.huoyan.sdk.client.model.RecognitionCandidate;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,15 +20,23 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-/** 按识别结果批量加载 SDK 商品；合并排队查询并阻止过期结果覆盖人工修改。 */
+/**
+ * 按识别结果批量加载 SDK 商品；合并排队查询并阻止过期结果覆盖人工修改。
+ */
 public final class CheckoutGoodsLoader implements CheckoutPresenter.GoodsLoader {
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private final LatestRefresh<List<GoodsVo>> refresh;
 
-    /** 指定结果提交线程，页面传入主线程执行器。 */
-    public CheckoutGoodsLoader(Executor main) { refresh = new LatestRefresh<>(worker, main); }
+    /**
+     * 指定结果提交线程，页面传入主线程执行器。
+     */
+    public CheckoutGoodsLoader(Executor main) {
+        refresh = new LatestRefresh<>(worker, main);
+    }
 
-    /** 复制本轮分组后异步查询，返回带识别项的商品行，不创建图片。 */
+    /**
+     * 复制本轮分组后异步查询，返回带识别项的商品行，不创建图片。
+     */
     public void load(CheckoutRecognition response, Consumer<List<GoodsVo>> commit, Consumer<Exception> failure) {
         Map<String, List<RecognitionSelection>> groups = new LinkedHashMap<>();
         if (response != null && response.getSelections() != null) {
@@ -41,13 +50,16 @@ public final class CheckoutGoodsLoader implements CheckoutPresenter.GoodsLoader 
                 : SdkGoodsSource.getInstance().getGoodsByPlu(plus)), commit, failure);
     }
 
-    /** 汇总本轮已选商品、原始命中与候选编码，后台一次批量查询即可补齐反馈名称。 */
+    /**
+     * 汇总本轮已选商品、原始命中与候选编码，后台一次批量查询即可补齐反馈名称。
+     */
     static Set<String> productPlus(Map<String, List<RecognitionSelection>> groups) {
         Set<String> plus = new java.util.LinkedHashSet<>(groups.keySet());
         for (List<RecognitionSelection> items : groups.values()) {
             for (RecognitionSelection item : items) {
                 plus.add(item.getOriginalClazz());
-                for (RecognitionCandidate candidate : item.getCandidates()) plus.add(candidate.getClazz());
+                for (RecognitionCandidate candidate : item.getCandidates())
+                    plus.add(candidate.getClazz());
             }
         }
         plus.remove(null);
@@ -55,7 +67,9 @@ public final class CheckoutGoodsLoader implements CheckoutPresenter.GoodsLoader 
         return plus;
     }
 
-    /** 后台固定每框的原始商品及候选名称；候选商品仅补充快照，不生成收银行。 */
+    /**
+     * 后台固定每框的原始商品及候选名称；候选商品仅补充快照，不生成收银行。
+     */
     static List<GoodsVo> assemble(Map<String, List<RecognitionSelection>> groups, List<GoodsEntity> goods) {
         Map<String, GoodsEntity> products = new LinkedHashMap<>();
         Map<String, String> names = new LinkedHashMap<>();
@@ -89,7 +103,9 @@ public final class CheckoutGoodsLoader implements CheckoutPresenter.GoodsLoader 
         return rows;
     }
 
-    /** 将SDK 目录缺失的识别项保留为展示行，不参与计价。 */
+    /**
+     * 将SDK 目录缺失的识别项保留为展示行，不参与计价。
+     */
     public static GoodsVo unmatched(String plu, List<RecognitionSelection> items) {
         GoodsEntity product = new GoodsEntity();
         product.setPlu(plu);
@@ -101,9 +117,18 @@ public final class CheckoutGoodsLoader implements CheckoutPresenter.GoodsLoader 
         return row;
     }
 
-    /** 人工修改、离开页面或重开会话后丢弃旧查询。 */
-    public void invalidate() { refresh.invalidate(); }
+    /**
+     * 人工修改、离开页面或重开会话后丢弃旧查询。
+     */
+    public void invalidate() {
+        refresh.invalidate();
+    }
 
-    /** 页面销毁时停止接受结果并结束查询线程。 */
-    public void close() { refresh.close(); worker.shutdownNow(); }
+    /**
+     * 页面销毁时停止接受结果并结束查询线程。
+     */
+    public void close() {
+        refresh.close();
+        worker.shutdownNow();
+    }
 }

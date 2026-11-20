@@ -1,6 +1,7 @@
 package cc.huoyan.sdk.client.testing;
 
 import cc.huoyan.sdk.client.HuoyanSdkClient;
+
 import android.content.ServiceConnection;
 
 import java.util.ArrayList;
@@ -34,27 +35,86 @@ import cc.huoyan.sdk.client.model.StatusSnapshot;
 public final class SdkChannelFakes {
 
     public static class FakeSdkChannelBridge implements HuoyanSdkClient {
-        @Override public cc.huoyan.sdk.client.model.GoodsListResult listGoods(long syncTimestamp, int current, int size) { return null; }
-        @Override public cc.huoyan.sdk.client.model.GoodsDownloadResult downloadGoods(int size) { return null; }
-        @Override public cc.huoyan.sdk.client.model.GoodsDownloadProgress getDownloadGoodsProgress() { return null; }
-        @Override public cc.huoyan.sdk.client.model.ImageFlowProgress downloadImagesAndLearnByGoodsId(long[] goodsIds) { return null; }
-        @Override public cc.huoyan.sdk.client.model.GoodsResult getGoods(String goodsId) { return null; }
-        @Override public cc.huoyan.sdk.client.model.GoodsQueryResult queryGoods(String keyword, String name, String plu, int isDeleted, int current, int size, String sortBy, String sortOrder) { return null; }
-        @Override public cc.huoyan.sdk.client.model.GoodsCountResult getGoodsCount(String keyword, String name, String plu, int isDeleted) { return null; }
-        @Override public cc.huoyan.sdk.client.model.GoodsBatchResult batchUpdateGoods(String[] goodsIds, GoodsSave changes) { return null; }
-        @Override public cc.huoyan.sdk.client.model.GoodsBatchResult batchDeleteGoods(String[] goodsIds) { return null; }
-        @Override public SdkImage image(android.graphics.Bitmap bitmap) { return SdkImage.rgb888(bitmap); }
-        @Override public cc.huoyan.sdk.client.model.ImageFlowProgress downloadImagesAndLearn() { return null; }
-        @Override public cc.huoyan.sdk.client.model.ImageFlowProgress getImageDownloadProgress() { return null; }
-        @Override public cc.huoyan.sdk.client.model.ImageFlowProgress getImageLearnProgress() { return null; }
-
-        /** 查询云端开关的测试占位。 */
         @Override
-        public cc.huoyan.sdk.client.model.CloudStatus getCloudStatus() { return null; }
+        public cc.huoyan.sdk.client.model.GoodsListResult listGoods(long syncTimestamp, int current, int size) {
+            return null;
+        }
 
-        /** 设置云端开关的测试占位。 */
         @Override
-        public cc.huoyan.sdk.client.model.CloudStatus setCloudStatus(boolean enabled) { return null; }
+        public cc.huoyan.sdk.client.model.GoodsDownloadResult downloadGoods(int size) {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.sdk.client.model.GoodsDownloadProgress getDownloadGoodsProgress() {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.sdk.client.model.ImageFlowProgress downloadImagesAndLearnByGoodsId(long[] goodsIds) {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.sdk.client.model.GoodsResult getGoods(String goodsId) {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.sdk.client.model.GoodsQueryResult queryGoods(String keyword, String name, String plu, int isDeleted, int current, int size, String sortBy, String sortOrder) {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.sdk.client.model.GoodsCountResult getGoodsCount(String keyword, String name, String plu, int isDeleted) {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.sdk.client.model.GoodsBatchResult batchUpdateGoods(String[] goodsIds, GoodsSave changes) {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.sdk.client.model.GoodsBatchResult batchDeleteGoods(String[] goodsIds) {
+            return null;
+        }
+
+        @Override
+        public SdkImage image(android.graphics.Bitmap bitmap) {
+            return SdkImage.rgb888(bitmap);
+        }
+
+        @Override
+        public cc.huoyan.sdk.client.model.ImageFlowProgress downloadImagesAndLearn() {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.sdk.client.model.ImageFlowProgress getImageDownloadProgress() {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.sdk.client.model.ImageFlowProgress getImageLearnProgress() {
+            return null;
+        }
+
+        /**
+         * 查询云端开关的测试占位。
+         */
+        @Override
+        public cc.huoyan.sdk.client.model.CloudStatus getCloudStatus() {
+            return null;
+        }
+
+        /**
+         * 设置云端开关的测试占位。
+         */
+        @Override
+        public cc.huoyan.sdk.client.model.CloudStatus setCloudStatus(boolean enabled) {
+            return null;
+        }
 
 
         public boolean connected;
@@ -105,14 +165,21 @@ public final class SdkChannelFakes {
         }
 
         @Override
-        public cc.huoyan.sdk.client.model.LicenseModels queryDeviceModels() { return null; }
-        public cc.huoyan.sdk.client.model.LicenseModels queryLicenseModels(String activationCode) { return null; }
+        public cc.huoyan.sdk.client.model.LicenseModels queryDeviceModels() {
+            return null;
+        }
+
+        public cc.huoyan.sdk.client.model.LicenseModels queryLicenseModels(String activationCode) {
+            return null;
+        }
 
         public BaseResult activate(String activationCode, String modelCode) {
             return null;
         }
 
-        /** 构造测试桥使用的 RGB 字节载体。 */
+        /**
+         * 构造测试桥使用的 RGB 字节载体。
+         */
         @Override
         public SdkImage image(byte[] rgbFrame, int width, int height) {
             return SdkImage.rgb888(rgbFrame, width, height);
@@ -189,27 +256,35 @@ public final class SdkChannelFakes {
         }
 
         @Override
-    public cc.huoyan.sdk.client.model.PhotoUploadResult uploadPhoto(cc.huoyan.sdk.client.SdkImage image) {
-        return null;
-    }
+        public cc.huoyan.sdk.client.model.PhotoUploadResult uploadPhoto(cc.huoyan.sdk.client.SdkImage image) {
+            return null;
+        }
 
-    @Override
+        @Override
         public BaseResult submitFeedback(Feedback feedback) {
             return null;
         }
 
         // ---- 绑定/商品 CRUD（本替身只服务状态查询路径，占位可预设） ----
 
-        /** bindDevice 预设回执。 */
+        /**
+         * bindDevice 预设回执。
+         */
         BindingResult bindDeviceResult;
 
-        /** createGoods 预设回执。 */
+        /**
+         * createGoods 预设回执。
+         */
         GoodsResult createGoodsResult;
 
-        /** updateGoods 预设回执。 */
+        /**
+         * updateGoods 预设回执。
+         */
         GoodsResult updateGoodsResult;
 
-        /** deleteGoods 预设回执。 */
+        /**
+         * deleteGoods 预设回执。
+         */
         BaseResult deleteGoodsResult;
 
         @Override

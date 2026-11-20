@@ -1,4 +1,5 @@
 package cc.huoyan.retail.sdk;
+
 import cc.huoyan.retail.goods.SdkClassMapping;
 import cc.huoyan.sdk.client.SdkConfig.Channel;
 import cc.huoyan.sdk.client.session.SdkSession;
@@ -14,26 +15,36 @@ import cc.huoyan.sdk.client.model.CertInfo;
 import cc.huoyan.sdk.client.model.ItemClazzList;
 import cc.huoyan.sdk.client.model.StatusSnapshot;
 
-/** 零售应用 SDK 装配入口；仅保存偏好、注入应用资源并持有 JAR 会话。 */
+/**
+ * 零售应用 SDK 装配入口；仅保存偏好、注入应用资源并持有 JAR 会话。
+ */
 public final class SdkChannelManager {
 
-    /** 通道值的持久化读写抽象（注入以便纯 JUnit 单测）。 */
+    /**
+     * 通道值的持久化读写抽象（注入以便纯 JUnit 单测）。
+     */
     public interface ChannelStore {
 
-        /** 读通道持久化值（无记录返回 null 或空串）。 */
+        /**
+         * 读通道持久化值（无记录返回 null 或空串）。
+         */
         String get();
 
-        /** 写通道持久化值。 */
+        /**
+         * 写通道持久化值。
+         */
         void put(String value);
     }
 
-    /** 生产环境存储：SPManager（"HuoYanApplication" SP 文件）。 */
+    /**
+     * 生产环境存储：SPManager（"HuoYanApplication" SP 文件）。
+     */
     private static final class SpChannelStore implements ChannelStore {
 
         @Override
         public String get() {
             return SdkConfig.supportedChannel(Channel.fromValue(
-                    SPManager.getInstance().getString(SPManager.SP_SDK_CHANNEL)),
+                            SPManager.getInstance().getString(SPManager.SP_SDK_CHANNEL)),
                     android.os.Build.VERSION.SDK_INT).value();
         }
 
@@ -43,7 +54,9 @@ public final class SdkChannelManager {
         }
     }
 
-    /** 桥构造缝（生产为真实 AIDL/WS 实现，单测注入替身）。 */
+    /**
+     * 桥构造缝（生产为真实 AIDL/WS 实现，单测注入替身）。
+     */
     interface BridgeFactory {
 
         /**
@@ -55,27 +68,40 @@ public final class SdkChannelManager {
         HuoyanSdkClient create(Channel channel);
     }
 
-    /** 从已保存的端点装配配置；非法旧值回退 SDK 默认地址。 */
+    /**
+     * 从已保存的端点装配配置；非法旧值回退 SDK 默认地址。
+     */
     private static SdkConfig savedConfig(Channel channel) {
         SdkConfig config = SdkConfig.aidl();
         if (channel == Channel.WS) {
-            try { config = SdkConfig.websocket(SPManager.getInstance().getString(SPManager.SP_WS_ENDPOINT)); }
-            catch (IllegalArgumentException | NullPointerException ignored) {
+            try {
+                config = SdkConfig.websocket(SPManager.getInstance().getString(SPManager.SP_WS_ENDPOINT));
+            } catch (IllegalArgumentException | NullPointerException ignored) {
                 config = SdkConfig.websocket(SdkConfig.DEFAULT_WS_ENDPOINT);
             }
         }
-        return config.withLog((tag, message) -> { if (BuildConfig.DEBUG) android.util.Log.d(tag, message); });
+        return config.withLog((tag, message) -> {
+            if (BuildConfig.DEBUG) android.util.Log.d(tag, message);
+        });
     }
 
-    /** 应用级装配单例。 */
+    /**
+     * 应用级装配单例。
+     */
     private static volatile SdkChannelManager instance;
 
-    /** 宿主配置持久化，不进入 JAR。 */
+    /**
+     * 宿主配置持久化，不进入 JAR。
+     */
     private final ChannelStore store;
-    /** JAR 会话拥有连接及切换生命周期。 */
+    /**
+     * JAR 会话拥有连接及切换生命周期。
+     */
     private final SdkSession session;
 
-    /** 装配 JAR 会话；测试工厂不读取 Android 配置。 */
+    /**
+     * 装配 JAR 会话；测试工厂不读取 Android 配置。
+     */
     private SdkChannelManager(ChannelStore store, BridgeFactory bridgeFactory) {
         this.store = store;
         Channel channel = Channel.fromValue(store.get());
@@ -109,13 +135,15 @@ public final class SdkChannelManager {
      * @return 新实例（不触碰单例与 SPManager）
      */
     static SdkChannelManager createForTest(ChannelStore store) {
-        return createForTest(store, channel -> { throw new IllegalStateException("测试须注入客户端工厂"); });
+        return createForTest(store, channel -> {
+            throw new IllegalStateException("测试须注入客户端工厂");
+        });
     }
 
     /**
      * 构造指定存储 + 桥工厂的管理器（单测注入替身桥验证透传语义用）。
      *
-     * @param store        通道值存储
+     * @param store         通道值存储
      * @param bridgeFactory 桥构造缝
      * @return 新实例（不触碰单例与 SPManager）
      */
@@ -132,10 +160,13 @@ public final class SdkChannelManager {
         return Channel.fromValue(store.get());
     }
 
-    /** 保存支持的通道并交给 JAR 切换连接，清理图片展示缓存。 */
+    /**
+     * 保存支持的通道并交给 JAR 切换连接，清理图片展示缓存。
+     */
     public synchronized void setChannel(Channel channel) {
         if (channel == null) return;
-        if (store instanceof SpChannelStore) channel = SdkConfig.supportedChannel(channel, android.os.Build.VERSION.SDK_INT);
+        if (store instanceof SpChannelStore)
+            channel = SdkConfig.supportedChannel(channel, android.os.Build.VERSION.SDK_INT);
         if (channel == getChannel()) return;
         store.put(channel.value());
         SdkConfig old = session.getConfig();
@@ -144,7 +175,9 @@ public final class SdkChannelManager {
         if (store instanceof SpChannelStore) SdkGoodsImages.invalidate();
     }
 
-    /** 保存值读取仅属于宿主；测试存储不触碰 Android。 */
+    /**
+     * 保存值读取仅属于宿主；测试存储不触碰 Android。
+     */
     private String savedEndpoint() {
         return store instanceof SpChannelStore ? savedConfig(Channel.WS).getWsEndpoint() : SdkConfig.DEFAULT_WS_ENDPOINT;
     }
@@ -155,20 +188,32 @@ public final class SdkChannelManager {
      *
      * @return 当前通道对应的 {@link HuoyanSdkClient}
      */
-    public HuoyanSdkClient getClient() { return session.getClient(); }
+    public HuoyanSdkClient getClient() {
+        return session.getClient();
+    }
 
-    /** 查询当前连接是否需要本机 SDK。 */
-    public boolean requiresLocalShell() { return session.getConfig().requiresLocalShell(); }
+    /**
+     * 查询当前连接是否需要本机 SDK。
+     */
+    public boolean requiresLocalShell() {
+        return session.getConfig().requiresLocalShell();
+    }
 
-    /** 注入零售应用的线程和日志策略，启动规则由 JAR 持有。 */
+    /**
+     * 注入零售应用的线程和日志策略，启动规则由 JAR 持有。
+     */
     public cc.huoyan.sdk.client.session.SdkStartupController newStartupController() {
         return new cc.huoyan.sdk.client.session.SdkStartupController(this::getClient,
                 command -> cc.huoyan.retail.common.IOThreadHelper.getInstance().post(command),
                 cc.huoyan.retail.common.MainHandler::runOnUiThread,
-                (tag, message) -> { if (BuildConfig.DEBUG) android.util.Log.d(tag, message); });
+                (tag, message) -> {
+                    if (BuildConfig.DEBUG) android.util.Log.d(tag, message);
+                });
     }
 
-    /** 保存 WS 地址并丢弃旧连接，下一次连接使用新地址。 */
+    /**
+     * 保存 WS 地址并丢弃旧连接，下一次连接使用新地址。
+     */
     public synchronized void setWsEndpoint(String endpoint) {
         String normalized = SdkConfig.websocket(endpoint).getWsEndpoint();
         if (normalized.equals(SPManager.getInstance().getString(SPManager.SP_WS_ENDPOINT))) return;
@@ -190,7 +235,9 @@ public final class SdkChannelManager {
         return bridge.isConnected() ? bridge.getStatus() : null;
     }
 
-    /** 后台查询证书资料；激活与模型可用以 JAR 状态解释为准。 */
+    /**
+     * 后台查询证书资料；激活与模型可用以 JAR 状态解释为准。
+     */
     public CertInfo getCertInfo() {
         HuoyanSdkClient bridge = getClient();
         return bridge.isConnected() ? bridge.getCertInfo() : null;

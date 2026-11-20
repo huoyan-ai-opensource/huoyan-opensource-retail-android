@@ -1,12 +1,18 @@
 package cc.huoyan.retail.recognition;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
-/** 验证五档在真实帧门控中的触发边界，防止灵敏度方向反转。 */
+/**
+ * 验证五档在真实帧门控中的触发边界，防止灵敏度方向反转。
+ */
 public class RecognitionSensitivityTest {
-    /** 逐档验证距离等于阈值不触发，超过一位才触发。 */
-    @Test public void levelsControlStrictHammingBoundary() {
+    /**
+     * 逐档验证距离等于阈值不触发，超过一位才触发。
+     */
+    @Test
+    public void levelsControlStrictHammingBoundary() {
         int[] thresholds = {8, 6, 4, 2, 1};
         for (int level = 1; level <= 5; level++) {
             int threshold = RecognitionSensitivity.threshold(level);
@@ -21,8 +27,11 @@ public class RecognitionSensitivityTest {
         }
     }
 
-    /** 缺省和异常配置保持标准档，与设置页默认展示一致。 */
-    @Test public void invalidLevelsUseStandardDefault() {
+    /**
+     * 缺省和异常配置保持标准档，与设置页默认展示一致。
+     */
+    @Test
+    public void invalidLevelsUseStandardDefault() {
         assertEquals(3, RecognitionSensitivity.DEFAULT_LEVEL);
         assertEquals(4, RecognitionSensitivity.threshold(RecognitionSensitivity.DEFAULT_LEVEL));
         for (int level : new int[]{Integer.MIN_VALUE, 0, 6, Integer.MAX_VALUE}) {

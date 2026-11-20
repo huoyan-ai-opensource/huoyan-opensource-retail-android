@@ -5,12 +5,16 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Collections;
 
-/** 判断 WS 是否指向本机；不解析远端主机名，避免冷启动等待 DNS。 */
+/**
+ * 判断 WS 是否指向本机；不解析远端主机名，避免冷启动等待 DNS。
+ */
 public final class LocalSdkEndpoint {
     private LocalSdkEndpoint() {
     }
 
-    /** 无 DNS 查询地判断回环或本机接口地址，供配置及传输共用。 */
+    /**
+     * 无 DNS 查询地判断回环或本机接口地址，供配置及传输共用。
+     */
     public static boolean isLocal(String host) {
         if (host == null) return false;
         if ("localhost".equalsIgnoreCase(host) || "::1".equals(host) || "[::1]".equals(host)

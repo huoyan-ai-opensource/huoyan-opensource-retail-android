@@ -1,17 +1,140 @@
 <?xml version='1.0' encoding='utf-8'?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#70142033" android:focusableInTouchMode="true">
-    <ScrollView android:layout_width="712dp" android:layout_height="match_parent" android:layout_gravity="center" android:fillViewport="true" android:padding="16dp" android:clipToPadding="false">
-        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="24dp" android:background="@drawable/land_card">
-                <TextView android:layout_width="match_parent" android:layout_height="40dp" android:textSize="24sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/learning_help" android:id="@+id/title" android:textStyle="bold" android:gravity="center" />
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="17sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/land_guide_step_1" android:id="@+id/learningGuideStep1" android:layout_marginTop="16dp" android:lineSpacingMultiplier="1.4" />
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="17sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/land_guide_step_2" android:id="@+id/learningGuideStep2" android:layout_marginTop="12dp" android:lineSpacingMultiplier="1.4" />
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="17sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/land_guide_step_3" android:id="@+id/learningGuideStep3" android:layout_marginTop="12dp" android:lineSpacingMultiplier="1.4" />
-                <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="17sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/land_guide_step_4" android:id="@+id/learningGuideStep4" android:layout_marginTop="12dp" android:lineSpacingMultiplier="1.4" />
-                <CheckBox android:id="@+id/learningGuideDontShowAgain" android:layout_width="match_parent" android:layout_height="48dp" android:layout_marginTop="16dp" android:text="@string/learning_guide_dont_show_again" android:textColor="#293A51" android:textSize="16sp" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:buttonTint="#3F3EED" android:gravity="center_vertical" />
-                <LinearLayout android:layout_width="match_parent" android:layout_height="52dp" android:layout_marginTop="16dp">
-                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="16sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/button_cancel" android:id="@+id/cancel" android:layout_weight="1" android:layout_marginStart="0dp" android:gravity="center" android:background="@drawable/land_secondary" android:clickable="true" android:focusable="true" />
-                    <TextView android:layout_width="0dp" android:layout_height="match_parent" android:textSize="16sp" android:textColor="#FFFFFF" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:text="@string/learning_understood" android:id="@+id/confirm" android:layout_weight="1" android:layout_marginStart="16dp" android:gravity="center" android:background="@drawable/land_primary" android:clickable="true" android:focusable="true" />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#70142033"
+    android:focusableInTouchMode="true">
+
+    <ScrollView
+        android:layout_width="@dimen/dp_356"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:fillViewport="true"
+        android:padding="@dimen/dp_8"
+        android:clipToPadding="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_12"
+                android:background="@drawable/land_card">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_20"
+                    android:textSize="@dimen/sp_12"
+                    android:textColor="#293A51"
+                    android:fontFamily="@font/retail_sans"
+                    android:includeFontPadding="false"
+                    android:text="@string/learning_help"
+                    android:id="@+id/title"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_8_5"
+                    android:textColor="#293A51"
+                    android:fontFamily="@font/retail_sans"
+                    android:includeFontPadding="false"
+                    android:text="@string/land_guide_step_1"
+                    android:id="@+id/learningGuideStep1"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:lineSpacingMultiplier="1.4" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_8_5"
+                    android:textColor="#293A51"
+                    android:fontFamily="@font/retail_sans"
+                    android:includeFontPadding="false"
+                    android:text="@string/land_guide_step_2"
+                    android:id="@+id/learningGuideStep2"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:lineSpacingMultiplier="1.4" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_8_5"
+                    android:textColor="#293A51"
+                    android:fontFamily="@font/retail_sans"
+                    android:includeFontPadding="false"
+                    android:text="@string/land_guide_step_3"
+                    android:id="@+id/learningGuideStep3"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:lineSpacingMultiplier="1.4" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_8_5"
+                    android:textColor="#293A51"
+                    android:fontFamily="@font/retail_sans"
+                    android:includeFontPadding="false"
+                    android:text="@string/land_guide_step_4"
+                    android:id="@+id/learningGuideStep4"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:lineSpacingMultiplier="1.4" />
+
+                <CheckBox
+                    android:id="@+id/learningGuideDontShowAgain"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_24"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:text="@string/learning_guide_dont_show_again"
+                    android:textColor="#293A51"
+                    android:textSize="@dimen/sp_8"
+                    android:fontFamily="@font/retail_sans"
+                    android:includeFontPadding="false"
+                    android:buttonTint="#3F3EED"
+                    android:gravity="center_vertical" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_26"
+                    android:layout_marginTop="@dimen/dp_8">
+
+                    <TextView
+                        android:layout_width="@dimen/dp_0"
+                        android:layout_height="match_parent"
+                        android:textSize="@dimen/sp_8"
+                        android:textColor="#293A51"
+                        android:fontFamily="@font/retail_sans"
+                        android:includeFontPadding="false"
+                        android:text="@string/button_cancel"
+                        android:id="@+id/cancel"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/dp_0"
+                        android:gravity="center"
+                        android:background="@drawable/land_secondary"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                    <TextView
+                        android:layout_width="@dimen/dp_0"
+                        android:layout_height="match_parent"
+                        android:textSize="@dimen/sp_8"
+                        android:textColor="#FFFFFF"
+                        android:fontFamily="@font/retail_sans"
+                        android:includeFontPadding="false"
+                        android:text="@string/learning_understood"
+                        android:id="@+id/confirm"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/dp_8"
+                        android:gravity="center"
+                        android:background="@drawable/land_primary"
+                        android:clickable="true"
+                        android:focusable="true" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

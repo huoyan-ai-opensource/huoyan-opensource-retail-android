@@ -27,12 +27,16 @@ public final class LearnResultParcel implements Parcelable {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 新学习条目 UID（code=0 时有效；0=无检测框）。 */
+    /**
+     * 新学习条目 UID（code=0 时有效；0=无检测框）。
+     */
     public long getUid() {
         return uid;
     }

@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/goodsName"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp_0"
         android:layout_height="wrap_content"
         android:layout_weight="203"
         android:maxLines="2"
@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/count"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp_0"
         android:layout_height="match_parent"
         android:layout_weight="104"
         android:gravity="center_vertical|start"
@@ -34,7 +34,7 @@
 
     <TextView
         android:id="@+id/amount"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp_0"
         android:layout_height="match_parent"
         android:layout_weight="94"
         android:gravity="center_vertical|start"
@@ -44,7 +44,7 @@
 
     <TextView
         android:id="@+id/subTotal"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp_0"
         android:layout_height="match_parent"
         android:layout_weight="121"
         android:gravity="center_vertical|end"

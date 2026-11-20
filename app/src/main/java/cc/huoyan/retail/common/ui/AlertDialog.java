@@ -17,16 +17,22 @@ import cc.huoyan.retail.R;
 public class AlertDialog extends DialogFragment {
     private AlertConfirmDialogListener listener;
 
-    /** 为页面重建后的业务弹窗重新绑定确认操作；销毁视图时可传 null 释放引用。 */
+    /**
+     * 为页面重建后的业务弹窗重新绑定确认操作；销毁视图时可传 null 释放引用。
+     */
     public void setConfirmListener(@Nullable AlertConfirmDialogListener listener) {
         this.listener = listener;
     }
 
-    /** 供系统在页面重建后恢复弹窗内容。 */
+    /**
+     * 供系统在页面重建后恢复弹窗内容。
+     */
     public AlertDialog() {
     }
 
-    /** 创建项目统一的确认弹窗。 */
+    /**
+     * 创建项目统一的确认弹窗。
+     */
     public AlertDialog(@NonNull String titleText, @NonNull String contentText, @NonNull String confirmText, @NonNull String cancelText,
                        AlertConfirmDialogListener listener) {
         Bundle args = new Bundle();

@@ -33,7 +33,9 @@ public final class GoodsBatchResultParcel implements Parcelable {
         return reason;
     }
 
-    /** 逐条结果（与入参 goodsIds 等长同序；错误回执空列表）。 */
+    /**
+     * 逐条结果（与入参 goodsIds 等长同序；错误回执空列表）。
+     */
     public List<GoodsBatchItemParcel> getItems() {
         return items;
     }
@@ -83,14 +85,14 @@ public final class GoodsBatchResultParcel implements Parcelable {
 
     public static final Creator<GoodsBatchResultParcel> CREATOR =
             new Creator<GoodsBatchResultParcel>() {
-        @Override
-        public GoodsBatchResultParcel createFromParcel(Parcel parcel) {
-            return new GoodsBatchResultParcel(parcel);
-        }
+                @Override
+                public GoodsBatchResultParcel createFromParcel(Parcel parcel) {
+                    return new GoodsBatchResultParcel(parcel);
+                }
 
-        @Override
-        public GoodsBatchResultParcel[] newArray(int size) {
-            return new GoodsBatchResultParcel[size];
-        }
-    };
+                @Override
+                public GoodsBatchResultParcel[] newArray(int size) {
+                    return new GoodsBatchResultParcel[size];
+                }
+            };
 }

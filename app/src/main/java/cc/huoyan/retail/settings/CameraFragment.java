@@ -1,6 +1,7 @@
 package cc.huoyan.retail.settings;
 
 import cc.huoyan.retail.device.camera.CameraDeviceInfo;
+
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
@@ -29,16 +30,22 @@ public class CameraFragment extends BaseFragment implements CameraSettingsPresen
     private LinearLayout cameraResolutionLayout;
     private TextView imageViewText;
     private AutoFitTextureView surfaceView;
-    /** 首帧回显、选择配置和恢复重启的协调者。 */
+    /**
+     * 首帧回显、选择配置和恢复重启的协调者。
+     */
     private CameraSettingsPresenter presenter;
     private List<CameraDeviceInfo> cameraList = new ArrayList<>();
     private ResizableDashedBoxView boxView;
     private CameraController cameraController;
-    /** 页面实例独立的订阅键，旧页面销毁不能移除新订阅。 */
+    /**
+     * 页面实例独立的订阅键，旧页面销毁不能移除新订阅。
+     */
     private final String cameraListenerKey = getClass().getSimpleName() + "@" + System.identityHashCode(this);
+
     @Override
     protected int getLayoutResId() {
-        if (getArguments() != null && getArguments().getBoolean("standalone")) return R.layout.page_camera;
+        if (getArguments() != null && getArguments().getBoolean("standalone"))
+            return R.layout.page_camera;
         return R.layout.fragment_camera;
     }
 
@@ -46,6 +53,7 @@ public class CameraFragment extends BaseFragment implements CameraSettingsPresen
     protected boolean useEventBus() {
         return false;
     }
+
     @Override
     protected void initView(View view) {
         registerSelections();
@@ -87,7 +95,8 @@ public class CameraFragment extends BaseFragment implements CameraSettingsPresen
         cameraList = cameraController.getDevices();
         CameraSettingsPresenter framePresenter = presenter;
         cameraController.addListener(cameraListenerKey, new CameraController.FrameListener() {
-            @Override public void onFrame(CameraFrame entity) {
+            @Override
+            public void onFrame(CameraFrame entity) {
                 framePresenter.frame(cameraController.getCurrentCameraId(), entity.getWidth(), entity.getHeight());
             }
         });
@@ -97,11 +106,15 @@ public class CameraFragment extends BaseFragment implements CameraSettingsPresen
         android.widget.Switch mirror = view.findViewById(R.id.cameraMirror);
         if (mirror != null) {
             mirror.setChecked(cameraController.mirrorEnabled());
-            mirror.setOnCheckedChangeListener((button, checked) -> { if (button.isPressed()) cameraController.setMirrorEnabled(checked); });
+            mirror.setOnCheckedChangeListener((button, checked) -> {
+                if (button.isPressed()) cameraController.setMirrorEnabled(checked);
+            });
         }
     }
 
-    /** 视图销毁时移除帧监听，避免旧页面更新已释放的控件。 */
+    /**
+     * 视图销毁时移除帧监听，避免旧页面更新已释放的控件。
+     */
     @Override
     public void onDestroyView() {
         presenter.detach();
@@ -117,8 +130,11 @@ public class CameraFragment extends BaseFragment implements CameraSettingsPresen
         reopenCameraIfClosed();
     }
 
-    /** 页面进入后台时释放相机，不影响新页面已经取得的绑定。 */
-    @Override public void onPause() {
+    /**
+     * 页面进入后台时释放相机，不影响新页面已经取得的绑定。
+     */
+    @Override
+    public void onPause() {
         cameraController.unbind(surfaceView);
         super.onPause();
     }
@@ -131,10 +147,19 @@ public class CameraFragment extends BaseFragment implements CameraSettingsPresen
         }
     }
 
-    /** 页面恢复时只提交设备状态巡检，节流由 Presenter 管理。 */
-    private void reopenCameraIfClosed() { if (surfaceView != null && presenter != null) presenter.resume(SystemClock.elapsedRealtime()); }
-    /** 将真实帧尺寸映射到预览、检测框和设备标签。 */
-    @Override public void showFrame(String deviceId, int width, int height) {
+    /**
+     * 页面恢复时只提交设备状态巡检，节流由 Presenter 管理。
+     */
+    private void reopenCameraIfClosed() {
+        if (surfaceView != null && presenter != null)
+            presenter.resume(SystemClock.elapsedRealtime());
+    }
+
+    /**
+     * 将真实帧尺寸映射到预览、检测框和设备标签。
+     */
+    @Override
+    public void showFrame(String deviceId, int width, int height) {
         surfaceView.setAspectRatio(width, height);
         boxView.setOriginalImageSize(width, height);
         cameraList = cameraController.getDevices();
@@ -146,26 +171,51 @@ public class CameraFragment extends BaseFragment implements CameraSettingsPresen
         }
         cameraResolution.setText(width + " × " + height);
         TextView status = requireView().findViewById(R.id.cameraStatus);
-        if (status != null) { status.setText(R.string.land_camera_connected); status.setTextColor(android.graphics.Color.parseColor("#27835B")); }
+        if (status != null) {
+            status.setText(R.string.land_camera_connected);
+            status.setTextColor(android.graphics.Color.parseColor("#27835B"));
+        }
         View content = requireView();
         surfaceView.post(() -> {
             if (!isViewCreated || getView() != content) return;
             android.widget.FrameLayout.LayoutParams bounds = new android.widget.FrameLayout.LayoutParams(surfaceView.getWidth(), surfaceView.getHeight(), Gravity.CENTER);
-            if (boxView.getParent() instanceof android.widget.FrameLayout) boxView.setLayoutParams(bounds);
+            if (boxView.getParent() instanceof android.widget.FrameLayout)
+                boxView.setLayoutParams(bounds);
         });
     }
-    /** 配置切换前同步检测框及分辨率标签。 */
-    @Override public void prepareSelection(String resolution) {
-        cameraResolution.setText(resolution.replace("*", " × ")); boxView.setSwitch(false);
+
+    /**
+     * 配置切换前同步检测框及分辨率标签。
+     */
+    @Override
+    public void prepareSelection(String resolution) {
+        cameraResolution.setText(resolution.replace("*", " × "));
+        boxView.setSwitch(false);
     }
-    /** 使用当前页面 Surface 恢复预览。 */
-    @Override public void restartPreview() { CameraUtils.getInstance().setPreview(surfaceView); }
-    /** 保留平台依赖的重启原因日志。 */
-    @Override public void restartDecision(boolean skipped) {
-        if (BuildConfig.DEBUG) Log.d("CameraFragment", "[Biz] camera_restart=" + (skipped ? "skipped_inflight" : "camera_page_closed"));
+
+    /**
+     * 使用当前页面 Surface 恢复预览。
+     */
+    @Override
+    public void restartPreview() {
+        CameraUtils.getInstance().setPreview(surfaceView);
     }
-    /** 本页由设备事件驱动，无额外懒加载请求。 */
-    @Override protected void loadData() { }
+
+    /**
+     * 保留平台依赖的重启原因日志。
+     */
+    @Override
+    public void restartDecision(boolean skipped) {
+        if (BuildConfig.DEBUG)
+            Log.d("CameraFragment", "[Biz] camera_restart=" + (skipped ? "skipped_inflight" : "camera_page_closed"));
+    }
+
+    /**
+     * 本页由设备事件驱动，无额外懒加载请求。
+     */
+    @Override
+    protected void loadData() {
+    }
 
     private void startCameraPreView() {
         imageViewText.setVisibility(View.GONE);
@@ -179,13 +229,19 @@ public class CameraFragment extends BaseFragment implements CameraSettingsPresen
         boxView.setVisibility(View.GONE);
     }
 
-    /** 类型切换只更新现有控件数据，界面结构不变。 */
-    private void refreshSelection() { refreshSelection(getView()); }
+    /**
+     * 类型切换只更新现有控件数据，界面结构不变。
+     */
+    private void refreshSelection() {
+        refreshSelection(getView());
+    }
 
-    /** 首次创建时直接使用尚未挂接的根视图。 */
+    /**
+     * 首次创建时直接使用尚未挂接的根视图。
+     */
     private void refreshSelection(View view) {
         if (view == null) return;
-        ((TextView)view.findViewById(R.id.cameraType)).setText(CameraController.CAMERA2.equals(cameraController.type())
+        ((TextView) view.findViewById(R.id.cameraType)).setText(CameraController.CAMERA2.equals(cameraController.type())
                 ? R.string.camera_type_native : R.string.camera_type_uvc);
         cameraName.setText(R.string.settings_camera_select);
         cameraName.setTextColor(android.graphics.Color.parseColor("#C93636"));

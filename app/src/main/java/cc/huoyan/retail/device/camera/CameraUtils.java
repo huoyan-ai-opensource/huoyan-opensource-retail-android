@@ -10,15 +10,28 @@ import androidx.annotation.NonNull;
 
 public class CameraUtils {
     private volatile static CameraUtils INSTANCE;
-    /** 返回原管理器，仅供 UVC 专项兼容测试使用。 */
-    public CameraUsbManager getCameraUsbManager() { return CameraUsbManager.getInstance(); }
-    /** 返回进程级预览入口。 */
+
+    /**
+     * 返回原管理器，仅供 UVC 专项兼容测试使用。
+     */
+    public CameraUsbManager getCameraUsbManager() {
+        return CameraUsbManager.getInstance();
+    }
+
+    /**
+     * 返回进程级预览入口。
+     */
     public static synchronized CameraUtils getInstance() {
         if (INSTANCE == null) INSTANCE = new CameraUtils();
         return INSTANCE;
     }
-    /** 页面绑定由统一入口选择对应后端。 */
-    public void setPreview(AutoFitTextureView view) { CameraController.getInstance().bind(view); }
+
+    /**
+     * 页面绑定由统一入口选择对应后端。
+     */
+    public void setPreview(AutoFitTextureView view) {
+        CameraController.getInstance().bind(view);
+    }
 
     /**
      * 判断是否应发起相机重开（2026-08-27 用户反馈①③ 共用纯逻辑）。

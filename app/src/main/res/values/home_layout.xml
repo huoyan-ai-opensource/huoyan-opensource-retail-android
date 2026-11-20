@@ -4,20 +4,66 @@
     <style name="HomeFeatureCardWide">
         <item name="android:orientation">horizontal</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:padding">20dp</item>
+        <item name="android:padding">@dimen/dp_10</item>
     </style>
+
     <style name="HomeFeatureTextWide">
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">@dimen/dp_0</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginStart">@dimen/dp_8</item>
     </style>
+
     <style name="HomeFeatureCard" parent="HomeFeatureCardWide" />
+
     <style name="HomeFeatureText" parent="HomeFeatureTextWide" />
-    <dimen name="home_checkout_padding">32dp</dimen>
-    <dimen name="home_feature_icon_size">28dp</dimen>
-    <dimen name="home_feature_title_height">29dp</dimen>
-    <dimen name="home_feature_title_size">20sp</dimen>
-    <dimen name="home_feature_subtitle_height">20dp</dimen>
-    <dimen name="home_feature_subtitle_gap">8dp</dimen>
-    <integer name="home_feature_text_gravity">16</integer>
+
+    <style name="HomeFeatureIconWide">
+        <item name="android:layout_width">@dimen/dp_14</item>
+        <item name="android:layout_height">@dimen/dp_14</item>
+        <item name="android:importantForAccessibility">no</item>
+    </style>
+
+    <style name="HomeFeatureIcon" parent="HomeFeatureIconWide" />
+
+    <style name="HomeFeatureTitleWide">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/dp_14_5</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">#293A51</item>
+        <item name="android:textSize">@dimen/sp_10</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">@font/retail_sans</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="HomeFeatureTitle" parent="HomeFeatureTitleWide" />
+
+    <style name="HomeFeatureSubtitleWide">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/dp_10</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginTop">@dimen/dp_4</item>
+        <item name="android:textColor">#6E7C90</item>
+        <item name="android:textSize">@dimen/sp_7</item>
+        <item name="android:fontFamily">@font/retail_sans</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="HomeFeatureSubtitle" parent="HomeFeatureSubtitleWide" />
+
+    <style name="HomeCheckoutCardWide">
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/home_checkout_card</item>
+        <item name="android:paddingStart">@dimen/dp_16</item>
+        <item name="android:paddingEnd">@dimen/dp_16</item>
+        <item name="android:paddingTop">@dimen/dp_16</item>
+        <item name="android:paddingBottom">@dimen/dp_16</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="HomeCheckoutCard" parent="HomeCheckoutCardWide" />
 </resources>

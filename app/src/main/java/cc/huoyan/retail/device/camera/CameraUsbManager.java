@@ -12,7 +12,9 @@ import android.view.TextureView;
 
 import com.herohan.uvcapp.CameraHelper;
 import com.herohan.uvcapp.ICameraHelper;
+
 import cc.huoyan.retail.data.SPManager;
+
 import com.serenegiant.usb.Size;
 import com.serenegiant.usb.UVCCamera;
 
@@ -77,14 +79,26 @@ public class CameraUsbManager {
     private CameraUsbManager() {
     }
 
-    /** USB 会话代次，过滤释放后已投递的回调。 */
+    /**
+     * USB 会话代次，过滤释放后已投递的回调。
+     */
     private int sessionGeneration;
     private CameraStateListener cameraStateListener;
-    /** 当前后端错误出口，释放时清除。 */
+    /**
+     * 当前后端错误出口，释放时清除。
+     */
     private java.util.function.Consumer<String> errorListener;
-    /** 设置统一入口的错误出口。 */
-    public void setErrorListener(java.util.function.Consumer<String> listener) { errorListener = listener; }
-    /** 完全释放旧 USB 会话与监控，供相机类型切换使用。 */
+
+    /**
+     * 设置统一入口的错误出口。
+     */
+    public void setErrorListener(java.util.function.Consumer<String> listener) {
+        errorListener = listener;
+    }
+
+    /**
+     * 完全释放旧 USB 会话与监控，供相机类型切换使用。
+     */
     public void releaseCamera() {
         sessionGeneration++;
         handler.removeCallbacksAndMessages(null);
@@ -243,33 +257,64 @@ public class CameraUsbManager {
 
     };
 
-    /** 将库内已排队的状态事件限制在本次 USB 会话内。 */
+    /**
+     * 将库内已排队的状态事件限制在本次 USB 会话内。
+     */
     private ICameraHelper.StateCallback guardedCallback(int token) {
         return new ICameraHelper.StateCallback() {
             /** 设备接入只交给当前会话。 */
-            @Override public void onAttach(UsbDevice d) { if (token == sessionGeneration) mStateListener.onAttach(d); }
+            @Override
+            public void onAttach(UsbDevice d) {
+                if (token == sessionGeneration) mStateListener.onAttach(d);
+            }
+
             /** 设备授权后打开当前相机。 */
-            @Override public void onDeviceOpen(UsbDevice d, boolean first) { if (token == sessionGeneration) mStateListener.onDeviceOpen(d, first); }
+            @Override
+            public void onDeviceOpen(UsbDevice d, boolean first) {
+                if (token == sessionGeneration) mStateListener.onDeviceOpen(d, first);
+            }
+
             /** 当前相机就绪后挂接预览。 */
-            @Override public void onCameraOpen(UsbDevice d) { if (token == sessionGeneration) mStateListener.onCameraOpen(d); }
+            @Override
+            public void onCameraOpen(UsbDevice d) {
+                if (token == sessionGeneration) mStateListener.onCameraOpen(d);
+            }
+
             /** 旧会话关闭不能移除新预览。 */
-            @Override public void onCameraClose(UsbDevice d) { if (token == sessionGeneration) mStateListener.onCameraClose(d); }
+            @Override
+            public void onCameraClose(UsbDevice d) {
+                if (token == sessionGeneration) mStateListener.onCameraClose(d);
+            }
+
             /** 当前设备关闭事件。 */
-            @Override public void onDeviceClose(UsbDevice d) { if (token == sessionGeneration) mStateListener.onDeviceClose(d); }
+            @Override
+            public void onDeviceClose(UsbDevice d) {
+                if (token == sessionGeneration) mStateListener.onDeviceClose(d);
+            }
+
             /** 拔出当前设备后由统一入口提示。 */
-            @Override public void onDetach(UsbDevice d) {
+            @Override
+            public void onDetach(UsbDevice d) {
                 if (token != sessionGeneration) return;
                 mStateListener.onDetach(d);
                 String id = d.getDeviceId() + "_" + d.getVendorId() + "_" + d.getProductId();
-                if (id.equals(currentCameraId) && errorListener != null) errorListener.accept("USB 相机已断开");
+                if (id.equals(currentCameraId) && errorListener != null)
+                    errorListener.accept("USB 相机已断开");
             }
+
             /** 用户取消授权后停止在途标志。 */
-            @Override public void onCancel(UsbDevice d) { if (token == sessionGeneration) mStateListener.onCancel(d); }
+            @Override
+            public void onCancel(UsbDevice d) {
+                if (token == sessionGeneration) mStateListener.onCancel(d);
+            }
+
             /** 驱动错误统一使用项目提示。 */
-            @Override public void onError(UsbDevice d, com.herohan.uvcapp.CameraException e) {
+            @Override
+            public void onError(UsbDevice d, com.herohan.uvcapp.CameraException e) {
                 if (token != sessionGeneration) return;
                 cameraRestarting = false;
-                if (errorListener != null) errorListener.accept("USB 相机打开失败：" + e.getMessage());
+                if (errorListener != null)
+                    errorListener.accept("USB 相机打开失败：" + e.getMessage());
             }
         };
     }
@@ -483,7 +528,9 @@ public class CameraUsbManager {
         }
     }
 
-    /** 同步预览和识别输入的镜像方向，保证检测坐标与图像一致。 */
+    /**
+     * 同步预览和识别输入的镜像方向，保证检测坐标与图像一致。
+     */
     public void setMirrorEnabled(boolean enabled) {
         mirrorEnabled = enabled;
         SPManager.getInstance().putBoolean("cameraMirror", enabled);

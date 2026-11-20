@@ -7,10 +7,14 @@ import android.view.TextureView;
 public class AutoFitTextureView extends TextureView {
     private int mRatioWidth = 0;
     private int mRatioHeight = 0;
-    /** 设置页完整展示取景范围；识别页保持其自身坐标约定。 */
+    /**
+     * 设置页完整展示取景范围；识别页保持其自身坐标约定。
+     */
     private boolean fitInside;
 
-    /** 显式指定预览是否同时受容器宽高约束，须在主线程调用。 */
+    /**
+     * 显式指定预览是否同时受容器宽高约束，须在主线程调用。
+     */
     public void setFitInside(boolean fitInside) {
         this.fitInside = fitInside;
         requestLayout();

@@ -14,7 +14,9 @@ public final class DownloadProgress {
     private final long downloaded;
     private final long total;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public DownloadProgress(int code, String reason, long downloaded, long total) {
         this.code = code;
         this.reason = reason;
@@ -22,22 +24,30 @@ public final class DownloadProgress {
         this.total = total;
     }
 
-    /** 结果码；0 表示请求成功。 */
+    /**
+     * 结果码；0 表示请求成功。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 已收字节。 */
+    /**
+     * 已收字节。
+     */
     public long getDownloaded() {
         return downloaded;
     }
 
-    /** manifest 声明总字节；0=未知。 */
+    /**
+     * manifest 声明总字节；0=未知。
+     */
     public long getTotal() {
         return total;
     }

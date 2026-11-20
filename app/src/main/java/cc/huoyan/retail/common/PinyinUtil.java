@@ -64,7 +64,7 @@ public class PinyinUtil {
                     String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(c, format);
                     if (pinyinArray != null && pinyinArray.length > 0) {
                         // 如果字符可以转化为拼音，则取第一个拼音并追加到结果中
-                        pinyinBuilder.append(pinyinArray[0].substring(0,1));
+                        pinyinBuilder.append(pinyinArray[0].substring(0, 1));
                     } else {
                         // 如果字符无法转化为拼音（比如标点符号等），直接追加原字符
                         pinyinBuilder.append(c);

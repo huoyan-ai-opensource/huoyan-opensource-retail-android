@@ -50,27 +50,47 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
     private EditText shopPhoneEd;
     private static final String LOG_TAG = "SystemFragment";
 
-    /** 系统维护的 SDK 与客户端下载共用一个会话，随视图销毁释放。 */
+    /**
+     * 系统维护的 SDK 与客户端下载共用一个会话，随视图销毁释放。
+     */
     private ApkInstallController apkInstall;
-    /** 五档滑动器，进度 0–4 对应档位 1–5；仅持有当前视图。 */
+    /**
+     * 五档滑动器，进度 0–4 对应档位 1–5；仅持有当前视图。
+     */
     private SeekBar recognitionSensitivity;
     private Switch stableRecognition;
-    /** 删除结果开关，选择后立即保存；视图销毁时释放。 */
+    /**
+     * 删除结果开关，选择后立即保存；视图销毁时释放。
+     */
     private Switch deleteRecognitionResult;
     private TextView sdkChannelPicker;
-    /** 滑块下方五个档位标签，当前选择使用主题色；视图销毁时释放。 */
+    /**
+     * 滑块下方五个档位标签，当前选择使用主题色；视图销毁时释放。
+     */
     private android.view.ViewGroup recognitionSensitivityLabels;
-    /** 置信度 UI 百分值，仅本地保存，等待 SDK 提供设置接口。 */
+    /**
+     * 置信度 UI 百分值，仅本地保存，等待 SDK 提供设置接口。
+     */
     private cc.huoyan.retail.common.ui.FloatSeekBar confidence;
-    /** 交并比 UI 百分值，仅本地保存，等待 SDK 提供设置接口。 */
+    /**
+     * 交并比 UI 百分值，仅本地保存，等待 SDK 提供设置接口。
+     */
     private cc.huoyan.retail.common.ui.FloatSeekBar iou;
-    /** 授权模型读取协调器，销毁视图后丢弃回调。 */
+    /**
+     * 授权模型读取协调器，销毁视图后丢弃回调。
+     */
     private RecognitionSettingsPresenter recognition;
-    /** 本地置信度 UI 配置键，不代表已下发 SDK。 */
+    /**
+     * 本地置信度 UI 配置键，不代表已下发 SDK。
+     */
     private static final String SP_CONFIDENCE = "recognition_confidence_percent";
-    /** 识别阈值的原始默认百分值。 */
+    /**
+     * 识别阈值的原始默认百分值。
+     */
     private static final int DEFAULT_THRESHOLD = 45;
-    /** 本地交并比 UI 配置键，不代表已下发 SDK。 */
+    /**
+     * 本地交并比 UI 配置键，不代表已下发 SDK。
+     */
     private static final String SP_IOU = "recognition_iou_percent";
 
     private TextView topSettings;
@@ -79,26 +99,35 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
     private LinearLayout settingsLayout;
     private LinearLayout otherLayout;
     private LinearLayout shopSettingsLayout;
-    /** 门店绑定的输入校验、互斥与回执协调。 */
+    /**
+     * 门店绑定的输入校验、互斥与回执协调。
+     */
     private ShopBindingPresenter binding;
-    /** 标记本页创建的绑定等待提示，销毁时只关闭自身弹窗。 */
+    /**
+     * 标记本页创建的绑定等待提示，销毁时只关闭自身弹窗。
+     */
     private boolean bindingDialogShowing;
 
     @Override
     protected int getLayoutResId() {
         String page = getArguments() == null ? "" : getArguments().getString("page", "");
         switch (page) {
-            case "recognition": return R.layout.page_recognition;
-            case "shop": return R.layout.page_shop;
-            case "maintenance": return R.layout.page_maintenance;
-            default: return R.layout.fragment_system;
+            case "recognition":
+                return R.layout.page_recognition;
+            case "shop":
+                return R.layout.page_shop;
+            case "maintenance":
+                return R.layout.page_maintenance;
+            default:
+                return R.layout.fragment_system;
         }
     }
 
     @Override
     protected void initView(View view) {
-        if (binding == null) binding = new ShopBindingPresenter(this, IOThreadHelper.getInstance()::post,
-                new android.os.Handler(android.os.Looper.getMainLooper())::post, new ShopBindingSource());
+        if (binding == null)
+            binding = new ShopBindingPresenter(this, IOThreadHelper.getInstance()::post,
+                    new android.os.Handler(android.os.Looper.getMainLooper())::post, new ShopBindingSource());
         else binding.attach(this);
         SelectOptionDialog.listen(getChildFragmentManager(), this, "language", (position, value) -> {
             if (!value.equals(LocalePreferenceUtil.getLanguageCode(requireContext()))) {
@@ -131,17 +160,23 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
         }
     }
 
-    /** 同一卡片展示当前动态模型名称及版本，缺失值使用占位。 */
-    @Override public void showModel(RecognitionSettingsPresenter.Model model) {
+    /**
+     * 同一卡片展示当前动态模型名称及版本，缺失值使用占位。
+     */
+    @Override
+    public void showModel(RecognitionSettingsPresenter.Model model) {
         if (getView() == null) return;
         TextView name = getView().findViewById(R.id.currentModel);
         TextView version = getView().findViewById(R.id.modelVersion);
-        if (name != null) name.setText(model == null || android.text.TextUtils.isEmpty(model.name) ? "—" : model.name);
+        if (name != null)
+            name.setText(model == null || android.text.TextUtils.isEmpty(model.name) ? "—" : model.name);
         if (version != null) version.setText(getString(R.string.model_version,
                 model == null || android.text.TextUtils.isEmpty(model.version) ? "—" : model.version));
     }
 
-    /** 初始化本地参数 UI，并将门店类型保留为 SDK 授权模型的只读展示。 */
+    /**
+     * 初始化本地参数 UI，并将门店类型保留为 SDK 授权模型的只读展示。
+     */
     private void initRecognition(View view) {
         confidence = bindThreshold(view, R.id.confSeekBar, R.id.confText, SP_CONFIDENCE);
         iou = bindThreshold(view, R.id.iouSeekBar, R.id.iouText, SP_IOU);
@@ -152,11 +187,18 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
         recognitionSensitivity.setProgress(savedSensitivityLevel() - 1);
         showSensitivityLevel(recognitionSensitivity.getProgress() + 1);
         recognitionSensitivity.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override public void onProgressChanged(SeekBar bar, int value, boolean fromUser) {
+            @Override
+            public void onProgressChanged(SeekBar bar, int value, boolean fromUser) {
                 showSensitivityLevel(value + 1);
             }
-            @Override public void onStartTrackingTouch(SeekBar bar) { }
-            @Override public void onStopTrackingTouch(SeekBar bar) { }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar bar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar bar) {
+            }
         });
         deleteRecognitionResult = view.findViewById(R.id.deleteRecognitionResult);
         deleteRecognitionResult.setChecked(SPManager.getInstance().getBoolean(SPManager.SP_DELETE_RECOGNITION_RESULT));
@@ -171,18 +213,23 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
         view.findViewById(R.id.restoreRecognitionDefaults).setOnClickListener(v -> confirmRestoreDefaults());
         view.findViewById(R.id.saveSettings).setOnClickListener(v -> savePendingSettings());
         View switchModel = view.findViewById(R.id.switchModel);
-        if (switchModel != null) switchModel.setOnClickListener(v -> ActivationFlowFragment.switchModel(requireActivity()));
+        if (switchModel != null)
+            switchModel.setOnClickListener(v -> ActivationFlowFragment.switchModel(requireActivity()));
         requireActivity().getSupportFragmentManager().setFragmentResultListener(
                 ActivationFlowFragment.RESULT, getViewLifecycleOwner(), (key, result) -> recognition.refresh());
     }
 
-    /** 主线程读取合法档位；页面展示与识别线程使用同一默认值。 */
+    /**
+     * 主线程读取合法档位；页面展示与识别线程使用同一默认值。
+     */
     private int savedSensitivityLevel() {
         return RecognitionSensitivity.validLevel(SPManager.getInstance().getInt(
                 SP_RECOGNITION_SENSITIVITY_LEVEL, RecognitionSensitivity.DEFAULT_LEVEL));
     }
 
-    /** 主线程回显档位草稿，并为无障碍朗读提供业务含义。 */
+    /**
+     * 主线程回显档位草稿，并为无障碍朗读提供业务含义。
+     */
     private void showSensitivityLevel(int level) {
         String[] names = getResources().getStringArray(R.array.recognition_sensitivity_names);
         int index = 0;
@@ -199,10 +246,14 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
         recognitionSensitivity.setContentDescription(getString(R.string.recognition_sensitivity_title) + "，" + names[level - 1]);
     }
 
-    /** 默认参数确认框的固定标识，避免重复点击叠加弹窗。 */
+    /**
+     * 默认参数确认框的固定标识，避免重复点击叠加弹窗。
+     */
     private static final String RESTORE_TAG = "restoreRecognitionDefaults";
 
-    /** 恢复仅修改表单；用户确认后仍需保存配置。 */
+    /**
+     * 恢复仅修改表单；用户确认后仍需保存配置。
+     */
     private void confirmRestoreDefaults() {
         if (getChildFragmentManager().isStateSaved()
                 || getChildFragmentManager().findFragmentByTag(RESTORE_TAG) != null) return;
@@ -211,23 +262,32 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
                 getString(R.string.button_cancel), restoreListener()).show(getChildFragmentManager(), RESTORE_TAG);
     }
 
-    /** 当前视图有效期间才填回默认值，取消不改变草稿。 */
+    /**
+     * 当前视图有效期间才填回默认值，取消不改变草稿。
+     */
     private cc.huoyan.retail.common.ui.AlertConfirmDialogListener restoreListener() {
         return new cc.huoyan.retail.common.ui.AlertConfirmDialogListener() {
             /** 确认后只重置识别参数，保留即时保存的开关。 */
-            @Override public void onConfirm() {
+            @Override
+            public void onConfirm() {
                 if (recognitionSensitivity == null) return;
                 recognitionSensitivity.setProgress(RecognitionSensitivity.DEFAULT_LEVEL - 1);
                 if (confidence != null) confidence.setProgress(DEFAULT_THRESHOLD);
                 if (iou != null) iou.setProgress(DEFAULT_THRESHOLD);
             }
+
             /** 取消恢复时保留当前表单。 */
-            @Override public void onCancel() { }
+            @Override
+            public void onCancel() {
+            }
         };
     }
 
-    /** 保存本地识别参数，供保存按钮和保存后退出共用。 */
-    @Override public boolean savePendingSettings() {
+    /**
+     * 保存本地识别参数，供保存按钮和保存后退出共用。
+     */
+    @Override
+    public boolean savePendingSettings() {
         if (recognitionSensitivity == null) return false;
         SPManager.getInstance().putInt(SP_RECOGNITION_SENSITIVITY_LEVEL, recognitionSensitivity.getProgress() + 1);
         if (confidence != null && iou != null) {
@@ -240,7 +300,9 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
         return true;
     }
 
-    /** 绑定滑动条数值；未配置时立即显示 0.45，拖动时实时回显两位小数。 */
+    /**
+     * 绑定滑动条数值；未配置时立即显示 0.45，拖动时实时回显两位小数。
+     */
     private cc.huoyan.retail.common.ui.FloatSeekBar bindThreshold(View root, int barId, int textId, String key) {
         cc.huoyan.retail.common.ui.FloatSeekBar bar = root.findViewById(barId);
         TextView label = root.findViewById(textId);
@@ -251,8 +313,11 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
         return bar;
     }
 
-    /** 只比较尚未保存的参数；开关已自动保存，不触发退出确认。 */
-    @Override public boolean hasUnsavedSettings() {
+    /**
+     * 只比较尚未保存的参数；开关已自动保存，不触发退出确认。
+     */
+    @Override
+    public boolean hasUnsavedSettings() {
         if (recognitionSensitivity == null) return false;
         SPManager store = SPManager.getInstance();
         return recognitionSensitivity.getProgress() + 1 != savedSensitivityLevel()
@@ -269,7 +334,10 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
         watchShopField(shopAddressEd, SP_SHOP_ADDRESS);
         watchShopField(shopPhoneEd, SP_SHOP_PHONE);
         view.findViewById(R.id.shopLogin).setOnClickListener(new DebounceClickListener() {
-            @Override public void onDebouncedClick(View v) { showShopBindScanDialog(); }
+            @Override
+            public void onDebouncedClick(View v) {
+                showShopBindScanDialog();
+            }
         });
         View save = view.findViewById(R.id.saveShop);
         if (save != null) save.setOnClickListener(v ->
@@ -278,15 +346,26 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
 
     private void watchShopField(EditText field, String key) {
         field.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 SPManager.getInstance().putString(key, s.toString());
             }
-            @Override public void afterTextChanged(Editable s) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
         });
     }
 
     private void initMaintenance(View view) {
+        View permissionGuide = view.findViewById(R.id.openSdkPermissions);
+        if (permissionGuide != null) {
+            permissionGuide.setOnClickListener(v -> cc.huoyan.retail.sdk.SdkPermissionGuide.show(requireActivity()));
+        }
         Switch exitGuard = view.findViewById(R.id.exitPasswordEnabled);
         if (exitGuard != null) {
             exitGuard.setChecked(ExitPasswordStore.isEnabled(requireContext()));
@@ -304,8 +383,9 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
         view.findViewById(R.id.handleInstall).setOnClickListener(v -> apkInstall.downloadAndInstall(
                 cc.huoyan.sdk.client.deployment.SdkShell.DEFAULT_APK_URL, R.string.apk_name_sdk));
         View clientInstall = view.findViewById(R.id.handleClientInstall);
-        if (clientInstall != null) clientInstall.setOnClickListener(v -> apkInstall.downloadAndInstall(
-                cc.huoyan.retail.RetailConstants.CLIENT_LATEST_APK_URL, R.string.apk_name_client));
+        if (clientInstall != null)
+            clientInstall.setOnClickListener(v -> apkInstall.downloadAndInstall(
+                    cc.huoyan.retail.RetailConstants.CLIENT_LATEST_APK_URL, R.string.apk_name_client));
 
         view.findViewById(R.id.handleQuit).setOnClickListener(v -> requireActivity().finishAffinity());
         String languageMode = LocalePreferenceUtil.getLanguageCode(requireContext());
@@ -319,7 +399,9 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
                 cc.huoyan.retail.settings.SettingsPageActivity.open(requireContext(), "authorization"));
     }
 
-    /** 使用项目单选弹窗切换语言模式；跟随系统始终放在首项。 */
+    /**
+     * 使用项目单选弹窗切换语言模式；跟随系统始终放在首项。
+     */
     private void showLanguageDialog() {
         SelectOptionDialog.show(getChildFragmentManager(), "language", getString(R.string.language_setting),
                 Arrays.asList(getString(R.string.language_system), getString(R.string.language_simplified_chinese),
@@ -342,7 +424,9 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
         }
     }
 
-    /** 初始化 SDK 对接方式，回显不重复写配置。 */
+    /**
+     * 初始化 SDK 对接方式，回显不重复写配置。
+     */
     private void initSdkChannelViews() {
         List<String> labels = new ArrayList<>();
         List<String> values = new ArrayList<>();
@@ -356,7 +440,8 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
                 values.get(sdkChannelPosition(SdkChannelManager.getInstance().getChannel()))));
         SelectOptionDialog.listen(getChildFragmentManager(), this, "sdkChannel", (position, value) -> {
             cc.huoyan.sdk.client.SdkConfig.Channel selected = sdkChannelFromPosition(position);
-            if (selected == null || selected == SdkChannelManager.getInstance().getChannel()) return;
+            if (selected == null || selected == SdkChannelManager.getInstance().getChannel())
+                return;
             SdkChannelManager.getInstance().setChannel(selected);
             sdkChannelPicker.setText(sdkChannelLabelRes(selected));
             Logger.logDebug(LOG_TAG, "[Biz] sdk_channel=" + selected.value());
@@ -365,7 +450,9 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
         });
     }
 
-    /** 设置页 SDK 对接方式选择条目顺序：0 AIDL（默认）/ 1 WebSocket。 */
+    /**
+     * 设置页 SDK 对接方式选择条目顺序：0 AIDL（默认）/ 1 WebSocket。
+     */
     private static final List<cc.huoyan.sdk.client.SdkConfig.Channel> SDK_CHANNEL_ITEMS = Arrays.asList(
             cc.huoyan.sdk.client.SdkConfig.Channel.AIDL, cc.huoyan.sdk.client.SdkConfig.Channel.WS);
 
@@ -425,7 +512,9 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
 
     }
 
-    /** 为 SDK 和客户端维护入口复用首页的下载、权限申请和安装流程。 */
+    /**
+     * 为 SDK 和客户端维护入口复用首页的下载、权限申请和安装流程。
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle state) {
         super.onViewCreated(view, state);
@@ -434,14 +523,18 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
         }
     }
 
-    /** 保存权限页返回后继续安装所需状态。 */
+    /**
+     * 保存权限页返回后继续安装所需状态。
+     */
     @Override
     public void onSaveInstanceState(@NonNull Bundle state) {
         if (apkInstall != null) apkInstall.saveState(state);
         super.onSaveInstanceState(state);
     }
 
-    /** 释放维护页下载任务及弹窗。 */
+    /**
+     * 释放维护页下载任务及弹窗。
+     */
     @Override
     public void onDestroyView() {
         androidx.fragment.app.Fragment restore = getChildFragmentManager().findFragmentByTag(RESTORE_TAG);
@@ -523,31 +616,61 @@ public class SystemFragment extends BaseFragment implements ShopBindingPresenter
         scanDialog.show(requireActivity().getSupportFragmentManager(), "scanShopQrCode");
     }
 
-    /** 将扫码结果交给绑定协调器，不在页面决定成功归属。 */
+    /**
+     * 将扫码结果交给绑定协调器，不在页面决定成功归属。
+     */
     private void handleShopQrScan(String raw) {
-        if (ShopBindingPresenter.parseShopQrShopId(raw) == null) Logger.logDebug(LOG_TAG, "[Biz] shop_qr=invalid raw=" + raw);
+        if (ShopBindingPresenter.parseShopQrShopId(raw) == null)
+            Logger.logDebug(LOG_TAG, "[Biz] shop_qr=invalid raw=" + raw);
         binding.bind(raw);
     }
-    /** 加载提示失败不会阻止已经受理的绑定操作。 */
-    @Override public void bindingStarted() {
+
+    /**
+     * 加载提示失败不会阻止已经受理的绑定操作。
+     */
+    @Override
+    public void bindingStarted() {
         try {
             DialogUtil.showLoadingDialog(requireActivity(), getString(R.string.dialog_binding_shop));
             bindingDialogShowing = true;
+        } catch (RuntimeException error) {
+            Logger.logError(LOG_TAG, "绑定加载提示显示失败，继续提交绑定：" + error.getClass().getSimpleName());
         }
-        catch (RuntimeException error) { Logger.logError(LOG_TAG, "绑定加载提示显示失败，继续提交绑定：" + error.getClass().getSimpleName()); }
     }
-    /** 仅释放本页创建的绑定等待提示。 */
+
+    /**
+     * 仅释放本页创建的绑定等待提示。
+     */
     private void dismissBindingProgress() {
         if (bindingDialogShowing) DialogUtil.dismissLoadingDialog();
         bindingDialogShowing = false;
     }
-    /** 无效输入或重复提交的即时提示。 */
-    @Override public void bindingRejected(int text) { ToastEx.createToast(requireContext(), getString(text)); }
-    /** 将绑定回执映射为原有成功或失败文案。 */
-    @Override public void bindingFinished(boolean success, int text, String reason) {
+
+    /**
+     * 无效输入或重复提交的即时提示。
+     */
+    @Override
+    public void bindingRejected(int text) {
+        ToastEx.createToast(requireContext(), getString(text));
+    }
+
+    /**
+     * 将绑定回执映射为原有成功或失败文案。
+     */
+    @Override
+    public void bindingFinished(boolean success, int text, String reason) {
         dismissBindingProgress();
-        if (success) { initPrintShopData(); ToastEx.showSuccessToast(requireContext(), getString(text)); return; }
-        if (text == R.string.bind_incomplete) { ToastEx.createToast(requireContext(), getString(text)); return; }
+        if (!success && cc.huoyan.retail.sdk.SdkPermissionGuide.showIfRequired(requireActivity(), reason))
+            return;
+        if (success) {
+            initPrintShopData();
+            ToastEx.showSuccessToast(requireContext(), getString(text));
+            return;
+        }
+        if (text == R.string.bind_incomplete) {
+            ToastEx.createToast(requireContext(), getString(text));
+            return;
+        }
         String message = reason == null ? getString(text) : reason;
         Logger.logDebug(LOG_TAG, "[Biz] device_bind=fail reason=" + message);
         ToastEx.createToast(requireContext(), getString(R.string.bind_failed, message));

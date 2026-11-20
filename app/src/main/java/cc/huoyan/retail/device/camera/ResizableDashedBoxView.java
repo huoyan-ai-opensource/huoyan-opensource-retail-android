@@ -45,7 +45,9 @@ public class ResizableDashedBoxView extends View {
         init();
     }
 
-    /** 主线程收到真实帧后同步尺寸，避免宽高尚未就绪时保存错误坐标。 */
+    /**
+     * 主线程收到真实帧后同步尺寸，避免宽高尚未就绪时保存错误坐标。
+     */
     public void setOriginalImageSize(int width, int height) {
         if (width <= 0 || height <= 0) return;
         originalImageWidth = width;
@@ -68,7 +70,8 @@ public class ResizableDashedBoxView extends View {
     }
 
     private void initializePoints() {
-        if (originalImageWidth <= 0 || originalImageHeight <= 0 || getWidth() <= 0 || getHeight() <= 0) return;
+        if (originalImageWidth <= 0 || originalImageHeight <= 0 || getWidth() <= 0 || getHeight() <= 0)
+            return;
         recognizeArea = SPManager.getInstance().getRecognizeArea(originalImageWidth, originalImageHeight);
         points = convertPointsFromOriginalToImageView(recognizeArea.getPoints());
         invalidate();

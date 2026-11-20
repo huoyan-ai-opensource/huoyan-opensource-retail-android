@@ -1,6 +1,7 @@
 package cc.huoyan.retail.device.print;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class ReceiptBarcodeTest {

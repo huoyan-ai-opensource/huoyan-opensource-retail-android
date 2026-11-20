@@ -26,10 +26,14 @@ import com.alibaba.fastjson.JSONObject;
  */
 public final class WsV2Codec {
 
-    /** WS 服务端点缺省主机（SDK 仅绑定回环；局域网开放端点随后续阶段）。 */
+    /**
+     * WS 服务端点缺省主机（SDK 仅绑定回环；局域网开放端点随后续阶段）。
+     */
     public static final String DEFAULT_HOST = "127.0.0.1";
 
-    /** WS 服务端点缺省端口（SDK {@code StaticConfig.Comm.WS_LOOPBACK_PORT}）。 */
+    /**
+     * WS 服务端点缺省端口（SDK {@code StaticConfig.Comm.WS_LOOPBACK_PORT}）。
+     */
     public static final int DEFAULT_PORT = 18086;
 
     /**
@@ -39,37 +43,65 @@ public final class WsV2Codec {
      */
     public static final String DEFAULT_PATH = "/ws";
 
-    /** WS 服务端点缺省整串（回环 + {@link #DEFAULT_PATH}）。 */
+    /**
+     * WS 服务端点缺省整串（回环 + {@link #DEFAULT_PATH}）。
+     */
     public static final String DEFAULT_ENDPOINT =
             "ws://" + DEFAULT_HOST + ":" + DEFAULT_PORT + DEFAULT_PATH;
 
-    /** 云端服务开关读写命令名。 */
+    /**
+     * 云端服务开关读写命令名。
+     */
     public static final String CMD_GET_CLOUD_STATUS = "getCloudStatus";
     public static final String CMD_SET_CLOUD_STATUS = "setCloudStatus";
 
-    /** 状态查询命令名。 */
+    /**
+     * 状态查询命令名。
+     */
     public static final String CMD_GET_STATUS = "getStatus";
-    /** 识别命令名（需图）。 */
+    /**
+     * 识别命令名（需图）。
+     */
     public static final String CMD_RECOGNIZE = "recognize";
-    /** 能力快照查询命令名。 */
+    /**
+     * 能力快照查询命令名。
+     */
     public static final String CMD_GET_CAPABILITIES = "getCapabilities";
-    /** 按输入激活码查询授权模型。 */
+    /**
+     * 按输入激活码查询授权模型。
+     */
     public static final String CMD_QUERY_LICENSE_MODELS = "queryLicenseModels";
-    /** 当前设备授权模型无参查询命令。 */
+    /**
+     * 当前设备授权模型无参查询命令。
+     */
     public static final String CMD_QUERY_DEVICE_MODELS = "queryDeviceModels";
-    /** 证书视图查询命令名。 */
+    /**
+     * 证书视图查询命令名。
+     */
     public static final String CMD_GET_CERT_INFO = "getCertInfo";
-    /** 模型下载进度查询命令名。 */
+    /**
+     * 模型下载进度查询命令名。
+     */
     public static final String CMD_GET_DOWNLOAD_PROGRESS = "getDownloadProgress";
-    /** 激活命令名。 */
+    /**
+     * 激活命令名。
+     */
     public static final String CMD_ACTIVATE = "activate";
-    /** 业务上报域基址配置命令名。 */
+    /**
+     * 业务上报域基址配置命令名。
+     */
     public static final String CMD_SET_BASE_URL = "setBaseUrl";
-    /** 纯检测命令名（需图）。 */
+    /**
+     * 纯检测命令名（需图）。
+     */
     public static final String CMD_DETECT = "detect";
-    /** 学习样本命令名（需图）。 */
+    /**
+     * 学习样本命令名（需图）。
+     */
     public static final String CMD_ITEM_LEARN = "itemLearn";
-    /** 导入已有小图，不再次上传和登记云端样本。 */
+    /**
+     * 导入已有小图，不再次上传和登记云端样本。
+     */
     public static final String CMD_IMPORT_LEARN = "importLearn";
     /**
      * 批量学习命令名（需图）：镜像 AIDL batchLearn(image, clazz)——
@@ -77,13 +109,21 @@ public final class WsV2Codec {
      * （x/y/w/h/score/uid/code/reason，与 ItemLearnBatchParcel 同构）。
      */
     public static final String CMD_BATCH_LEARN = "batchLearn";
-    /** 按分类遗忘命令名。 */
+    /**
+     * 按分类遗忘命令名。
+     */
     public static final String CMD_ITEM_FORGET = "itemForget";
-    /** 按 UID 遗忘命令名。 */
+    /**
+     * 按 UID 遗忘命令名。
+     */
     public static final String CMD_ITEM_FORGET_BY_UID = "itemForgetByUid";
-    /** 已学类别列表查询命令名。 */
+    /**
+     * 已学类别列表查询命令名。
+     */
     public static final String CMD_GET_ITEM_CLAZZ_LIST = "getItemClazzList";
-    /** 识别反馈提交命令名。 */
+    /**
+     * 识别反馈提交命令名。
+     */
     public static final String CMD_UPLOAD_PHOTO = "uploadPhoto";
     public static final String CMD_SUBMIT_FEEDBACK = "submitFeedback";
     /**
@@ -93,29 +133,47 @@ public final class WsV2Codec {
      * BindingResultParcel 同构（snake 键）。
      */
     public static final String CMD_BIND_DEVICE = "bindDevice";
-    /** 商品创建命令名：params.name/plu 必填，响应 data.goods。 */
+    /**
+     * 商品创建命令名：params.name/plu 必填，响应 data.goods。
+     */
     public static final String CMD_CREATE_GOODS = "createGoods";
-    /** 商品更新命令名：params.goods_id 必填 + 同创建字段，响应 data.goods。 */
+    /**
+     * 商品更新命令名：params.goods_id 必填 + 同创建字段，响应 data.goods。
+     */
     public static final String CMD_UPDATE_GOODS = "updateGoods";
-    /** 商品软删命令名：params.goods_id 必填，响应无载荷。 */
+    /**
+     * 商品软删命令名：params.goods_id 必填，响应无载荷。
+     */
     public static final String CMD_DELETE_GOODS = "deleteGoods";
 
-    /** 携带宿主客户端版本的初始化命令名。 */
+    /**
+     * 携带宿主客户端版本的初始化命令名。
+     */
     public static final String CMD_INIT = "init";
 
-    /** 类别图片分页查询命令名。 */
+    /**
+     * 类别图片分页查询命令名。
+     */
     public static final String CMD_GET_ITEM_CLAZZ_IMAGES = "getItemClazzImages";
 
-    /** 失败图片查询命令名。 */
+    /**
+     * 失败图片查询命令名。
+     */
     public static final String CMD_GET_FAILED_IMAGES = "getFailedImages";
 
-    /** 备份识别数据命令名。 */
+    /**
+     * 备份识别数据命令名。
+     */
     public static final String CMD_BACKUP_RECOGNITION_DATA = "backupRecognitionData";
 
-    /** 查询识别数据备份信息命令名。 */
+    /**
+     * 查询识别数据备份信息命令名。
+     */
     public static final String CMD_GET_RECOGNITION_DATA_INFO = "getRecognitionDataInfo";
 
-    /** 恢复识别数据命令名。 */
+    /**
+     * 恢复识别数据命令名。
+     */
     public static final String CMD_RESTORE_RECOGNITION_DATA = "restoreRecognitionData";
     public static final String CMD_DOWNLOAD_IMAGES_AND_LEARN = "downloadImagesAndLearn";
     public static final String CMD_GET_IMAGE_DOWNLOAD_PROGRESS = "getImageDownloadProgress";
@@ -124,7 +182,9 @@ public final class WsV2Codec {
     private WsV2Codec() {
     }
 
-    /** v2 响应值对象：requestId 原样带回 + 回执码 + data/reason 恰一携带。 */
+    /**
+     * v2 响应值对象：requestId 原样带回 + 回执码 + data/reason 恰一携带。
+     */
     public static final class Response {
 
         private final String requestId;
@@ -139,33 +199,45 @@ public final class WsV2Codec {
             this.data = data;
         }
 
-        /** 响应归属的在途请求；SDK 侧尽力提取时可为 null。 */
+        /**
+         * 响应归属的在途请求；SDK 侧尽力提取时可为 null。
+         */
         public String getRequestId() {
             return requestId;
         }
 
-        /** 回执码（0=成功；负值/4000x 为 SDK 侧错误码段）。 */
+        /**
+         * 回执码（0=成功；负值/4000x 为 SDK 侧错误码段）。
+         */
         public int getCode() {
             return code;
         }
 
-        /** 成功载荷；code≠0 时为 null。 */
+        /**
+         * 成功载荷；code≠0 时为 null。
+         */
         public JSONObject getData() {
             return data;
         }
 
-        /** 错误说明；code=0 时为 null。 */
+        /**
+         * 错误说明；code=0 时为 null。
+         */
         public String getReason() {
             return reason;
         }
 
-        /** 是否成功回执。 */
+        /**
+         * 是否成功回执。
+         */
         public boolean isOk() {
             return code == 0;
         }
     }
 
-    /** binary 帧解码产物：requestId + 图像原始字节。 */
+    /**
+     * binary 帧解码产物：requestId + 图像原始字节。
+     */
     public static final class Frame {
 
         private final String requestId;
@@ -185,14 +257,18 @@ public final class WsV2Codec {
         }
     }
 
-    /** 解析后的 WS 端点值对象（scheme 固定 ws，host + port + 以 / 起的 path）。 */
+    /**
+     * 解析后的 WS 端点值对象（scheme 固定 ws，host + port + 以 / 起的 path）。
+     */
     public static final class Endpoint {
 
         private final String host;
         private final int port;
         private final String path;
 
-        /** 缺省端点（回环 18086 + /ws）。 */
+        /**
+         * 缺省端点（回环 18086 + /ws）。
+         */
         public static Endpoint def() {
             return new Endpoint(DEFAULT_HOST, DEFAULT_PORT, DEFAULT_PATH);
         }
@@ -215,7 +291,9 @@ public final class WsV2Codec {
             return path;
         }
 
-        /** 连接 URL 整串（{@code ws://host:port/path}）。 */
+        /**
+         * 连接 URL 整串（{@code ws://host:port/path}）。
+         */
         public String toUrl() {
             return "ws://" + host + ":" + port + path;
         }

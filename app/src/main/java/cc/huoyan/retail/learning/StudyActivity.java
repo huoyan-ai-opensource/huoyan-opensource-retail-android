@@ -51,41 +51,75 @@ import java.util.concurrent.TimeUnit;
 import cc.huoyan.sdk.client.model.DetectResult;
 import cc.huoyan.sdk.client.SdkImage;
 
-/** 学习页 View：相机预览、控件与展示钩子；学习事务和反馈由 StudyPresenter 协调。 */
+/**
+ * 学习页 View：相机预览、控件与展示钩子；学习事务和反馈由 StudyPresenter 协调。
+ */
 public abstract class StudyActivity extends BaseActivity implements StudyPresenter.View {
-    /** 供列表 Presenter 和适配器渲染的图片集合，不保存学习事务状态。 */
+    /**
+     * 供列表 Presenter 和适配器渲染的图片集合，不保存学习事务状态。
+     */
     protected final List<StudyPicEntity> mStudyPicList = new ArrayList<>();
-    /** 相机及检测预览日志保留原标签。 */
+    /**
+     * 相机及检测预览日志保留原标签。
+     */
     private static final String LOG_TAG = "StudyActivity";
-    /** 学习操作协调器，拥有业务状态和待反馈批次。 */
+    /**
+     * 学习操作协调器，拥有业务状态和待反馈批次。
+     */
     private StudyPresenter study;
-    /** 学习图片展示与删除按钮适配器。 */
+    /**
+     * 学习图片展示与删除按钮适配器。
+     */
     protected StudyPicAdapter studyPicAdapter;
-    /** UVC 相机预览表面。 */
+    /**
+     * UVC 相机预览表面。
+     */
     private AutoFitTextureView surfaceView;
-    /** 当前学习商品标题。 */
+    /**
+     * 当前学习商品标题。
+     */
     private TextView selectedGoodsNameText;
-    /** Presenter 已接受选择的展示快照；切换必须经 selectLearningGoods。 */
+    /**
+     * Presenter 已接受选择的展示快照；切换必须经 selectLearningGoods。
+     */
     protected GoodsEntity mSelectedGoods;
-    /** 同一帧的像素和尺寸一起发布给检测线程，不依赖预览布局是否变化。 */
+    /**
+     * 同一帧的像素和尺寸一起发布给检测线程，不依赖预览布局是否变化。
+     */
     private volatile CameraFrame latestFrame;
-    /** 检测和学习共用串行队列，保持 SDK 请求不重叠；销毁时有序关闭。 */
+    /**
+     * 检测和学习共用串行队列，保持 SDK 请求不重叠；销毁时有序关闭。
+     */
     private final ScheduledExecutorService scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
-    /** 仅取消预览周期任务，暂停页面不撤销已提交学习。 */
+    /**
+     * 仅取消预览周期任务，暂停页面不撤销已提交学习。
+     */
     private java.util.concurrent.ScheduledFuture<?> detectionTask;
-    /** 页面生命周期内持续检查学习资格，授权失效时立即禁用保存。 */
+    /**
+     * 页面生命周期内持续检查学习资格，授权失效时立即禁用保存。
+     */
     private StudyAvailability availability;
 
-    /** 共享相机管理器，销毁时移除本页监听。 */
+    /**
+     * 共享相机管理器，销毁时移除本页监听。
+     */
     private CameraController cameraController;
-    /** 页面实例独立的订阅键，旧页面销毁不能移除新订阅。 */
+    /**
+     * 页面实例独立的订阅键，旧页面销毁不能移除新订阅。
+     */
     private final String cameraListenerKey = getClass().getSimpleName() + "@" + System.identityHashCode(this);
-    /** 预览帧专用转换器，检测结束后释放。 */
+    /**
+     * 预览帧专用转换器，检测结束后释放。
+     */
     private NV21ToBitmap mNv21ToBitmap;
-    /** 检测框叠加视图。 */
+    /**
+     * 检测框叠加视图。
+     */
     private StudyDrawView drawView;
 
-    /** 绑定相机视图与学习交互，学习操作由 Presenter 调度。 */
+    /**
+     * 绑定相机视图与学习交互，学习操作由 Presenter 调度。
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,16 +215,23 @@ public abstract class StudyActivity extends BaseActivity implements StudyPresent
         CameraUtils.getInstance().setPreview(surfaceView);
     }
 
-    /** 为学习页面提供学习图片适配器。 */
+    /**
+     * 为学习页面提供学习图片适配器。
+     */
     protected abstract StudyPicAdapter createPicAdapter();
 
-    /** 直接切换学习目标，保留拍照互斥和待提交反馈的收尾行为。 */
+    /**
+     * 直接切换学习目标，保留拍照互斥和待提交反馈的收尾行为。
+     */
     protected void selectLearningGoods(GoodsEntity target) {
         study.select(target);
     }
 
-    /** 渲染 Presenter 接受的新选择，历史图片仍由列表 Presenter 加载。 */
-    @Override public void showLearningTarget(GoodsEntity target) {
+    /**
+     * 渲染 Presenter 接受的新选择，历史图片仍由列表 Presenter 加载。
+     */
+    @Override
+    public void showLearningTarget(GoodsEntity target) {
         mSelectedGoods = target;
         selectedGoodsNameText.setText(getString(R.string.study_plu_name_format, target.getPlu(), target.getName()));
         if (SdkClassMapping.clazzFromPlu(mSelectedGoods.getPlu()) == null) {
@@ -202,28 +243,43 @@ public abstract class StudyActivity extends BaseActivity implements StudyPresent
         onSelectedGoodsChanged();
     }
 
-    /** 拍照回执返回前不退出，避免用户在处理过程中误切换页面。 */
-    @Override public void finish() {
+    /**
+     * 拍照回执返回前不退出，避免用户在处理过程中误切换页面。
+     */
+    @Override
+    public void finish() {
         if (study != null && !study.finish()) return;
         super.finish();
     }
 
-    /** 商品选择变化后加载已有样本。 */
+    /**
+     * 商品选择变化后加载已有样本。
+     */
     protected abstract void onSelectedGoodsChanged();
 
-    /** 学习数据变更成功后通知页面刷新展示，不额外提交 SDK 操作。 */
+    /**
+     * 学习数据变更成功后通知页面刷新展示，不额外提交 SDK 操作。
+     */
     protected abstract void onLearningDataChanged(GoodsEntity goods, boolean captured);
 
-    /** 保存收尾时更新图片展示。 */
+    /**
+     * 保存收尾时更新图片展示。
+     */
     protected abstract void onLearningSaved();
 
-    /** 单图删除成功后的展示刷新入口。 */
+    /**
+     * 单图删除成功后的展示刷新入口。
+     */
     protected abstract void onLearningPictureRemoved(StudyPicEntity picture);
 
-    /** 将本次学习回执加入显示列表。 */
+    /**
+     * 将本次学习回执加入显示列表。
+     */
     protected abstract void showCapturedPictures(List<StudyPicEntity> pictures);
 
-    /** 解绑学习视图，已提交任务完成后释放两套转换资源。 */
+    /**
+     * 解绑学习视图，已提交任务完成后释放两套转换资源。
+     */
     @Override
     protected void onDestroy() {
         if (study != null) study.detach();
@@ -232,39 +288,70 @@ public abstract class StudyActivity extends BaseActivity implements StudyPresent
         if (detectionTask != null) detectionTask.cancel(false);
         if (mNv21ToBitmap != null) scheduledExecutor.execute(mNv21ToBitmap::release);
         scheduledExecutor.shutdown();
-        if (cameraController != null) { cameraController.removeListener(cameraListenerKey); cameraController.unbind(surfaceView); }
+        if (cameraController != null) {
+            cameraController.removeListener(cameraListenerKey);
+            cameraController.unbind(surfaceView);
+        }
     }
 
-    /** 展示拍照互斥提示，保持现有反馈入口。 */
-    @Override public void busy() { ToastEx.createToast(this, getString(R.string.learning_busy)); }
+    /**
+     * 展示拍照互斥提示，保持现有反馈入口。
+     */
+    @Override
+    public void busy() {
+        ToastEx.createToast(this, getString(R.string.learning_busy));
+    }
 
-    /** 请求被接受后显示拍照进度。 */
-    @Override public void captureStarted() {
+    /**
+     * 请求被接受后显示拍照进度。
+     */
+    @Override
+    public void captureStarted() {
         DialogUtil.showLoadingDialog(this, getString(R.string.dialog_taking_photo));
     }
 
-    /** 展示已成功学习的样本，图片缺失也保留 UID 记录。 */
-    @Override public void captured(GoodsEntity goods, List<StudyPicEntity> pictures) {
-        DialogUtil.dismissLoadingDialog(); showCapturedPictures(pictures);
-        onLearningDataChanged(goods, true); Log.d(LOG_TAG, "学习成功");
+    /**
+     * 展示已成功学习的样本，图片缺失也保留 UID 记录。
+     */
+    @Override
+    public void captured(GoodsEntity goods, List<StudyPicEntity> pictures) {
+        DialogUtil.dismissLoadingDialog();
+        showCapturedPictures(pictures);
+        onLearningDataChanged(goods, true);
+        Log.d(LOG_TAG, "学习成功");
     }
 
-    /** 保存只更新展示，SDK 写入和反馈提交由 Presenter 完成。 */
-    @Override public void saved(GoodsEntity goods) {
-        DialogUtil.dismissLoadingDialog(); onLearningSaved(); onLearningDataChanged(goods, false);
-        Log.d(LOG_TAG, "保存成功"); ToastEx.showSuccessToast(this, getString(R.string.toast_save_success));
+    /**
+     * 保存只更新展示，SDK 写入和反馈提交由 Presenter 完成。
+     */
+    @Override
+    public void saved(GoodsEntity goods) {
+        DialogUtil.dismissLoadingDialog();
+        onLearningSaved();
+        onLearningDataChanged(goods, false);
+        Log.d(LOG_TAG, "保存成功");
+        ToastEx.showSuccessToast(this, getString(R.string.toast_save_success));
     }
 
-    /** 整组遗忘保持原清除成功和保存成功提示。 */
-    @Override public void forgotten(GoodsEntity goods) {
-        Toast.makeText(this, R.string.toast_clear_success, Toast.LENGTH_SHORT).show(); saved(goods);
+    /**
+     * 整组遗忘保持原清除成功和保存成功提示。
+     */
+    @Override
+    public void forgotten(GoodsEntity goods) {
+        Toast.makeText(this, R.string.toast_clear_success, Toast.LENGTH_SHORT).show();
+        saved(goods);
     }
 
-    /** 同一商品的历史查询可能替换实体，始终按 UID 移除显示项。 */
-    @Override public void removed(StudyPicEntity picture) {
+    /**
+     * 同一商品的历史查询可能替换实体，始终按 UID 移除显示项。
+     */
+    @Override
+    public void removed(StudyPicEntity picture) {
         for (int i = 0; i < mStudyPicList.size(); i++) {
             if (mStudyPicList.get(i).getUid() == picture.getUid()) {
-                mStudyPicList.remove(i); studyPicAdapter.removeAt(i); break;
+                mStudyPicList.remove(i);
+                studyPicAdapter.removeAt(i);
+                break;
             }
         }
         onLearningPictureRemoved(picture);
@@ -272,14 +359,21 @@ public abstract class StudyActivity extends BaseActivity implements StudyPresent
         Toast.makeText(this, R.string.toast_clear_records_success, Toast.LENGTH_SHORT).show();
     }
 
-    /** 停止进度展示并沿用各操作的本地化失败文案。 */
-    @Override public void failed(int message, String reason) {
+    /**
+     * 停止进度展示并沿用各操作的本地化失败文案。
+     */
+    @Override
+    public void failed(int message, String reason) {
         DialogUtil.dismissLoadingDialog();
-        if (message == R.string.tip_no_goods_selected) ToastEx.showFailureToast(this, getString(message));
+        if (cc.huoyan.retail.sdk.SdkPermissionGuide.showIfRequired(this, reason)) return;
+        if (message == R.string.tip_no_goods_selected)
+            ToastEx.showFailureToast(this, getString(message));
         else Toast.makeText(this, getString(message, reason), Toast.LENGTH_LONG).show();
     }
 
-    /** 恢复相机和周期检测，不重建在途学习队列。 */
+    /**
+     * 恢复相机和周期检测，不重建在途学习队列。
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -364,21 +458,35 @@ public abstract class StudyActivity extends BaseActivity implements StudyPresent
         }, 0, 500, TimeUnit.MILLISECONDS);
     }
 
-    /** 检测断连日志最小间隔，避免周期预览刷屏。 */
+    /**
+     * 检测断连日志最小间隔，避免周期预览刷屏。
+     */
     private static final long DETECT_DROP_LOG_INTERVAL_MS = 3000L;
-    /** 上次断连日志时刻，用于抑制每帧重复输出。 */
+    /**
+     * 上次断连日志时刻，用于抑制每帧重复输出。
+     */
     private volatile long lastDetectDropLogMs;
 
-    /** 相机连续关闭超过此窗口才尝试重开，避开分辨率协商。 */
+    /**
+     * 相机连续关闭超过此窗口才尝试重开，避开分辨率协商。
+     */
     private static final long CAMERA_REOPEN_GRACE_MS = 1500L;
-    /** 相机重启的最小间隔，避免协商期间重复重开。 */
+    /**
+     * 相机重启的最小间隔，避免协商期间重复重开。
+     */
     private static final long CAMERA_RESTART_THROTTLE_MS = 5000L;
-    /** 当前连续关闭区间的起点，打开相机后清零。 */
+    /**
+     * 当前连续关闭区间的起点，打开相机后清零。
+     */
     private volatile long cameraClosedSinceMs;
-    /** 最近重启请求时间，用于重开节流。 */
+    /**
+     * 最近重启请求时间，用于重开节流。
+     */
     private volatile long lastCameraRestartMs;
 
-    /** 后台发送识别区帧，成功后在主线程刷新检测框。 */
+    /**
+     * 后台发送识别区帧，成功后在主线程刷新检测框。
+     */
     private void sendDetectionPreviewRequest(Bitmap cropBitmap, CameraFrame frame) {
         if (!cameraController.isCurrent(frame)) return;
         HuoyanSdkClient bridge = SdkChannelManager.getInstance().getClient();
@@ -423,7 +531,8 @@ public abstract class StudyActivity extends BaseActivity implements StudyPresent
             Log.d(LOG_TAG, "[Biz] detect_v2=ok boxes=" + entities.size());
         }
         postMainHandler(() -> {
-            if (cameraController.isCurrent(frame)) drawView.setDetectionEntities(entities, frame.getWidth(), frame.getHeight());
+            if (cameraController.isCurrent(frame))
+                drawView.setDetectionEntities(entities, frame.getWidth(), frame.getHeight());
         });
     }
 
@@ -470,7 +579,9 @@ public abstract class StudyActivity extends BaseActivity implements StudyPresent
     }
 
 
-    /** 暂停周期预览，已提交学习仍在串行队列中完成。 */
+    /**
+     * 暂停周期预览，已提交学习仍在串行队列中完成。
+     */
     @Override
     protected void onPause() {
         availability.stop();
@@ -480,7 +591,9 @@ public abstract class StudyActivity extends BaseActivity implements StudyPresent
     }
 
 
-    /** 收到相机就绪事件时恢复预览表面的可见性。 */
+    /**
+     * 收到相机就绪事件时恢复预览表面的可见性。
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(EventBusModel event) {
         if (event.getCode() == EVENT_CAMERA_INIT) {

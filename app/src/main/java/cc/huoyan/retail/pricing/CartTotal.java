@@ -23,22 +23,34 @@ import java.util.List;
  */
 public final class CartTotal {
 
-    /** 与输入顺序一致、已回填计算后金额的条目列表。 */
+    /**
+     * 与输入顺序一致、已回填计算后金额的条目列表。
+     */
     private final List<CartItem> items;
 
-    /** 折扣前合计金额（单位：分）= Σ条目金额（决策 1）。 */
+    /**
+     * 折扣前合计金额（单位：分）= Σ条目金额（决策 1）。
+     */
     private final long totalAmountCent;
 
-    /** 总件数 = 称重行每行 1 件 + 计件行数量（决策 3）。 */
+    /**
+     * 总件数 = 称重行每行 1 件 + 计件行数量（决策 3）。
+     */
     private final long totalPieceCount;
 
-    /** 总重量（kg）= Σ称重条目重量（决策 3）。 */
+    /**
+     * 总重量（kg）= Σ称重条目重量（决策 3）。
+     */
     private final BigDecimal totalWeightKg;
 
-    /** 折扣金额（单位：分）= totalAmountCent − payableAmountCent（决策 5）；无折扣时为 0。 */
+    /**
+     * 折扣金额（单位：分）= totalAmountCent − payableAmountCent（决策 5）；无折扣时为 0。
+     */
     private final long discountAmountCent;
 
-    /** 折后应付合计（单位：分）；无折扣时等于 totalAmountCent（决策 5）。 */
+    /**
+     * 折后应付合计（单位：分）；无折扣时等于 totalAmountCent（决策 5）。
+     */
     private final long payableAmountCent;
 
     CartTotal(List<CartItem> items, long totalAmountCent, long totalPieceCount,
@@ -51,32 +63,44 @@ public final class CartTotal {
         this.payableAmountCent = payableAmountCent;
     }
 
-    /** @return 与输入顺序一致、已回填 amountCent 的条目列表（不可变） */
+    /**
+     * @return 与输入顺序一致、已回填 amountCent 的条目列表（不可变）
+     */
     public List<CartItem> getItems() {
         return items;
     }
 
-    /** @return 折扣前合计金额（单位：分）= Σ条目金额 */
+    /**
+     * @return 折扣前合计金额（单位：分）= Σ条目金额
+     */
     public long getTotalAmountCent() {
         return totalAmountCent;
     }
 
-    /** @return 总件数（称重行每行 1 件 + 计件行数量） */
+    /**
+     * @return 总件数（称重行每行 1 件 + 计件行数量）
+     */
     public long getTotalPieceCount() {
         return totalPieceCount;
     }
 
-    /** @return 总重量（kg），计件条目不计入 */
+    /**
+     * @return 总重量（kg），计件条目不计入
+     */
     public BigDecimal getTotalWeightKg() {
         return totalWeightKg;
     }
 
-    /** @return 折扣金额（单位：分）；无折扣时为 0 */
+    /**
+     * @return 折扣金额（单位：分）；无折扣时为 0
+     */
     public long getDiscountAmountCent() {
         return discountAmountCent;
     }
 
-    /** @return 折后应付合计（单位：分）；无折扣时等于折扣前合计 */
+    /**
+     * @return 折后应付合计（单位：分）；无折扣时等于折扣前合计
+     */
     public long getPayableAmountCent() {
         return payableAmountCent;
     }

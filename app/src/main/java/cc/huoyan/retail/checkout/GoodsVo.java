@@ -10,7 +10,9 @@ import java.util.List;
 
 public class GoodsVo {
     private Integer count;
-    /** 商品金额快照，单位为分。 */
+    /**
+     * 商品金额快照，单位为分。
+     */
     private long amount;
 
     private GoodsEntity goods;
@@ -19,7 +21,9 @@ public class GoodsVo {
 
     private Bitmap recognizeBitmap;
 
-    /** 虚拟商品标志：SDK 商品目录无匹配的识别项（名称=clazz_name，仅显示，不入车/不点选/不参与计价分发） */
+    /**
+     * 虚拟商品标志：SDK 商品目录无匹配的识别项（名称=clazz_name，仅显示，不入车/不点选/不参与计价分发）
+     */
     private boolean unmatched;
 
     public GoodsVo(Integer count, long amount, GoodsEntity goods, List<RecognitionSelection> detectItemEntity) {

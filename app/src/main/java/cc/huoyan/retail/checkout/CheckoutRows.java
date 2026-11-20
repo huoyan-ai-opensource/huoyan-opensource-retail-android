@@ -4,13 +4,18 @@ import cc.huoyan.retail.checkout.domain.SaleLine;
 import cc.huoyan.retail.data.GoodsEntity;
 import cc.huoyan.retail.checkout.RecognitionSelection;
 import cc.huoyan.retail.pricing.PricingMode;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/** 页面商品清单与业务输入的转换，识别框及修正标记停留在界面边界。 */
+/**
+ * 页面商品清单与业务输入的转换，识别框及修正标记停留在界面边界。
+ */
 final class CheckoutRows {
-    private CheckoutRows() {}
+    private CheckoutRows() {
+    }
+
     static PricingMode resolvePricingMode(GoodsEntity goods) {
         return goods == null ? PricingMode.WEIGHT : PricingMode.fromUnit(goods.getUnit());
     }

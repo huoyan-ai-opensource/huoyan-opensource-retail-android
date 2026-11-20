@@ -1,4 +1,5 @@
 package cc.huoyan.sdk.client.session;
+
 import cc.huoyan.sdk.client.testing.SdkChannelFakes;
 
 import cc.huoyan.sdk.client.HuoyanSdkClient;
@@ -25,10 +26,13 @@ public class SdkStartupControllerTest {
 
     private SdkStartupController controller(Executor callbackExecutor) {
         return new SdkStartupController(() -> client, work::add, callbackExecutor,
-                (tag, message) -> {});
+                (tag, message) -> {
+                });
     }
 
-    /** 首页直接连接及初始化，不下发后端地址，重复启动不创建第二个任务。 */
+    /**
+     * 首页直接连接及初始化，不下发后端地址，重复启动不创建第二个任务。
+     */
     @Test
     public void homeStartsSdkWithoutRecognitionPage() {
         SdkStartupController controller = controller(callbacks::add);
@@ -42,7 +46,9 @@ public class SdkStartupControllerTest {
         assertTrue(client.connected);
     }
 
-    /** 异步连接完成前不调用初始化，完成后自动进入初始化链路。 */
+    /**
+     * 异步连接完成前不调用初始化，完成后自动进入初始化链路。
+     */
     @Test
     public void waitsForConnectionBeforeInitializing() {
         client.connected = false;
@@ -60,7 +66,9 @@ public class SdkStartupControllerTest {
         assertEquals(Arrays.asList(false, true), readiness);
     }
 
-    /** READY 状态仍须明确 modelReady，避免模型未就绪时提前识别。 */
+    /**
+     * READY 状态仍须明确 modelReady，避免模型未就绪时提前识别。
+     */
     @Test
     public void readyStateWithoutReadyModelKeepsPolling() {
         client.status = status(false);
@@ -75,7 +83,9 @@ public class SdkStartupControllerTest {
         assertEquals(1, client.calls.stream().filter("initialize"::equals).count());
     }
 
-    /** 本地模型完成后即使身份尚未云端校准，也结束启动等待，不反复初始化。 */
+    /**
+     * 本地模型完成后即使身份尚未云端校准，也结束启动等待，不反复初始化。
+     */
     @Test
     public void offlineReadinessCompletesAfterModelPreparation() {
         client.status = new StatusSnapshot(0, null, null, null, null, null, false, false,
@@ -84,15 +94,18 @@ public class SdkStartupControllerTest {
         List<Boolean> readiness = new ArrayList<>();
         controller.start((code, snapshot, ready) -> {
             readiness.add(ready);
-            if (!ready) client.status = new StatusSnapshot(0, null, null, null, null, null, false, false,
-                    "OFFLINE", true, false, null, null, true);
+            if (!ready)
+                client.status = new StatusSnapshot(0, null, null, null, null, null, false, false,
+                        "OFFLINE", true, false, null, null, true);
         });
         work.remove().run();
         assertEquals(Arrays.asList(false, true), readiness);
         assertEquals(1, client.calls.stream().filter("initialize"::equals).count());
     }
 
-    /** 页面离开后，已排队的旧回调不能污染再次进入页面时的状态。 */
+    /**
+     * 页面离开后，已排队的旧回调不能污染再次进入页面时的状态。
+     */
     @Test
     public void resumeIgnoresOldQueuedCallback() {
         SdkStartupController controller = controller(callbacks::add);
@@ -106,7 +119,9 @@ public class SdkStartupControllerTest {
         assertEquals(Arrays.asList("new"), events);
     }
 
-    /** 页面在后台任务开始前离开，不应继续拉起 SDK。 */
+    /**
+     * 页面在后台任务开始前离开，不应继续拉起 SDK。
+     */
     @Test
     public void stopCancelsQueuedStartup() {
         SdkStartupController controller = controller(callbacks::add);
@@ -116,7 +131,9 @@ public class SdkStartupControllerTest {
         assertTrue(client.calls.isEmpty());
     }
 
-    /** 旧初始化返回时不能通知已离开的页面，也不能取消新一轮启动。 */
+    /**
+     * 旧初始化返回时不能通知已离开的页面，也不能取消新一轮启动。
+     */
     @Test
     public void resumeDuringInitializationKeepsNewSession() {
         SdkStartupController controller = controller(callbacks::add);
@@ -148,13 +165,18 @@ public class SdkStartupControllerTest {
             status = status(true);
         }
 
-        @Override public void connect() { calls.add("connect"); }
+        @Override
+        public void connect() {
+            calls.add("connect");
+        }
 
-        @Override public BaseResult setBaseUrl(String url) {
+        @Override
+        public BaseResult setBaseUrl(String url) {
             throw new AssertionError("客户端不得向 SDK 下发后端地址");
         }
 
-        @Override public BaseResult initialize() {
+        @Override
+        public BaseResult initialize() {
             calls.add("initialize");
             if (onInitialize != null) {
                 Runnable action = onInitialize;
@@ -164,7 +186,8 @@ public class SdkStartupControllerTest {
             return new BaseResult(0, null);
         }
 
-        @Override public StatusSnapshot getStatus() {
+        @Override
+        public StatusSnapshot getStatus() {
             calls.add("status");
             return status;
         }

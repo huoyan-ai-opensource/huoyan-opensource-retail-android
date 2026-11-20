@@ -1,13 +1,16 @@
 package cc.huoyan.retail.sdk;
 
 import cc.huoyan.sdk.client.HuoyanSdkClient;
+
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.SystemClock;
+
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+
 import cc.huoyan.retail.checkout.MainActivity;
 import cc.huoyan.retail.device.camera.CameraFrame;
 import cc.huoyan.retail.device.camera.NV21ToBitmap;
@@ -15,21 +18,28 @@ import cc.huoyan.retail.device.camera.NV21ToBitmap;
 import cc.huoyan.retail.common.FileUtil;
 import cc.huoyan.sdk.client.model.*;
 import cc.huoyan.sdk.client.SdkImage;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
+
 import static org.junit.Assert.*;
 
-/** 同一台真机、同一原始相机帧，交替比较两通道两编码的识别和检测完整耗时。 */
+/**
+ * 同一台真机、同一原始相机帧，交替比较两通道两编码的识别和检测完整耗时。
+ */
 @RunWith(AndroidJUnit4.class)
 public class JpegChannelsDeviceTest {
-    /** 每格 3 次预热、24 次测量；失败回执立即报错并保留已有数据。 */
+    /**
+     * 每格 3 次预热、24 次测量；失败回执立即报错并保留已有数据。
+     */
     @Test
     public void compareRecognitionAndDetection() throws Exception {
         Instrumentation ins = InstrumentationRegistry.getInstrumentation();
@@ -59,8 +69,12 @@ public class JpegChannelsDeviceTest {
             Method stop = MainActivity.class.getDeclaredMethod("stopDetect");
             stop.setAccessible(true);
             ins.runOnMainSync(() -> {
-                try { stop.invoke(activity); activity.finish(); }
-                catch (Exception e) { throw new RuntimeException(e); }
+                try {
+                    stop.invoke(activity);
+                    activity.finish();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             });
             SystemClock.sleep(1500);
             SdkChannelManager.getInstance().getClient().close();
@@ -68,7 +82,8 @@ public class JpegChannelsDeviceTest {
             for (HuoyanSdkClient bridge : new HuoyanSdkClient[]{aidl, ws}) {
                 bridge.connect();
                 deadline = SystemClock.elapsedRealtime() + 15000;
-                while (!bridge.isConnected() && SystemClock.elapsedRealtime() < deadline) SystemClock.sleep(100);
+                while (!bridge.isConnected() && SystemClock.elapsedRealtime() < deadline)
+                    SystemClock.sleep(100);
                 assertTrue("通道连接 " + bridge.getClass().getSimpleName(), bridge.isConnected());
                 BaseResult init = bridge.initialize();
                 assertNotNull(init);
@@ -98,7 +113,10 @@ public class JpegChannelsDeviceTest {
                     decoded.recycle();
                     report.put("identicalJpegBytes", true).put("jpegBytes", actual.length);
                 } finally { /* 图像快照无 native 资源，调用方无需释放。 */ }
-            } finally { if (crop != full) crop.recycle(); full.recycle(); }
+            } finally {
+                if (crop != full) crop.recycle();
+                full.recycle();
+            }
             report.put("startEpochMs", System.currentTimeMillis());
             for (int round = -3; round < 24; round++) {
                 List<String> cells = new ArrayList<>(Arrays.asList("aidl/jpeg90/recognize", "ws/jpeg90/recognize",
@@ -135,21 +153,25 @@ public class JpegChannelsDeviceTest {
                             image = null; // AIDL 同步返回时桥已释放载体。
                             returned = System.nanoTime();
                             assertNotNull(result);
-                            code = result.getCode(); reason = result.getReason();
-                            for (RecognitionItem item : result.getItems()) items.put(new JSONObject()
-                                    .put("clazz", item.getClazz()).put("distance", item.getDistance())
-                                    .put("left", item.getLeft()).put("top", item.getTop())
-                                    .put("right", item.getRight()).put("bottom", item.getBottom()));
+                            code = result.getCode();
+                            reason = result.getReason();
+                            for (RecognitionItem item : result.getItems())
+                                items.put(new JSONObject()
+                                        .put("clazz", item.getClazz()).put("distance", item.getDistance())
+                                        .put("left", item.getLeft()).put("top", item.getTop())
+                                        .put("right", item.getRight()).put("bottom", item.getBottom()));
                         } else {
                             DetectResult result = bridge.detect(image);
                             image = null;
                             returned = System.nanoTime();
                             assertNotNull(result);
-                            code = result.getCode(); reason = result.getReason();
-                            for (DetectBox box : result.getBoxes()) items.put(new JSONObject()
-                                    .put("left", box.getX()).put("top", box.getY())
-                                    .put("right", box.getX() + box.getW()).put("bottom", box.getY() + box.getH())
-                                    .put("score", box.getScore()));
+                            code = result.getCode();
+                            reason = result.getReason();
+                            for (DetectBox box : result.getBoxes())
+                                items.put(new JSONObject()
+                                        .put("left", box.getX()).put("top", box.getY())
+                                        .put("right", box.getX() + box.getW()).put("bottom", box.getY() + box.getH())
+                                        .put("score", box.getScore()));
                         }
                         JSONObject sample = new JSONObject().put("round", round).put("cell", cell)
                                 .put("prepareMs", ms(prepared - start)).put("encodeMs", ms(encoded - prepared))
@@ -167,12 +189,16 @@ public class JpegChannelsDeviceTest {
             }
             report.put("endEpochMs", System.currentTimeMillis());
         } finally {
-            aidl.close(); ws.close(); converter.release();
+            aidl.close();
+            ws.close();
+            converter.release();
             try (FileOutputStream out = new FileOutputStream(new File(dir, "results.json"))) {
                 out.write(report.toString(2).getBytes(java.nio.charset.StandardCharsets.UTF_8));
             }
         }
     }
 
-    private static double ms(long nanos) { return nanos / 1_000_000.0; }
+    private static double ms(long nanos) {
+        return nanos / 1_000_000.0;
+    }
 }

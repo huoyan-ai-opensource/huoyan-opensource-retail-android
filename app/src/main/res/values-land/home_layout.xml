@@ -4,19 +4,35 @@
     <style name="HomeFeatureCard" parent="HomeFeatureCardWide">
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">center</item>
-        <item name="android:padding">8dp</item>
+        <item name="android:padding">@dimen/dp_4</item>
     </style>
+
     <style name="HomeFeatureText" parent="HomeFeatureTextWide">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_weight">0</item>
-        <item name="android:layout_marginStart">0dp</item>
-        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:layout_marginStart">@dimen/dp_0</item>
+        <item name="android:layout_marginTop">@dimen/dp_3</item>
     </style>
-    <dimen name="home_checkout_padding">20dp</dimen>
-    <dimen name="home_feature_icon_size">24dp</dimen>
-    <dimen name="home_feature_title_height">24dp</dimen>
-    <dimen name="home_feature_title_size">18sp</dimen>
-    <dimen name="home_feature_subtitle_height">18dp</dimen>
-    <dimen name="home_feature_subtitle_gap">4dp</dimen>
-    <integer name="home_feature_text_gravity">17</integer>
+
+    <style name="HomeFeatureIcon" parent="HomeFeatureIconWide">
+        <item name="android:layout_width">@dimen/dp_12</item>
+        <item name="android:layout_height">@dimen/dp_12</item>
+    </style>
+
+    <style name="HomeFeatureTitle" parent="HomeFeatureTitleWide">
+        <item name="android:minHeight">@dimen/dp_12</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/sp_9</item>
+    </style>
+
+    <style name="HomeFeatureSubtitle" parent="HomeFeatureSubtitleWide">
+        <item name="android:minHeight">@dimen/dp_9</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/dp_2</item>
+    </style>
+
+    <style name="HomeCheckoutCard" parent="HomeCheckoutCardWide">
+        <item name="android:paddingStart">@dimen/dp_10</item>
+        <item name="android:paddingEnd">@dimen/dp_10</item>
+    </style>
 </resources>

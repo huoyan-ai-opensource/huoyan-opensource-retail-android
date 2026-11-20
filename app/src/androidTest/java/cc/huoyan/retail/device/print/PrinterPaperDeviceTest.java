@@ -8,25 +8,35 @@ import android.os.SystemClock;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import androidx.fragment.app.Fragment;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+
 import cc.huoyan.retail.R;
 import cc.huoyan.retail.common.ui.SelectOptionDialog;
 import cc.huoyan.retail.data.SPManager;
 import cc.huoyan.retail.settings.SettingsPageActivity;
+
 import java.io.File;
 import java.io.FileOutputStream;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import static org.junit.Assert.*;
 
-/** 实机检查纸宽选择、重进持久化以及横竖屏可见边界；不发送出纸命令。 */
+/**
+ * 实机检查纸宽选择、重进持久化以及横竖屏可见边界；不发送出纸命令。
+ */
 @RunWith(AndroidJUnit4.class)
 public class PrinterPaperDeviceTest {
-    /** 切换纸张后重进回显，并在横竖屏检查选项及固定操作栏，结束恢复配置。 */
-    @Test public void paperChoicePersistsAndFitsWindow() throws Exception {
+    /**
+     * 切换纸张后重进回显，并在横竖屏检查选项及固定操作栏，结束恢复配置。
+     */
+    @Test
+    public void paperChoicePersistsAndFitsWindow() throws Exception {
         SPManager sp = SPManager.getInstance();
         int original = sp.getPrinterPaperWidthMm();
         try {
@@ -74,13 +84,17 @@ public class PrinterPaperDeviceTest {
         }
     }
 
-    /** 启动实际打印设置页。 */
+    /**
+     * 启动实际打印设置页。
+     */
     private static ActivityScenario<SettingsPageActivity> launch() {
         return ActivityScenario.launch(new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(),
                 SettingsPageActivity.class).putExtra("page", "print"));
     }
 
-    /** 从当前页面的子管理器找到通用选项框。 */
+    /**
+     * 从当前页面的子管理器找到通用选项框。
+     */
     private static SelectOptionDialog dialog(SettingsPageActivity activity) {
         for (Fragment fragment : activity.getSupportFragmentManager().getFragments()) {
             Fragment dialog = fragment.getChildFragmentManager().findFragmentByTag("selectOption");
@@ -89,7 +103,9 @@ public class PrinterPaperDeviceTest {
         throw new AssertionError("纸宽选择框未显示");
     }
 
-    /** 控件必须完整可见，不能只露出可点击的一小部分。 */
+    /**
+     * 控件必须完整可见，不能只露出可点击的一小部分。
+     */
     private static void assertVisible(View view) {
         Rect bounds = new Rect();
         assertTrue(view.getGlobalVisibleRect(bounds));
@@ -97,13 +113,17 @@ public class PrinterPaperDeviceTest {
         assertEquals(view.getWidth(), bounds.width());
     }
 
-    /** 等待旋转、布局和关闭动画完成。 */
+    /**
+     * 等待旋转、布局和关闭动画完成。
+     */
     private static void settle() {
         InstrumentationRegistry.getInstrumentation().waitForIdleSync();
         SystemClock.sleep(700);
     }
 
-    /** 保存实际运行图，用于人工检查选项行与弹窗。 */
+    /**
+     * 保存实际运行图，用于人工检查选项行与弹窗。
+     */
     private static void capture(String name) throws Exception {
         File directory = new File(InstrumentationRegistry.getInstrumentation().getTargetContext()
                 .getExternalFilesDir(null), "printer-paper-qa");
@@ -111,6 +131,8 @@ public class PrinterPaperDeviceTest {
         Bitmap bitmap = InstrumentationRegistry.getInstrumentation().getUiAutomation().takeScreenshot();
         try (FileOutputStream output = new FileOutputStream(new File(directory, name + ".png"))) {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
-        } finally { bitmap.recycle(); }
+        } finally {
+            bitmap.recycle();
+        }
     }
 }

@@ -14,24 +14,32 @@ public final class CloudStatus {
     private final String reason;
     private final boolean enabled;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public CloudStatus(int code, String reason, boolean enabled) {
         this.code = code;
         this.reason = reason;
         this.enabled = enabled;
     }
 
-    /** 结果码；0 表示请求成功。 */
+    /**
+     * 结果码；0 表示请求成功。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 开关终态（code=0 有效）。 */
+    /**
+     * 开关终态（code=0 有效）。
+     */
     public boolean isEnabled() {
         return enabled;
     }

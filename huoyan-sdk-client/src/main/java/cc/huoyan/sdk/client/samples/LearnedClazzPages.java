@@ -1,25 +1,37 @@
 package cc.huoyan.sdk.client.samples;
 
 import cc.huoyan.sdk.client.HuoyanSdkClient;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cc.huoyan.sdk.client.model.ItemClazzList;
 
-/** 为现有本地分页页面汇总 SDK 的类别分页；中途失败不发布部分列表。 */
+/**
+ * 为现有本地分页页面汇总 SDK 的类别分页；中途失败不发布部分列表。
+ */
 public final class LearnedClazzPages {
-    /** 默认查询页容量；可由重载覆盖。 */
+    /**
+     * 默认查询页容量；可由重载覆盖。
+     */
     private static final int PAGE_SIZE = 100;
 
-    /** 仅提供分页静态方法。 */
-    private LearnedClazzPages() { }
+    /**
+     * 仅提供分页静态方法。
+     */
+    private LearnedClazzPages() {
+    }
 
-    /** 后台汇总全部类别，失败时不返回部分成功。 */
+    /**
+     * 后台汇总全部类别，失败时不返回部分成功。
+     */
     public static ItemClazzList loadAll(HuoyanSdkClient bridge) {
         return loadAll(bridge, PAGE_SIZE);
     }
 
-    /** 按宿主指定页容量读取类别。 */
+    /**
+     * 按宿主指定页容量读取类别。
+     */
     public static ItemClazzList loadAll(HuoyanSdkClient bridge, int pageSize) {
         if (pageSize <= 0) throw new IllegalArgumentException("pageSize 必须为正数");
         List<String> classes = new ArrayList<>();

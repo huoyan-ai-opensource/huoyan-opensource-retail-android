@@ -17,7 +17,9 @@ public class UsbDeviceEnumeratorTest {
         throw new IllegalStateException("Parcel recycled earlier than expected");
     };
 
-    /** 首次失败可安全返回空列表，后续成功枚举恢复设备。 */
+    /**
+     * 首次失败可安全返回空列表，后续成功枚举恢复设备。
+     */
     @Test
     public void firstEnumerationFailureRetriesUntilDevicesBecomeAvailable() {
         assertTrue(read(parcelFailure).isEmpty());
@@ -28,7 +30,9 @@ public class UsbDeviceEnumeratorTest {
         assertEquals(2, failures.get());
     }
 
-    /** 连续失败保留已发现设备，且调用方不能修改内部快照。 */
+    /**
+     * 连续失败保留已发现设备，且调用方不能修改内部快照。
+     */
     @Test
     public void repeatedFailuresPreserveLastSuccessfulSnapshotWithoutSharingMaps() {
         HashMap<String, UsbDevice> source = devices("camera");
@@ -43,7 +47,9 @@ public class UsbDeviceEnumeratorTest {
         assertEquals(1, failures.get());
     }
 
-    /** 正常枚举仍更新接入设备，并允许空列表清除已拔出设备。 */
+    /**
+     * 正常枚举仍更新接入设备，并允许空列表清除已拔出设备。
+     */
     @Test
     public void recoveryUsesNewDevicesAndSuccessfulEmptyListClearsSnapshot() {
         read(() -> devices("camera1"));
@@ -55,13 +61,19 @@ public class UsbDeviceEnumeratorTest {
         assertTrue(read(parcelFailure).isEmpty());
     }
 
-    /** 无关状态异常和权限错误仍交给原调用方处理。 */
+    /**
+     * 无关状态异常和权限错误仍交给原调用方处理。
+     */
     @Test
     public void unrelatedIllegalStateAndSecurityErrorsAreNotSuppressed() {
         IllegalStateException state = new IllegalStateException("other failure");
-        assertSame(state, assertThrows(IllegalStateException.class, () -> read(() -> { throw state; })));
+        assertSame(state, assertThrows(IllegalStateException.class, () -> read(() -> {
+            throw state;
+        })));
         SecurityException security = new SecurityException("permission denied");
-        assertSame(security, assertThrows(SecurityException.class, () -> read(() -> { throw security; })));
+        assertSame(security, assertThrows(SecurityException.class, () -> read(() -> {
+            throw security;
+        })));
         assertEquals(0, failures.get());
     }
 

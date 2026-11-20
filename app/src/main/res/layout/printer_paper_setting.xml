@@ -2,36 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/printerPaperLayout"
     android:layout_width="match_parent"
-    android:layout_height="52dp"
+    android:layout_height="@dimen/dp_26"
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:clickable="true"
     android:focusable="true">
+
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="@dimen/dp_0"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:text="@string/printer_paper_width"
-        android:textSize="18sp"
+        android:textSize="@dimen/sp_9"
         android:textColor="#293A51"
         android:includeFontPadding="false"
         android:fontFamily="@font/retail_sans" />
+
     <TextView
         android:id="@+id/printerPaperWidth"
-        android:layout_width="120dp"
+        android:layout_width="@dimen/dp_60"
         android:layout_height="wrap_content"
         android:gravity="end"
-        android:textSize="18sp"
+        android:textSize="@dimen/sp_9"
         android:textColor="#6E7C90"
         android:includeFontPadding="false"
         android:fontFamily="@font/retail_sans" />
+
     <TextView
-        android:layout_width="24dp"
+        android:layout_width="@dimen/dp_12"
         android:layout_height="wrap_content"
         android:gravity="end"
         android:text="@string/land_chevron"
-        android:textSize="26sp"
+        android:textSize="@dimen/sp_13"
         android:textColor="#6E7C90"
         android:includeFontPadding="false"
         android:fontFamily="@font/retail_sans" />

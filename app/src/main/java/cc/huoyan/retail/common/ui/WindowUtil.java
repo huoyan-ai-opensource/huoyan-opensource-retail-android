@@ -26,6 +26,7 @@ public class WindowUtil {
             }
         }
     }
+
     public static void hideKeyboard(Activity activity) {
         try {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);

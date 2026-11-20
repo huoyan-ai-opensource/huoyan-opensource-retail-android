@@ -12,7 +12,9 @@ import java.io.File;
 public class LogFileAdapter extends RetailAdapter<LogFIleDirectory> {
     private File selectedFile;
 
-    /** 高亮当前正在阅读的日志文件。 */
+    /**
+     * 高亮当前正在阅读的日志文件。
+     */
     public void selectFile(File file) {
         selectedFile = file;
         notifyDataSetChanged();

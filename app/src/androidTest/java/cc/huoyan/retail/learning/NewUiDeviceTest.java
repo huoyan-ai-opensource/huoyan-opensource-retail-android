@@ -16,27 +16,39 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+
 import cc.huoyan.retail.R;
 import cc.huoyan.retail.goods.AddGoodsDialog;
 import cc.huoyan.retail.data.GoodsEntity;
 import cc.huoyan.retail.goods.SdkGoodsSource;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import static org.junit.Assert.*;
 
-/** 使用独立商品验收管理、学习选择和双方向布局，不拍照、不清除应用数据。 */
+/**
+ * 使用独立商品验收管理、学习选择和双方向布局，不拍照、不清除应用数据。
+ */
 @RunWith(AndroidJUnit4.class)
 public class NewUiDeviceTest {
-    /** 商品查询及测试数据创建都使用已连接的 SDK。 */
-    @org.junit.Before public void connectGoodsSdk() { cc.huoyan.retail.goods.GoodsFixtureCleanup.awaitSdk(); }
+    /**
+     * 商品查询及测试数据创建都使用已连接的 SDK。
+     */
+    @org.junit.Before
+    public void connectGoodsSdk() {
+        cc.huoyan.retail.goods.GoodsFixtureCleanup.awaitSdk();
+    }
 
     private final Instrumentation ins = InstrumentationRegistry.getInstrumentation();
     private static final String PLU = "99160928", OTHER = "99160929";
@@ -44,20 +56,24 @@ public class NewUiDeviceTest {
     private GoodsManagementActivity management;
     private ProductLearningActivity learning;
 
-    @Test public void managementLearningSearchAndFullWidthNavigation() throws Exception {
+    @Test
+    public void managementLearningSearchAndFullWidthNavigation() throws Exception {
         assertNull(SdkGoodsSource.getInstance().getGoodsByPlu(PLU));
         assertNull(SdkGoodsSource.getInstance().getGoodsByPlu(OTHER));
         home = (HomeActivity) launch(HomeActivity.class);
         try {
             await(() -> home.findViewById(R.id.homeCloudStatus).getWidth() > 0);
-            SystemClock.sleep(6000); capture("home");
+            SystemClock.sleep(6000);
+            capture("home");
             ins.runOnMainSync(() -> home.findViewById(R.id.homeCloudStatus).performClick());
             await(() -> home.getSupportFragmentManager().findFragmentByTag("cloudInfo") != null);
-            SystemClock.sleep(250); capture("cloud");
+            SystemClock.sleep(250);
+            capture("cloud");
             ins.runOnMainSync(() -> ((DialogFragment) home.getSupportFragmentManager().findFragmentByTag("cloudInfo")).dismiss());
             Instrumentation.ActivityMonitor monitor = ins.addMonitor(GoodsManagementActivity.class.getName(), null, false);
             ins.runOnMainSync(() -> home.findViewById(R.id.homeLearning).performClick());
-            management = (GoodsManagementActivity) ins.waitForMonitorWithTimeout(monitor, 5000); ins.removeMonitor(monitor);
+            management = (GoodsManagementActivity) ins.waitForMonitorWithTimeout(monitor, 5000);
+            ins.removeMonitor(monitor);
             assertNotNull(management);
             ins.runOnMainSync(() -> management.findViewById(R.id.managementAdd).performClick());
             await(() -> form() != null && form().getView() != null);
@@ -82,12 +98,15 @@ public class NewUiDeviceTest {
                 form().requireView().findViewById(R.id.confirm).performClick();
             });
             await(() -> SdkGoodsSource.getInstance().getGoodsByPlu(PLU).getPrice() == 2345);
-            GoodsEntity other = new GoodsEntity(); other.setPlu(OTHER); other.setName("苹果 UI 测试");
+            GoodsEntity other = new GoodsEntity();
+            other.setPlu(OTHER);
+            other.setName("苹果 UI 测试");
             SdkGoodsSource.getInstance().save(other, false);
             capture("management");
             monitor = ins.addMonitor(ProductLearningActivity.class.getName(), null, false);
             ins.runOnMainSync(() -> managementRow().findViewById(R.id.manageLearn).performClick());
-            learning = (ProductLearningActivity) ins.waitForMonitorWithTimeout(monitor, 5000); ins.removeMonitor(monitor);
+            learning = (ProductLearningActivity) ins.waitForMonitorWithTimeout(monitor, 5000);
+            ins.removeMonitor(monitor);
             assertNotNull(learning);
             await(() -> learning.mSelectedGoods != null && PLU.equals(learning.mSelectedGoods.getPlu()));
             ins.runOnMainSync(() -> {
@@ -115,7 +134,8 @@ public class NewUiDeviceTest {
                 fixedHeight[0] = card.getHeight();
                 android.graphics.Rect visible = new android.graphics.Rect();
                 learning.getWindow().getDecorView().getWindowVisibleDisplayFrame(visible);
-                int[] xy = new int[2]; card.getLocationOnScreen(xy);
+                int[] xy = new int[2];
+                card.getLocationOnScreen(xy);
                 assertEquals("搜索弹窗水平居中", visible.centerX(), xy[0] + card.getWidth() / 2, 3);
                 assertEquals("搜索弹窗垂直居中", visible.centerY(), xy[1] + card.getHeight() / 2, 3);
                 ((EditText) content[0].findViewById(R.id.searchQuery)).setText("zzzz-no-result");
@@ -130,7 +150,8 @@ public class NewUiDeviceTest {
                 assertEquals(View.GONE, content[0].findViewById(R.id.searchKeyboard).getVisibility());
                 ((EditText) content[0].findViewById(R.id.searchQuery)).setText("苹果 UI");
             });
-            SystemClock.sleep(1000); capture("chinese");
+            SystemClock.sleep(1000);
+            capture("chinese");
             ins.runOnMainSync(() -> {
                 content[0].findViewById(R.id.searchChinese).performClick();
                 assertEquals("苹果 UI", ((EditText) content[0].findViewById(R.id.searchQuery)).getText().toString());
@@ -140,7 +161,8 @@ public class NewUiDeviceTest {
                     .findViewHolderForAdapterPosition(0).itemView.performClick());
             await(() -> OTHER.equals(learning.mSelectedGoods.getPlu()));
             capture("learning");
-            ins.runOnMainSync(learning::finish); ins.waitForIdleSync();
+            ins.runOnMainSync(learning::finish);
+            ins.waitForIdleSync();
             ins.runOnMainSync(() -> assertEquals(PLU,
                     ((EditText) management.findViewById(R.id.managementSearch)).getText().toString()));
             // 删除尚未学习的商品也应成功；通过实际确认按钮验证。
@@ -160,10 +182,11 @@ public class NewUiDeviceTest {
             ins.runOnMainSync(() -> ((DialogFragment) management.getSupportFragmentManager().findFragmentByTag("alertDialog"))
                     .requireView().findViewById(R.id.confirm).performClick());
             await(() -> SdkGoodsSource.getInstance().getGoodsByPlu(PLU) == null);
-            ins.runOnMainSync(management::finish); ins.waitForIdleSync();
+            ins.runOnMainSync(management::finish);
+            ins.waitForIdleSync();
             SettingsPageActivity library = (SettingsPageActivity) ins.startActivitySync(
                     new Intent(ins.getTargetContext(), SettingsPageActivity.class).putExtra("page", "goods")
-                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             await(() -> library.findViewById(R.id.openLearning) != null);
             capture("library");
             if (library.getResources().getConfiguration().orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE) {
@@ -192,7 +215,9 @@ public class NewUiDeviceTest {
                     assertTrue("实时时间位于店铺名称下方", clock[1] > shop[1]);
                 });
                 capture("recognition");
-            } finally { ins.runOnMainSync(main::finish); }
+            } finally {
+                ins.runOnMainSync(main::finish);
+            }
         } finally {
             if (learning != null) ins.runOnMainSync(learning::finish);
             if (management != null) ins.runOnMainSync(management::finish);
@@ -203,16 +228,19 @@ public class NewUiDeviceTest {
         }
     }
 
-    @Test public void continuousPaginationAndSearchReset() throws Exception {
+    @Test
+    public void continuousPaginationAndSearchReset() throws Exception {
         final String prefix = "99170928";
-        for (int i = 0; i < 55; i++) assertNull(SdkGoodsSource.getInstance().getGoodsByPlu(prefix + String.format(java.util.Locale.ROOT, "%03d", i)));
+        for (int i = 0; i < 55; i++)
+            assertNull(SdkGoodsSource.getInstance().getGoodsByPlu(prefix + String.format(java.util.Locale.ROOT, "%03d", i)));
         GoodsManagementActivity page = null;
         try {
             for (int i = 0; i < 55; i++) {
                 GoodsEntity goods = new GoodsEntity();
                 goods.setPlu(prefix + String.format(java.util.Locale.ROOT, "%03d", i));
                 goods.setName("分页验证 " + i);
-                goods.setUnit(i % 2 == 0 ? 0 : 5); goods.setPrice(100 + i);
+                goods.setUnit(i % 2 == 0 ? 0 : 5);
+                goods.setPrice(100 + i);
                 SdkGoodsSource.getInstance().save(goods, false);
             }
             page = (GoodsManagementActivity) launch(GoodsManagementActivity.class);
@@ -266,8 +294,12 @@ public class NewUiDeviceTest {
             chooseManagementFilter(screen, R.id.managementPricing, 0);
             await(() -> list.getAdapter().getItemCount() == 1);
         } finally {
-            if (page != null) { GoodsManagementActivity screen = page; ins.runOnMainSync(screen::finish); }
-            for (int i = 0; i < 55; i++) cc.huoyan.retail.goods.GoodsFixtureCleanup.deleteByPlu(prefix + String.format(java.util.Locale.ROOT, "%03d", i));
+            if (page != null) {
+                GoodsManagementActivity screen = page;
+                ins.runOnMainSync(screen::finish);
+            }
+            for (int i = 0; i < 55; i++)
+                cc.huoyan.retail.goods.GoodsFixtureCleanup.deleteByPlu(prefix + String.format(java.util.Locale.ROOT, "%03d", i));
         }
     }
 
@@ -282,33 +314,56 @@ public class NewUiDeviceTest {
         ins.waitForIdleSync();
     }
 
-    private AddGoodsDialog form() { return (AddGoodsDialog) management.getSupportFragmentManager().findFragmentByTag("managedGoodsForm"); }
-    private GoodsSearchDialog search() { return (GoodsSearchDialog) learning.getSupportFragmentManager().findFragmentByTag("goodsSearch"); }
+    private AddGoodsDialog form() {
+        return (AddGoodsDialog) management.getSupportFragmentManager().findFragmentByTag("managedGoodsForm");
+    }
+
+    private GoodsSearchDialog search() {
+        return (GoodsSearchDialog) learning.getSupportFragmentManager().findFragmentByTag("goodsSearch");
+    }
+
     private View managementRow() {
         RecyclerView.ViewHolder row = ((RecyclerView) management.findViewById(R.id.managementList)).findViewHolderForAdapterPosition(0);
         return row == null ? null : row.itemView;
     }
+
     private View key(View root, String text) {
-        if (root instanceof TextView && text.equals(((TextView) root).getText().toString())) return root;
-        if (root instanceof ViewGroup) for (int i=0; i<((ViewGroup) root).getChildCount(); i++) {
-            View found = key(((ViewGroup) root).getChildAt(i), text); if (found != null) return found;
-        }
+        if (root instanceof TextView && text.equals(((TextView) root).getText().toString()))
+            return root;
+        if (root instanceof ViewGroup)
+            for (int i = 0; i < ((ViewGroup) root).getChildCount(); i++) {
+                View found = key(((ViewGroup) root).getChildAt(i), text);
+                if (found != null) return found;
+            }
         return null;
     }
+
     private Activity launch(Class<? extends Activity> type) {
         return ins.startActivitySync(new Intent(ins.getTargetContext(), type).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
     }
+
     private void await(BooleanSupplier predicate) {
-        AtomicBoolean ok = new AtomicBoolean(); long deadline = SystemClock.elapsedRealtime() + 15000;
-        do { ins.runOnMainSync(() -> ok.set(predicate.getAsBoolean())); if (ok.get()) return; SystemClock.sleep(100); }
+        AtomicBoolean ok = new AtomicBoolean();
+        long deadline = SystemClock.elapsedRealtime() + 15000;
+        do {
+            ins.runOnMainSync(() -> ok.set(predicate.getAsBoolean()));
+            if (ok.get()) return;
+            SystemClock.sleep(100);
+        }
         while (SystemClock.elapsedRealtime() < deadline);
         fail("界面未在 15 秒内达到预期");
     }
+
     private void capture(String name) throws Exception {
-        ins.waitForIdleSync(); SystemClock.sleep(name.equals("management") || name.equals("library") || name.equals("goods-edit") ? 3200 : 250);
-        File dir = new File(ins.getTargetContext().getExternalFilesDir(null), "new-ui-qa"); dir.mkdirs();
-        Bitmap image = ins.getUiAutomation().takeScreenshot(); assertNotNull(image);
-        try (FileOutputStream out = new FileOutputStream(new File(dir, name + ".png"))) { image.compress(Bitmap.CompressFormat.PNG, 100, out); }
+        ins.waitForIdleSync();
+        SystemClock.sleep(name.equals("management") || name.equals("library") || name.equals("goods-edit") ? 3200 : 250);
+        File dir = new File(ins.getTargetContext().getExternalFilesDir(null), "new-ui-qa");
+        dir.mkdirs();
+        Bitmap image = ins.getUiAutomation().takeScreenshot();
+        assertNotNull(image);
+        try (FileOutputStream out = new FileOutputStream(new File(dir, name + ".png"))) {
+            image.compress(Bitmap.CompressFormat.PNG, 100, out);
+        }
         image.recycle();
     }
 }

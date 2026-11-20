@@ -9,27 +9,39 @@ import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.lifecycle.ViewModelProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+
 import cc.huoyan.retail.R;
 import cc.huoyan.retail.settings.SettingsPageActivity;
 import cc.huoyan.retail.settings.SdkConnectionFragment;
 import cc.huoyan.sdk.client.SdkConfig;
+
 import java.io.File;
 import java.io.FileOutputStream;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import static org.junit.Assert.*;
 
-/** 双方向验证弹窗动态高度和局域网专属控件；状态夹具只修改视图，不写店铺或连接配置。 */
+/**
+ * 双方向验证弹窗动态高度和局域网专属控件；状态夹具只修改视图，不写店铺或连接配置。
+ */
 @RunWith(AndroidJUnit4.class)
 public class UiRefinementDeviceTest {
-    /** 测试线程与主线程交互边界。 */
+    /**
+     * 测试线程与主线程交互边界。
+     */
     private final Instrumentation ins = InstrumentationRegistry.getInstrumentation();
 
-    /** 三种云端状态按方向排列，内容收缩且底部操作完整可达。 */
-    @Test public void cloudContentFitsWithoutBlankFooter() throws Exception {
+    /**
+     * 三种云端状态按方向排列，内容收缩且底部操作完整可达。
+     */
+    @Test
+    public void cloudContentFitsWithoutBlankFooter() throws Exception {
         HomeActivity home = (HomeActivity) launch(HomeActivity.class, null);
         CloudServiceDialog dialog = new CloudServiceDialog();
         try {
@@ -95,7 +107,9 @@ public class UiRefinementDeviceTest {
             for (CloudServicePresenter.Action action : new CloudServicePresenter.Action[]{
                     CloudServicePresenter.Action.GOODS, CloudServicePresenter.Action.IMAGES}) {
                 ins.runOnMainSync(() -> {
-                    presenter.busy = true; presenter.action = action; dialog.render();
+                    presenter.busy = true;
+                    presenter.action = action;
+                    dialog.render();
                 });
                 settle();
                 androidx.fragment.app.Fragment loading = dialog.getChildFragmentManager().findFragmentByTag("cloudLoading");
@@ -103,18 +117,26 @@ public class UiRefinementDeviceTest {
                 visible(loading.requireView().findViewById(R.id.textView));
                 capture("cloud-loading-" + action.name());
                 ins.runOnMainSync(() -> {
-                    presenter.busy = false; presenter.action = null; dialog.render();
+                    presenter.busy = false;
+                    presenter.action = null;
+                    dialog.render();
                 });
                 settle();
                 assertNull("结束后关闭 Loading", dialog.getChildFragmentManager().findFragmentByTag("cloudLoading"));
             }
         } finally {
-            ins.runOnMainSync(() -> { dialog.dismissAllowingStateLoss(); home.finish(); });
+            ins.runOnMainSync(() -> {
+                dialog.dismissAllowingStateLoss();
+                home.finish();
+            });
         }
     }
 
-    /** 三种入口来回切换时颜色、文案与箭头同步恢复；夹具不安装或卸载真实 SDK。 */
-    @Test public void homeCheckoutStatesRestoreColorsAndLabels() throws Exception {
+    /**
+     * 三种入口来回切换时颜色、文案与箭头同步恢复；夹具不安装或卸载真实 SDK。
+     */
+    @Test
+    public void homeCheckoutStatesRestoreColorsAndLabels() throws Exception {
         HomeActivity home = (HomeActivity) launch(HomeActivity.class, null);
         java.lang.reflect.Field missing = HomeActivity.class.getDeclaredField("sdkMissing");
         java.lang.reflect.Field presenterField = HomeActivity.class.getDeclaredField("presenter");
@@ -122,7 +144,10 @@ public class UiRefinementDeviceTest {
         presenterField.setAccessible(true);
         HomePresenter presenter = (HomePresenter) presenterField.get(home);
         try {
-            ins.runOnMainSync(() -> { presenter.pause(); home.showCheckoutStartup(false, HomeCheckoutState.UNAVAILABLE); });
+            ins.runOnMainSync(() -> {
+                presenter.pause();
+                home.showCheckoutStartup(false, HomeCheckoutState.UNAVAILABLE);
+            });
             int[] colors = {R.color.home_checkout_missing, R.color.home_checkout_unactivated,
                     R.color.home_checkout_primary, R.color.home_checkout_missing};
             int[] labels = {R.string.home_install_now, R.string.home_activate_now,
@@ -130,8 +155,11 @@ public class UiRefinementDeviceTest {
             for (int state = 0; state < colors.length; state++) {
                 int fixture = state;
                 ins.runOnMainSync(() -> {
-                    try { missing.setBoolean(home, fixture == 0 || fixture == 3); }
-                    catch (IllegalAccessException error) { throw new AssertionError(error); }
+                    try {
+                        missing.setBoolean(home, fixture == 0 || fixture == 3);
+                    } catch (IllegalAccessException error) {
+                        throw new AssertionError(error);
+                    }
                     home.showStatus(new HomePresenter.Status(true, false, "—", fixture != 1 ? HomeCheckoutState.READY : HomeCheckoutState.ACTIVATION_REQUIRED));
                     TextView action = home.findViewById(R.id.homeCheckoutAction);
                     int foreground = home.getColor(fixture == 2 ? R.color.home_checkout_primary : R.color.white);
@@ -147,11 +175,16 @@ public class UiRefinementDeviceTest {
                 assertTextFits(home.findViewById(R.id.enterCheckout));
                 capture("home-state-" + state);
             }
-        } finally { ins.runOnMainSync(home::finish); }
+        } finally {
+            ins.runOnMainSync(home::finish);
+        }
     }
 
-    /** 启动等待优先于旧授权，禁止导航；连接完成恢复按钮，SDK 缺失优先显示安装。 */
-    @Test public void homeStartupBlocksCheckoutAndRestoresEntry() throws Exception {
+    /**
+     * 启动等待优先于旧授权，禁止导航；连接完成恢复按钮，SDK 缺失优先显示安装。
+     */
+    @Test
+    public void homeStartupBlocksCheckoutAndRestoresEntry() throws Exception {
         HomeActivity home = (HomeActivity) launch(HomeActivity.class, null);
         java.lang.reflect.Field missing = HomeActivity.class.getDeclaredField("sdkMissing");
         java.lang.reflect.Field presenterField = HomeActivity.class.getDeclaredField("presenter");
@@ -163,8 +196,11 @@ public class UiRefinementDeviceTest {
             ins.runOnMainSync(presenter::pause);
             for (HomeCheckoutState state : new HomeCheckoutState[]{HomeCheckoutState.UNAVAILABLE, HomeCheckoutState.ACTIVATION_REQUIRED, HomeCheckoutState.READY}) {
                 ins.runOnMainSync(() -> {
-                    try { missing.setBoolean(home, false); }
-                    catch (IllegalAccessException error) { throw new AssertionError(error); }
+                    try {
+                        missing.setBoolean(home, false);
+                    } catch (IllegalAccessException error) {
+                        throw new AssertionError(error);
+                    }
                     home.showCheckoutStartup(true, HomeCheckoutState.STARTING);
                     home.showStatus(new HomePresenter.Status(false, false, "—", state));
                     View card = home.findViewById(R.id.enterCheckout);
@@ -193,19 +229,28 @@ public class UiRefinementDeviceTest {
                     assertEquals(state.actionable(), home.findViewById(R.id.enterCheckout).isEnabled());
                     assertEquals(home.getString(state.action),
                             ((TextView) home.findViewById(R.id.homeCheckoutAction)).getText().toString());
-                    try { missing.setBoolean(home, true); }
-                    catch (IllegalAccessException error) { throw new AssertionError(error); }
+                    try {
+                        missing.setBoolean(home, true);
+                    } catch (IllegalAccessException error) {
+                        throw new AssertionError(error);
+                    }
                     home.showCheckoutStartup(true, HomeCheckoutState.STARTING);
                     assertTrue(home.findViewById(R.id.enterCheckout).isEnabled());
                     assertEquals(home.getString(R.string.home_install_now),
                             ((TextView) home.findViewById(R.id.homeCheckoutAction)).getText().toString());
                 });
             }
-        } finally { ins.removeMonitor(monitor); ins.runOnMainSync(home::finish); }
+        } finally {
+            ins.removeMonitor(monitor);
+            ins.runOnMainSync(home::finish);
+        }
     }
 
-    /** 轮换状态覆盖原可用卡片，禁用导航；查询失败清除旧状态，恢复后重新开放入口。 */
-    @Test public void homeRotationBlocksNavigationAndRecovers() throws Exception {
+    /**
+     * 轮换状态覆盖原可用卡片，禁用导航；查询失败清除旧状态，恢复后重新开放入口。
+     */
+    @Test
+    public void homeRotationBlocksNavigationAndRecovers() throws Exception {
         HomeActivity home = (HomeActivity) launch(HomeActivity.class, null);
         java.lang.reflect.Field presenterField = HomeActivity.class.getDeclaredField("presenter");
         java.lang.reflect.Field startupField = HomeActivity.class.getDeclaredField("sdkStartup");
@@ -218,7 +263,8 @@ public class UiRefinementDeviceTest {
                 cc.huoyan.retail.checkout.MainActivity.class.getName(), null, false);
         try {
             ins.runOnMainSync(() -> {
-                presenter.pause(); startup.stop();
+                presenter.pause();
+                startup.stop();
                 home.showCheckoutStartup(false, HomeCheckoutState.READY);
             });
             for (HomeCheckoutState state : new HomeCheckoutState[]{HomeCheckoutState.READY,
@@ -250,11 +296,17 @@ public class UiRefinementDeviceTest {
                 assertTextFits(home.findViewById(R.id.enterCheckout));
                 if (state == HomeCheckoutState.ROTATION_PENDING) capture("home-rotation-pending");
             }
-        } finally { ins.removeMonitor(monitor); ins.runOnMainSync(home::finish); }
+        } finally {
+            ins.removeMonitor(monitor);
+            ins.runOnMainSync(home::finish);
+        }
     }
 
-    /** 模型名称与版本位于同一卡片内，保存配置入口仍完整可见。 */
-    @Test public void modelVersionSharesCurrentModelCard() throws Exception {
+    /**
+     * 模型名称与版本位于同一卡片内，保存配置入口仍完整可见。
+     */
+    @Test
+    public void modelVersionSharesCurrentModelCard() throws Exception {
         Activity page = launch(SettingsPageActivity.class, "recognition");
         try {
             View version = page.findViewById(R.id.modelVersion);
@@ -265,10 +317,14 @@ public class UiRefinementDeviceTest {
             visible(page.findViewById(R.id.switchModel));
             visible(page.findViewById(R.id.saveSettings));
             capture("recognition-model-version");
-        } finally { ins.runOnMainSync(page::finish); }
+        } finally {
+            ins.runOnMainSync(page::finish);
+        }
     }
 
-    /** 逐项检查可见文字的真实排版高度，避免两列等高掩盖末行裁切。 */
+    /**
+     * 逐项检查可见文字的真实排版高度，避免两列等高掩盖末行裁切。
+     */
     private void assertTextFits(View view) {
         if (view.getVisibility() != View.VISIBLE) return;
         if (view instanceof TextView) {
@@ -279,12 +335,16 @@ public class UiRefinementDeviceTest {
                     <= text.getHeight() - text.getCompoundPaddingTop() - text.getCompoundPaddingBottom());
         } else if (view instanceof ViewGroup) {
             ViewGroup group = (ViewGroup) view;
-            for (int index = 0; index < group.getChildCount(); index++) assertTextFits(group.getChildAt(index));
+            for (int index = 0; index < group.getChildCount(); index++)
+                assertTextFits(group.getChildAt(index));
         }
     }
 
-    /** Tabs 只切换展示；测试不保存通道，不触发探测和同步。 */
-    @Test public void sdkTabsKeepNetworkControlsOnLan() throws Exception {
+    /**
+     * Tabs 只切换展示；测试不保存通道，不触发探测和同步。
+     */
+    @Test
+    public void sdkTabsKeepNetworkControlsOnLan() throws Exception {
         SettingsPageActivity page = (SettingsPageActivity) launch(SettingsPageActivity.class, "sdk");
         try {
             SdkConnectionFragment fragment = (SdkConnectionFragment) page.getSupportFragmentManager().getFragments().get(0);
@@ -297,7 +357,8 @@ public class UiRefinementDeviceTest {
             ins.runOnMainSync(() -> page.findViewById(R.id.sdkWs).performClick());
             settle();
             assertEquals(View.GONE, page.findViewById(R.id.sdkLocalContent).getVisibility());
-            for (int id : new int[]{R.id.wsAddress, R.id.wsProbe, R.id.wsDiscover, R.id.confirm}) visible(page.findViewById(id));
+            for (int id : new int[]{R.id.wsAddress, R.id.wsProbe, R.id.wsDiscover, R.id.confirm})
+                visible(page.findViewById(id));
             ins.runOnMainSync(() -> fragment.queryResult(true, "", true, java.util.Arrays.asList(
                     "192.168.1.100", "192.168.1.101", "192.168.1.102", "192.168.1.103",
                     "192.168.1.104", "192.168.1.105", "192.168.1.106", "192.168.1.107")));
@@ -311,14 +372,21 @@ public class UiRefinementDeviceTest {
                 assertEquals(rect(page.findViewById(R.id.confirm)).top, rect(page.findViewById(R.id.wsProbe)).top);
             }
             capture("sdk-lan");
-            ins.runOnMainSync(() -> list.setSelection(7)); settle();
+            ins.runOnMainSync(() -> list.setSelection(7));
+            settle();
             assertEquals("列表末条可达", 7, list.getLastVisiblePosition());
-            visible(page.findViewById(R.id.confirm)); capture("sdk-lan-last");
-        } finally { ins.runOnMainSync(page::finish); }
+            visible(page.findViewById(R.id.confirm));
+            capture("sdk-lan-last");
+        } finally {
+            ins.runOnMainSync(page::finish);
+        }
     }
 
-    /** 表单只输入不保存；指导弹窗只查看，不改变自动提示偏好。 */
-    @Test public void productFormAndGuideRemainReachable() throws Exception {
+    /**
+     * 表单只输入不保存；指导弹窗只查看，不改变自动提示偏好。
+     */
+    @Test
+    public void productFormAndGuideRemainReachable() throws Exception {
         HomeActivity home = (HomeActivity) launch(HomeActivity.class, null);
         cc.huoyan.retail.goods.AddGoodsDialog form = new cc.huoyan.retail.goods.AddGoodsDialog();
         cc.huoyan.retail.learning.LearningGuideDialog guide = new cc.huoyan.retail.learning.LearningGuideDialog();
@@ -329,8 +397,10 @@ public class UiRefinementDeviceTest {
                 ((TextView) form.requireView().findViewById(R.id.plu)).setText("ABC123!中文");
                 assertEquals("ABC123", ((TextView) form.requireView().findViewById(R.id.plu)).getText().toString());
             });
-            visible(form.requireView().findViewById(R.id.confirm)); capture("product-form");
-            ins.runOnMainSync(form::dismiss); settle();
+            visible(form.requireView().findViewById(R.id.confirm));
+            capture("product-form");
+            ins.runOnMainSync(form::dismiss);
+            settle();
             ins.runOnMainSync(() -> guide.showNow(home.getSupportFragmentManager(), "guideLayoutTest"));
             settle();
             visible(guide.requireView().findViewById(R.id.confirm));
@@ -341,12 +411,19 @@ public class UiRefinementDeviceTest {
             assertEquals("步骤2和3沿用同一间距", rect(second).top - rect(first).bottom, rect(third).top - rect(second).bottom);
             capture("learning-guide");
         } finally {
-            ins.runOnMainSync(() -> { if (form.isAdded()) form.dismissAllowingStateLoss(); if (guide.isAdded()) guide.dismissAllowingStateLoss(); home.finish(); });
+            ins.runOnMainSync(() -> {
+                if (form.isAdded()) form.dismissAllowingStateLoss();
+                if (guide.isAdded()) guide.dismissAllowingStateLoss();
+                home.finish();
+            });
         }
     }
 
-    /** 首页立即激活直接出现原弹窗；只打开和取消，不提交激活或修改授权。 */
-    @Test public void homeActivationUsesExistingDialogWithoutNavigation() throws Exception {
+    /**
+     * 首页立即激活直接出现原弹窗；只打开和取消，不提交激活或修改授权。
+     */
+    @Test
+    public void homeActivationUsesExistingDialogWithoutNavigation() throws Exception {
         HomeActivity home = (HomeActivity) launch(HomeActivity.class, null);
         Instrumentation.ActivityMonitor monitor = ins.addMonitor(SettingsPageActivity.class.getName(), null, false);
         try {
@@ -364,34 +441,62 @@ public class UiRefinementDeviceTest {
             assertNotNull(dialog.requireView().findViewById(R.id.editText));
             capture("home-activation");
             ins.runOnMainSync(() -> dialog.requireView().findViewById(R.id.cancel).performClick());
-        } finally { ins.removeMonitor(monitor); ins.runOnMainSync(home::finish); }
+        } finally {
+            ins.removeMonitor(monitor);
+            ins.runOnMainSync(home::finish);
+        }
     }
 
-    /** 启动只读验收页面。 */
+    /**
+     * 启动只读验收页面。
+     */
     private Activity launch(Class<? extends Activity> type, String page) {
         Intent intent = new Intent(ins.getTargetContext(), type).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (page != null) intent.putExtra("page", page);
-        Activity activity = ins.startActivitySync(intent); settle(); return activity;
+        Activity activity = ins.startActivitySync(intent);
+        settle();
+        return activity;
     }
-    /** 获取屏幕上的实际矩形。 */
+
+    /**
+     * 获取屏幕上的实际矩形。
+     */
     private Rect rect(View view) {
-        int[] xy = new int[2]; view.getLocationOnScreen(xy);
+        int[] xy = new int[2];
+        view.getLocationOnScreen(xy);
         return new Rect(xy[0], xy[1], xy[0] + view.getWidth(), xy[1] + view.getHeight());
     }
-    /** 关键操作必须完整可见。 */
+
+    /**
+     * 关键操作必须完整可见。
+     */
     private void visible(View view) {
-        Rect bounds = new Rect(); assertTrue(view.getGlobalVisibleRect(bounds));
-        assertEquals(view.getWidth(), bounds.width()); assertEquals(view.getHeight(), bounds.height());
+        Rect bounds = new Rect();
+        assertTrue(view.getGlobalVisibleRect(bounds));
+        assertEquals(view.getWidth(), bounds.width());
+        assertEquals(view.getHeight(), bounds.height());
     }
-    /** 等待布局完成，不等待外部网络完成。 */
-    private void settle() { ins.waitForIdleSync(); SystemClock.sleep(400); }
-    /** 保存设备实际渲染供人工检查；夹具截图不代表真实云端状态。 */
+
+    /**
+     * 等待布局完成，不等待外部网络完成。
+     */
+    private void settle() {
+        ins.waitForIdleSync();
+        SystemClock.sleep(400);
+    }
+
+    /**
+     * 保存设备实际渲染供人工检查；夹具截图不代表真实云端状态。
+     */
     private void capture(String name) throws Exception {
         File folder = new File(ins.getTargetContext().getExternalFilesDir(null), "refinement-qa");
         assertTrue(folder.isDirectory() || folder.mkdirs());
-        Bitmap bitmap = ins.getUiAutomation().takeScreenshot(); assertNotNull(bitmap);
+        Bitmap bitmap = ins.getUiAutomation().takeScreenshot();
+        assertNotNull(bitmap);
         try (FileOutputStream output = new FileOutputStream(new File(folder, name + ".png"))) {
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, output);
-        } finally { bitmap.recycle(); }
+        } finally {
+            bitmap.recycle();
+        }
     }
 }

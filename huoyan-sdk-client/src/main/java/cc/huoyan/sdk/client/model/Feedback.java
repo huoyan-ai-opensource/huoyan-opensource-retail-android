@@ -20,9 +20,11 @@ public final class Feedback {
     private final int feedbackType;
     private final List<FeedbackItem> items;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public Feedback(String requestId, String photoFileUrl,
-            int feedbackType, List<FeedbackItem> items) {
+                    int feedbackType, List<FeedbackItem> items) {
         if (feedbackType != FEEDBACK_TYPE_NORMAL && feedbackType != FEEDBACK_TYPE_MODIFIED)
             throw new IllegalArgumentException("feedback_type 只接受 0、1");
         this.requestId = requestId;
@@ -33,14 +35,33 @@ public final class Feedback {
 
     }
 
-    /** 调用方请求标识。 */
-    public String getRequestId() { return requestId; }
-    /** 已上传图片的 URL。 */
-    public String getPhotoFileUrl() { return photoFileUrl; }
-    /** 反馈类型。 */
-    public int getFeedbackType() { return feedbackType; }
-    /** 反馈商品列表。 */
-    public List<FeedbackItem> getItems() { return items; }
+    /**
+     * 调用方请求标识。
+     */
+    public String getRequestId() {
+        return requestId;
+    }
+
+    /**
+     * 已上传图片的 URL。
+     */
+    public String getPhotoFileUrl() {
+        return photoFileUrl;
+    }
+
+    /**
+     * 反馈类型。
+     */
+    public int getFeedbackType() {
+        return feedbackType;
+    }
+
+    /**
+     * 反馈商品列表。
+     */
+    public List<FeedbackItem> getItems() {
+        return items;
+    }
 
     @Override
     public boolean equals(Object other) {
@@ -53,7 +74,8 @@ public final class Feedback {
                 && items.equals(that.items);
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
         return Objects.hash(requestId, photoFileUrl, feedbackType, items);
     }
 

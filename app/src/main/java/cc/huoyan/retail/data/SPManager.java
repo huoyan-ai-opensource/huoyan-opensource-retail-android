@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.reflect.TypeToken;
+
 import cc.huoyan.retail.RetailApplication;
 import cc.huoyan.retail.device.camera.CameraConfigEntity;
 import cc.huoyan.retail.device.camera.RecognizeAreaEntity;
@@ -30,10 +31,14 @@ public class SPManager {
     // 缺省/非法回退 127.0.0.1:18086/ws（解析由 JAR 的 SdkConfig/SdkDiscovery 完成）
     public static final String SP_WS_ENDPOINT = "SP_WS_ENDPOINT";
     public static final String SP_SHOP_NAME = "SP_SHOP_NAME";
-    /** 允许删除单条识别结果，缺省 false；识别设置保存后生效。 */
+    /**
+     * 允许删除单条识别结果，缺省 false；识别设置保存后生效。
+     */
     public static final String SP_DELETE_RECOGNITION_RESULT = "SP_DELETE_RECOGNITION_RESULT";
     public static final String SP_STABLE_RECOGNITION = "SP_STABLE_RECOGNITION";
-    /** 触发灵敏度档位 1–5；参数保存后生效，缺省为标准 3 档。 */
+    /**
+     * 触发灵敏度档位 1–5；参数保存后生效，缺省为标准 3 档。
+     */
     public static final String SP_RECOGNITION_SENSITIVITY_LEVEL = "SP_RECOGNITION_SENSITIVITY_LEVEL";
     public static final String SP_SHOP_ID = "SP_SHOP_ID";
     public static final String SP_DEVICES_ID = "SP_DEVICES_ID";
@@ -42,7 +47,9 @@ public class SPManager {
     public static final String SP_SHOP_PHONE = "SP_SHOP_PHONE";
     public static final String SP_SHOP_NO = "SP_SHOP_NO";
     public static final String SP_ACLAS_SCALE_PORT = "SP_ACLAS_SCALE_PORT";
-    /** 打印设备的完整选择标识，由打印设置页保存。 */
+    /**
+     * 打印设备的完整选择标识，由打印设置页保存。
+     */
     private static final String SP_PRINTER_DEVICE = "printer_device";
     // 学习图 uid 持久化映射（用户 2026-08-27）：JSON 结构 {plu:[{picId,uid}]}，
     // plu→picId→uid。itemLearn 回执 uid 原仅会话内存（StudyPicEntity 不落库），
@@ -70,28 +77,39 @@ public class SPManager {
         return instance;
     }
 
-    /** 返回用户选择的打印设备标识；未选择时为空，不预设设备型号。 */
+    /**
+     * 返回用户选择的打印设备标识；未选择时为空，不预设设备型号。
+     */
     public String getPrinterDevice() {
         return sharedPreferences.getString(SP_PRINTER_DEVICE, "");
     }
 
-    /** 保存设置页选择的打印设备，打印任务提交时读取快照。 */
+    /**
+     * 保存设置页选择的打印设备，打印任务提交时读取快照。
+     */
     public void putPrinterDevice(String device) {
         putString(SP_PRINTER_DEVICE, device);
     }
 
-    /** 返回打印纸宽毫米值；未配置或无效值使用默认 58mm。 */
+    /**
+     * 返回打印纸宽毫米值；未配置或无效值使用默认 58mm。
+     */
     public int getPrinterPaperWidthMm() {
         return sharedPreferences.getInt("printer_paper_width_mm", 58) == 80 ? 80 : 58;
     }
 
-    /** 保存用户选择的纸张规格；打印任务在提交时读取快照，不跟随中途更改。 */
+    /**
+     * 保存用户选择的纸张规格；打印任务在提交时读取快照，不跟随中途更改。
+     */
     public void putPrinterPaperWidthMm(int millimeters) {
-        if (millimeters != 58 && millimeters != 80) throw new IllegalArgumentException("Unsupported paper width");
+        if (millimeters != 58 && millimeters != 80)
+            throw new IllegalArgumentException("Unsupported paper width");
         sharedPreferences.edit().putInt("printer_paper_width_mm", millimeters).apply();
     }
 
-    /** 原生相机按设备隔离识别区与显示配置，保留所有旧 UVC 键。 */
+    /**
+     * 原生相机按设备隔离识别区与显示配置，保留所有旧 UVC 键。
+     */
     private String cameraPreferenceKey(String key) {
         if (!"CAMERA2".equals(getString("camera_source", "UVC"))) return key;
         return key + "_CAMERA2_" + getString("camera2_device", "default");
@@ -165,7 +183,9 @@ public class SPManager {
         return area;
     }
 
-    /** 创建以预览中心为基准、宽高各占 50% 的默认识别区，不写入偏好。 */
+    /**
+     * 创建以预览中心为基准、宽高各占 50% 的默认识别区，不写入偏好。
+     */
     public static RecognizeAreaEntity createDefaultRecognizeArea(int width, int height) {
         RecognizeAreaEntity area = new RecognizeAreaEntity();
         area.setWidth(width);
@@ -179,7 +199,9 @@ public class SPManager {
         return area;
     }
 
-    /** 计算居中且宽高各占预览 50% 的四角，依次为左上、右上、右下、左下。 */
+    /**
+     * 计算居中且宽高各占预览 50% 的四角，依次为左上、右上、右下、左下。
+     */
     static float[] computeDefaultRecognizeAreaPoints(int width, int height) {
         float left = width * 0.25f;
         float right = width * 0.75f;
@@ -212,6 +234,7 @@ public class SPManager {
     public int getInt(String key, int defaultInt) {
         return sharedPreferences.getInt(key, defaultInt);
     }
+
     public Set<String> getStringSet(String key) {
         Set<String> value = sharedPreferences.getStringSet(key, Collections.emptySet());
         return new HashSet<>(value);
@@ -223,6 +246,7 @@ public class SPManager {
         boolean commit = edit.commit();
         Log.d(LOG_TAG, "SP save result: " + commit + ", key=" + key);
     }
+
     public boolean getBoolean(String key) {
         return sharedPreferences.getBoolean(key, false);
     }
@@ -440,7 +464,9 @@ public class SPManager {
         return value == null || value.trim().isEmpty();
     }
 
-    /** 成功绑定后同次写入归属和门店资料；空资料覆盖旧店值，避免换店后串用。 */
+    /**
+     * 成功绑定后同次写入归属和门店资料；空资料覆盖旧店值，避免换店后串用。
+     */
     public void saveBinding(cc.huoyan.sdk.client.model.BindingResult binding, long generation) {
         if (binding == null || !binding.hasBindingScope()) {
             throw new IllegalArgumentException("只允许保存完整的成功绑定回执");
@@ -465,7 +491,9 @@ public class SPManager {
         return getString(SP_SDK_BIND_ACCOUNT);
     }
 
-    /** 只有成功绑定后保存的账号和门店均存在时，才允许开启云端服务。 */
+    /**
+     * 只有成功绑定后保存的账号和门店均存在时，才允许开启云端服务。
+     */
     public boolean hasBoundShop() {
         return !isBlank(getBindAccountId()) && !isBlank(getString(SP_SHOP_ID));
     }

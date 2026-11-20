@@ -6,13 +6,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** 按 SDK UID 合并图片；保持本次拍照及已显示图片的相对顺序。 */
+/**
+ * 按 SDK UID 合并图片；保持本次拍照及已显示图片的相对顺序。
+ */
 final class LearningPictureUpdates {
-    private LearningPictureUpdates() { }
+    private LearningPictureUpdates() {
+    }
 
-    /** 接纳新学习回执，并清除同 UID 上一代样本的保存、删除状态。 */
+    /**
+     * 接纳新学习回执，并清除同 UID 上一代样本的保存、删除状态。
+     */
     static List<StudyPicEntity> prepend(List<StudyPicEntity> current,
-            List<StudyPicEntity> captured, Set<Long> saved, Set<Long> removed) {
+                                        List<StudyPicEntity> captured, Set<Long> saved, Set<Long> removed) {
         Map<Long, StudyPicEntity> unique = new LinkedHashMap<>();
         for (StudyPicEntity picture : captured) {
             // 学习成功回执代表新样本；SDK 会复用已删除的最大 UID。
@@ -27,12 +32,13 @@ final class LearningPictureUpdates {
     }
 
     static List<StudyPicEntity> mergeHistory(List<StudyPicEntity> current,
-            List<StudyPicEntity> history, Set<Long> saved, Set<Long> removed) {
+                                             List<StudyPicEntity> history, Set<Long> saved, Set<Long> removed) {
         List<StudyPicEntity> latest = new ArrayList<>(history);
         latest.sort((a, b) -> Long.compare(b.getUid(), a.getUid()));
         Map<Long, StudyPicEntity> remaining = new LinkedHashMap<>();
         for (StudyPicEntity picture : latest) {
-            if (!removed.contains(picture.getUid())) remaining.putIfAbsent(picture.getUid(), picture);
+            if (!removed.contains(picture.getUid()))
+                remaining.putIfAbsent(picture.getUid(), picture);
         }
         Map<Long, StudyPicEntity> merged = new LinkedHashMap<>();
         for (StudyPicEntity picture : current) {
@@ -50,9 +56,11 @@ final class LearningPictureUpdates {
         return new ArrayList<>(merged.values());
     }
 
-    /** 合并局部分页，保留未出现在本页中的已展示图片及其顺序。 */
+    /**
+     * 合并局部分页，保留未出现在本页中的已展示图片及其顺序。
+     */
     static List<StudyPicEntity> mergePage(List<StudyPicEntity> current,
-            List<StudyPicEntity> page, Set<Long> saved, Set<Long> removed) {
+                                          List<StudyPicEntity> page, Set<Long> saved, Set<Long> removed) {
         Map<Long, StudyPicEntity> history = new LinkedHashMap<>();
         for (StudyPicEntity picture : current) {
             if (saved.contains(picture.getUid())) {

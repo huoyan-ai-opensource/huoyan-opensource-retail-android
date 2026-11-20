@@ -2,16 +2,23 @@ package cc.huoyan.retail.checkout;
 
 import cc.huoyan.retail.data.GoodsEntity;
 import cc.huoyan.retail.checkout.RecognitionSelection;
+
 import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class GoodsRegrouperTest {
     private static GoodsEntity goods(String plu) {
         GoodsEntity goods = new GoodsEntity();
-        goods.setGoodsId("1"); goods.setPlu(plu); goods.setName(plu); goods.setPrice(100); goods.setUnit(5);
+        goods.setGoodsId("1");
+        goods.setPlu(plu);
+        goods.setName(plu);
+        goods.setPrice(100);
+        goods.setUnit(5);
         return goods;
     }
 
@@ -24,7 +31,8 @@ public class GoodsRegrouperTest {
         return new GoodsVo(count, 100, goods(plu), items);
     }
 
-    @Test public void preservesUnchangedManualCountAndUnmatchedRow() {
+    @Test
+    public void preservesUnchangedManualCountAndUnmatchedRow() {
         GoodsVo a = row("A", 5, 1);
         GoodsVo b = row("B", 2, 1);
         GoodsVo unmatched = row("unknown", 1, 1);
@@ -39,7 +47,8 @@ public class GoodsRegrouperTest {
         assertEquals(2, result.get(2).getCount().intValue());
     }
 
-    @Test public void mergesWholeRowWithExistingManualQuantity() {
+    @Test
+    public void mergesWholeRowWithExistingManualQuantity() {
         GoodsVo a = row("A", 5, 1);
         GoodsVo b = row("B", 7, 1);
         List<GoodsVo> result = GoodsRegrouper.replace(Arrays.asList(a, b),
@@ -49,7 +58,8 @@ public class GoodsRegrouperTest {
         assertEquals(2, result.get(0).getRecognitionSelection().size());
     }
 
-    @Test public void partialCorrectionTransfersOnePiecePerBox() {
+    @Test
+    public void partialCorrectionTransfersOnePiecePerBox() {
         GoodsVo a = row("A", 5, 3);
         RecognitionSelection moved = a.getRecognitionSelection().get(1);
         List<GoodsVo> result = GoodsRegrouper.replace(Collections.singletonList(a),
@@ -60,7 +70,8 @@ public class GoodsRegrouperTest {
         assertEquals("B", moved.getSelectedPlu());
     }
 
-    @Test public void choosingSameProductPreservesManualCount() {
+    @Test
+    public void choosingSameProductPreservesManualCount() {
         GoodsVo a = row("A", 5, 1);
         List<GoodsVo> result = GoodsRegrouper.replace(Collections.singletonList(a),
                 Collections.singleton(a.getRecognitionSelection().get(0)), a.getGoods());
@@ -68,7 +79,8 @@ public class GoodsRegrouperTest {
         assertEquals(5, result.get(0).getCount().intValue());
     }
 
-    @Test public void impossibleSplitDoesNotChangeAnyDetection() {
+    @Test
+    public void impossibleSplitDoesNotChangeAnyDetection() {
         GoodsVo a = row("A", 1, 2);
         RecognitionSelection selected = a.getRecognitionSelection().get(0);
         assertThrows(IllegalArgumentException.class, () -> GoodsRegrouper.replace(

@@ -3,18 +3,25 @@ package cc.huoyan.sdk.client.internal;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
 import java.util.Collections;
+
 import cc.huoyan.sdk.client.*;
 import cc.huoyan.sdk.client.model.*;
 import cc.huoyan.app.aidl.ImageRequestParcel;
 import cc.huoyan.app.aidl.RecognizeResultParcel;
+
 import java.util.Objects;
 
-/** 公共 API 的通信适配实现；应用请通过 HuoyanSdkClient.create 创建。 */
+/**
+ * 公共 API 的通信适配实现；应用请通过 HuoyanSdkClient.create 创建。
+ */
 public final class DefaultSdkClient implements HuoyanSdkClient {
     private final SdkChannelBridge transport;
     private final boolean jpeg;
-    /** 当前宿主 APK 版本；每次初始化均透传，实例间不共享。 */
+    /**
+     * 当前宿主 APK 版本；每次初始化均透传，实例间不共享。
+     */
     private final String appVersion;
     private volatile boolean closed;
     private final SdkLog log;
@@ -22,7 +29,9 @@ public final class DefaultSdkClient implements HuoyanSdkClient {
     private int[] recognitionPixels;
     private byte[] recognitionRgb;
 
-    /** 使用应用上下文及显式配置建立客户端。 */
+    /**
+     * 使用应用上下文及显式配置建立客户端。
+     */
     public DefaultSdkClient(Context context, SdkConfig config) {
         Objects.requireNonNull(context, "context 不能为空");
         Objects.requireNonNull(config, "config 不能为空");
@@ -42,7 +51,8 @@ public final class DefaultSdkClient implements HuoyanSdkClient {
         this.transport = transport;
         this.appVersion = appVersion;
         this.jpeg = jpeg;
-        this.log = (tag, message) -> {};
+        this.log = (tag, message) -> {
+        };
     }
 
     private ImageRequestParcel carrier(SdkImage image) {
@@ -111,13 +121,19 @@ public final class DefaultSdkClient implements HuoyanSdkClient {
         return ModelMapper.fromWire(transport.getDownloadProgress());
     }
 
-    /** 将动态模型回执转换为公共不可变对象。 */
-    @Override public LicenseModels queryDeviceModels() {
+    /**
+     * 将动态模型回执转换为公共不可变对象。
+     */
+    @Override
+    public LicenseModels queryDeviceModels() {
         return ModelMapper.fromWire(transport.queryDeviceModels());
     }
 
-    /** 按激活码查询支持模型，适用于正常激活。 */
-    @Override public LicenseModels queryLicenseModels(String activationCode) {
+    /**
+     * 按激活码查询支持模型，适用于正常激活。
+     */
+    @Override
+    public LicenseModels queryLicenseModels(String activationCode) {
         return ModelMapper.fromWire(transport.queryLicenseModels(activationCode));
     }
 
@@ -144,7 +160,9 @@ public final class DefaultSdkClient implements HuoyanSdkClient {
         return recognizePrepared(request, rotate, started, started, started, System.nanoTime());
     }
 
-    /** 同步识别位图；AIDL 复用转换缓冲区，返回前不允许下一帧覆盖内联载体。 */
+    /**
+     * 同步识别位图；AIDL 复用转换缓冲区，返回前不允许下一帧覆盖内联载体。
+     */
     @Override
     public RecognizeResult recognize(Bitmap bitmap) {
         if (jpeg) return HuoyanSdkClient.super.recognize(bitmap);
@@ -218,7 +236,9 @@ public final class DefaultSdkClient implements HuoyanSdkClient {
                 : ModelMapper.fromWire(transport.itemLearn(request, clazz));
     }
 
-    /** 导入学习单独发送，不能回退到会重新上传云端图片的普通学习。 */
+    /**
+     * 导入学习单独发送，不能回退到会重新上传云端图片的普通学习。
+     */
     @Override
     public LearnResult importLearn(SdkImage image, String clazz) {
         cc.huoyan.sdk.client.operation.SdkInputs.clazz(clazz);
@@ -351,55 +371,74 @@ public final class DefaultSdkClient implements HuoyanSdkClient {
     public SdkImage image(Bitmap bitmap) {
         return jpeg ? SdkImage.jpeg(bitmap) : SdkImage.rgb888(bitmap);
     }
-    /** 分页读取云端商品目录；syncTimestamp=0 全量，增量游标由业务端管理。 */
+
+    /**
+     * 分页读取云端商品目录；syncTimestamp=0 全量，增量游标由业务端管理。
+     */
     @Override
     public GoodsListResult listGoods(long syncTimestamp, int current, int size) {
         return ModelMapper.fromWire(transport.listGoods(syncTimestamp, current, size));
     }
 
-    /** 将云端商品同步到 SDK 本地库，返回最终统计；不修改业务端数据库。 */
+    /**
+     * 将云端商品同步到 SDK 本地库，返回最终统计；不修改业务端数据库。
+     */
     @Override
     public GoodsDownloadResult downloadGoods(int size) {
         return ModelMapper.fromWire(transport.downloadGoods(size));
     }
 
-    /** 查询 SDK 商品同步进度；失败时保留上次已提交游标。 */
+    /**
+     * 查询 SDK 商品同步进度；失败时保留上次已提交游标。
+     */
     @Override
     public GoodsDownloadProgress getDownloadGoodsProgress() {
         return ModelMapper.fromWire(transport.getDownloadGoodsProgress());
     }
 
-    /** 按指定商品 ID 下载图片并重新学习；会替换这些分类的旧样本，不自动重试。 */
+    /**
+     * 按指定商品 ID 下载图片并重新学习；会替换这些分类的旧样本，不自动重试。
+     */
     @Override
     public ImageFlowProgress downloadImagesAndLearnByGoodsId(long[] goodsIds) {
         return ModelMapper.fromWire(transport.downloadImagesAndLearnByGoodsId(goodsIds));
     }
 
-    /** 按商品 ID 查询 SDK 本地商品；不存在返回 404。 */
+    /**
+     * 按商品 ID 查询 SDK 本地商品；不存在返回 404。
+     */
     @Override
     public GoodsResult getGoods(String goodsId) {
         return ModelMapper.fromWire(transport.getGoods(goodsId));
     }
 
-    /** 分页筛选 SDK 本地商品；isDeleted=-1 默认未删除，current/size=0 使用 SDK 默认值。 */
+    /**
+     * 分页筛选 SDK 本地商品；isDeleted=-1 默认未删除，current/size=0 使用 SDK 默认值。
+     */
     @Override
     public GoodsQueryResult queryGoods(String keyword, String name, String plu, int isDeleted, int current, int size, String sortBy, String sortOrder) {
         return ModelMapper.fromWire(transport.queryGoods(keyword, name, plu, isDeleted, current, size, sortBy, sortOrder));
     }
 
-    /** 按条件统计 SDK 本地商品数量。 */
+    /**
+     * 按条件统计 SDK 本地商品数量。
+     */
     @Override
     public GoodsCountResult getGoodsCount(String keyword, String name, String plu, int isDeleted) {
         return ModelMapper.fromWire(transport.getGoodsCount(keyword, name, plu, isDeleted));
     }
 
-    /** 批量更新 SDK 本地商品；只覆盖提供字段，逐条检查 items 的结果。 */
+    /**
+     * 批量更新 SDK 本地商品；只覆盖提供字段，逐条检查 items 的结果。
+     */
     @Override
     public GoodsBatchResult batchUpdateGoods(String[] goodsIds, GoodsSave changes) {
         return ModelMapper.fromWire(transport.batchUpdateGoods(goodsIds, ModelMapper.toWire(changes)));
     }
 
-    /** 批量软删除 SDK 本地商品；整体成功仍须逐条检查 items。 */
+    /**
+     * 批量软删除 SDK 本地商品；整体成功仍须逐条检查 items。
+     */
     @Override
     public GoodsBatchResult batchDeleteGoods(String[] goodsIds) {
         return ModelMapper.fromWire(transport.batchDeleteGoods(goodsIds));

@@ -3,29 +3,41 @@ package cc.huoyan.retail.device.print;
 import static cc.huoyan.retail.data.SPManager.SP_SHOP_NAME;
 
 import android.graphics.Bitmap;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
+
 import cc.huoyan.retail.R;
 import cc.huoyan.retail.RetailApplication;
 import cc.huoyan.retail.checkout.domain.WeightedSaleResult;
 import cc.huoyan.retail.common.LocalizedText;
 import cc.huoyan.retail.common.LocalePreferenceUtil;
 import cc.huoyan.retail.data.SPManager;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 
-/** 小票内容与位图排版；保留原有 320 点宽、字号、行距和条码，不依赖设备协议。 */
+/**
+ * 小票内容与位图排版；保留原有 320 点宽、字号、行距和条码，不依赖设备协议。
+ */
 final class ReceiptRenderer {
-    /** 创建无共享可变状态的排版器；仅在打印后台任务使用。 */
-    ReceiptRenderer() { }
+    /**
+     * 创建无共享可变状态的排版器；仅在打印后台任务使用。
+     */
+    ReceiptRenderer() {
+    }
 
-    /** 生成原有小票头部，返回位图由调用方回收。 */
+    /**
+     * 生成原有小票头部，返回位图由调用方回收。
+     */
     Bitmap header(WeightedSaleResult result) {
         return PrintUtil.print(buildReceiptHeader(result), ReceiptPaper.CONTENT_WIDTH);
     }
 
-    /** 生成原有小票尾部并释放临时条码位图，返回位图由调用方回收。 */
+    /**
+     * 生成原有小票尾部并释放临时条码位图，返回位图由调用方回收。
+     */
     Bitmap footer(WeightedSaleResult result) {
         ArrayList<Line> lines = buildReceiptFooter(result, buildWeightedBarcode(result));
         try {
@@ -39,7 +51,9 @@ final class ReceiptRenderer {
         }
     }
 
-    /** 仅去除末尾无打印像素的白行，保留全部正文；物理送纸距离由切刀定位决定。 */
+    /**
+     * 仅去除末尾无打印像素的白行，保留全部正文；物理送纸距离由切刀定位决定。
+     */
     private Bitmap trimBottomWhitespace(Bitmap bitmap) {
         int[] row = new int[bitmap.getWidth()];
         for (int y = bitmap.getHeight() - 1; y >= 0; y--) {
@@ -58,7 +72,9 @@ final class ReceiptRenderer {
         return bitmap;
     }
 
-    /** 沿用现有店名、时间、重量、金额和商品行内容。 */
+    /**
+     * 沿用现有店名、时间、重量、金额和商品行内容。
+     */
     private ArrayList<Line> buildReceiptHeader(WeightedSaleResult result) {
         ArrayList<Line> lines = new ArrayList<>();
         String shopName = SPManager.getInstance().getString(SP_SHOP_NAME, LocalizedText.get(R.string.default_shop_name));
@@ -97,7 +113,9 @@ final class ReceiptRenderer {
         return lines;
     }
 
-    /** 沿用现有汇总、EAN-13 条码及结束语。 */
+    /**
+     * 沿用现有汇总、EAN-13 条码及结束语。
+     */
     private ArrayList<Line> buildReceiptFooter(WeightedSaleResult result, String barcode) {
         ArrayList<Line> lines = new ArrayList<>();
         lines.add(new Line().addUnit(new Unit(LocalizedText.get(R.string.receipt_summary, result.getItemKindCount(), result.getDetectedPieceCount()), 18, Unit.EALIGN.CENTER)));
@@ -116,7 +134,9 @@ final class ReceiptRenderer {
         return lines;
     }
 
-    /** 保持原有 PLU 和商品名称截断规则。 */
+    /**
+     * 保持原有 PLU 和商品名称截断规则。
+     */
     private String formatReceiptItemName(WeightedSaleResult.Item item) {
         String plu = item.getPlu() == null ? "" : item.getPlu().trim();
         String name = item.getName() == null ? "" : item.getName().trim();
@@ -132,17 +152,23 @@ final class ReceiptRenderer {
         return plu.isEmpty() ? name : plu + " " + name;
     }
 
-    /** 沿用原有金额条码规则。 */
+    /**
+     * 沿用原有金额条码规则。
+     */
     private String buildWeightedBarcode(WeightedSaleResult result) {
         return ReceiptBarcode.build(result.getItems().get(0).getPlu(), result.getTotalAmountCent());
     }
 
-    /** 将分转换为两位小数金额，禁止浮点金额。 */
+    /**
+     * 将分转换为两位小数金额，禁止浮点金额。
+     */
     private String formatMoney(long cent) {
         return BigDecimal.valueOf(cent).movePointLeft(2).setScale(2, RoundingMode.HALF_UP).toPlainString();
     }
 
-    /** 将千克重量格式化为三位小数。 */
+    /**
+     * 将千克重量格式化为三位小数。
+     */
     private String formatWeight(BigDecimal weightKg) {
         return weightKg.setScale(3, RoundingMode.HALF_UP).toPlainString();
     }

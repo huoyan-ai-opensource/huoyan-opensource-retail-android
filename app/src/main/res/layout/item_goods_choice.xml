@@ -1,24 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- 改品与学习选择共用三层商品卡；外层留白构成宫格间距。 -->
+<?xml version="1.0" encoding="utf-8"?><!-- 改品与学习选择共用三层商品卡；外层留白构成宫格间距。 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="6dp">
+    android:padding="@dimen/dp_3">
 
     <FrameLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="100dp"
+        android:minHeight="@dimen/dp_50"
         android:background="@drawable/goods_choice_background"
         android:foreground="@drawable/goods_choice_border">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="100dp"
+            android:minHeight="@dimen/dp_50"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:padding="@dimen/dp_5">
 
             <TextView
                 android:id="@+id/pluName"
@@ -29,58 +28,59 @@
                 android:fontFamily="@font/retail_sans"
                 android:includeFontPadding="false"
                 android:textColor="#293A51"
-                android:textSize="20sp"
+                android:textSize="@dimen/sp_10"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/plu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/dp_2"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:gravity="center_vertical"
                 android:fontFamily="@font/retail_sans"
                 android:includeFontPadding="false"
                 android:textColor="#6E7C90"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp_8" />
 
             <TextView
                 android:id="@+id/price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/dp_2"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:gravity="center_vertical"
                 android:fontFamily="@font/retail_sans"
                 android:includeFontPadding="false"
                 android:textColor="#3F3EED"
-                android:textSize="20sp"
+                android:textSize="@dimen/sp_10"
                 android:textStyle="bold" />
         </LinearLayout>
         <!-- 角标由卡片圆角裁切，边框前景最后绘制，避免斜带遮挡描边。 -->
         <FrameLayout
             android:id="@+id/similarBadge"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/dp_18"
+            android:layout_height="@dimen/dp_18"
             android:layout_gravity="top|end"
             android:clipChildren="true"
             android:clipToPadding="true"
             android:visibility="gone"
             android:contentDescription="@string/goods_similar_description">
+
             <TextView
-                android:layout_width="52dp"
-                android:layout_height="16dp"
+                android:layout_width="@dimen/dp_26"
+                android:layout_height="@dimen/dp_8"
                 android:layout_gravity="center"
-                android:translationX="3dp"
-                android:translationY="-3dp"
+                android:translationX="@dimen/dp_1_5"
+                android:translationY="@dimen/dp_neg_1_5"
                 android:rotation="45"
                 android:gravity="center"
                 android:background="@drawable/goods_similar_badge"
                 android:text="@string/goods_similar_badge"
                 android:textColor="#B84E00"
-                android:textSize="11sp"
+                android:textSize="@dimen/sp_5_5"
                 android:textStyle="bold"
                 android:fontFamily="@font/retail_sans"
                 android:includeFontPadding="false" />

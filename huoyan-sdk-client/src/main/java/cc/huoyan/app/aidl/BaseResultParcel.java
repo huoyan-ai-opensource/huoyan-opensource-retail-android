@@ -24,7 +24,9 @@ public final class BaseResultParcel implements Parcelable {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }

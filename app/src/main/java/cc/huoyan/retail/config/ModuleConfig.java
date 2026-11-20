@@ -16,16 +16,26 @@ import android.content.SharedPreferences;
  */
 public final class ModuleConfig {
 
-    /** SP 文件名：与 {@code SPManager} 共用同一存储文件（"HuoYanApplication"）。 */
+    /**
+     * SP 文件名：与 {@code SPManager} 共用同一存储文件（"HuoYanApplication"）。
+     */
     static final String SP_FILE_NAME = "HuoYanApplication";
 
-    /** 门店场景 key，值为 {@link Scene} 枚举名。 */
+    /**
+     * 门店场景 key，值为 {@link Scene} 枚举名。
+     */
     public static final String SP_SCENE = "SP_SCENE";
-    /** 称重模块开关 key。 */
+    /**
+     * 称重模块开关 key。
+     */
     public static final String SP_WEIGHING_ENABLED = "SP_WEIGHING_ENABLED";
-    /** 打印模块开关 key。 */
+    /**
+     * 打印模块开关 key。
+     */
     public static final String SP_PRINT_ENABLED = "SP_PRINT_ENABLED";
-    /** 外传模块开关 key（M4 预留）。 */
+    /**
+     * 外传模块开关 key（M4 预留）。
+     */
     public static final String SP_TRANSFER_ENABLED = "SP_TRANSFER_ENABLED";
 
     private ModuleConfig() {

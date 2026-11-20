@@ -39,22 +39,26 @@ public final class CertInfoParcel implements Parcelable {
     private final int sdkVersionCode;
     private final String activationSerial;
 
-    /** 构造证书回执。 */
+    /**
+     * 构造证书回执。
+     */
     public CertInfoParcel(int code, String reason, String modelCode,
-            String modelChannel, String licenseType, long activatedAt, long issuedAt,
-            long renewedAt, boolean hasRenewedAt, long nextRenewAt, boolean hasNextRenewAt,
-            long expiresAt) {
+                          String modelChannel, String licenseType, long activatedAt, long issuedAt,
+                          long renewedAt, boolean hasRenewedAt, long nextRenewAt, boolean hasNextRenewAt,
+                          long expiresAt) {
         this(code, reason, modelCode, modelChannel, licenseType, activatedAt,
                 issuedAt, renewedAt, hasRenewedAt, nextRenewAt, hasNextRenewAt, expiresAt,
                 null, 0, null);
     }
 
-    /** 全量构造：尾部追加 SDK 版本与激活序列号（空/0/null = 无值）。 */
+    /**
+     * 全量构造：尾部追加 SDK 版本与激活序列号（空/0/null = 无值）。
+     */
     public CertInfoParcel(int code, String reason, String modelCode,
-            String modelChannel, String licenseType, long activatedAt, long issuedAt,
-            long renewedAt, boolean hasRenewedAt, long nextRenewAt, boolean hasNextRenewAt,
-            long expiresAt,
-            String sdkVersionName, int sdkVersionCode, String activationSerial) {
+                          String modelChannel, String licenseType, long activatedAt, long issuedAt,
+                          long renewedAt, boolean hasRenewedAt, long nextRenewAt, boolean hasNextRenewAt,
+                          long expiresAt,
+                          String sdkVersionName, int sdkVersionCode, String activationSerial) {
         this.code = code;
         this.reason = reason;
         this.modelCode = modelCode;
@@ -72,77 +76,107 @@ public final class CertInfoParcel implements Parcelable {
         this.activationSerial = activationSerial;
     }
 
-    /** 取得回执码，0 表示成功。 */
+    /**
+     * 取得回执码，0 表示成功。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 取得模型编码。 */
+    /**
+     * 取得模型编码。
+     */
     public String getModelCode() {
         return modelCode;
     }
 
-    /** 取得模型渠道。 */
+    /**
+     * 取得模型渠道。
+     */
     public String getModelChannel() {
         return modelChannel;
     }
 
-    /** null=旧证书无 license_type 字段。 */
+    /**
+     * null=旧证书无 license_type 字段。
+     */
     public String getLicenseType() {
         return licenseType;
     }
 
-    /** 激活时间戳（秒级；0=视图缺失）。 */
+    /**
+     * 激活时间戳（秒级；0=视图缺失）。
+     */
     public long getActivatedAt() {
         return activatedAt;
     }
 
-    /** 签发时间戳（秒级；0=视图缺失）。 */
+    /**
+     * 签发时间戳（秒级；0=视图缺失）。
+     */
     public long getIssuedAt() {
         return issuedAt;
     }
 
-    /** 最近续期时间戳（秒级）；有效性以 {@link #hasRenewedAt()} 为准。 */
+    /**
+     * 最近续期时间戳（秒级）；有效性以 {@link #hasRenewedAt()} 为准。
+     */
     public long getRenewedAt() {
         return renewedAt;
     }
 
-    /** 视图是否携带 renewedAt 字段。 */
+    /**
+     * 视图是否携带 renewedAt 字段。
+     */
     public boolean hasRenewedAt() {
         return hasRenewedAt;
     }
 
-    /** 下次续期时间戳（秒级）；有效性以 {@link #hasNextRenewAt()} 为准。 */
+    /**
+     * 下次续期时间戳（秒级）；有效性以 {@link #hasNextRenewAt()} 为准。
+     */
     public long getNextRenewAt() {
         return nextRenewAt;
     }
 
-    /** 视图是否携带 nextRenewAt 字段。 */
+    /**
+     * 视图是否携带 nextRenewAt 字段。
+     */
     public boolean hasNextRenewAt() {
         return hasNextRenewAt;
     }
 
-    /** 过期时间戳（秒级；0=视图缺失/永久证书）。 */
+    /**
+     * 过期时间戳（秒级；0=视图缺失/永久证书）。
+     */
     public long getExpiresAt() {
         return expiresAt;
     }
 
-    /** SDK APK versionName；null = 包不可查。 */
+    /**
+     * SDK APK versionName；null = 包不可查。
+     */
     public String getSdkVersionName() {
         return sdkVersionName;
     }
 
-    /** SDK APK versionCode；0 = 包不可查。 */
+    /**
+     * SDK APK versionCode；0 = 包不可查。
+     */
     public int getSdkVersionCode() {
         return sdkVersionCode;
     }
 
-    /** 激活序列号 = 用户输入的激活码（SDK 侧自存）；null = 未激活。 */
+    /**
+     * 激活序列号 = 用户输入的激活码（SDK 侧自存）；null = 未激活。
+     */
     public String getActivationSerial() {
         return activationSerial;
     }

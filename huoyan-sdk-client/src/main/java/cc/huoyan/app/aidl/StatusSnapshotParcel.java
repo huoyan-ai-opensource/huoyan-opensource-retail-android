@@ -32,24 +32,30 @@ public final class StatusSnapshotParcel implements Parcelable {
     private final Boolean certificateValid;
     private final String recentError;
 
-    /** 构造状态快照。 */
+    /**
+     * 构造状态快照。
+     */
     public StatusSnapshotParcel(int code, String reason, String deviceId, String certificateValidUntil,
                                 String trustLevel, String modelVersion, Boolean keyLost, Boolean backendConnected) {
         this(code, reason, deviceId, certificateValidUntil, trustLevel, modelVersion,
                 keyLost, backendConnected, null, null, null, null, null, null, null);
     }
 
-    /** 构造不含最近错误的状态快照。 */
+    /**
+     * 构造不含最近错误的状态快照。
+     */
     public StatusSnapshotParcel(int code, String reason, String deviceId, String certificateValidUntil,
-            String trustLevel, String modelVersion, Boolean keyLost, Boolean backendConnected,
-            String sdkState, Boolean modelReady, Boolean busy, String busyOperation,
-            Long stateUpdatedAt, Boolean certificateValid) {
+                                String trustLevel, String modelVersion, Boolean keyLost, Boolean backendConnected,
+                                String sdkState, Boolean modelReady, Boolean busy, String busyOperation,
+                                Long stateUpdatedAt, Boolean certificateValid) {
         this(code, reason, deviceId, certificateValidUntil, trustLevel, modelVersion,
                 keyLost, backendConnected, sdkState, modelReady, busy, busyOperation,
                 stateUpdatedAt, certificateValid, null);
     }
 
-    /** 构造状态快照。 */
+    /**
+     * 构造状态快照。
+     */
     public StatusSnapshotParcel(int code, String reason, String deviceId, String certificateValidUntil,
                                 String trustLevel, String modelVersion, Boolean keyLost, Boolean backendConnected,
                                 String sdkState, Boolean modelReady, Boolean busy, String busyOperation,
@@ -71,77 +77,107 @@ public final class StatusSnapshotParcel implements Parcelable {
         this.recentError = recentError;
     }
 
-    /** 取得回执码，0 表示成功。 */
+    /**
+     * 取得回执码，0 表示成功。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 取得 SDK 设备标识。 */
+    /**
+     * 取得 SDK 设备标识。
+     */
     public String getDeviceId() {
         return deviceId;
     }
 
-    /** 取得证书有效期文本。 */
+    /**
+     * 取得证书有效期文本。
+     */
     public String getCertificateValidUntil() {
         return certificateValidUntil;
     }
 
-    /** 取得信任等级。 */
+    /**
+     * 取得信任等级。
+     */
     public String getTrustLevel() {
         return trustLevel;
     }
 
-    /** 取得模型版本。 */
+    /**
+     * 取得模型版本。
+     */
     public String getModelVersion() {
         return modelVersion;
     }
 
-    /** 取得密钥丢失状态。 */
+    /**
+     * 取得密钥丢失状态。
+     */
     public Boolean getKeyLost() {
         return keyLost;
     }
 
-    /** 取得后端连接状态。 */
+    /**
+     * 取得后端连接状态。
+     */
     public Boolean getBackendConnected() {
         return backendConnected;
     }
 
-    /** 综合状态 wire 名（18 枚举 {@code SdkState#name()}；null = 尚未确定）。 */
+    /**
+     * 综合状态 wire 名（18 枚举 {@code SdkState#name()}；null = 尚未确定）。
+     */
     public String getSdkState() {
         return sdkState;
     }
 
-    /** 取得模型就绪状态。 */
+    /**
+     * 取得模型就绪状态。
+     */
     public Boolean getModelReady() {
         return modelReady;
     }
 
-    /** 取得忙碌状态。 */
+    /**
+     * 取得忙碌状态。
+     */
     public Boolean getBusy() {
         return busy;
     }
 
-    /** 取得当前忙碌操作。 */
+    /**
+     * 取得当前忙碌操作。
+     */
     public String getBusyOperation() {
         return busyOperation;
     }
 
-    /** 取得状态更新时间。 */
+    /**
+     * 取得状态更新时间。
+     */
     public Long getStateUpdatedAt() {
         return stateUpdatedAt;
     }
 
-    /** 取得证书有效状态。 */
+    /**
+     * 取得证书有效状态。
+     */
     public Boolean getCertificateValid() {
         return certificateValid;
     }
 
-    /** 当前仍存在的最近错误说明（脱敏；null = 无错误）。 */
+    /**
+     * 当前仍存在的最近错误说明（脱敏；null = 无错误）。
+     */
     public String getRecentError() {
         return recentError;
     }

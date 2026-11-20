@@ -23,10 +23,12 @@ public final class GoodsListResult {
     private final int size;
     private final List<Goods> records;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public GoodsListResult(int code, String reason, String shopId, String syncMode,
-            long syncTimestamp, String serverTime, long total, long pages, int current,
-            int size, List<Goods> records) {
+                           long syncTimestamp, String serverTime, long total, long pages, int current,
+                           int size, List<Goods> records) {
         this.code = code;
         this.reason = reason;
         this.shopId = shopId;
@@ -40,57 +42,79 @@ public final class GoodsListResult {
         this.records = records == null ? Collections.<Goods>emptyList() : records;
     }
 
-    /** 读取 getCode 对应数据。 */
+    /**
+     * 读取 getCode 对应数据。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 读取 getReason 对应数据。 */
+    /**
+     * 读取 getReason 对应数据。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 读取 getShopId 对应数据。 */
+    /**
+     * 读取 getShopId 对应数据。
+     */
     public String getShopId() {
         return shopId;
     }
 
-    /** 同步模式：full（全量）/ incremental（增量）。 */
+    /**
+     * 同步模式：full（全量）/ incremental（增量）。
+     */
     public String getSyncMode() {
         return syncMode;
     }
 
-    /** 下次增量游标（epoch 秒）。 */
+    /**
+     * 下次增量游标（epoch 秒）。
+     */
     public long getSyncTimestamp() {
         return syncTimestamp;
     }
 
-    /** 读取 getServerTime 对应数据。 */
+    /**
+     * 读取 getServerTime 对应数据。
+     */
     public String getServerTime() {
         return serverTime;
     }
 
-    /** 总条数（分页元数据）。 */
+    /**
+     * 总条数（分页元数据）。
+     */
     public long getTotal() {
         return total;
     }
 
-    /** 总页数。 */
+    /**
+     * 总页数。
+     */
     public long getPages() {
         return pages;
     }
 
-    /** 当前页。 */
+    /**
+     * 当前页。
+     */
     public int getCurrent() {
         return current;
     }
 
-    /** 每页大小。 */
+    /**
+     * 每页大小。
+     */
     public int getSize() {
         return size;
     }
 
-    /** 本页条目（错误回执空列表）。 */
+    /**
+     * 本页条目（错误回执空列表）。
+     */
     public List<Goods> getRecords() {
         return records;
     }

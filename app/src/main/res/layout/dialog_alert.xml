@@ -58,7 +58,7 @@
 
             <TextView
                 android:id="@+id/cancel"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_24"
                 android:singleLine="true"
                 android:ellipsize="end"
@@ -74,7 +74,7 @@
 
             <TextView
                 android:id="@+id/confirm"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_24"
                 android:singleLine="true"
                 android:ellipsize="end"

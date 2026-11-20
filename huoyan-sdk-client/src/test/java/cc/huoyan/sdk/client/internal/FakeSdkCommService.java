@@ -44,13 +44,19 @@ import cc.huoyan.app.aidl.StatusSnapshotParcel;
  */
 final class FakeSdkCommService implements ISdkCommService {
 
-    /** 已触达的方法名集合。 */
+    /**
+     * 已触达的方法名集合。
+     */
     final Set<String> invoked = new HashSet<>();
 
-    /** true=所有方法抛 RemoteException（模拟服务进程死亡）。 */
+    /**
+     * true=所有方法抛 RemoteException（模拟服务进程死亡）。
+     */
     boolean throwRemote;
 
-    /** init 预设动作回执（缺省初始化完成）。 */
+    /**
+     * init 预设动作回执（缺省初始化完成）。
+     */
     BaseResultParcel initResult = readyResult(0, null);
 
     CapabilityParcel capabilities;
@@ -70,20 +76,34 @@ final class FakeSdkCommService implements ISdkCommService {
     int lastPage;
     int lastSize;
     String lastClazz;
-    /** bindDevice 预设回执。 */
+    /**
+     * bindDevice 预设回执。
+     */
     BindingResultParcel bindDeviceResult;
-    /** createGoods/updateGoods 预设回执。 */
+    /**
+     * createGoods/updateGoods 预设回执。
+     */
     GoodsResultParcel goodsResult;
-    /** deleteGoods 预设回执。 */
+    /**
+     * deleteGoods 预设回执。
+     */
     BaseResultParcel deleteGoodsResult;
-    /** 最近一次 bindDevice 请求载体（透传断言）。 */
+    /**
+     * 最近一次 bindDevice 请求载体（透传断言）。
+     */
     BindDeviceParcel lastBindDevice;
-    /** 最近一次 createGoods 请求载体（透传断言）。 */
+    /**
+     * 最近一次 createGoods 请求载体（透传断言）。
+     */
     GoodsSaveParcel lastCreateGoods;
-    /** 最近一次 updateGoods 的 goodsId 与载体（透传断言）。 */
+    /**
+     * 最近一次 updateGoods 的 goodsId 与载体（透传断言）。
+     */
     String lastUpdateGoodsId;
     GoodsSaveParcel lastUpdateGoods;
-    /** 最近一次 deleteGoods 的 goodsId（透传断言）。 */
+    /**
+     * 最近一次 deleteGoods 的 goodsId（透传断言）。
+     */
     String lastDeleteGoodsId;
 
     private void touch(String method) throws RemoteException {
@@ -119,22 +139,35 @@ final class FakeSdkCommService implements ISdkCommService {
 
     @Override
     public cc.huoyan.app.aidl.LicenseModelsParcel queryDeviceModels() throws RemoteException {
-        touch("queryDeviceModels"); modelQueries++; return licenseModels;
+        touch("queryDeviceModels");
+        modelQueries++;
+        return licenseModels;
     }
 
-    /** 按激活码查询支持模型，适用于正常激活。 */
+    /**
+     * 按激活码查询支持模型，适用于正常激活。
+     */
     @Override
     public cc.huoyan.app.aidl.LicenseModelsParcel queryLicenseModels(String activationCode) throws RemoteException {
-        touch("queryLicenseModels"); modelQueries++; return licenseModels;
+        touch("queryLicenseModels");
+        modelQueries++;
+        return licenseModels;
     }
-    /** 模型接口测试记录。 */
+
+    /**
+     * 模型接口测试记录。
+     */
     int modelQueries;
     String lastActivationCode, lastModelCode;
-    /** 可配置模型查询回执。 */
+    /**
+     * 可配置模型查询回执。
+     */
     cc.huoyan.app.aidl.LicenseModelsParcel licenseModels;
 
     public BaseResultParcel activate(String activationCode, String modelCode) throws RemoteException {
-        touch("activate"); lastActivationCode = activationCode; lastModelCode = modelCode;
+        touch("activate");
+        lastActivationCode = activationCode;
+        lastModelCode = modelCode;
         return baseResult;
     }
 
@@ -241,7 +274,9 @@ final class FakeSdkCommService implements ISdkCommService {
         return baseResult;
     }
 
-    /** 最近一次初始化收到的宿主版本。 */
+    /**
+     * 最近一次初始化收到的宿主版本。
+     */
     String lastAppVersion;
 
     @Override
@@ -349,14 +384,14 @@ final class FakeSdkCommService implements ISdkCommService {
 
     @Override
     public GoodsQueryResultParcel queryGoods(String keyword, String name, String plu,
-            int isDeleted, int current, int size, String sortBy, String sortOrder) throws RemoteException {
+                                             int isDeleted, int current, int size, String sortBy, String sortOrder) throws RemoteException {
         touch("queryGoods");
         return null;
     }
 
     @Override
     public GoodsCountResultParcel getGoodsCount(String keyword, String name, String plu,
-            int isDeleted) throws RemoteException {
+                                                int isDeleted) throws RemoteException {
         touch("getGoodsCount");
         return null;
     }
@@ -373,7 +408,9 @@ final class FakeSdkCommService implements ISdkCommService {
         return null;
     }
 
-    /** 构造初始化动作回执（code/reason）。 */
+    /**
+     * 构造初始化动作回执（code/reason）。
+     */
     static BaseResultParcel readyResult(int code, String reason) {
         return new BaseResultParcel(code, reason);
     }

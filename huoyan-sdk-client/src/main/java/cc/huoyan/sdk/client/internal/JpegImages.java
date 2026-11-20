@@ -1,12 +1,17 @@
 package cc.huoyan.sdk.client.internal;
 
 import android.graphics.Bitmap;
+
 import java.io.ByteArrayOutputStream;
+
 import cc.huoyan.app.aidl.ImageRequestParcel;
 
-/** 识别和检测共用的 JPEG 编码，通道仅负责选择传输载体。 */
+/**
+ * 识别和检测共用的 JPEG 编码，通道仅负责选择传输载体。
+ */
 final class JpegImages {
-    private JpegImages() { }
+    private JpegImages() {
+    }
 
     static ImageRequestParcel encode(Bitmap bitmap) {
         if (bitmap == null || bitmap.isRecycled()) {

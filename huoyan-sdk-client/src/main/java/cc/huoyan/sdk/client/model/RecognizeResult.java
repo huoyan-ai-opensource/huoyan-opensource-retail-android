@@ -15,7 +15,9 @@ public final class RecognizeResult {
     private final String reason;
     private final List<RecognitionItem> items;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public RecognizeResult(int code, String reason, List<RecognitionItem> items) {
         this.code = code;
         this.reason = reason;
@@ -23,17 +25,23 @@ public final class RecognizeResult {
                 Objects.requireNonNull(items, "items 不能为空")));
     }
 
-    /** 结果码；0 表示请求成功。 */
+    /**
+     * 结果码；0 表示请求成功。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 结果条目列表。 */
+    /**
+     * 结果条目列表。
+     */
     public List<RecognitionItem> getItems() {
         return items;
     }

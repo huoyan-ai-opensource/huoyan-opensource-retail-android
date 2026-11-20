@@ -4,7 +4,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
-/** 合并尚未开始的查询，并在主线程提交前丢弃被新结果、人工修改或销毁取代的结果。 */
+/**
+ * 合并尚未开始的查询，并在主线程提交前丢弃被新结果、人工修改或销毁取代的结果。
+ */
 final class LatestRefresh<T> {
     private final Executor worker;
     private final Executor main;
@@ -25,9 +27,13 @@ final class LatestRefresh<T> {
         pending = () -> {
             try {
                 T result = query.call();
-                main.execute(() -> { if (isCurrent(version)) commit.accept(result); });
+                main.execute(() -> {
+                    if (isCurrent(version)) commit.accept(result);
+                });
             } catch (Exception e) {
-                main.execute(() -> { if (isCurrent(version)) failure.accept(e); });
+                main.execute(() -> {
+                    if (isCurrent(version)) failure.accept(e);
+                });
             }
         };
         if (!running) {

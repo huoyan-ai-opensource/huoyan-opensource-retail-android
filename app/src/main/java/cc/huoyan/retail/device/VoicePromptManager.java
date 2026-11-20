@@ -6,7 +6,9 @@ import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
-/** Lightweight, best-effort voice prompt with per-message throttling. */
+/**
+ * Lightweight, best-effort voice prompt with per-message throttling.
+ */
 public class VoicePromptManager {
     private static final String LOG_TAG = "VoicePromptManager";
     private static final long MIN_PROMPT_INTERVAL_MS = 5000L;

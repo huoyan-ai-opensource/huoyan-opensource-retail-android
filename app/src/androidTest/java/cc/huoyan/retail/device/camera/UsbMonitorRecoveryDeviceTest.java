@@ -14,6 +14,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.serenegiant.usb.DeviceFilter;
 import com.serenegiant.usb.USBMonitor;
+
 import cc.huoyan.retail.checkout.MainActivity;
 import cc.huoyan.retail.learning.ProductLearningActivity;
 import cc.huoyan.retail.learning.StudyActivity;
@@ -32,10 +33,14 @@ import java.util.function.BooleanSupplier;
 
 import static org.junit.Assert.*;
 
-/** 在实际打包的 UVC 库中注入系统枚举异常，验证替换调用及后台轮询恢复。 */
+/**
+ * 在实际打包的 UVC 库中注入系统枚举异常，验证替换调用及后台轮询恢复。
+ */
 @RunWith(AndroidJUnit4.class)
 public class UsbMonitorRecoveryDeviceTest {
-    /** 学习页停留 90 秒，确认摄像头持续打开且每秒仍有新帧。 */
+    /**
+     * 学习页停留 90 秒，确认摄像头持续打开且每秒仍有新帧。
+     */
     @Test
     public void learningPreviewContinuesWhileIdle() throws Exception {
         Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
@@ -69,7 +74,9 @@ public class UsbMonitorRecoveryDeviceTest {
         }
     }
 
-    /** 枚举失败不杀死轮询、不重复上报已有设备，恢复后仍能发现重新接入的设备。 */
+    /**
+     * 枚举失败不杀死轮询、不重复上报已有设备，恢复后仍能发现重新接入的设备。
+     */
     @Test
     public void parcelFailurePreservesDevicesAndPollingRecovers() throws Exception {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
@@ -100,16 +107,32 @@ public class UsbMonitorRecoveryDeviceTest {
         UsbManager fakeManager = (UsbManager) UsbManager.class
                 .getConstructor(Context.class, serviceType).newInstance(context, service);
         Context fakeContext = new ContextWrapper(context) {
-            @Override public Object getSystemService(String name) {
+            @Override
+            public Object getSystemService(String name) {
                 return USB_SERVICE.equals(name) ? fakeManager : super.getSystemService(name);
             }
         };
         USBMonitor monitor = new USBMonitor(fakeContext, new USBMonitor.OnDeviceConnectListener() {
-            @Override public void onAttach(UsbDevice device) { attaches.incrementAndGet(); }
-            @Override public void onDetach(UsbDevice device) { }
-            @Override public void onDeviceOpen(UsbDevice device, USBMonitor.UsbControlBlock block, boolean first) { }
-            @Override public void onDeviceClose(UsbDevice device, USBMonitor.UsbControlBlock block) { }
-            @Override public void onCancel(UsbDevice device) { }
+            @Override
+            public void onAttach(UsbDevice device) {
+                attaches.incrementAndGet();
+            }
+
+            @Override
+            public void onDetach(UsbDevice device) {
+            }
+
+            @Override
+            public void onDeviceOpen(UsbDevice device, USBMonitor.UsbControlBlock block, boolean first) {
+            }
+
+            @Override
+            public void onDeviceClose(UsbDevice device, USBMonitor.UsbControlBlock block) {
+            }
+
+            @Override
+            public void onCancel(UsbDevice device) {
+            }
         });
         try {
             monitor.register();

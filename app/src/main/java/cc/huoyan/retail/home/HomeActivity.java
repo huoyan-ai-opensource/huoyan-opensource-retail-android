@@ -1,5 +1,7 @@
 package cc.huoyan.retail.home;
+
 import cc.huoyan.retail.sdk.SdkChannelManager;
+import cc.huoyan.retail.sdk.SdkPermissionGuide;
 
 import cc.huoyan.retail.checkout.MainActivity;
 import cc.huoyan.retail.goods.GoodsManagementActivity;
@@ -22,30 +24,54 @@ import cc.huoyan.sdk.client.session.SdkStartupController;
 import cc.huoyan.retail.common.install.ApkInstallController;
 import cc.huoyan.retail.common.PermissionUtil;
 
-/** 启动功能首页，集中承载收银和设备配置入口。 */
+/**
+ * 启动功能首页，集中承载收银和设备配置入口。
+ */
 public class HomeActivity extends BaseActivity implements HomePresenter.View {
     private final SdkStartupController sdkStartup = SdkChannelManager.getInstance().newStartupController();
     private ApkInstallController sdkInstall;
     private final android.os.Handler statusHandler = new android.os.Handler(android.os.Looper.getMainLooper());
     private final java.util.concurrent.ExecutorService statusWorker = java.util.concurrent.Executors.newSingleThreadExecutor();
-    /** 版本查询不与云状态共享阻塞队列；页面销毁时关闭。 */
+    /**
+     * 版本查询不与云状态共享阻塞队列；页面销毁时关闭。
+     */
     private final java.util.concurrent.ExecutorService versionWorker = java.util.concurrent.Executors.newSingleThreadExecutor();
-    /** 协调前台状态轮询；设备安装和导航仍由页面负责。 */
+    /**
+     * 协调前台状态轮询；设备安装和导航仍由页面负责。
+     */
     private HomePresenter presenter;
-    /** 最近一次查询到的版本，主线程保存并在 SDK 连接后显示。 */
+    /**
+     * 最近一次查询到的版本，主线程保存并在 SDK 连接后显示。
+     */
     private String sdkVersion = "—";
-    /** 只表示正在等待 SDK 通道连接，与激活和模型状态无关。 */
+    /**
+     * 只表示正在等待 SDK 通道连接，与激活和模型状态无关。
+     */
     private boolean sdkLoading;
-    /** 首帧即等待初始化快照，不能用通道连接或版本号代替。 */
+    /**
+     * 首帧即等待初始化快照，不能用通道连接或版本号代替。
+     */
     private boolean checkoutStarting = true;
-    /** 当前入口状态；查询失败会清除之前的可用状态。 */
+    /**
+     * 启动轮询的状态查询不经过权限门禁，用当前业务查询的实际回执控制引导入口。
+     */
+    private boolean permissionRequired;
+    /**
+     * 当前入口状态；查询失败会清除之前的可用状态。
+     */
     private HomeCheckoutState checkoutState = HomeCheckoutState.STARTING;
-    /** 主线程维护本机 SDK 缺失状态；局域网通道不依赖本机安装。 */
+    /**
+     * 主线程维护本机 SDK 缺失状态；局域网通道不依赖本机安装。
+     */
     private boolean sdkMissing;
-    /** 重建时保存本次首页是否已经弹过提醒。 */
+    /**
+     * 重建时保存本次首页是否已经弹过提醒。
+     */
     private static final String EXPIRY_SHOWN = "home.expiryShown";
 
-    /** 回到首页并关闭其上的收银或功能页，下次进入收银重新开始。 */
+    /**
+     * 回到首页并关闭其上的收银或功能页，下次进入收银重新开始。
+     */
     public static void open(Context context) {
         context.startActivity(new Intent(context, HomeActivity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP));
@@ -99,7 +125,8 @@ public class HomeActivity extends BaseActivity implements HomePresenter.View {
         PermissionUtil.verifyBasePermissions(this);
     }
 
-    @Override protected void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
         presenter.resume();
         ((TextView) findViewById(R.id.homeStoreSubtitle)).setText(SPManager.getInstance()
@@ -122,6 +149,7 @@ public class HomeActivity extends BaseActivity implements HomePresenter.View {
 
     @Override
     protected void onPause() {
+        permissionRequired = false;
         presenter.pause();
         statusHandler.removeCallbacksAndMessages(null);
         sdkInstall.onPause();
@@ -145,8 +173,11 @@ public class HomeActivity extends BaseActivity implements HomePresenter.View {
         super.onDestroy();
     }
 
-    /** 离开首页后移除旧提醒；横竖屏重建交给 FragmentManager 恢复。 */
-    @Override protected void onStop() {
+    /**
+     * 离开首页后移除旧提醒；横竖屏重建交给 FragmentManager 恢复。
+     */
+    @Override
+    protected void onStop() {
         if (!isChangingConfigurations()) {
             androidx.fragment.app.Fragment dialog = getSupportFragmentManager()
                     .findFragmentByTag(ActivationExpiryDialog.TAG);
@@ -156,8 +187,11 @@ public class HomeActivity extends BaseActivity implements HomePresenter.View {
         super.onStop();
     }
 
-    /** 首页就绪且没有其他弹窗时展示提醒；忙碌时保留本次展示机会。 */
-    @Override public boolean showActivationExpiry(ActivationExpiry expiry) {
+    /**
+     * 首页就绪且没有其他弹窗时展示提醒；忙碌时保留本次展示机会。
+     */
+    @Override
+    public boolean showActivationExpiry(ActivationExpiry expiry) {
         androidx.fragment.app.FragmentManager manager = getSupportFragmentManager();
         if (manager.findFragmentByTag(ActivationExpiryDialog.TAG) != null) return true;
         if (sdkMissing || checkoutStarting || isFinishing() || manager.isStateSaved()
@@ -168,7 +202,9 @@ public class HomeActivity extends BaseActivity implements HomePresenter.View {
         return true;
     }
 
-    /** 递归检查激活流程的子弹窗，避免轮询提醒覆盖输入或扫码。 */
+    /**
+     * 递归检查激活流程的子弹窗，避免轮询提醒覆盖输入或扫码。
+     */
     private static boolean hasDialog(androidx.fragment.app.FragmentManager manager) {
         for (androidx.fragment.app.Fragment fragment : manager.getFragments()) {
             if (!fragment.isAdded()) continue;
@@ -190,42 +226,58 @@ public class HomeActivity extends BaseActivity implements HomePresenter.View {
         });
     }
 
-    /** 将状态快照转换为本地化文字和颜色。 */
-    @Override public void showStatus(HomePresenter.Status status) {
+    /**
+     * 将状态快照转换为本地化文字和颜色。
+     */
+    @Override
+    public void showStatus(HomePresenter.Status status) {
         ((TextView) findViewById(R.id.homeCloudLabel)).setText(R.string.cloud_title);
         findViewById(R.id.homeCloudStatus).setContentDescription(getString(!status.cloudValid
                 ? R.string.cloud_error : status.cloudEnabled ? R.string.cloud_enabled : R.string.cloud_disabled));
         ((TextView) findViewById(R.id.homeCloudDot)).setTextColor(android.graphics.Color.parseColor(
                 !status.cloudValid ? "#8795A8" : status.cloudEnabled ? "#27835B" : "#D94B4B"));
         checkoutState = status.checkoutState;
+        permissionRequired = checkoutState == HomeCheckoutState.PERMISSION_REQUIRED;
         renderCheckoutEntry();
     }
 
-    /** 版本单独返回即展示，慢速或空状态回执不清空已经取得的版本。 */
-    @Override public void showSdkVersion(String version) {
+    /**
+     * 版本单独返回即展示，慢速或空状态回执不清空已经取得的版本。
+     */
+    @Override
+    public void showSdkVersion(String version) {
         sdkVersion = version;
         if (cc.huoyan.retail.BuildConfig.DEBUG)
             android.util.Log.d("HomeStartup", "[Biz] sdk_version=" + version);
         renderSdkVersion();
     }
 
-    /** 展示当前 SDK 接入通道。 */
-    @Override public void showConnection() {
+    /**
+     * 展示当前 SDK 接入通道。
+     */
+    @Override
+    public void showConnection() {
         refreshSdkAvailability();
         ((TextView) findViewById(R.id.homeConnection)).setText(getString(R.string.home_connection,
                 getString(SdkChannelManager.getInstance().getChannel() == cc.huoyan.sdk.client.SdkConfig.Channel.AIDL
                         ? R.string.land_sdk_aidl : R.string.land_sdk_ws)));
     }
 
-    /** 通道连接提示仅控制页脚，不代表 SDK 初始化完成。 */
-    @Override public void showSdkStartup(boolean loading) {
+    /**
+     * 通道连接提示仅控制页脚，不代表 SDK 初始化完成。
+     */
+    @Override
+    public void showSdkStartup(boolean loading) {
         sdkLoading = loading;
         findViewById(R.id.homeSdkStartupProgress).setVisibility(loading ? View.VISIBLE : View.GONE);
         renderSdkVersion();
     }
 
-    /** 主线程接收真实启动快照，原子更新等待态与授权入口。 */
-    @Override public void showCheckoutStartup(boolean starting, HomeCheckoutState state) {
+    /**
+     * 主线程接收真实启动快照，原子更新等待态与授权入口。
+     */
+    @Override
+    public void showCheckoutStartup(boolean starting, HomeCheckoutState state) {
         if (cc.huoyan.retail.BuildConfig.DEBUG && checkoutStarting != starting) {
             android.util.Log.d("HomeStartup", "[Biz] checkout_starting=" + starting
                     + " state=" + state);
@@ -235,7 +287,9 @@ public class HomeActivity extends BaseActivity implements HomePresenter.View {
         renderCheckoutEntry();
     }
 
-    /** 版本查询不能覆盖连接等待态，重复轮询不重复触发无障碍播报。 */
+    /**
+     * 版本查询不能覆盖连接等待态，重复轮询不重复触发无障碍播报。
+     */
     private void renderSdkVersion() {
         TextView label = findViewById(R.id.homeSdkVersion);
         String text = sdkLoading ? getString(R.string.home_sdk_starting)
@@ -243,17 +297,22 @@ public class HomeActivity extends BaseActivity implements HomePresenter.View {
         if (!text.contentEquals(label.getText())) label.setText(text);
     }
 
-    /** 在主线程检查本机安装；返回首页及切换通道后立即刷新入口。 */
+    /**
+     * 在主线程检查本机安装；返回首页及切换通道后立即刷新入口。
+     */
     private void refreshSdkAvailability() {
         sdkMissing = SdkChannelManager.getInstance().requiresLocalShell()
                 && cc.huoyan.sdk.client.deployment.SdkShell.installedVersion(getPackageManager()) == null;
         renderCheckoutEntry();
     }
 
-    /** 明确轮换状态优先展示；未知和等待状态不开放入口，安装仍可操作。 */
+    /**
+     * 明确轮换状态优先展示；未知和等待状态不开放入口，安装仍可操作。
+     */
     private void renderCheckoutEntry() {
         HomeCheckoutState state = visibleCheckoutState();
-        boolean warning = state == HomeCheckoutState.ACTIVATION_REQUIRED || state.isRotation();
+        boolean warning = state == HomeCheckoutState.ACTIVATION_REQUIRED
+                || state == HomeCheckoutState.PERMISSION_REQUIRED || state.isRotation();
         boolean ready = state == HomeCheckoutState.READY;
         boolean enabled = sdkMissing || state.actionable();
         int cardColor = getColor(sdkMissing ? R.color.home_checkout_missing
@@ -283,12 +342,17 @@ public class HomeActivity extends BaseActivity implements HomePresenter.View {
         }
     }
 
-    /** 初始化最短等待与轮换业务状态共用渲染、点击判断，避免颜色与可操作性分离。 */
+    /**
+     * 初始化最短等待与轮换业务状态共用渲染、点击判断，避免颜色与可操作性分离。
+     */
     private HomeCheckoutState visibleCheckoutState() {
+        if (permissionRequired) return HomeCheckoutState.PERMISSION_REQUIRED;
         return checkoutStarting && !checkoutState.isRotation() ? HomeCheckoutState.STARTING : checkoutState;
     }
 
-    /** 每次从首页创建新的识别会话。 */
+    /**
+     * 每次从首页创建新的识别会话。
+     */
     private void openCheckout() {
         refreshSdkAvailability();
         if (sdkMissing) {
@@ -298,6 +362,10 @@ public class HomeActivity extends BaseActivity implements HomePresenter.View {
         }
         HomeCheckoutState state = visibleCheckoutState();
         if (!state.actionable()) return;
+        if (state == HomeCheckoutState.PERMISSION_REQUIRED) {
+            SdkPermissionGuide.show(this);
+            return;
+        }
         if (state == HomeCheckoutState.ACTIVATION_REQUIRED) {
             cc.huoyan.retail.settings.ActivationFlowFragment.open(this);
             return;

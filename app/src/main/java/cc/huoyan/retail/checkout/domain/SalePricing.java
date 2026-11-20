@@ -4,23 +4,31 @@ import cc.huoyan.retail.pricing.CartCalculator;
 import cc.huoyan.retail.pricing.CartItem;
 import cc.huoyan.retail.pricing.PricingGate;
 import cc.huoyan.retail.pricing.PricingMode;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-/** 整秤同价校验与混合购物车报价，不依赖设备或页面状态。 */
+/**
+ * 整秤同价校验与混合购物车报价，不依赖设备或页面状态。
+ */
 public final class SalePricing {
-    private SalePricing() {}
+    private SalePricing() {
+    }
 
     static final class Quote {
         final Set<String> conflicts = new LinkedHashSet<>();
         boolean invalidGoods;
-        /** 已匹配商品价格未填写或为零，优先于称重同价冲突提示。 */
+        /**
+         * 已匹配商品价格未填写或为零，优先于称重同价冲突提示。
+         */
         boolean missingPrice;
         WeightedSaleResult receipt;
-        /** 可正常计价时的整秤商品皮重，kg；冲突、禁用及无皮重均为零。 */
+        /**
+         * 可正常计价时的整秤商品皮重，kg；冲突、禁用及无皮重均为零。
+         */
         BigDecimal tareKg = BigDecimal.ZERO;
     }
 
@@ -33,7 +41,10 @@ public final class SalePricing {
         for (SaleLine line : lines) {
             if (line.unmatched) continue;
             if (line.priceCent <= 0) quote.missingPrice = true;
-            if (!line.valid()) { quote.invalidGoods = true; continue; }
+            if (!line.valid()) {
+                quote.invalidGoods = true;
+                continue;
+            }
             if (PricingGate.check(line.mode, weighing) == PricingGate.GateResult.BLOCK) continue;
             if (line.mode == PricingMode.WEIGHT) {
                 if (weightPrice == 0) weightPrice = line.priceCent;
@@ -56,7 +67,9 @@ public final class SalePricing {
         return quote;
     }
 
-    /** 将有效计价行映射为购物车；整秤重量只收取一次，调用者负责同价与模块校验。 */
+    /**
+     * 将有效计价行映射为购物车；整秤重量只收取一次，调用者负责同价与模块校验。
+     */
     public static List<CartItem> cartItems(List<SaleLine> lines, BigDecimal weight) {
         List<CartItem> items = new ArrayList<>();
         CartItem weighted = null;
@@ -73,7 +86,9 @@ public final class SalePricing {
         return items;
     }
 
-    /** 计件不依赖秤；称重必须连接、稳定且达到起秤重量。 */
+    /**
+     * 计件不依赖秤；称重必须连接、稳定且达到起秤重量。
+     */
     public static boolean isReceiptReady(long weightPrice, boolean stable, boolean connected, BigDecimal weight) {
         return weightPrice <= 0 || (connected && stable && weight.compareTo(CheckoutSession.MIN_WEIGHT) >= 0);
     }

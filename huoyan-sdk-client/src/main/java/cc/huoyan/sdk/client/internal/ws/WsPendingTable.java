@@ -70,7 +70,9 @@ public final class WsPendingTable {
         return failed;
     }
 
-    /** 在途请求数（诊断/测试断言）。 */
+    /**
+     * 在途请求数（诊断/测试断言）。
+     */
     public int size() {
         return pending.size();
     }

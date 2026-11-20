@@ -30,7 +30,9 @@ public final class GoodsCountResultParcel implements Parcelable {
         return reason;
     }
 
-    /** 过滤后总条数（code=0 时有效）。 */
+    /**
+     * 过滤后总条数（code=0 时有效）。
+     */
     public long getCount() {
         return count;
     }
@@ -80,14 +82,14 @@ public final class GoodsCountResultParcel implements Parcelable {
 
     public static final Creator<GoodsCountResultParcel> CREATOR =
             new Creator<GoodsCountResultParcel>() {
-        @Override
-        public GoodsCountResultParcel createFromParcel(Parcel parcel) {
-            return new GoodsCountResultParcel(parcel);
-        }
+                @Override
+                public GoodsCountResultParcel createFromParcel(Parcel parcel) {
+                    return new GoodsCountResultParcel(parcel);
+                }
 
-        @Override
-        public GoodsCountResultParcel[] newArray(int size) {
-            return new GoodsCountResultParcel[size];
-        }
-    };
+                @Override
+                public GoodsCountResultParcel[] newArray(int size) {
+                    return new GoodsCountResultParcel[size];
+                }
+            };
 }

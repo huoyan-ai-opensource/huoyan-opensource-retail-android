@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/land_card">
+
+    <LinearLayout
+        android:id="@+id/sdkPermissionContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/retail_sans"
+            android:text="@string/sdk_permission_title"
+            android:textColor="#293A51"
+            android:textSize="@dimen/sp_11"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/sdkPermissionInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:fontFamily="@font/retail_sans"
+            android:textColor="#53627A"
+            android:textSize="@dimen/sp_8" />
+
+        <TextView
+            android:id="@+id/sdkPermissionOverlay"
+            style="@style/RetailSdkPermissionAction"
+            android:text="@string/sdk_permission_overlay" />
+
+        <TextView
+            android:id="@+id/sdkPermissionInstall"
+            style="@style/RetailSdkPermissionAction"
+            android:text="@string/sdk_permission_install" />
+
+        <TextView
+            android:id="@+id/sdkPermissionFinish"
+            style="@style/RetailSdkPermissionAction"
+            android:background="@drawable/land_primary"
+            android:text="@string/sdk_permission_return"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+</ScrollView>

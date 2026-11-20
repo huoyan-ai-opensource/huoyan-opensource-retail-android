@@ -47,38 +47,46 @@ public final class ImageFlowProgressParcel implements Parcelable {
     private final String downloadFailStats;
     private final List<FailedImageParcel> failedImages;
 
-    /** 构造图片流程回执。 */
+    /**
+     * 构造图片流程回执。
+     */
     public ImageFlowProgressParcel(int code, String reason, boolean active, String phase,
-            long current, long total, long successCount, long failCount, String failStats,
-            int failCode, String failReason) {
+                                   long current, long total, long successCount, long failCount, String failStats,
+                                   int failCode, String failReason) {
         this(code, reason, active, phase, current, total, successCount, failCount, failStats,
                 failCode, failReason, null);
     }
 
-    /** 构造图片流程回执。 */
+    /**
+     * 构造图片流程回执。
+     */
     public ImageFlowProgressParcel(int code, String reason, boolean active, String phase,
-            long current, long total, long successCount, long failCount, String failStats,
-            int failCode, String failReason, String publicDir) {
+                                   long current, long total, long successCount, long failCount, String failStats,
+                                   int failCode, String failReason, String publicDir) {
         this(code, reason, active, phase, current, total, successCount, failCount, failStats,
                 failCode, failReason, publicDir, 0L, null);
     }
 
-    /** 构造图片流程回执。 */
+    /**
+     * 构造图片流程回执。
+     */
     public ImageFlowProgressParcel(int code, String reason, boolean active, String phase,
-            long current, long total, long successCount, long failCount, String failStats,
-            int failCode, String failReason, String publicDir, long skippedCount,
-            String skipReasonStats) {
+                                   long current, long total, long successCount, long failCount, String failStats,
+                                   int failCode, String failReason, String publicDir, long skippedCount,
+                                   String skipReasonStats) {
         this(code, reason, active, phase, current, total, successCount, failCount,
                 failStats, failCode, failReason, publicDir, skippedCount, skipReasonStats,
                 0L, 0L, null, Collections.emptyList());
     }
 
-    /** 下载学习终态完整回执；调用端须使用同版本 Parcelable 契约。 */
+    /**
+     * 下载学习终态完整回执；调用端须使用同版本 Parcelable 契约。
+     */
     public ImageFlowProgressParcel(int code, String reason, boolean active, String phase,
-            long current, long total, long successCount, long failCount, String failStats,
-            int failCode, String failReason, String publicDir, long skippedCount,
-            String skipReasonStats, long downloadSuccess, long downloadFail,
-            String downloadFailStats, List<FailedImageParcel> failedImages) {
+                                   long current, long total, long successCount, long failCount, String failStats,
+                                   int failCode, String failReason, String publicDir, long skippedCount,
+                                   String skipReasonStats, long downloadSuccess, long downloadFail,
+                                   String downloadFailStats, List<FailedImageParcel> failedImages) {
         this.code = code;
         this.reason = reason;
         this.active = active;
@@ -100,87 +108,131 @@ public final class ImageFlowProgressParcel implements Parcelable {
                 failedImages == null ? Collections.emptyList() : failedImages));
     }
 
-    /** 取得回执码，0 表示成功。 */
+    /**
+     * 取得回执码，0 表示成功。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 取得错误说明。 */
+    /**
+     * 取得错误说明。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 流程进行中（DOWNLOADING/LEARNING）；无流程（IDLE）恒 false。 */
+    /**
+     * 流程进行中（DOWNLOADING/LEARNING）；无流程（IDLE）恒 false。
+     */
     public boolean isActive() {
         return active;
     }
 
-    /** 流程阶段：IDLE/DOWNLOADING/LEARNING/SUCCESS/FAILED（终态停留可查）。 */
+    /**
+     * 流程阶段：IDLE/DOWNLOADING/LEARNING/SUCCESS/FAILED（终态停留可查）。
+     */
     public String getPhase() {
         return phase;
     }
 
-    /** 本阶段已处理张数（失败也计）。 */
+    /**
+     * 本阶段已处理张数（失败也计）。
+     */
     public long getCurrent() {
         return current;
     }
 
-    /** 本阶段总张数（0 = 未知/未开始）。 */
+    /**
+     * 本阶段总张数（0 = 未知/未开始）。
+     */
     public long getTotal() {
         return total;
     }
 
-    /** 取得成功数量。 */
+    /**
+     * 取得成功数量。
+     */
     public long getSuccessCount() {
         return successCount;
     }
 
-    /** 取得失败数量。 */
+    /**
+     * 取得失败数量。
+     */
     public long getFailCount() {
         return failCount;
     }
 
-    /** 按原因聚合的「原因=次数」串（无失败为 null）。 */
+    /**
+     * 按原因聚合的「原因=次数」串（无失败为 null）。
+     */
     public String getFailStats() {
         return failStats;
     }
 
-    /** 流程失败码（仅 FAILED 非 0）。 */
+    /**
+     * 流程失败码（仅 FAILED 非 0）。
+     */
     public int getFailCode() {
         return failCode;
     }
 
-    /** 流程失败聚合原因（仅 FAILED 非 null）。 */
+    /**
+     * 流程失败聚合原因（仅 FAILED 非 null）。
+     */
     public String getFailReason() {
         return failReason;
     }
 
-    /** 公共外部存储目录（huoyan/goods/...，downloadImagesAndLearn 回执携带）。 */
+    /**
+     * 公共外部存储目录（huoyan/goods/...，downloadImagesAndLearn 回执携带）。
+     */
     public String getPublicDir() {
         return publicDir;
     }
 
-    /** 被跳过的图片张数（商品不在本地库/旧数据清理失败；进度查询恒 0）。 */
+    /**
+     * 被跳过的图片张数（商品不在本地库/旧数据清理失败；进度查询恒 0）。
+     */
     public long getSkippedCount() {
         return skippedCount;
     }
 
-    /** 跳过按原因聚合「原因=次数」串（无跳过为 null）。 */
+    /**
+     * 跳过按原因聚合「原因=次数」串（无跳过为 null）。
+     */
     public String getSkipReasonStats() {
         return skipReasonStats;
     }
 
-    /** 取得下载成功张数。 */
-    public long getDownloadSuccess() { return downloadSuccess; }
+    /**
+     * 取得下载成功张数。
+     */
+    public long getDownloadSuccess() {
+        return downloadSuccess;
+    }
 
-    /** 取得下载失败张数。 */
-    public long getDownloadFail() { return downloadFail; }
+    /**
+     * 取得下载失败张数。
+     */
+    public long getDownloadFail() {
+        return downloadFail;
+    }
 
-    /** 取得下载失败原因统计。 */
-    public String getDownloadFailStats() { return downloadFailStats; }
+    /**
+     * 取得下载失败原因统计。
+     */
+    public String getDownloadFailStats() {
+        return downloadFailStats;
+    }
 
-    /** 取得本次流程失败图片明细。 */
-    public List<FailedImageParcel> getFailedImages() { return failedImages; }
+    /**
+     * 取得本次流程失败图片明细。
+     */
+    public List<FailedImageParcel> getFailedImages() {
+        return failedImages;
+    }
 
     private ImageFlowProgressParcel(Parcel parcel) {
         code = parcel.readInt();

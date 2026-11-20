@@ -1,12 +1,22 @@
 package cc.huoyan.sdk.client.operation;
+
 import java.util.*;
+
 import cc.huoyan.sdk.client.model.*;
 
-/** 批量学习结果解释；零 UID 是正常空结果，不是新增样本。 */
+/**
+ * 批量学习结果解释；零 UID 是正常空结果，不是新增样本。
+ */
 public final class BatchLearning {
-    /** 静态结果工具。 */
-    private BatchLearning() {}
-    /** 按回执顺序返回成功且 UID 非零的唯一样本。 */
+    /**
+     * 静态结果工具。
+     */
+    private BatchLearning() {
+    }
+
+    /**
+     * 按回执顺序返回成功且 UID 非零的唯一样本。
+     */
     public static List<ItemLearnBox> learnedBoxesOf(ItemLearnBatch batch) {
         List<ItemLearnBox> learned = new ArrayList<>();
         if (batch == null || batch.getCode() != 0 || batch.getBoxes() == null) {
@@ -21,7 +31,9 @@ public final class BatchLearning {
         return learned;
     }
 
-    /** 格式化每框诊断，不影响成功/失败判定。 */
+    /**
+     * 格式化每框诊断，不影响成功/失败判定。
+     */
     public static String boxDetailOf(ItemLearnBatch batch) {
         if (batch == null || batch.getBoxes() == null || batch.getBoxes().isEmpty()) {
             return "";

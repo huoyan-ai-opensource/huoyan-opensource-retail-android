@@ -29,7 +29,9 @@ public class LogActivity extends BaseActivity implements LogPresenter.View {
     private LogFileAdapter logFileAdapter;
     private RecyclerView pathRecycler;
     private LogPathAdapter logPathAdapter;
-    /** 协调目录导航和文件读取，不持有界面控件。 */
+    /**
+     * 协调目录导航和文件读取，不持有界面控件。
+     */
     private LogPresenter presenter;
 
     @Override
@@ -90,19 +92,37 @@ public class LogActivity extends BaseActivity implements LogPresenter.View {
                 cc.huoyan.retail.common.IOThreadHelper.getInstance()::post, ui::post);
     }
 
-    /** 恢复页面时按布局决定是否自动选中最新日志。 */
-    @Override protected void onResume() {
+    /**
+     * 恢复页面时按布局决定是否自动选中最新日志。
+     */
+    @Override
+    protected void onResume() {
         super.onResume();
         presenter.resume(findViewById(R.id.logFileContent) != null);
     }
-    /** 展示目录列表和根路径导航。 */
-    @Override public void showDirectory(List<LogFIleDirectory> entries, List<String> path) {
-        logFileAdapter.setList(entries); logPathAdapter.setList(path);
+
+    /**
+     * 展示目录列表和根路径导航。
+     */
+    @Override
+    public void showDirectory(List<LogFIleDirectory> entries, List<String> path) {
+        logFileAdapter.setList(entries);
+        logPathAdapter.setList(path);
     }
-    /** 标记正在读取的文件行。 */
-    @Override public void selectFile(File file) { logFileAdapter.selectFile(file); }
-    /** 按当前布局展示内容，并将文本滚动位置复位。 */
-    @Override public void showText(File file, String text) {
+
+    /**
+     * 标记正在读取的文件行。
+     */
+    @Override
+    public void selectFile(File file) {
+        logFileAdapter.selectFile(file);
+    }
+
+    /**
+     * 按当前布局展示内容，并将文本滚动位置复位。
+     */
+    @Override
+    public void showText(File file, String text) {
         if (isFinishing() || isDestroyed()) return;
         android.widget.TextView content = findViewById(R.id.logFileContent);
         if (content == null) new LogDialog(text).show(getSupportFragmentManager(), "logDialog");
@@ -112,10 +132,22 @@ public class LogActivity extends BaseActivity implements LogPresenter.View {
             ((View) content.getParent()).scrollTo(0, 0);
         }
     }
-    /** 文件读取失败时给出本地化提示。 */
-    @Override public void missingFile() {
-        if (!isFinishing() && !isDestroyed()) ToastEx.createToast(this, getString(R.string.log_file_missing));
+
+    /**
+     * 文件读取失败时给出本地化提示。
+     */
+    @Override
+    public void missingFile() {
+        if (!isFinishing() && !isDestroyed())
+            ToastEx.createToast(this, getString(R.string.log_file_missing));
     }
-    /** 退出后不再接收文件内容。 */
-    @Override protected void onDestroy() { presenter.detach(); super.onDestroy(); }
+
+    /**
+     * 退出后不再接收文件内容。
+     */
+    @Override
+    protected void onDestroy() {
+        presenter.detach();
+        super.onDestroy();
+    }
 }

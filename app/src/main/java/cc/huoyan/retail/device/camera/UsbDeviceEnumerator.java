@@ -10,7 +10,9 @@ import java.util.WeakHashMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-/** UVC 设备枚举的 Android Parcel 兼容入口，由构建期替换 USBMonitor 的调用。 */
+/**
+ * UVC 设备枚举的 Android Parcel 兼容入口，由构建期替换 USBMonitor 的调用。
+ */
 public final class UsbDeviceEnumerator {
     private static final Map<UsbManager, Snapshot> SNAPSHOTS = new WeakHashMap<>();
 

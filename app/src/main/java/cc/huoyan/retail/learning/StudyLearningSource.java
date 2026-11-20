@@ -1,15 +1,18 @@
 package cc.huoyan.retail.learning;
+
 import cc.huoyan.retail.goods.SdkClassMapping;
 import cc.huoyan.sdk.client.samples.LearnedImagePages;
 
 import static cc.huoyan.retail.common.FileUtil.corpRecognizeBitmap;
 import static cc.huoyan.retail.common.FileUtil.cropBitmap;
 import static cc.huoyan.retail.common.FileUtil.saveBitmapToExternalStorage;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
+
 import cc.huoyan.retail.BuildConfig;
 import cc.huoyan.retail.R;
 import cc.huoyan.retail.data.*;
@@ -17,34 +20,54 @@ import cc.huoyan.retail.device.camera.NV21ToBitmap;
 import cc.huoyan.retail.diagnostics.Logger;
 import cc.huoyan.retail.common.FileUtil;
 import cc.huoyan.retail.common.IOThreadHelper;
+
 import android.graphics.BitmapFactory;
+
 import cc.huoyan.retail.goods.FileExpiringMap;
 import cc.huoyan.retail.sdk.*;
 import cc.huoyan.sdk.client.*;
 import cc.huoyan.sdk.client.model.*;
+
 import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BooleanSupplier;
 
-/** 学习 SDK、帧转换与样本文件适配，仅持有应用 Context。 */
+/**
+ * 学习 SDK、帧转换与样本文件适配，仅持有应用 Context。
+ */
 final class StudyLearningSource implements StudyPresenter.Source {
-    /** 保留平台依赖的日志来源。 */
+    /**
+     * 保留平台依赖的日志来源。
+     */
     private static final String LOG_TAG = "StudyActivity";
-    /** 页面内部图片编号；SDK 样本仍以 UID 标识。 */
+    /**
+     * 页面内部图片编号；SDK 样本仍以 UID 标识。
+     */
     private static final AtomicInteger PIC_ID_SEQ = new AtomicInteger();
-    /** 应用 Context，不延长学习页生命周期。 */
+    /**
+     * 应用 Context，不延长学习页生命周期。
+     */
     private final Context context;
-    /** 学习帧专用转换器，不与预览线程共享可变缓冲。 */
+    /**
+     * 学习帧专用转换器，不与预览线程共享可变缓冲。
+     */
     private final NV21ToBitmap converter;
-    /** 将宿主 Context 收敛为应用级资源。 */
+
+    /**
+     * 将宿主 Context 收敛为应用级资源。
+     */
     StudyLearningSource(Context context) {
         this.context = context.getApplicationContext();
         converter = new NV21ToBitmap(this.context);
     }
-    /** 后台完成批量学习；图片查询失败仍返回已成功的 UID，并始终回收 Bitmap。 */
-    @Override public StudyPresenter.Capture capture(byte[] captureBytes, int captureWidth, int captureHeight,
-                                                   GoodsEntity captureGoods, BooleanSupplier active) throws Exception {
+
+    /**
+     * 后台完成批量学习；图片查询失败仍返回已成功的 UID，并始终回收 Bitmap。
+     */
+    @Override
+    public StudyPresenter.Capture capture(byte[] captureBytes, int captureWidth, int captureHeight,
+                                          GoodsEntity captureGoods, BooleanSupplier active) throws Exception {
         Bitmap fullBitmap = null;
         Bitmap cropBitmap = null;
         List<StudyPicEntity> learnedPics = new ArrayList<>();
@@ -130,7 +153,9 @@ final class StudyLearningSource implements StudyPresenter.Source {
         }
     }
 
-    /** 从发送给 SDK 的识别区帧裁剪成功框，以 UID 保存；本地失败不影响已生效的学习。 */
+    /**
+     * 从发送给 SDK 的识别区帧裁剪成功框，以 UID 保存；本地失败不影响已生效的学习。
+     */
     private void saveLearnedThumbnail(Bitmap source, String plu, ItemLearnBox box) {
         Bitmap thumbnail = null;
         try {
@@ -158,9 +183,11 @@ final class StudyLearningSource implements StudyPresenter.Source {
         }
     }
 
-    /** 保存 SDK 样本地址及 UID，缺图时仍保留可删除的学习记录。 */
+    /**
+     * 保存 SDK 样本地址及 UID，缺图时仍保留可删除的学习记录。
+     */
     private StudyPicEntity buildLearnedPicEntity(GoodsEntity goods, long timestamp,
-                                                int picId, long uid, String imageUrl) {
+                                                 int picId, long uid, String imageUrl) {
         StudyPicEntity pic = new StudyPicEntity();
         pic.setClazzName(goods.getPlu());
         pic.setCaptureTimestamp(timestamp);
@@ -171,26 +198,39 @@ final class StudyLearningSource implements StudyPresenter.Source {
     }
 
 
-    /** 遗忘指定快照商品；成功后清理的始终是提交时 PLU。 */
-    @Override public void forgetClass(GoodsEntity goods) {
+    /**
+     * 遗忘指定快照商品；成功后清理的始终是提交时 PLU。
+     */
+    @Override
+    public void forgetClass(GoodsEntity goods) {
         String clazz = SdkClassMapping.clazzFromPlu(goods.getPlu());
         try {
-            if (!cc.huoyan.sdk.client.operation.SdkInputs.isClazz(clazz)) throw new IllegalStateException(context.getString(R.string.study_invalid_plu, goods.getPlu()));
+            if (!cc.huoyan.sdk.client.operation.SdkInputs.isClazz(clazz))
+                throw new IllegalStateException(context.getString(R.string.study_invalid_plu, goods.getPlu()));
             HuoyanSdkClient bridge = SdkChannelManager.getInstance().getClient();
-            if (!bridge.isConnected()) throw new IllegalStateException(context.getString(R.string.sdk_error_not_connected));
+            if (!bridge.isConnected())
+                throw new IllegalStateException(context.getString(R.string.sdk_error_not_connected));
             BaseResult result = bridge.forgetClass(clazz);
-            if (result == null) throw new IllegalStateException(context.getString(R.string.sdk_no_response));
-            if (result.getCode() != 0) throw new IllegalStateException(result.getCode() + " " + result.getReason());
+            if (result == null)
+                throw new IllegalStateException(context.getString(R.string.sdk_no_response));
+            if (result.getCode() != 0)
+                throw new IllegalStateException(result.getCode() + " " + result.getReason());
             Logger.logDebug(LOG_TAG, "[Biz] item_forget=ok clazz=" + clazz + " plu=" + goods.getPlu());
             StudyFiles.deleteProduct(new File(Environment.getExternalStorageDirectory(), "retail/study"), goods.getPlu());
             SPManager.getInstance().removeStudyPlu(goods.getPlu());
         } catch (RuntimeException error) {
             Logger.logDebug(LOG_TAG, "[Biz] item_forget=fail plu=" + goods.getPlu() + " reason=" + error.getMessage());
             throw error;
-        } finally { invalidate(goods); }
+        } finally {
+            invalidate(goods);
+        }
     }
-    /** 按 UID 遗忘样本，成功后删除对应商品下的小图。 */
-    @Override public void forgetSample(StudyPicEntity picture) {
+
+    /**
+     * 按 UID 遗忘样本，成功后删除对应商品下的小图。
+     */
+    @Override
+    public void forgetSample(StudyPicEntity picture) {
         HuoyanSdkClient bridge = SdkChannelManager.getInstance().getClient();
         BaseResult result = bridge.isConnected() ? bridge.forgetSample(picture.getUid()) : null;
         boolean ok = result != null && result.getCode() == 0;
@@ -202,16 +242,30 @@ final class StudyLearningSource implements StudyPresenter.Source {
                 "retail/study/" + picture.getClazzName() + "/" + picture.getUid() + ".jpg").getAbsolutePath());
         SdkGoodsImages.invalidate();
     }
-    /** 保存或整组遗忘后使图片与学习标记缓存过期。 */
-    @Override public void invalidate(GoodsEntity goods) {
-        SdkGoodsImages.invalidate(); FileExpiringMap.remove(goods.getPlu());
+
+    /**
+     * 保存或整组遗忘后使图片与学习标记缓存过期。
+     */
+    @Override
+    public void invalidate(GoodsEntity goods) {
+        SdkGoodsImages.invalidate();
+        FileExpiringMap.remove(goods.getPlu());
     }
-    /** 删除已遗忘样本的本地缩略图。 */
+
+    /**
+     * 删除已遗忘样本的本地缩略图。
+     */
     private void deleteSampleFile(String path) {
         if (path == null || path.isEmpty()) return;
         File file = new File(path);
         if (file.exists() && !file.delete()) Log.w(LOG_TAG, "deleteFileQuietly: 删除失败 " + path);
     }
-    /** 串行队列完成全部写入后释放 RenderScript 资源。 */
-    @Override public void close() { converter.release(); }
+
+    /**
+     * 串行队列完成全部写入后释放 RenderScript 资源。
+     */
+    @Override
+    public void close() {
+        converter.release();
+    }
 }

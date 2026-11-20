@@ -2,15 +2,24 @@ package cc.huoyan.retail.device.print;
 
 import java.util.List;
 
-/** USB 设备选择规则；完整标识匹配或唯一设备拔插后的地址恢复。 */
+/**
+ * USB 设备选择规则；完整标识匹配或唯一设备拔插后的地址恢复。
+ */
 final class UsbPrinterSelection {
-    /** 设备名称和易变 USB 地址的分隔符。 */
+    /**
+     * 设备名称和易变 USB 地址的分隔符。
+     */
     static final String ADDRESS_SEPARATOR = " · /dev/";
 
-    /** 工具类不创建实例。 */
-    private UsbPrinterSelection() { }
+    /**
+     * 工具类不创建实例。
+     */
+    private UsbPrinterSelection() {
+    }
 
-    /** 优先精确匹配；多台同型号或已选设备缺失时不退回任意第一台设备。 */
+    /**
+     * 优先精确匹配；多台同型号或已选设备缺失时不退回任意第一台设备。
+     */
     static String resolve(List<String> devices, String selected) {
         if (selected == null || selected.isEmpty()) return null;
         int address = selected.indexOf(ADDRESS_SEPARATOR);

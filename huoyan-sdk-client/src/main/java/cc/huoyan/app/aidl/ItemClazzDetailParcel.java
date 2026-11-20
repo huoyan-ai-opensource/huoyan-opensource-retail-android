@@ -28,12 +28,16 @@ public final class ItemClazzDetailParcel implements Parcelable {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 样本 UID 数组（防御性拷贝；升序，空=无样本/类别不存在）。 */
+    /**
+     * 样本 UID 数组（防御性拷贝；升序，空=无样本/类别不存在）。
+     */
     public long[] getUid() {
         return uid.clone();
     }

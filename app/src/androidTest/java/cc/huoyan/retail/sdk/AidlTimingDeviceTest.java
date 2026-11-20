@@ -4,22 +4,32 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.SystemClock;
 import android.util.Log;
+
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+
 import cc.huoyan.sdk.client.HuoyanSdkClient;
 import cc.huoyan.sdk.client.SdkConfig;
 import cc.huoyan.sdk.client.model.RecognizeResult;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import java.io.File;
+
 import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
 
-/** 在同一张已保存的真实相机帧上交替比较快照路径与缓冲区复用路径，不修改学习数据。 */
+/**
+ * 在同一张已保存的真实相机帧上交替比较快照路径与缓冲区复用路径，不修改学习数据。
+ */
 @RunWith(AndroidJUnit4.class)
 public class AidlTimingDeviceTest {
-    /** 预热后采样二十对请求，验证完整回执一致并记录客户端总耗时。 */
-    @Test public void compareSavedCameraFrame() {
+    /**
+     * 预热后采样二十对请求，验证完整回执一致并记录客户端总耗时。
+     */
+    @Test
+    public void compareSavedCameraFrame() {
         File reference = new File(InstrumentationRegistry.getInstrumentation().getTargetContext().getFilesDir(),
                 "bitmap-jpeg-ab/reference.png");
         assumeTrue("需先由 BitmapJpegDeviceTest 保存真实相机帧", reference.isFile());
@@ -31,7 +41,8 @@ public class AidlTimingDeviceTest {
         try {
             client.connect();
             long deadline = SystemClock.elapsedRealtime() + 10000;
-            while (!client.isConnected() && SystemClock.elapsedRealtime() < deadline) SystemClock.sleep(50);
+            while (!client.isConnected() && SystemClock.elapsedRealtime() < deadline)
+                SystemClock.sleep(50);
             assertTrue("AIDL 已连接", client.isConnected());
             assertEquals(0, client.initialize().getCode());
             assertEquals("READY", SdkDeviceReadiness.await(client).getSdkState());
@@ -53,6 +64,9 @@ public class AidlTimingDeviceTest {
                             + " width=" + bitmap.getWidth() + " height=" + bitmap.getHeight());
                 }
             }
-        } finally { client.close(); bitmap.recycle(); }
+        } finally {
+            client.close();
+            bitmap.recycle();
+        }
     }
 }

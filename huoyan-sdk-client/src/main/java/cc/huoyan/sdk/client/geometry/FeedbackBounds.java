@@ -1,12 +1,18 @@
 package cc.huoyan.sdk.client.geometry;
 
-/** 将整图坐标中的 AABB/OBB 顶点转换为反馈 x/y/width/height。 */
+/**
+ * 将整图坐标中的 AABB/OBB 顶点转换为反馈 x/y/width/height。
+ */
 public final class FeedbackBounds {
-    /** 静态几何工具。 */
+    /**
+     * 静态几何工具。
+     */
     private FeedbackBounds() {
     }
 
-    /** 将源图坐标限制在图片边界并输出 x/y/w/h。 */
+    /**
+     * 将源图坐标限制在图片边界并输出 x/y/w/h。
+     */
     public static int[] fromPoints(float[] points, int imageWidth, int imageHeight) {
         if (points == null || points.length < 4 || points.length % 2 != 0) {
             return new int[4];
@@ -32,7 +38,9 @@ public final class FeedbackBounds {
         return new int[]{left, top, Math.max(0, right - left), Math.max(0, bottom - top)};
     }
 
-    /** 将单轴坐标限制在有效范围。 */
+    /**
+     * 将单轴坐标限制在有效范围。
+     */
     private static int clamp(int value, int limit) {
         return Math.max(0, limit > 0 ? Math.min(value, limit) : value);
     }

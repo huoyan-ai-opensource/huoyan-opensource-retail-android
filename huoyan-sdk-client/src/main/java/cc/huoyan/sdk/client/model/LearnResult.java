@@ -14,24 +14,32 @@ public final class LearnResult {
     private final String reason;
     private final long uid;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public LearnResult(int code, String reason, long uid) {
         this.code = code;
         this.reason = reason;
         this.uid = uid;
     }
 
-    /** 结果码；0 表示请求成功。 */
+    /**
+     * 结果码；0 表示请求成功。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 新学习条目 UID（code=0 时有效；0=无检测框）。 */
+    /**
+     * 新学习条目 UID（code=0 时有效；0=无检测框）。
+     */
     public long getUid() {
         return uid;
     }

@@ -13,7 +13,9 @@ public final class FailedImage {
     private final String failureReason;
     private final String imageUrl;
 
-    /** 构造失败图片记录。 */
+    /**
+     * 构造失败图片记录。
+     */
     public FailedImage(String clazz, String imageId, String failureReason, String imageUrl) {
         this.clazz = clazz;
         this.imageId = imageId;
@@ -21,22 +23,30 @@ public final class FailedImage {
         this.imageUrl = imageUrl;
     }
 
-    /** 取得分类编码。 */
+    /**
+     * 取得分类编码。
+     */
     public String getClazz() {
         return clazz;
     }
 
-    /** 取得图片标识。 */
+    /**
+     * 取得图片标识。
+     */
     public String getImageId() {
         return imageId;
     }
 
-    /** 取得图片失败原因。 */
+    /**
+     * 取得图片失败原因。
+     */
     public String getFailureReason() {
         return failureReason;
     }
 
-    /** 取得图片地址。 */
+    /**
+     * 取得图片地址。
+     */
     public String getImageUrl() {
         return imageUrl;
     }

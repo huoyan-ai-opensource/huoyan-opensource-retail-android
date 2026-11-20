@@ -15,31 +15,41 @@ public final class ItemClazzImage {
     private final String imageUrl;
     private final String mimeType;
 
-    /** 构造样本图片记录。 */
+    /**
+     * 构造样本图片记录。
+     */
     public ItemClazzImage(long uid, boolean imageAvailable, String imageUrl,
-            String mimeType) {
+                          String mimeType) {
         this.uid = uid;
         this.imageAvailable = imageAvailable;
         this.imageUrl = imageUrl;
         this.mimeType = mimeType;
     }
 
-    /** 取得样本 UID。 */
+    /**
+     * 取得样本 UID。
+     */
     public long getUid() {
         return uid;
     }
 
-    /** 判断图片是否可用。 */
+    /**
+     * 判断图片是否可用。
+     */
     public boolean isImageAvailable() {
         return imageAvailable;
     }
 
-    /** 取得图片地址。 */
+    /**
+     * 取得图片地址。
+     */
     public String getImageUrl() {
         return imageUrl;
     }
 
-    /** 取得图片 MIME 类型。 */
+    /**
+     * 取得图片 MIME 类型。
+     */
     public String getMimeType() {
         return mimeType;
     }

@@ -29,7 +29,7 @@
 
             <TextView
                 android:id="@+id/quit"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp_0"
                 android:layout_height="wrap_content"
                 android:layout_weight="197"
                 android:background="@drawable/btn_main_bg"
@@ -55,7 +55,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp_0"
                 android:layout_height="wrap_content"
                 android:layout_weight="197"
                 android:background="@drawable/btn_main_bg"

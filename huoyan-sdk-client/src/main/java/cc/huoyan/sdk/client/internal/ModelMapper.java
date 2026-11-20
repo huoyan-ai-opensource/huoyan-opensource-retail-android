@@ -2,15 +2,21 @@ package cc.huoyan.sdk.client.internal;
 
 import cc.huoyan.app.aidl.*;
 import cc.huoyan.sdk.client.model.*;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.function.Function;
 
-/** 显式转换公共数据对象与 SDK 线契约，保留空值与可选字段。 */
+/**
+ * 显式转换公共数据对象与 SDK 线契约，保留空值与可选字段。
+ */
 final class ModelMapper {
-    private ModelMapper() { }
+    private ModelMapper() {
+    }
 
-    /** 保留授权模型动态名称、代码和当前标记。 */
+    /**
+     * 保留授权模型动态名称、代码和当前标记。
+     */
     static LicenseModels fromWire(LicenseModelsParcel value) {
         if (value == null) return null;
         return new LicenseModels(value.getCode(), value.getReason(), map(value.getModels(),
@@ -141,20 +147,25 @@ final class ModelMapper {
         return new FeedbackItem(value.getItemType(), map(value.getDetect(), ModelMapper::fromWire),
                 fromWire(value.getResult()), value.getX(), value.getY(), value.getWidth(), value.getHeight());
     }
+
     static FeedbackItemParcel toWire(FeedbackItem value) {
         if (value == null) return null;
         return new FeedbackItemParcel(value.getItemType(), map(value.getDetect(), ModelMapper::toWire),
                 toWire(value.getResult()), value.getX(), value.getY(), value.getWidth(), value.getHeight());
     }
+
     static FeedbackDetect fromWire(FeedbackDetectParcel value) {
         return new FeedbackDetect(value.getClazz(), value.getName(), value.getDistance());
     }
+
     static FeedbackDetectParcel toWire(FeedbackDetect value) {
         return new FeedbackDetectParcel(value.getClazz(), value.getName(), value.getDistance());
     }
+
     static FeedbackResult fromWire(FeedbackResultParcel value) {
         return value == null ? null : new FeedbackResult(value.getClazz(), value.getName(), value.getSource());
     }
+
     static FeedbackResultParcel toWire(FeedbackResult value) {
         return value == null ? null : new FeedbackResultParcel(value.getClazz(), value.getName(), value.getSource());
     }

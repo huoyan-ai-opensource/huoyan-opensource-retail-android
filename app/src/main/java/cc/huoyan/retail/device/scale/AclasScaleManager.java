@@ -25,7 +25,9 @@ public class AclasScaleManager {
 
     public interface Listener {
         void onConnected(String port);
+
         void onWeightRead(AclasWeightSnapshot snapshot);
+
         void onError(String message);
     }
 
@@ -39,38 +41,71 @@ public class AclasScaleManager {
     private volatile boolean requested;
     private volatile AclasScale scale;
     private volatile long lastReadAt;
-    /** 皮重回执只与之后的真实净重配对，连接结束即失效。 */
+    /**
+     * 皮重回执只与之后的真实净重配对，连接结束即失效。
+     */
     private final AclasTareReadings tareReadings = new AclasTareReadings();
-    /** 本连接最近的稳定性及重量快照。 */
+    /**
+     * 本连接最近的稳定性及重量快照。
+     */
     private volatile AclasWeightSnapshot latest;
-    /** 皮重查询限频，避免与重量流争用串口。 */
+    /**
+     * 皮重查询限频，避免与重量流争用串口。
+     */
     private volatile long tareReadAt;
-    /** 主线程超时器，命令没有设备回执时必须结束等待。 */
+    /**
+     * 主线程超时器，命令没有设备回执时必须结束等待。
+     */
     private final android.os.Handler commandTimer = new android.os.Handler(android.os.Looper.getMainLooper());
-    /** 命令互斥及结果只投递一次的锁。 */
+    /**
+     * 命令互斥及结果只投递一次的锁。
+     */
     private final Object commandLock = new Object();
-    /** 正在等待设备读数确认的命令，锁内替换。 */
+    /**
+     * 正在等待设备读数确认的命令，锁内替换。
+     */
     private volatile PendingCommand pendingCommand;
-    /** 连接代次，旧串口回调不能污染重连后的读数。 */
+    /**
+     * 连接代次，旧串口回调不能污染重连后的读数。
+     */
     private volatile int connectionGeneration;
 
-    /** 一条命令的不可变目标和独立超时，禁止旧回调结束新命令。 */
+    /**
+     * 一条命令的不可变目标和独立超时，禁止旧回调结束新命令。
+     */
     private final class PendingCommand {
-        /** 本条命令的完成回调。 */
+        /**
+         * 本条命令的完成回调。
+         */
         final CommandListener listener;
-        /** null 表示置零；非空表示目标皮重 kg。 */
+        /**
+         * null 表示置零；非空表示目标皮重 kg。
+         */
         final java.math.BigDecimal tare;
-        /** 发出命令时的连接代次。 */
+        /**
+         * 发出命令时的连接代次。
+         */
         final int generation;
-        /** 已完成串口发送，之后才能接受回执。 */
+        /**
+         * 已完成串口发送，之后才能接受回执。
+         */
         volatile boolean sent;
-        /** 已回读到目标皮重，仍须等待之后的重量帧才能确认命令完成。 */
+        /**
+         * 已回读到目标皮重，仍须等待之后的重量帧才能确认命令完成。
+         */
         volatile boolean tareConfirmed;
-        /** 本命令专属的超时动作。 */
+        /**
+         * 本命令专属的超时动作。
+         */
         final Runnable timeout = () -> finishCommand(this, false, s(R.string.checkout_scale_timeout));
-        /** 固定命令目标、回调与所属连接。 */
+
+        /**
+         * 固定命令目标、回调与所属连接。
+         */
         PendingCommand(java.math.BigDecimal tare, CommandListener listener) {
-            this.tare = tare; this.listener = listener; this.generation = connectionGeneration;
+            this.tare = tare;
+            this.listener = listener;
+            this.generation = connectionGeneration;
         }
     }
 
@@ -83,7 +118,10 @@ public class AclasScaleManager {
             return;
         }
         requested = true;
-        tareReadings.invalidate(); latest = null; tareReadAt = 0; lastReadAt = 0;
+        tareReadings.invalidate();
+        latest = null;
+        tareReadAt = 0;
+        lastReadAt = 0;
         int generation = ++connectionGeneration;
         openExecutor.execute(() -> openInternal(configuredPort, listener, generation));
     }
@@ -116,9 +154,11 @@ public class AclasScaleManager {
                 @Override
                 public void OnError(int code) {
                     if (!requested || generation != connectionGeneration) return;
-                    latest = null; tareReadings.invalidate();
+                    latest = null;
+                    tareReadings.invalidate();
                     PendingCommand command = pendingCommand;
-                    if (command != null) finishCommand(command, false, s(R.string.scale_error_connect_failed, code));
+                    if (command != null)
+                        finishCommand(command, false, s(R.string.scale_error_connect_failed, code));
                     Log.e(LOG_TAG, "Aclas error=" + code);
                     listener.onError(s(R.string.scale_error_connect_failed, code));
                 }
@@ -127,9 +167,11 @@ public class AclasScaleManager {
                 public void OnDataReceive(AclasScale.St_Data data) {
                     if (!requested || generation != connectionGeneration) return;
                     if (data == null || data.m_iStatus == -1 || !Float.isFinite(data.m_fWeight)) {
-                        latest = null; tareReadings.invalidate();
+                        latest = null;
+                        tareReadings.invalidate();
                         PendingCommand failed = pendingCommand;
-                        if (failed != null) finishCommand(failed, false, s(R.string.scale_error_read_failed));
+                        if (failed != null)
+                            finishCommand(failed, false, s(R.string.scale_error_read_failed));
                         listener.onError(s(R.string.scale_error_read_failed));
                         return;
                     }
@@ -146,14 +188,19 @@ public class AclasScaleManager {
                     boolean waitingTare = command != null && command.tare != null;
                     if ((data.m_bTare || waitingTare) && now - tareReadAt > (waitingTare ? 500 : 2000)) {
                         tareReadAt = now;
-                        openExecutor.execute(() -> { AclasScale current = scale; if (current != null && requested && generation == connectionGeneration) current.getTareValue(); });
+                        openExecutor.execute(() -> {
+                            AclasScale current = scale;
+                            if (current != null && requested && generation == connectionGeneration)
+                                current.getTareValue();
+                        });
                     }
                     // 去皮切换期间的读数可能仍带旧皮重，不能交给收银重新识别或计价。
                     // 未去皮状态位本身确认零皮重；清零后设备可能不再返回皮重查询结果。
                     boolean tareConfirmed = waitingTare && (command.tareConfirmed
                             || (command.tare.signum() == 0 && !reading.isNetWeight()));
                     if (waitingTare && (!command.sent || !tareConfirmed
-                            || reading.tareKg() == null || command.tare.compareTo(reading.tareKg()) != 0)) return;
+                            || reading.tareKg() == null || command.tare.compareTo(reading.tareKg()) != 0))
+                        return;
                     listener.onWeightRead(reading);
                     if (command != null && command.sent && reading.isStable()) {
                         if (command.tare == null && reading.netKg().signum() == 0)
@@ -165,7 +212,8 @@ public class AclasScaleManager {
 
                 @Override
                 public void OnReadTare(float value, boolean success) {
-                    if (!requested || generation != connectionGeneration || !success || !Float.isFinite(value) || value < 0) return;
+                    if (!requested || generation != connectionGeneration || !success || !Float.isFinite(value) || value < 0)
+                        return;
                     java.math.BigDecimal tareKg = new java.math.BigDecimal(Float.toString(value)).setScale(3, java.math.RoundingMode.HALF_UP);
                     tareReadings.readTare(tareKg);
                     PendingCommand command = pendingCommand;
@@ -189,15 +237,18 @@ public class AclasScaleManager {
             listener.onConnected(port);
         } catch (Exception e) {
             Log.e(LOG_TAG, "open scale failed", e);
-            if (requested && generation == connectionGeneration) listener.onError(s(R.string.scale_error_open_failed, e.getMessage()));
+            if (requested && generation == connectionGeneration)
+                listener.onError(s(R.string.scale_error_open_failed, e.getMessage()));
         } finally {
             opening.set(false);
         }
     }
 
     public void close() {
-        requested = false; ++connectionGeneration;
-        tareReadings.invalidate(); latest = null;
+        requested = false;
+        ++connectionGeneration;
+        tareReadings.invalidate();
+        latest = null;
         PendingCommand command = pendingCommand;
         if (command != null) finishCommand(command, false, s(R.string.checkout_scale_disconnected));
         AclasScale localScale;
@@ -208,25 +259,41 @@ public class AclasScaleManager {
         closeLocalScale(localScale);
     }
 
-    /** 发送置零并等待稳定零读数，不把成功写串口视为设备成功。 */
-    public void setZero(CommandListener listener) { executeConfirmedCommand(null, listener); }
+    /**
+     * 发送置零并等待稳定零读数，不把成功写串口视为设备成功。
+     */
+    public void setZero(CommandListener listener) {
+        executeConfirmedCommand(null, listener);
+    }
 
-    /** 预置皮重使用设备要求的克整数，回读一致且收到后续稳定净重才报告成功。 */
+    /**
+     * 预置皮重使用设备要求的克整数，回读一致且收到后续稳定净重才报告成功。
+     */
     public void setPreTare(int tareValue, CommandListener listener) {
-        if (tareValue < 0) { listener.onResult(false, s(R.string.checkout_tare_invalid)); return; }
+        if (tareValue < 0) {
+            listener.onResult(false, s(R.string.checkout_tare_invalid));
+            return;
+        }
         executeConfirmedCommand(java.math.BigDecimal.valueOf(tareValue, 3), listener);
     }
 
-    /** 一次只允许一条稳定、已连接状态下的命令，3秒未确认则失败。 */
+    /**
+     * 一次只允许一条稳定、已连接状态下的命令，3秒未确认则失败。
+     */
     private void executeConfirmedCommand(java.math.BigDecimal tare, CommandListener listener) {
         final PendingCommand command;
         synchronized (commandLock) {
-            if (pendingCommand != null) { listener.onResult(false, s(R.string.checkout_scale_busy)); return; }
+            if (pendingCommand != null) {
+                listener.onResult(false, s(R.string.checkout_scale_busy));
+                return;
+            }
             if (scale == null || !requested || latest == null || android.os.SystemClock.elapsedRealtime() - lastReadAt > 2000
                     || !latest.isStable() || (latest.netKg().signum() < 0 && tare == null)) {
-                listener.onResult(false, s(R.string.checkout_scale_not_ready)); return;
+                listener.onResult(false, s(R.string.checkout_scale_not_ready));
+                return;
             }
-            command = new PendingCommand(tare, listener); pendingCommand = command;
+            command = new PendingCommand(tare, listener);
+            pendingCommand = command;
             if (tare != null) tareReadings.invalidate();
             commandTimer.postDelayed(command.timeout, 3000);
         }
@@ -234,16 +301,21 @@ public class AclasScaleManager {
             try {
                 AclasScale current = scale;
                 if (pendingCommand != command || command.generation != connectionGeneration) return;
-                if (current == null || !requested) throw new IllegalStateException(s(R.string.checkout_scale_disconnected));
+                if (current == null || !requested)
+                    throw new IllegalStateException(s(R.string.checkout_scale_disconnected));
                 if (tare == null) current.SetZero();
                 else current.setPreTare(tare.movePointRight(3).intValueExact());
                 command.sent = true;
                 if (tare != null) current.getTareValue();
-            } catch (Exception error) { finishCommand(command, false, error.getMessage()); }
+            } catch (Exception error) {
+                finishCommand(command, false, error.getMessage());
+            }
         });
     }
 
-    /** 清理同一命令的等待并只投递一次设备回执，允许设备线程调用。 */
+    /**
+     * 清理同一命令的等待并只投递一次设备回执，允许设备线程调用。
+     */
     private void finishCommand(PendingCommand command, boolean success, String message) {
         synchronized (commandLock) {
             if (pendingCommand != command) return;

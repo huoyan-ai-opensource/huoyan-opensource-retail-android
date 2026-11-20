@@ -30,15 +30,19 @@ public final class ItemClazzListParcel implements Parcelable {
     private final int pages;
     private final String[] thumbnails;
 
-    /** 旧四参构造器（Issue #36 形态，向后兼容）：无分页元数据（total/current/
-     * size/pages 均 0）、缩略图 null。 */
+    /**
+     * 旧四参构造器（Issue #36 形态，向后兼容）：无分页元数据（total/current/
+     * size/pages 均 0）、缩略图 null。
+     */
     public ItemClazzListParcel(int code, String reason, String[] clazz, long[] uidCount) {
         this(code, reason, clazz, uidCount, 0L, 0, 0, 0, null);
     }
 
-    /** 全参构造器（Issue #110）：分页元数据 + 缩略图。 */
+    /**
+     * 全参构造器（Issue #110）：分页元数据 + 缩略图。
+     */
     public ItemClazzListParcel(int code, String reason, String[] clazz, long[] uidCount,
-            long total, int current, int size, int pages, String[] thumbnails) {
+                               long total, int current, int size, int pages, String[] thumbnails) {
         this.code = code;
         this.reason = reason;
         this.clazz = (clazz == null ? new String[0] : clazz.clone());
@@ -64,42 +68,58 @@ public final class ItemClazzListParcel implements Parcelable {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 类别编码数组（防御性拷贝；code=0 时与 {@link #getUidCount()} 下标对齐）。 */
+    /**
+     * 类别编码数组（防御性拷贝；code=0 时与 {@link #getUidCount()} 下标对齐）。
+     */
     public String[] getClazz() {
         return clazz.clone();
     }
 
-    /** 各类别下向量条数数组（防御性拷贝）。 */
+    /**
+     * 各类别下向量条数数组（防御性拷贝）。
+     */
     public long[] getUidCount() {
         return uidCount.clone();
     }
 
-    /** 类别总数（class_count；0=空库/未接线分页）。 */
+    /**
+     * 类别总数（class_count；0=空库/未接线分页）。
+     */
     public long getTotal() {
         return total;
     }
 
-    /** 当前页（1-based；0=未指定分页）。 */
+    /**
+     * 当前页（1-based；0=未指定分页）。
+     */
     public int getCurrent() {
         return current;
     }
 
-    /** 页大小（0=未指定分页）。 */
+    /**
+     * 页大小（0=未指定分页）。
+     */
     public int getSize() {
         return size;
     }
 
-    /** 总页数（0=未指定分页/空库）。 */
+    /**
+     * 总页数（0=未指定分页/空库）。
+     */
     public int getPages() {
         return pages;
     }
 
-    /** 各类别缩略图 URL 数组（防御性拷贝；无缩略图为空数组）。 */
+    /**
+     * 各类别缩略图 URL 数组（防御性拷贝；无缩略图为空数组）。
+     */
     public String[] getThumbnails() {
         return thumbnails == null ? new String[0] : thumbnails.clone();
     }

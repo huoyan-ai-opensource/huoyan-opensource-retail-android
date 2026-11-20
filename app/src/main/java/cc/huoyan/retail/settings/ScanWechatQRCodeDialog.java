@@ -23,44 +23,76 @@ import cc.huoyan.retail.device.camera.CameraController;
 import cc.huoyan.retail.device.camera.CameraUtils;
 import cc.huoyan.retail.common.ui.WindowUtil;
 
-/** 扫码预览视图；会话节流及解码交由 Presenter，宿主继续处理二维码业务。 */
+/**
+ * 扫码预览视图；会话节流及解码交由 Presenter，宿主继续处理二维码业务。
+ */
 public class ScanWechatQRCodeDialog extends DialogFragment implements QrScanPresenter.View {
-    /** 相机预览控件，仅在主线程访问。 */
+    /**
+     * 相机预览控件，仅在主线程访问。
+     */
     private AutoFitTextureView surfaceView;
-    /** 保持相机画面比例的布局容器。 */
+    /**
+     * 保持相机画面比例的布局容器。
+     */
     private View previewContainer;
-    /** 当前布局对应的源图宽度。 */
+    /**
+     * 当前布局对应的源图宽度。
+     */
     private int previewImageWidth;
-    /** 当前布局对应的源图高度。 */
+    /**
+     * 当前布局对应的源图高度。
+     */
     private int previewImageHeight;
-    /** 宿主扫码结果及预览恢复回调。 */
+    /**
+     * 宿主扫码结果及预览恢复回调。
+     */
     private ScanWechatQRCodeDialogListener listener;
-    /** 共享相机；视图销毁时移除当前监听。 */
+    /**
+     * 共享相机；视图销毁时移除当前监听。
+     */
     private CameraController cameraController;
-    /** 页面实例独立的订阅键，旧页面销毁不能移除新订阅。 */
+    /**
+     * 页面实例独立的订阅键，旧页面销毁不能移除新订阅。
+     */
     private final String cameraListenerKey = getClass().getSimpleName() + "@" + System.identityHashCode(this);
-    /** 最新规范化帧，扫码与识别共享同一图像方向。 */
+    /**
+     * 最新规范化帧，扫码与识别共享同一图像方向。
+     */
     private volatile CameraFrame latestFrame;
-    /** 当前视图的独立扫码会话。 */
+    /**
+     * 当前视图的独立扫码会话。
+     */
     private QrScanPresenter presenter;
-    /** 截图解码队列，有序关闭以保证排队图片最终释放。 */
+    /**
+     * 截图解码队列，有序关闭以保证排队图片最终释放。
+     */
     private java.util.concurrent.ExecutorService worker;
-    /** 不捕获弹窗的主线程投递器。 */
+    /**
+     * 不捕获弹窗的主线程投递器。
+     */
     private final android.os.Handler ui = new android.os.Handler(android.os.Looper.getMainLooper());
 
-    /** 用参数保存扫码类型，允许 FragmentManager 通过无参构造重建。 */
+    /**
+     * 用参数保存扫码类型，允许 FragmentManager 通过无参构造重建。
+     */
     public static ScanWechatQRCodeDialog create(int type) {
         ScanWechatQRCodeDialog dialog = new ScanWechatQRCodeDialog();
-        Bundle args = new Bundle(); args.putInt("type", type); dialog.setArguments(args);
+        Bundle args = new Bundle();
+        args.putInt("type", type);
+        dialog.setArguments(args);
         return dialog;
     }
 
-    /** 设置业务结果回调，二维码内容由宿主解析。 */
+    /**
+     * 设置业务结果回调，二维码内容由宿主解析。
+     */
     public void setListener(ScanWechatQRCodeDialogListener listener) {
         this.listener = listener;
     }
 
-    /** 创建预览及本次视图专属的扫码队列。 */
+    /**
+     * 创建预览及本次视图专属的扫码队列。
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -73,13 +105,15 @@ public class ScanWechatQRCodeDialog extends DialogFragment implements QrScanPres
         surfaceView.setFitInside(true);
         previewContainer = view.findViewById(R.id.scanPreview);
         cameraController = CameraController.getInstance();
-        previewImageWidth = 0; previewImageHeight = 0;
+        previewImageWidth = 0;
+        previewImageHeight = 0;
         worker = java.util.concurrent.Executors.newSingleThreadExecutor();
         presenter = new QrScanPresenter(this, worker, ui::post, android.os.SystemClock::elapsedRealtime);
         QrScanPresenter session = presenter;
         cameraController.addListener(cameraListenerKey, new CameraController.FrameListener() {
             /** 相机线程只交付尺寸，不访问预览控件。 */
-            @Override public void onFrame(CameraFrame entity) {
+            @Override
+            public void onFrame(CameraFrame entity) {
                 latestFrame = entity;
                 if (entity != null) session.frameAvailable(entity.getWidth(), entity.getHeight());
             }
@@ -89,7 +123,9 @@ public class ScanWechatQRCodeDialog extends DialogFragment implements QrScanPres
         return view;
     }
 
-    /** 切换入口复用项目设备列表，不在扫码过程中更改摄像头类型。 */
+    /**
+     * 切换入口复用项目设备列表，不在扫码过程中更改摄像头类型。
+     */
     private void registerCameraSelection(View view) {
         view.findViewById(R.id.scanSwitchCamera).setOnClickListener(v -> {
             java.util.List<String> labels = new java.util.ArrayList<>();
@@ -118,20 +154,32 @@ public class ScanWechatQRCodeDialog extends DialogFragment implements QrScanPres
                 });
     }
 
-    /** 在主线程调整预览并截取独立 Bitmap，交给解码任务管理。 */
-    @Override public QrScanPresenter.Frame capture(int width, int height) {
-        if (width != previewImageWidth || height != previewImageHeight) updatePreviewBounds(width, height);
+    /**
+     * 在主线程调整预览并截取独立 Bitmap，交给解码任务管理。
+     */
+    @Override
+    public QrScanPresenter.Frame capture(int width, int height) {
+        if (width != previewImageWidth || height != previewImageHeight)
+            updatePreviewBounds(width, height);
         CameraFrame frame = latestFrame;
         return cameraController.isCurrent(frame) ? new QrNv21Frame(frame) : null;
     }
 
-    /** 成功后只通知一次宿主，关闭操作也在主线程执行。 */
-    @Override public void scanned(String result) {
-        try { if (listener != null) listener.onScan(result); }
-        finally { dismissAllowingStateLoss(); }
+    /**
+     * 成功后只通知一次宿主，关闭操作也在主线程执行。
+     */
+    @Override
+    public void scanned(String result) {
+        try {
+            if (listener != null) listener.onScan(result);
+        } finally {
+            dismissAllowingStateLoss();
+        }
     }
 
-    /** 按窗口可用空间限制扫码区域，保持相机原始比例。 */
+    /**
+     * 按窗口可用空间限制扫码区域，保持相机原始比例。
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -142,9 +190,14 @@ public class ScanWechatQRCodeDialog extends DialogFragment implements QrScanPres
         updatePreviewBounds(surfaceView.getRatioWidth(), surfaceView.getRatioHeight());
     }
 
-    /** 按相机比例和窗口可用尺寸更新预览区域。 */
+    /**
+     * 按相机比例和窗口可用尺寸更新预览区域。
+     */
     private void updatePreviewBounds(int imageWidth, int imageHeight) {
-        if (imageWidth <= 0 || imageHeight <= 0) { imageWidth = 4; imageHeight = 3; }
+        if (imageWidth <= 0 || imageHeight <= 0) {
+            imageWidth = 4;
+            imageHeight = 3;
+        }
         android.util.DisplayMetrics metrics = getResources().getDisplayMetrics();
         int maxWidth = Math.min(metrics.widthPixels - Math.round(32 * metrics.density),
                 Math.round(520 * metrics.density)) - Math.round(40 * metrics.density);
@@ -163,13 +216,18 @@ public class ScanWechatQRCodeDialog extends DialogFragment implements QrScanPres
         previewImageHeight = imageHeight;
     }
 
-    /** 用户关闭窗口即停止交付，不等待异步 Fragment 移除完成。 */
-    @Override public void onDismiss(@NonNull android.content.DialogInterface dialog) {
+    /**
+     * 用户关闭窗口即停止交付，不等待异步 Fragment 移除完成。
+     */
+    @Override
+    public void onDismiss(@NonNull android.content.DialogInterface dialog) {
         if (presenter != null) presenter.detach();
         super.onDismiss(dialog);
     }
 
-    /** 视图关闭时停止扫码回调，并通知宿主恢复预览。 */
+    /**
+     * 视图关闭时停止扫码回调，并通知宿主恢复预览。
+     */
     @Override
     public void onDestroyView() {
         cameraController.removeListener(cameraListenerKey);
@@ -177,16 +235,24 @@ public class ScanWechatQRCodeDialog extends DialogFragment implements QrScanPres
         worker.shutdown();
         cameraController.unbind(surfaceView);
         latestFrame = null;
-        surfaceView = null; previewContainer = null;
+        surfaceView = null;
+        previewContainer = null;
         if (listener != null) listener.onDismiss();
         super.onDestroyView();
     }
 
-    /** 业务扫码处理和相机预览恢复的宿主出口。 */
+    /**
+     * 业务扫码处理和相机预览恢复的宿主出口。
+     */
     public interface ScanWechatQRCodeDialogListener {
-        /** 接收本会话唯一扫码结果。 */
+        /**
+         * 接收本会话唯一扫码结果。
+         */
         void onScan(String result);
-        /** 视图销毁后恢复宿主预览或补光状态。 */
+
+        /**
+         * 视图销毁后恢复宿主预览或补光状态。
+         */
         void onDismiss();
     }
 }

@@ -3,19 +3,26 @@ package cc.huoyan.sdk.client.internal;
 import cc.huoyan.app.aidl.*;
 import cc.huoyan.sdk.client.*;
 import cc.huoyan.sdk.client.model.*;
+
 import org.junit.Test;
+
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.junit.Assert.*;
 
-/** 验证公共门面的数据保真、图像所有权和不重试写入的边界。 */
+/**
+ * 验证公共门面的数据保真、图像所有权和不重试写入的边界。
+ */
 public class PublicClientTest {
-    @Test public void imageIsSnapshotAndChecksOverflow() {
+    @Test
+    public void imageIsSnapshotAndChecksOverflow() {
         byte[] rgb = {1, 2, 3};
         SdkImage image = SdkImage.rgb888(rgb, 1, 1);
         rgb[0] = 9;
-        byte[] copy = image.getBytes(); copy[1] = 9;
+        byte[] copy = image.getBytes();
+        copy[1] = 9;
         assertArrayEquals(new byte[]{1, 2, 3}, image.getBytes());
         assertThrows(IllegalArgumentException.class,
                 () -> SdkImage.rgb888(rgb, Integer.MAX_VALUE, Integer.MAX_VALUE));
@@ -27,7 +34,8 @@ public class PublicClientTest {
                 SdkConfig.websocket("ws://127.0.0.1:18086/ws").getWsEndpoint());
     }
 
-    @Test public void recognitionPreservesAllCandidatesAndDoesNotMutateInput() {
+    @Test
+    public void recognitionPreservesAllCandidatesAndDoesNotMutateInput() {
         byte[] rgb = {1, 2, 3};
         RecognizeResultParcel reply = new RecognizeResultParcel(0, null, Arrays.asList(
                 new RecognitionItemParcel("9007199254740993", .123, 1, 2, 30, 40, 999, -.5,
@@ -58,14 +66,17 @@ public class PublicClientTest {
         assertEquals(1, calls.get());
     }
 
-    @Test public void optionalGoodsFieldsAndLargeIdsSurviveRoundTrip() {
+    @Test
+    public void optionalGoodsFieldsAndLargeIdsSurviveRoundTrip() {
         GoodsSave partial = new GoodsSave("测试", null, null, null, null, null,
                 null, null, null, 0, null, 9007199254740993L, 0, null);
         GoodsSaveParcel wire = ModelMapper.toWire(partial);
         assertFalse(wire.hasCategory());
         assertFalse(wire.hasTareWeight());
-        assertTrue(wire.hasSaleMode()); assertEquals(0, wire.getSaleMode());
-        assertTrue(wire.hasSort()); assertEquals(0, wire.getSort());
+        assertTrue(wire.hasSaleMode());
+        assertEquals(0, wire.getSaleMode());
+        assertTrue(wire.hasSort());
+        assertEquals(0, wire.getSort());
         assertEquals(9007199254740993L, wire.getPrice());
         assertEquals(partial, ModelMapper.fromWire(wire));
         ItemClazzList withoutThumbnails = ModelMapper.fromWire(
@@ -74,10 +85,12 @@ public class PublicClientTest {
         assertEquals(0, withoutThumbnails.getThumbnails().length);
     }
 
-    @Test public void batchLearningKeepsPartialFailureAndNeverRetries() {
+    @Test
+    public void batchLearningKeepsPartialFailureAndNeverRetries() {
         AtomicInteger calls = new AtomicInteger();
         HuoyanSdkClient client = new DefaultSdkClient(transport((method, args) -> {
-            if (method.equals("createImageRequest")) return new ImageRequestParcel(null, new byte[3], 3, 1, 1, 1);
+            if (method.equals("createImageRequest"))
+                return new ImageRequestParcel(null, new byte[3], 3, 1, 1, 1);
             if (method.equals("batchLearn")) {
                 calls.incrementAndGet();
                 assertEquals("9007199254740993", args[1]);
@@ -95,7 +108,8 @@ public class PublicClientTest {
         assertEquals(1, calls.get());
     }
 
-    @Test public void unknownWriteOutcomeIsNotRetriedAndCloseCannotReconnect() {
+    @Test
+    public void unknownWriteOutcomeIsNotRetriedAndCloseCannotReconnect() {
         AtomicInteger writes = new AtomicInteger(), connects = new AtomicInteger();
         HuoyanSdkClient client = new DefaultSdkClient(transport((method, args) -> {
             if (method.equals("connect")) connects.incrementAndGet();
@@ -106,16 +120,19 @@ public class PublicClientTest {
         client.connect();
         assertNull(client.forgetSample(3));
         assertEquals(1, writes.get());
-        client.close(); client.connect();
+        client.close();
+        client.connect();
         assertEquals(1, connects.get());
         assertFalse(client.isConnected());
     }
 
-    @Test public void unavailableImageDoesNotSendARequest() {
+    @Test
+    public void unavailableImageDoesNotSendARequest() {
         AtomicInteger calls = new AtomicInteger();
         HuoyanSdkClient client = new DefaultSdkClient(transport((method, args) -> {
             if (method.equals("createImageRequest")) return null;
-            calls.incrementAndGet(); return null;
+            calls.incrementAndGet();
+            return null;
         }), false, "1.2.3");
         SdkImage image = SdkImage.rgb888(new byte[3], 1, 1);
         assertEquals(HuoyanSdkClient.IMAGE_UNAVAILABLE, client.recognize(image).getCode());
@@ -126,7 +143,8 @@ public class PublicClientTest {
         assertEquals(0, calls.get());
     }
 
-    @Test public void importLearningPreservesUidAndNeverFallsBackOrRetries() {
+    @Test
+    public void importLearningPreservesUidAndNeverFallsBackOrRetries() {
         AtomicInteger imports = new AtomicInteger();
         HuoyanSdkClient client = new DefaultSdkClient(transport((method, args) -> {
             if (method.equals("createImageRequest"))
@@ -146,14 +164,16 @@ public class PublicClientTest {
         assertThrows(IllegalArgumentException.class, () -> client.importLearn(image, "非法PLU"));
     }
 
-    @Test public void publicSignaturesNeverExposeWireOrRetailTypes() {
+    @Test
+    public void publicSignaturesNeverExposeWireOrRetailTypes() {
         Set<Class<?>> visited = new HashSet<>();
         checkApi(HuoyanSdkClient.class, visited);
         checkApi(SdkConfig.class, visited);
         assertTrue(visited.size() > 20);
     }
 
-    @Test public void bindingInjectsBundledAccountAndPreservesExternalId() {
+    @Test
+    public void bindingInjectsBundledAccountAndPreservesExternalId() {
         AtomicInteger calls = new AtomicInteger();
         HuoyanSdkClient client = new DefaultSdkClient(transport((method, args) -> {
             assertEquals("bindDevice", method);
@@ -175,16 +195,19 @@ public class PublicClientTest {
         assertEquals(1, calls.get());
     }
 
-    @Test public void bindingRejectsBlankBeforeSendingAndHasNoAccountInput() {
+    @Test
+    public void bindingRejectsBlankBeforeSendingAndHasNoAccountInput() {
         HuoyanSdkClient client = new DefaultSdkClient(transport((method, args) -> {
-            fail("无效标识不应发请求"); return null;
+            fail("无效标识不应发请求");
+            return null;
         }), false, "1.2.3");
         for (String id : new String[]{null, "", " ", "\t\n"}) {
             assertThrows(IllegalArgumentException.class, () -> client.bindDevice(id));
         }
         for (Method method : HuoyanSdkClient.class.getMethods()) {
             if (method.getName().equals("bindDevice")) {
-                for (Class<?> parameter : method.getParameterTypes()) assertEquals(String.class, parameter);
+                for (Class<?> parameter : method.getParameterTypes())
+                    assertEquals(String.class, parameter);
                 assertTrue(method.getParameterCount() == 1 || method.getParameterCount() == 3);
             }
         }
@@ -196,27 +219,38 @@ public class PublicClientTest {
         assertFalse(name, name.contains(".internal."));
         assertFalse(name, name.contains(".retail."));
         if (type instanceof ParameterizedType) {
-            for (Type argument : ((ParameterizedType) type).getActualTypeArguments()) checkApi(argument, visited);
+            for (Type argument : ((ParameterizedType) type).getActualTypeArguments())
+                checkApi(argument, visited);
         } else if (type instanceof Class<?>) {
             Class<?> cls = (Class<?>) type;
             if (!cls.getName().startsWith("cc.huoyan.sdk.client") || !visited.add(cls)) return;
-            for (Method method : cls.getDeclaredMethods()) if (Modifier.isPublic(method.getModifiers())) {
-                checkApi(method.getGenericReturnType(), visited);
-                for (Type argument : method.getGenericParameterTypes()) checkApi(argument, visited);
-            }
+            for (Method method : cls.getDeclaredMethods())
+                if (Modifier.isPublic(method.getModifiers())) {
+                    checkApi(method.getGenericReturnType(), visited);
+                    for (Type argument : method.getGenericParameterTypes())
+                        checkApi(argument, visited);
+                }
             for (Constructor<?> constructor : cls.getConstructors()) {
-                for (Type argument : constructor.getGenericParameterTypes()) checkApi(argument, visited);
+                for (Type argument : constructor.getGenericParameterTypes())
+                    checkApi(argument, visited);
             }
         }
     }
 
-    private interface Call { Object invoke(String name, Object[] args); }
+    private interface Call {
+        Object invoke(String name, Object[] args);
+    }
+
     private SdkChannelBridge transport(Call call) {
         return (SdkChannelBridge) Proxy.newProxyInstance(getClass().getClassLoader(),
                 new Class<?>[]{SdkChannelBridge.class}, (proxy, method, args) -> call.invoke(method.getName(), args));
     }
-    /** 公共初始化入口每次都携带宿主版本，覆盖启动后的再次初始化。 */
-    @Test public void initializePassesHostVersionOnEveryCall() {
+
+    /**
+     * 公共初始化入口每次都携带宿主版本，覆盖启动后的再次初始化。
+     */
+    @Test
+    public void initializePassesHostVersionOnEveryCall() {
         AtomicInteger calls = new AtomicInteger();
         HuoyanSdkClient client = new DefaultSdkClient(transport((method, args) -> {
             assertEquals("init", method);

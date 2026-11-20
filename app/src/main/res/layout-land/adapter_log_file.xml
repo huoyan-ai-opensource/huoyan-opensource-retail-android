@@ -1,7 +1,35 @@
 <?xml version='1.0' encoding='utf-8'?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent" android:layout_height="84dp">
-    <LinearLayout android:id="@+id/logRow" android:layout_width="match_parent" android:layout_height="68dp" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="16dp" android:background="@drawable/land_field">
-        <ImageView android:id="@+id/imageView" android:layout_width="22dp" android:layout_height="22dp" app:tint="#3F3EED" />
-        <TextView android:id="@+id/fileName" android:layout_width="0dp" android:layout_weight="1" android:layout_height="match_parent" android:gravity="center_vertical" android:textSize="18sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:maxLines="1" android:ellipsize="middle" />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_42">
+
+    <LinearLayout
+        android:id="@+id/logRow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_34"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="@dimen/dp_8"
+        android:background="@drawable/land_field">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="@dimen/dp_11"
+            android:layout_height="@dimen/dp_11"
+            app:tint="#3F3EED" />
+
+        <TextView
+            android:id="@+id/fileName"
+            android:layout_width="@dimen/dp_0"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/sp_9"
+            android:textColor="#293A51"
+            android:fontFamily="@font/retail_sans"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:ellipsize="middle" />
     </LinearLayout>
 </FrameLayout>

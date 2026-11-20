@@ -15,6 +15,10 @@
     <string name="recognition_sensitivity_title">Image change recognition sensitivity</string>
     <string name="recognition_sensitivity_hint">Higher sensitivity triggers recognition with smaller changes in the image</string>
     <string-array name="recognition_sensitivity_names">
-        <item>Very low</item><item>Low</item><item>Standard</item><item>High</item><item>Very high</item>
+        <item>Very low</item>
+        <item>Low</item>
+        <item>Standard</item>
+        <item>High</item>
+        <item>Very high</item>
     </string-array>
 </resources>

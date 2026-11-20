@@ -1,8 +1,12 @@
 package cc.huoyan.sdk.client.internal;
 
-/** RGB 像素转换；不访问摄像头。 */
+/**
+ * RGB 像素转换；不访问摄像头。
+ */
 final class RgbImages {
-    private RgbImages() {}
+    private RgbImages() {
+    }
+
     public static byte[] rgb888FromArgbPixels(int[] argbPixels, int width, int height) {
         if (width <= 0 || height <= 0 || argbPixels == null || argbPixels.length != width * height) {
             throw new IllegalArgumentException(

@@ -16,7 +16,7 @@ public class MainHandler extends Handler {
     }
 
     public static void runOnUiThread(Runnable runnable) {
-        if(Looper.getMainLooper().equals(Looper.myLooper())) {
+        if (Looper.getMainLooper().equals(Looper.myLooper())) {
             runnable.run();
         } else {
             instance.post(runnable);

@@ -7,7 +7,8 @@ import java.util.Locale;
 import org.junit.Test;
 
 public class DisplayFormatUtilTest {
-    @Test public void largeCentAmountsRetainExactDecimalDigits() {
+    @Test
+    public void largeCentAmountsRetainExactDecimalDigits() {
         assertEquals("40000000.00", DisplayFormatUtil.formatAmountCny(4_000_000_000L, Locale.US));
         assertEquals("92233720368547758.07", DisplayFormatUtil.formatAmountCny(Long.MAX_VALUE, Locale.US));
     }

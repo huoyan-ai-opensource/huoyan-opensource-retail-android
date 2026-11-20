@@ -1,15 +1,106 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="60dp" android:id="@+id/checkoutSummary" android:orientation="horizontal" android:gravity="center_vertical" android:paddingHorizontal="12dp" android:background="@drawable/bg_checkout_summary">
-  <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/checkout_kinds" android:textSize="12sp" android:textColor="#6E7C90" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textSize="19sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/summaryKinds" android:textStyle="bold" android:layout_marginTop="3dp" />
-  </LinearLayout>
-  <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/checkout_count" android:textSize="12sp" android:textColor="#6E7C90" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" />
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0" android:textSize="19sp" android:textColor="#293A51" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:id="@+id/summaryCount" android:textStyle="bold" android:layout_marginTop="3dp" />
-  </LinearLayout>
-  <View android:layout_width="1dp" android:layout_height="38dp" android:background="#E8ECF1" android:layout_marginHorizontal="12dp" />
-  <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="2" android:orientation="vertical" android:gravity="end">
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/checkout_total" android:textSize="12sp" android:textColor="#B54708" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:textStyle="bold" />
-    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/amount_currency_initial" android:textSize="24sp" android:textColor="#B54708" android:fontFamily="@font/retail_sans" android:includeFontPadding="false" android:gravity="end" android:id="@+id/summaryAmount" android:textStyle="bold" android:maxLines="1" android:autoSizeTextType="uniform" android:autoSizeMinTextSize="16sp" android:autoSizeMaxTextSize="24sp" android:autoSizeStepGranularity="1sp" />
-  </LinearLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_30"
+    android:id="@+id/checkoutSummary"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="@dimen/dp_6"
+    android:background="@drawable/bg_checkout_summary">
+
+    <LinearLayout
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/checkout_kinds"
+            android:textSize="@dimen/sp_6"
+            android:textColor="#6E7C90"
+            android:fontFamily="@font/retail_sans"
+            android:includeFontPadding="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="@dimen/sp_9_5"
+            android:textColor="#293A51"
+            android:fontFamily="@font/retail_sans"
+            android:includeFontPadding="false"
+            android:id="@+id/summaryKinds"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/dp_1_5" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/checkout_count"
+            android:textSize="@dimen/sp_6"
+            android:textColor="#6E7C90"
+            android:fontFamily="@font/retail_sans"
+            android:includeFontPadding="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="@dimen/sp_9_5"
+            android:textColor="#293A51"
+            android:fontFamily="@font/retail_sans"
+            android:includeFontPadding="false"
+            android:id="@+id/summaryCount"
+            android:textStyle="bold"
+            android:layout_marginTop="@dimen/dp_1_5" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="@dimen/dp_0_5"
+        android:layout_height="@dimen/dp_19"
+        android:background="#E8ECF1"
+        android:layout_marginHorizontal="@dimen/dp_6" />
+
+    <LinearLayout
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:orientation="vertical"
+        android:gravity="end">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/checkout_total"
+            android:textSize="@dimen/sp_6"
+            android:textColor="#B54708"
+            android:fontFamily="@font/retail_sans"
+            android:includeFontPadding="false"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/amount_currency_initial"
+            android:textSize="@dimen/sp_12"
+            android:textColor="#B54708"
+            android:fontFamily="@font/retail_sans"
+            android:includeFontPadding="false"
+            android:gravity="end"
+            android:id="@+id/summaryAmount"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="@dimen/sp_8"
+            android:autoSizeMaxTextSize="@dimen/sp_12"
+            android:autoSizeStepGranularity="@dimen/sp_0_5" />
+    </LinearLayout>
 </LinearLayout>

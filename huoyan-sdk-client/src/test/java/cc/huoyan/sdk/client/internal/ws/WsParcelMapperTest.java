@@ -49,15 +49,21 @@ public class WsParcelMapperTest {
         return new WsV2Codec.Response("r", code, reason, null);
     }
 
-    /** 当前设备查询省略激活码，显式激活码按原值发送。 */
-    @Test public void modelQueryUsesOptionalActivationCode() {
+    /**
+     * 当前设备查询省略激活码，显式激活码按原值发送。
+     */
+    @Test
+    public void modelQueryUsesOptionalActivationCode() {
     }
 
-    /** 动态名称、顺序与 current 标记完整保留，失败不伪装为空成功。 */
-    @Test public void modelListKeepsDynamicIdentityAndErrors() {
+    /**
+     * 动态名称、顺序与 current 标记完整保留，失败不伪装为空成功。
+     */
+    @Test
+    public void modelListKeepsDynamicIdentityAndErrors() {
         cc.huoyan.app.aidl.LicenseModelsParcel models = WsParcelMapper.licenseModels(ok(
                 "{\"models\":[{\"model_code\":\"new-7\",\"model_name\":\"新模型\",\"chip\":\"rk\",\"current\":true},"
-                + "{\"model_code\":\"new-2\",\"model_name\":\"第二模型\",\"current\":false}]}"));
+                        + "{\"model_code\":\"new-2\",\"model_name\":\"第二模型\",\"current\":false}]}"));
         assertEquals(2, models.getModels().size());
         assertEquals("new-7", models.getModels().get(0).getModelCode());
         assertEquals("新模型", models.getModels().get(0).getModelName());
@@ -142,7 +148,9 @@ public class WsParcelMapperTest {
         assertEquals(5L, parcel.getExpiresAt());
     }
 
-    /** 验证 SDK 的实际版本字段映射，缺失或查询失败时保持空值。 */
+    /**
+     * 验证 SDK 的实际版本字段映射，缺失或查询失败时保持空值。
+     */
     @Test
     public void certInfo_sdkVersionUsesShellWireField() {
         CertInfoParcel parcel = WsParcelMapper.certInfo(ok(
@@ -396,7 +404,8 @@ public class WsParcelMapperTest {
         assertEquals(240, params.getIntValue("height"));
     }
 
-    @Test public void feedbackUsesItemsWithOrderedDetectAndResult() {
+    @Test
+    public void feedbackUsesItemsWithOrderedDetectAndResult() {
         FeedbackItemParcel item = new FeedbackItemParcel(1, java.util.Arrays.asList(
                 new cc.huoyan.app.aidl.FeedbackDetectParcel("A001", "苹果", 0.123),
                 new cc.huoyan.app.aidl.FeedbackDetectParcel("001", "梨", 0.234)),
@@ -412,8 +421,11 @@ public class WsParcelMapperTest {
         assertEquals(30D, row.getDoubleValue("width"), 0);
     }
 
-    /** 删除无论是否携带改品记录，WS 都显式输出空 result 对象。 */
-    @Test public void deletedFeedbackAlwaysWritesEmptyResultObject() {
+    /**
+     * 删除无论是否携带改品记录，WS 都显式输出空 result 对象。
+     */
+    @Test
+    public void deletedFeedbackAlwaysWritesEmptyResultObject() {
         for (cc.huoyan.app.aidl.FeedbackResultParcel result : java.util.Arrays.asList(null,
                 new cc.huoyan.app.aidl.FeedbackResultParcel("B002", "桃", "manual"))) {
             FeedbackItemParcel item = new FeedbackItemParcel(2, java.util.Collections.singletonList(
@@ -573,6 +585,7 @@ public class WsParcelMapperTest {
         assertEquals("PLU 已存在", parcel.getReason());
         assertNull(parcel.getRecord());
     }
+
     @Test
     public void status_newFieldsPreserveNullFalseAndLongTimestamp() {
         StatusSnapshotParcel status = WsParcelMapper.status(ok(

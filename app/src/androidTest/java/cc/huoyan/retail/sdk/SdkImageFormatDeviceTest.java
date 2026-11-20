@@ -1,24 +1,34 @@
 package cc.huoyan.retail.sdk;
 
 import cc.huoyan.sdk.client.HuoyanSdkClient;
+
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.SharedMemory;
 import android.os.SystemClock;
+
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import cc.huoyan.sdk.client.model.DetectResult;
 import cc.huoyan.sdk.client.SdkImage;
 import cc.huoyan.sdk.client.model.RecognizeResult;
 import cc.huoyan.sdk.client.model.StatusSnapshot;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import java.nio.ByteBuffer;
+
 import static org.junit.Assert.*;
 
-/** 验证业务共用工厂实际选择的格式及真实 SDK 对识别、检测两种调用的接收能力。 */
+/**
+ * 验证业务共用工厂实际选择的格式及真实 SDK 对识别、检测两种调用的接收能力。
+ */
 @RunWith(AndroidJUnit4.class)
 public class SdkImageFormatDeviceTest {
-    /** AIDL 完整 RGB888 共享内存和 WS JPEG 都能执行 recognize / detect。 */
+    /**
+     * AIDL 完整 RGB888 共享内存和 WS JPEG 都能执行 recognize / detect。
+     */
     @Test
     public void channelDefaultsReachRealSdk() throws Exception {
         Bitmap bitmap = Bitmap.createBitmap(1076, 756, Bitmap.Config.ARGB_8888);
@@ -28,7 +38,8 @@ public class SdkImageFormatDeviceTest {
                 try {
                     bridge.connect();
                     long deadline = SystemClock.elapsedRealtime() + 15000;
-                    while (!bridge.isConnected() && SystemClock.elapsedRealtime() < deadline) SystemClock.sleep(100);
+                    while (!bridge.isConnected() && SystemClock.elapsedRealtime() < deadline)
+                        SystemClock.sleep(100);
                     assertTrue(bridge.isConnected());
                     bridge.initialize();
                     StatusSnapshot status = SdkDeviceReadiness.await(bridge);
@@ -76,8 +87,12 @@ public class SdkImageFormatDeviceTest {
                                 + " format=" + image.getFormat() + " bytes=" + image.getSize() + " code=0");
                     }
                     assertFalse(bitmap.isRecycled());
-                } finally { bridge.close(); }
+                } finally {
+                    bridge.close();
+                }
             }
-        } finally { bitmap.recycle(); }
+        } finally {
+            bitmap.recycle();
+        }
     }
 }

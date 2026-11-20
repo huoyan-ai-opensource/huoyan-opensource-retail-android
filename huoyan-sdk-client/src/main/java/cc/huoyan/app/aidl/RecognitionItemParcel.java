@@ -42,7 +42,7 @@ public final class RecognitionItemParcel implements Parcelable {
     }
 
     public RecognitionItemParcel(String clazz, double distance, int left, int top, int right,
-            int bottom, double square, double rank, List<RecognitionCandidateParcel> candidates) {
+                                 int bottom, double square, double rank, List<RecognitionCandidateParcel> candidates) {
         this.clazz = clazz;
         this.distance = distance;
         this.left = left;
@@ -79,17 +79,23 @@ public final class RecognitionItemParcel implements Parcelable {
         return bottom;
     }
 
-    /** winner 样本面积（尺寸加权重放字段，缺省 0）。 */
+    /**
+     * winner 样本面积（尺寸加权重放字段，缺省 0）。
+     */
     public double getSquare() {
         return square;
     }
 
-    /** winner 加权分（尺寸加权重放字段，缺省 0；可负——C 侧软加权公式产物）。 */
+    /**
+     * winner 加权分（尺寸加权重放字段，缺省 0；可负——C 侧软加权公式产物）。
+     */
     public double getRank() {
         return rank;
     }
 
-    /** 不可变的同框候选列表，可包含命中项；空库/无候选路径可为空。 */
+    /**
+     * 不可变的同框候选列表，可包含命中项；空库/无候选路径可为空。
+     */
     public List<RecognitionCandidateParcel> getCandidates() {
         return candidates;
     }

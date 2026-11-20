@@ -26,12 +26,16 @@ public final class PhotoUploadResultParcel implements Parcelable {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 上传成功后返回的 object URL；code≠0 时为 null。 */
+    /**
+     * 上传成功后返回的 object URL；code≠0 时为 null。
+     */
     public String getPhotoFileUrl() {
         return photoFileUrl;
     }

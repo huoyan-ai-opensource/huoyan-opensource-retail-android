@@ -20,7 +20,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
-/** 识别与学习共用的图片裁剪、存储和坐标换算。 */
+/**
+ * 识别与学习共用的图片裁剪、存储和坐标换算。
+ */
 public class FileUtil {
 
     /**

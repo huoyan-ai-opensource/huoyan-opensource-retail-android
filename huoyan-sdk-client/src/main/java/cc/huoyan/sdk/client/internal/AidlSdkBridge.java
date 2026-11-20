@@ -1,6 +1,7 @@
 package cc.huoyan.sdk.client.internal;
 
 import cc.huoyan.app.aidl.PhotoUploadResultParcel;
+
 import android.os.Build;
 import android.os.RemoteException;
 import android.os.SharedMemory;
@@ -9,9 +10,11 @@ import android.system.ErrnoException;
 import androidx.annotation.RequiresApi;
 
 import android.content.Context;
+
 import cc.huoyan.sdk.client.SdkLog;
 
 import java.nio.ByteBuffer;
+
 import cc.huoyan.app.aidl.*;
 
 import cc.huoyan.app.aidl.BaseResultParcel;
@@ -58,19 +61,28 @@ public final class AidlSdkBridge implements SdkChannelBridge {
     private Context context;
     private SdkCommBinding binding;
 
-    /** [Biz] 打点出口：生产为 android Log（由调用方控制调试日志），单测注入记录实现（同 {@link WsSdkBridge.EventLog} 缝——JVM 单测 android.util.Log not mocked）。 */
+    /**
+     * [Biz] 打点出口：生产为 android Log（由调用方控制调试日志），单测注入记录实现（同 {@link WsSdkBridge.EventLog} 缝——JVM 单测 android.util.Log not mocked）。
+     */
     interface EventLog {
 
-        /** 打一条业务打点（消息形如 {@code [Biz] key=value}）。 */
+        /**
+         * 打一条业务打点（消息形如 {@code [Biz] key=value}）。
+         */
         void biz(String message);
     }
 
-    /** 生产构造：绑定懒建（Application 就绪后以 App 上下文建，见 {@link #obtainBinding}）。 */
+    /**
+     * 生产构造：绑定懒建（Application 就绪后以 App 上下文建，见 {@link #obtainBinding}）。
+     */
     AidlSdkBridge() {
-        this.eventLog = message -> { };
+        this.eventLog = message -> {
+        };
     }
 
-    /** 使用调用方的应用上下文与日志出口创建 AIDL 通道。 */
+    /**
+     * 使用调用方的应用上下文与日志出口创建 AIDL 通道。
+     */
     public AidlSdkBridge(Context context, SdkLog log) {
         this.context = context.getApplicationContext();
         this.eventLog = message -> log.log(LOG_TAG, message);
@@ -82,7 +94,8 @@ public final class AidlSdkBridge implements SdkChannelBridge {
      * @param binding 底层绑定
      */
     AidlSdkBridge(SdkCommBinding binding) {
-        this(binding, message -> { });
+        this(binding, message -> {
+        });
     }
 
     /**
@@ -125,7 +138,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         return current != null && current.isConnected();
     }
 
-    /** 在后台线程显式初始化；动作结果与机器状态分开读取。 */
+    /**
+     * 在后台线程显式初始化；动作结果与机器状态分开读取。
+     */
     @Override
     public BaseResultParcel init(String appVersion) {
         SdkCommBinding current = currentBinding();
@@ -191,20 +206,34 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 查询失败不产生写操作，不重试激活。 */
-    @Override public cc.huoyan.app.aidl.LicenseModelsParcel queryDeviceModels() {
+    /**
+     * 查询失败不产生写操作，不重试激活。
+     */
+    @Override
+    public cc.huoyan.app.aidl.LicenseModelsParcel queryDeviceModels() {
         ISdkCommService service = service();
         if (service == null) return null;
-        try { return service.queryDeviceModels(); }
-        catch (RemoteException error) { onRemoteException(); return null; }
+        try {
+            return service.queryDeviceModels();
+        } catch (RemoteException error) {
+            onRemoteException();
+            return null;
+        }
     }
 
-    /** 按激活码查询支持模型，适用于正常激活。 */
-    @Override public cc.huoyan.app.aidl.LicenseModelsParcel queryLicenseModels(String activationCode) {
+    /**
+     * 按激活码查询支持模型，适用于正常激活。
+     */
+    @Override
+    public cc.huoyan.app.aidl.LicenseModelsParcel queryLicenseModels(String activationCode) {
         ISdkCommService service = service();
         if (service == null) return null;
-        try { return service.queryLicenseModels(activationCode); }
-        catch (RemoteException error) { onRemoteException(); return null; }
+        try {
+            return service.queryLicenseModels(activationCode);
+        } catch (RemoteException error) {
+            onRemoteException();
+            return null;
+        }
     }
 
     @Override
@@ -278,13 +307,17 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         return learn(image, clazz, false);
     }
 
-    /** 通过新增尾部事务导入图片，不回退普通学习。 */
+    /**
+     * 通过新增尾部事务导入图片，不回退普通学习。
+     */
     @Override
     public LearnResultParcel importLearn(ImageRequestParcel image, String clazz) {
         return learn(image, clazz, true);
     }
 
-    /** 学习共用断连分类和载体释放；上传语义由所选远程方法固定。 */
+    /**
+     * 学习共用断连分类和载体释放；上传语义由所选远程方法固定。
+     */
     private LearnResultParcel learn(ImageRequestParcel image, String clazz, boolean imported) {
         try {
             ISdkCommService service = service();
@@ -294,7 +327,7 @@ public final class AidlSdkBridge implements SdkChannelBridge {
             try {
                 LearnResultParcel receipt = imported
                         ? service.importLearn(image, clazz) : service.itemLearn(image, clazz);
-            return receipt == null ? new LearnResultParcel(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN, "调用已发出，结果未知", 0L) : receipt;
+                return receipt == null ? new LearnResultParcel(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN, "调用已发出，结果未知", 0L) : receipt;
             } catch (RemoteException e) {
                 onRemoteException();
                 return new LearnResultParcel(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN, "调用已发出，结果未知", 0L);
@@ -313,7 +346,7 @@ public final class AidlSdkBridge implements SdkChannelBridge {
             }
             try {
                 ItemLearnBatchParcel receipt = service.batchLearn(image, clazz);
-            return receipt == null ? new ItemLearnBatchParcel(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN, "调用已发出，结果未知", java.util.Collections.emptyList()) : receipt;
+                return receipt == null ? new ItemLearnBatchParcel(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN, "调用已发出，结果未知", java.util.Collections.emptyList()) : receipt;
             } catch (RemoteException e) {
                 onRemoteException();
                 return new ItemLearnBatchParcel(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN, "调用已发出，结果未知", java.util.Collections.emptyList());
@@ -382,12 +415,15 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 经 SDK 上传压缩图片；所有退出路径释放共享内存。 */
+    /**
+     * 经 SDK 上传压缩图片；所有退出路径释放共享内存。
+     */
     @Override
     public PhotoUploadResultParcel uploadPhoto(ImageRequestParcel image) {
         try {
             ISdkCommService service = service();
-            if (service == null) return new PhotoUploadResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", null);
+            if (service == null)
+                return new PhotoUploadResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", null);
             PhotoUploadResultParcel receipt = service.uploadPhoto(image);
             return receipt == null ? new PhotoUploadResultParcel(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN,
                     "调用已发出，结果未知", null) : receipt;
@@ -395,10 +431,14 @@ public final class AidlSdkBridge implements SdkChannelBridge {
             onRemoteException();
             return new PhotoUploadResultParcel(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN,
                     "调用已发出，结果未知", null);
-        } finally { releaseImageCarrier(image); }
+        } finally {
+            releaseImageCarrier(image);
+        }
     }
 
-    /** JPEG/PNG 大图使用共享内存，建区失败时仅允许内联上限内的小图。 */
+    /**
+     * JPEG/PNG 大图使用共享内存，建区失败时仅允许内联上限内的小图。
+     */
     @Override
     public ImageRequestParcel createPhotoRequest(byte[] bytes, int format) {
         if (bytes == null || bytes.length == 0) {
@@ -490,11 +530,14 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 同步下载小图包并学习；后台调用，失败不自动重试。 */
+    /**
+     * 同步下载小图包并学习；后台调用，失败不自动重试。
+     */
     @Override
     public ImageFlowProgressParcel downloadImagesAndLearn() {
         ISdkCommService service = service();
-        if (service == null) return new ImageFlowProgressParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", false, null, 0, 0, 0, 0, null, 0, null);
+        if (service == null)
+            return new ImageFlowProgressParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", false, null, 0, 0, 0, 0, null, 0, null);
         try {
             ImageFlowProgressParcel receipt = service.downloadImagesAndLearn();
             return receipt == null ? new ImageFlowProgressParcel(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN, "调用已发出，结果未知", false, null, 0, 0, 0, 0, null, 0, null) : receipt;
@@ -504,7 +547,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 查询小图包下载进度，事务失败返回 null。 */
+    /**
+     * 查询小图包下载进度，事务失败返回 null。
+     */
     @Override
     public ImageFlowProgressParcel getImageDownloadProgress() {
         ISdkCommService service = service();
@@ -517,7 +562,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 查询小图包学习进度，事务失败返回 null。 */
+    /**
+     * 查询小图包学习进度，事务失败返回 null。
+     */
     @Override
     public ImageFlowProgressParcel getImageLearnProgress() {
         ISdkCommService service = service();
@@ -530,7 +577,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 同步调用 SDK 的 getItemClazzImages，失败时触发重连并返回 null。 */
+    /**
+     * 同步调用 SDK 的 getItemClazzImages，失败时触发重连并返回 null。
+     */
     @Override
     public ItemClazzImagePageParcel getItemClazzImages(String clazz, int page, int size) {
         ISdkCommService service = service();
@@ -545,7 +594,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 同步调用 SDK 的 getFailedImages，失败时触发重连并返回 null。 */
+    /**
+     * 同步调用 SDK 的 getFailedImages，失败时触发重连并返回 null。
+     */
     @Override
     public FailedImagesResultParcel getFailedImages() {
         ISdkCommService service = service();
@@ -560,7 +611,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 调用 SDK 的云端服务开关接口，事务失败时触发重连。 */
+    /**
+     * 调用 SDK 的云端服务开关接口，事务失败时触发重连。
+     */
     @Override
     public CloudStatusParcel getCloudStatus() {
         ISdkCommService service = service();
@@ -575,7 +628,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 调用 SDK 的云端服务开关接口，事务失败时触发重连。 */
+    /**
+     * 调用 SDK 的云端服务开关接口，事务失败时触发重连。
+     */
     @Override
     public CloudStatusParcel setCloudStatus(boolean enabled) {
         ISdkCommService service = service();
@@ -591,7 +646,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 同步调用 SDK 的 backupRecognitionData，失败时触发重连并返回 null。 */
+    /**
+     * 同步调用 SDK 的 backupRecognitionData，失败时触发重连并返回 null。
+     */
     @Override
     public BaseResultParcel backupRecognitionData() {
         ISdkCommService service = service();
@@ -607,7 +664,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 同步调用 SDK 的 getRecognitionDataInfo，失败时触发重连并返回 null。 */
+    /**
+     * 同步调用 SDK 的 getRecognitionDataInfo，失败时触发重连并返回 null。
+     */
     @Override
     public RecognitionDataInfoParcel getRecognitionDataInfo() {
         ISdkCommService service = service();
@@ -622,7 +681,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 同步调用 SDK 的 restoreRecognitionData，失败时触发重连并返回 null。 */
+    /**
+     * 同步调用 SDK 的 restoreRecognitionData，失败时触发重连并返回 null。
+     */
     @Override
     public BaseResultParcel restoreRecognitionData() {
         ISdkCommService service = service();
@@ -638,12 +699,16 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 新增绑定/商品调用的事务失败打点（经注入缝出口，DEBUG 门在生产实现内；结果未知由调用方按 null 处置）。 */
+    /**
+     * 新增绑定/商品调用的事务失败打点（经注入缝出口，DEBUG 门在生产实现内；结果未知由调用方按 null 处置）。
+     */
     private void bizRemoteError(String method) {
         eventLog.biz("[Biz] aidl_" + method + "_remote_error result=unknown");
     }
 
-    /** 按 AIDL 能力构造图像：API 27+ 优先共享内存，建区失败仅允许 1MB 内联降级。 */
+    /**
+     * 按 AIDL 能力构造图像：API 27+ 优先共享内存，建区失败仅允许 1MB 内联降级。
+     */
     @Override
     public ImageRequestParcel createImageRequest(byte[] rgbFrame, int width, int height) {
         requireRgb888Frame(rgbFrame, width, height);
@@ -658,7 +723,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
                 ? newBytesRequest(rgbFrame, width, height) : null;
     }
 
-    /** JPEG 90 优先经共享内存传输；建区失败时仅内联不超过 256 KiB 的图像。 */
+    /**
+     * JPEG 90 优先经共享内存传输；建区失败时仅内联不超过 256 KiB 的图像。
+     */
     @Override
     public ImageRequestParcel createJpegImageRequest(android.graphics.Bitmap bitmap) {
         ImageRequestParcel jpeg = JpegImages.encode(bitmap);
@@ -674,7 +741,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         return jpeg.getSize() <= 256 * 1024 ? jpeg : null;
     }
 
-    /** 编码帧使用共享内存；建区失败仅内联不超过 256 KiB 的数据。 */
+    /**
+     * 编码帧使用共享内存；建区失败仅内联不超过 256 KiB 的数据。
+     */
     @Override
     public ImageRequestParcel createEncodedImageRequest(byte[] bytes, int width, int height, int format) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
@@ -766,7 +835,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
                 ImageRequestParcel.FORMAT_RGB888);
     }
 
-    /** 帧几何一致性快速失败（调用方编程错误；契约合法性由对端回执裁决）。 */
+    /**
+     * 帧几何一致性快速失败（调用方编程错误；契约合法性由对端回执裁决）。
+     */
     private static void requireRgb888Frame(byte[] rgbFrame, int width, int height) {
         if (width <= 0 || height <= 0) {
             throw new IllegalArgumentException(
@@ -781,14 +852,18 @@ public final class AidlSdkBridge implements SdkChannelBridge {
 
     // ---- 内部 ----
 
-    /** 当前绑定（null=尚未连接过，未连接占位语义）。 */
+    /**
+     * 当前绑定（null=尚未连接过，未连接占位语义）。
+     */
     private SdkCommBinding currentBinding() {
         synchronized (lock) {
             return binding;
         }
     }
 
-    /** 懒建绑定：使用调用方传入的应用上下文（无上下文的测试实例保持未连接）。 */
+    /**
+     * 懒建绑定：使用调用方传入的应用上下文（无上下文的测试实例保持未连接）。
+     */
     private SdkCommBinding obtainBinding() {
         synchronized (lock) {
             if (binding == null) {
@@ -802,20 +877,27 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 当前服务代理（null=未连接）；Binder 同步事务，调用方须在后台线程。 */
+    /**
+     * 当前服务代理（null=未连接）；Binder 同步事务，调用方须在后台线程。
+     */
     private ISdkCommService service() {
         SdkCommBinding current = currentBinding();
         return current != null ? current.service() : null;
     }
 
-    /** Binder 调用失败（服务进程死亡等）：标记断开并触发退避重连。 */
+    /**
+     * Binder 调用失败（服务进程死亡等）：标记断开并触发退避重连。
+     */
     private void onRemoteException() {
         SdkCommBinding current = currentBinding();
         if (current != null) {
             current.onRemoteException();
         }
     }
-    /** 分页读取云端商品目录；syncTimestamp=0 全量，增量游标由业务端管理。 */
+
+    /**
+     * 分页读取云端商品目录；syncTimestamp=0 全量，增量游标由业务端管理。
+     */
     @Override
     public GoodsListResultParcel listGoods(long syncTimestamp, int current, int size) {
         ISdkCommService service = service();
@@ -828,11 +910,14 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 将云端商品同步到 SDK 本地库，返回最终统计；不修改业务端数据库。 */
+    /**
+     * 将云端商品同步到 SDK 本地库，返回最终统计；不修改业务端数据库。
+     */
     @Override
     public GoodsDownloadResultParcel downloadGoods(int size) {
         ISdkCommService service = service();
-        if (service == null) return new GoodsDownloadResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", null, null, 0, 0, 0, 0, 0, 0, 0, false, 0, null);
+        if (service == null)
+            return new GoodsDownloadResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", null, null, 0, 0, 0, 0, 0, 0, 0, false, 0, null);
         try {
             GoodsDownloadResultParcel receipt = service.downloadGoods(size);
             return receipt == null ? new GoodsDownloadResultParcel(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN, "调用已发出，结果未知", null, null, 0, 0, 0, 0, 0, 0, 0, false, 0, null) : receipt;
@@ -842,7 +927,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 查询 SDK 商品同步进度；失败时保留上次已提交游标。 */
+    /**
+     * 查询 SDK 商品同步进度；失败时保留上次已提交游标。
+     */
     @Override
     public GoodsDownloadProgressParcel getDownloadGoodsProgress() {
         ISdkCommService service = service();
@@ -855,11 +942,14 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 按指定商品 ID 下载图片并重新学习；会替换这些分类的旧样本，不自动重试。 */
+    /**
+     * 按指定商品 ID 下载图片并重新学习；会替换这些分类的旧样本，不自动重试。
+     */
     @Override
     public ImageFlowProgressParcel downloadImagesAndLearnByGoodsId(long[] goodsIds) {
         ISdkCommService service = service();
-        if (service == null) return new ImageFlowProgressParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", false, null, 0, 0, 0, 0, null, 0, null);
+        if (service == null)
+            return new ImageFlowProgressParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", false, null, 0, 0, 0, 0, null, 0, null);
         try {
             ImageFlowProgressParcel receipt = service.downloadImagesAndLearnByGoodsId(goodsIds);
             return receipt == null ? new ImageFlowProgressParcel(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN, "调用已发出，结果未知", false, null, 0, 0, 0, 0, null, 0, null) : receipt;
@@ -869,7 +959,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 按商品 ID 查询 SDK 本地商品；不存在返回 404。 */
+    /**
+     * 按商品 ID 查询 SDK 本地商品；不存在返回 404。
+     */
     @Override
     public GoodsResultParcel getGoods(String goodsId) {
         ISdkCommService service = service();
@@ -882,7 +974,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 分页筛选 SDK 本地商品；isDeleted=-1 默认未删除，current/size=0 使用 SDK 默认值。 */
+    /**
+     * 分页筛选 SDK 本地商品；isDeleted=-1 默认未删除，current/size=0 使用 SDK 默认值。
+     */
     @Override
     public GoodsQueryResultParcel queryGoods(String keyword, String name, String plu, int isDeleted, int current, int size, String sortBy, String sortOrder) {
         ISdkCommService service = service();
@@ -895,7 +989,9 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 按条件统计 SDK 本地商品数量。 */
+    /**
+     * 按条件统计 SDK 本地商品数量。
+     */
     @Override
     public GoodsCountResultParcel getGoodsCount(String keyword, String name, String plu, int isDeleted) {
         ISdkCommService service = service();
@@ -908,11 +1004,14 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 批量更新 SDK 本地商品；只覆盖提供字段，逐条检查 items 的结果。 */
+    /**
+     * 批量更新 SDK 本地商品；只覆盖提供字段，逐条检查 items 的结果。
+     */
     @Override
     public GoodsBatchResultParcel batchUpdateGoods(String[] goodsIds, GoodsSaveParcel changes) {
         ISdkCommService service = service();
-        if (service == null) return new GoodsBatchResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", java.util.Collections.emptyList());
+        if (service == null)
+            return new GoodsBatchResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", java.util.Collections.emptyList());
         try {
             GoodsBatchResultParcel receipt = service.batchUpdateGoods(goodsIds, changes);
             return receipt == null ? new GoodsBatchResultParcel(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN, "调用已发出，结果未知", java.util.Collections.emptyList()) : receipt;
@@ -922,11 +1021,14 @@ public final class AidlSdkBridge implements SdkChannelBridge {
         }
     }
 
-    /** 批量软删除 SDK 本地商品；整体成功仍须逐条检查 items。 */
+    /**
+     * 批量软删除 SDK 本地商品；整体成功仍须逐条检查 items。
+     */
     @Override
     public GoodsBatchResultParcel batchDeleteGoods(String[] goodsIds) {
         ISdkCommService service = service();
-        if (service == null) return new GoodsBatchResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", java.util.Collections.emptyList());
+        if (service == null)
+            return new GoodsBatchResultParcel(LOCAL_DISCONNECTED, "SDK 未连接，请求未发送", java.util.Collections.emptyList());
         try {
             GoodsBatchResultParcel receipt = service.batchDeleteGoods(goodsIds);
             return receipt == null ? new GoodsBatchResultParcel(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN, "调用已发出，结果未知", java.util.Collections.emptyList()) : receipt;

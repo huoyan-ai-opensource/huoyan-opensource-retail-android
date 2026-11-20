@@ -11,7 +11,9 @@ import org.junit.Test;
 import cc.huoyan.sdk.client.model.CertInfo;
 import cc.huoyan.sdk.client.model.StatusSnapshot;
 
-/** 收银页 SDK 状态文案映射。 */
+/**
+ * 收银页 SDK 状态文案映射。
+ */
 public class MainActivityTest {
     // ---- SDK 通道状态 → 提示文案映射 ----
 

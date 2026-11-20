@@ -1,8 +1,11 @@
 package cc.huoyan.sdk.client.samples;
+
 import cc.huoyan.sdk.client.testing.SdkChannelFakes;
 
 import org.junit.Test;
+
 import cc.huoyan.sdk.client.model.ItemClazzList;
+
 import static org.junit.Assert.*;
 
 public class LearnedClazzPagesTest {

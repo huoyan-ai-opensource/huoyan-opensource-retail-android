@@ -17,12 +17,19 @@ import java.util.concurrent.TimeUnit;
 
 import cc.huoyan.retail.R;
 
-/** 单次 USB 授权等待；只持有应用上下文，接收器在成功、拒绝、超时后释放。 */
+/**
+ * 单次 USB 授权等待；只持有应用上下文，接收器在成功、拒绝、超时后释放。
+ */
 final class UsbPrinterPermission {
-    /** 工具类不创建实例。 */
-    private UsbPrinterPermission() { }
+    /**
+     * 工具类不创建实例。
+     */
+    private UsbPrinterPermission() {
+    }
 
-    /** 后台等待系统授权；页面重建不取消已发起的打印操作。 */
+    /**
+     * 后台等待系统授权；页面重建不取消已发起的打印操作。
+     */
     static void obtain(Context context, UsbManager manager, UsbDevice device) throws IOException {
         if (Looper.myLooper() == Looper.getMainLooper()) {
             throw new IllegalStateException("USB permission must run on a worker thread");
@@ -32,7 +39,8 @@ final class UsbPrinterPermission {
         CountDownLatch completed = new CountDownLatch(1);
         BroadcastReceiver receiver = new BroadcastReceiver() {
             /** 系统回调只解除等待，最终授权状态重新向 UsbManager 核验。 */
-            @Override public void onReceive(Context ignored, Intent intent) {
+            @Override
+            public void onReceive(Context ignored, Intent intent) {
                 if (action.equals(intent.getAction())) completed.countDown();
             }
         };

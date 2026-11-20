@@ -1,6 +1,7 @@
 package cc.huoyan.retail.sdk;
 
 import cc.huoyan.sdk.client.HuoyanSdkClient;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
@@ -26,7 +27,9 @@ import cc.huoyan.sdk.client.model.StatusSnapshot;
  */
 public class SdkChannelManagerTest {
 
-    /** 内存存储：模拟 SP 行为（get 无记录返回 null，put 覆盖写）。 */
+    /**
+     * 内存存储：模拟 SP 行为（get 无记录返回 null，put 覆盖写）。
+     */
     private static final class MemoryStore implements ChannelStore {
         private final Map<String, String> values = new HashMap<>();
 
@@ -218,12 +221,16 @@ public class SdkChannelManagerTest {
         assertSame(cert, manager.getCertInfo());
     }
 
-    /** code=0 成功形态状态快照（其余字段 null=尚未取得，单测只关心 code）。 */
+    /**
+     * code=0 成功形态状态快照（其余字段 null=尚未取得，单测只关心 code）。
+     */
     private static StatusSnapshot statusSnapshot(int code) {
         return new StatusSnapshot(code, null, null, null, null, null, null, null);
     }
 
-    /** 指定 code 的证书视图（时间族全 0，单测只关心 code）。 */
+    /**
+     * 指定 code 的证书视图（时间族全 0，单测只关心 code）。
+     */
     private static CertInfo certInfo(int code) {
         return new CertInfo(code, null, null, null, null,
                 0L, 0L, 0L, false, 0L, false, 0L);

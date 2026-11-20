@@ -4,13 +4,19 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Window;
 import android.view.WindowManager;
+
 import androidx.fragment.app.DialogFragment;
 
-/** 横竖屏弹窗由各自 XML 布局绘制同色遮罩，窗口使用完整的应用可用区域。 */
+/**
+ * 横竖屏弹窗由各自 XML 布局绘制同色遮罩，窗口使用完整的应用可用区域。
+ */
 public final class LandscapeDialogWindow {
-    private LandscapeDialogWindow() { }
+    private LandscapeDialogWindow() {
+    }
 
-    /** 按屏幕方向配置全屏弹窗的遮罩、尺寸和输入法行为。 */
+    /**
+     * 按屏幕方向配置全屏弹窗的遮罩、尺寸和输入法行为。
+     */
     public static boolean apply(DialogFragment fragment) {
         if (fragment.getDialog() == null) return false;
         Window window = fragment.getDialog().getWindow();

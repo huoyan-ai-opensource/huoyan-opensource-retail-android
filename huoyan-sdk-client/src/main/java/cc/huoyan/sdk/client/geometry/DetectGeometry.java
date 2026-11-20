@@ -1,6 +1,8 @@
 package cc.huoyan.sdk.client.geometry;
 
-/** 显式指定的坐标布局；不推断模型类型，也不表示 SDK 支持 OBB。 */
+/**
+ * 显式指定的坐标布局；不推断模型类型，也不表示 SDK 支持 OBB。
+ */
 public enum DetectGeometry {
     /**
      * 旋转矩形（Oriented Bounding Box）4 顶点，扁平 8 值数组：

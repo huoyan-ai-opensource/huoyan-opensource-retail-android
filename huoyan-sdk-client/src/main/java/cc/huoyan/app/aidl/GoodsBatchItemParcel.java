@@ -23,12 +23,16 @@ public final class GoodsBatchItemParcel implements Parcelable {
         this.reason = reason;
     }
 
-    /** 目标商品 id（回显入参元素）。 */
+    /**
+     * 目标商品 id（回显入参元素）。
+     */
     public String getGoodsId() {
         return goodsId;
     }
 
-    /** 0=成功；非 0=失败（reason 携带说明）。 */
+    /**
+     * 0=成功；非 0=失败（reason 携带说明）。
+     */
     public int getCode() {
         return code;
     }
@@ -82,14 +86,14 @@ public final class GoodsBatchItemParcel implements Parcelable {
 
     public static final Creator<GoodsBatchItemParcel> CREATOR =
             new Creator<GoodsBatchItemParcel>() {
-        @Override
-        public GoodsBatchItemParcel createFromParcel(Parcel parcel) {
-            return new GoodsBatchItemParcel(parcel);
-        }
+                @Override
+                public GoodsBatchItemParcel createFromParcel(Parcel parcel) {
+                    return new GoodsBatchItemParcel(parcel);
+                }
 
-        @Override
-        public GoodsBatchItemParcel[] newArray(int size) {
-            return new GoodsBatchItemParcel[size];
-        }
-    };
+                @Override
+                public GoodsBatchItemParcel[] newArray(int size) {
+                    return new GoodsBatchItemParcel[size];
+                }
+            };
 }

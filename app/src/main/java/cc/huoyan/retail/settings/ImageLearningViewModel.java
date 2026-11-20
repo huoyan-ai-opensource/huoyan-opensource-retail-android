@@ -14,7 +14,9 @@ import java.util.concurrent.TimeUnit;
 
 import cc.huoyan.sdk.client.model.ImageFlowProgress;
 
-/** 小图包学习的页面状态；长调用与进度查询分线程，旋转屏幕后不重复提交。 */
+/**
+ * 小图包学习的页面状态；长调用与进度查询分线程，旋转屏幕后不重复提交。
+ */
 public class ImageLearningViewModel extends ViewModel {
     static final class State {
         final boolean running;
@@ -23,7 +25,7 @@ public class ImageLearningViewModel extends ViewModel {
         final ImageFlowProgress result;
 
         State(boolean running, ImageFlowProgress download,
-                ImageFlowProgress learn, ImageFlowProgress result) {
+              ImageFlowProgress learn, ImageFlowProgress result) {
             this.running = running;
             this.download = download;
             this.learn = learn;
@@ -33,13 +35,17 @@ public class ImageLearningViewModel extends ViewModel {
 
     private final MutableLiveData<State> state = new MutableLiveData<>(new State(false, null, null, null));
     private final ScheduledExecutorService workers = Executors.newScheduledThreadPool(2);
-    /** 可取消的只读观察，不拥有写操作生命周期。 */
+    /**
+     * 可取消的只读观察，不拥有写操作生命周期。
+     */
     private ScheduledFuture<?> observer;
     private boolean running;
     private long generation;
     private State reportedResult;
 
-    LiveData<State> state() { return state; }
+    LiveData<State> state() {
+        return state;
+    }
 
     // 仅在页面展示完成提示时消费，返回页面或重建视图时不重复弹出。
     boolean consumeResult(State value) {
@@ -48,7 +54,9 @@ public class ImageLearningViewModel extends ViewModel {
         return true;
     }
 
-    synchronized boolean isRunning() { return running; }
+    synchronized boolean isRunning() {
+        return running;
+    }
 
     synchronized void start(HuoyanSdkClient bridge) {
         if (running) return;

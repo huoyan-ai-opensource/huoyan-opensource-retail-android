@@ -33,12 +33,16 @@ public final class RecognitionCandidateParcel implements Parcelable {
         return distance;
     }
 
-    /** 候选样本面积（尺寸加权重放字段，缺省 0）。 */
+    /**
+     * 候选样本面积（尺寸加权重放字段，缺省 0）。
+     */
     public double getSquare() {
         return square;
     }
 
-    /** 候选加权分（尺寸加权重放字段，缺省 0；可负——C 侧软加权公式产物）。 */
+    /**
+     * 候选加权分（尺寸加权重放字段，缺省 0；可负——C 侧软加权公式产物）。
+     */
     public double getRank() {
         return rank;
     }

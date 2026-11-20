@@ -30,15 +30,19 @@ public final class RecognitionItem {
     private final double rank;
     private final List<RecognitionCandidate> candidates;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public RecognitionItem(String clazz, double distance, int left, int top, int right, int bottom) {
         this(clazz, distance, left, top, right, bottom, 0.0, 0.0,
                 Collections.<RecognitionCandidate>emptyList());
     }
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public RecognitionItem(String clazz, double distance, int left, int top, int right,
-            int bottom, double square, double rank, List<RecognitionCandidate> candidates) {
+                           int bottom, double square, double rank, List<RecognitionCandidate> candidates) {
         this.clazz = clazz;
         this.distance = distance;
         this.left = left;
@@ -51,52 +55,72 @@ public final class RecognitionItem {
                 Objects.requireNonNull(candidates, "candidates 不能为空")));
     }
 
-    /** 分类编码；由业务应用映射商品。 */
+    /**
+     * 分类编码；由业务应用映射商品。
+     */
     public String getClazz() {
         return clazz;
     }
 
-    /** 识别距离，数值语义由 SDK 定义，不是置信度。 */
+    /**
+     * 识别距离，数值语义由 SDK 定义，不是置信度。
+     */
     public double getDistance() {
         return distance;
     }
 
-    /** 框左侧像素坐标。 */
+    /**
+     * 框左侧像素坐标。
+     */
     public int getLeft() {
         return left;
     }
 
-    /** 框顶部像素坐标。 */
+    /**
+     * 框顶部像素坐标。
+     */
     public int getTop() {
         return top;
     }
 
-    /** 框右侧像素坐标。 */
+    /**
+     * 框右侧像素坐标。
+     */
     public int getRight() {
         return right;
     }
 
-    /** 框底部像素坐标。 */
+    /**
+     * 框底部像素坐标。
+     */
     public int getBottom() {
         return bottom;
     }
 
-    /** winner 样本面积（尺寸加权重放字段，缺省 0）。 */
+    /**
+     * winner 样本面积（尺寸加权重放字段，缺省 0）。
+     */
     public double getSquare() {
         return square;
     }
 
-    /** winner 加权分（尺寸加权重放字段，缺省 0；可负——C 侧软加权公式产物）。 */
+    /**
+     * winner 加权分（尺寸加权重放字段，缺省 0；可负——C 侧软加权公式产物）。
+     */
     public double getRank() {
         return rank;
     }
 
-    /** 不可变的同框候选列表，可包含命中项；空库/无候选路径可为空。 */
+    /**
+     * 不可变的同框候选列表，可包含命中项；空库/无候选路径可为空。
+     */
     public List<RecognitionCandidate> getCandidates() {
         return candidates;
     }
 
-    /** 返回有效轴对齐框坐标副本；无面积时返回 null。 */
+    /**
+     * 返回有效轴对齐框坐标副本；无面积时返回 null。
+     */
     public float[] getPoints() {
         float[] points = new float[]{left, top, right, bottom};
         float left = Math.min(points[0], points[2]), right = Math.max(points[0], points[2]);

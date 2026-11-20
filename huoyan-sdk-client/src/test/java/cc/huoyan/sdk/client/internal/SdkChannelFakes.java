@@ -33,7 +33,9 @@ import cc.huoyan.app.aidl.StatusSnapshotParcel;
  */
 final class SdkChannelFakes {
 
-    /** 记录式绑定操作：可设定 bind 成败，计数 bind/unbind。 */
+    /**
+     * 记录式绑定操作：可设定 bind 成败，计数 bind/unbind。
+     */
     static final class RecordingBindOps implements SdkCommBinding.BindOps {
 
         boolean bindAccepted = true;
@@ -52,7 +54,9 @@ final class SdkChannelFakes {
         }
     }
 
-    /** 捕获式主线程调度：记录 post/postDelayed 任务与延迟，由测试手动推进（模拟主线程时序）。 */
+    /**
+     * 捕获式主线程调度：记录 post/postDelayed 任务与延迟，由测试手动推进（模拟主线程时序）。
+     */
     static final class CapturingScheduler implements SdkCommBinding.Scheduler {
 
         final List<Runnable> posted = new ArrayList<>();
@@ -77,7 +81,9 @@ final class SdkChannelFakes {
             delays.clear();
         }
 
-        /** 执行并清空全部即时任务（模拟主线程消化消息队列）。 */
+        /**
+         * 执行并清空全部即时任务（模拟主线程消化消息队列）。
+         */
         void runPosted() {
             List<Runnable> snapshot = new ArrayList<>(posted);
             posted.clear();
@@ -86,7 +92,9 @@ final class SdkChannelFakes {
             }
         }
 
-        /** 执行最近一个延迟任务（模拟退避到期重连）。 */
+        /**
+         * 执行最近一个延迟任务（模拟退避到期重连）。
+         */
         void runLastDelayed() {
             Runnable task = delayed.remove(delayed.size() - 1);
             delays.remove(delays.size() - 1);
@@ -94,7 +102,9 @@ final class SdkChannelFakes {
         }
     }
 
-    /** 记录式打点：收集 [Biz] 消息。 */
+    /**
+     * 记录式打点：收集 [Biz] 消息。
+     */
     static final class RecordingEventLog implements SdkCommBinding.EventLog {
 
         final List<String> messages = new ArrayList<>();
@@ -111,26 +121,81 @@ final class SdkChannelFakes {
      * （本替身只服务状态查询路径，不模拟识别/学习行为）。
      */
     static class FakeSdkChannelBridge implements SdkChannelBridge {
-        @Override public cc.huoyan.app.aidl.GoodsListResultParcel listGoods(long syncTimestamp, int current, int size) { return null; }
-        @Override public cc.huoyan.app.aidl.GoodsDownloadResultParcel downloadGoods(int size) { return null; }
-        @Override public cc.huoyan.app.aidl.GoodsDownloadProgressParcel getDownloadGoodsProgress() { return null; }
-        @Override public cc.huoyan.app.aidl.ImageFlowProgressParcel downloadImagesAndLearnByGoodsId(long[] goodsIds) { return null; }
-        @Override public cc.huoyan.app.aidl.GoodsResultParcel getGoods(String goodsId) { return null; }
-        @Override public cc.huoyan.app.aidl.GoodsQueryResultParcel queryGoods(String keyword, String name, String plu, int isDeleted, int current, int size, String sortBy, String sortOrder) { return null; }
-        @Override public cc.huoyan.app.aidl.GoodsCountResultParcel getGoodsCount(String keyword, String name, String plu, int isDeleted) { return null; }
-        @Override public cc.huoyan.app.aidl.GoodsBatchResultParcel batchUpdateGoods(String[] goodsIds, GoodsSaveParcel changes) { return null; }
-        @Override public cc.huoyan.app.aidl.GoodsBatchResultParcel batchDeleteGoods(String[] goodsIds) { return null; }
-        @Override public cc.huoyan.app.aidl.ImageFlowProgressParcel downloadImagesAndLearn() { return null; }
-        @Override public cc.huoyan.app.aidl.ImageFlowProgressParcel getImageDownloadProgress() { return null; }
-        @Override public cc.huoyan.app.aidl.ImageFlowProgressParcel getImageLearnProgress() { return null; }
-
-        /** 查询云端开关的测试占位。 */
         @Override
-        public cc.huoyan.app.aidl.CloudStatusParcel getCloudStatus() { return null; }
+        public cc.huoyan.app.aidl.GoodsListResultParcel listGoods(long syncTimestamp, int current, int size) {
+            return null;
+        }
 
-        /** 设置云端开关的测试占位。 */
         @Override
-        public cc.huoyan.app.aidl.CloudStatusParcel setCloudStatus(boolean enabled) { return null; }
+        public cc.huoyan.app.aidl.GoodsDownloadResultParcel downloadGoods(int size) {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.app.aidl.GoodsDownloadProgressParcel getDownloadGoodsProgress() {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.app.aidl.ImageFlowProgressParcel downloadImagesAndLearnByGoodsId(long[] goodsIds) {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.app.aidl.GoodsResultParcel getGoods(String goodsId) {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.app.aidl.GoodsQueryResultParcel queryGoods(String keyword, String name, String plu, int isDeleted, int current, int size, String sortBy, String sortOrder) {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.app.aidl.GoodsCountResultParcel getGoodsCount(String keyword, String name, String plu, int isDeleted) {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.app.aidl.GoodsBatchResultParcel batchUpdateGoods(String[] goodsIds, GoodsSaveParcel changes) {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.app.aidl.GoodsBatchResultParcel batchDeleteGoods(String[] goodsIds) {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.app.aidl.ImageFlowProgressParcel downloadImagesAndLearn() {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.app.aidl.ImageFlowProgressParcel getImageDownloadProgress() {
+            return null;
+        }
+
+        @Override
+        public cc.huoyan.app.aidl.ImageFlowProgressParcel getImageLearnProgress() {
+            return null;
+        }
+
+        /**
+         * 查询云端开关的测试占位。
+         */
+        @Override
+        public cc.huoyan.app.aidl.CloudStatusParcel getCloudStatus() {
+            return null;
+        }
+
+        /**
+         * 设置云端开关的测试占位。
+         */
+        @Override
+        public cc.huoyan.app.aidl.CloudStatusParcel setCloudStatus(boolean enabled) {
+            return null;
+        }
 
 
         boolean connected;
@@ -181,14 +246,21 @@ final class SdkChannelFakes {
         }
 
         @Override
-        public cc.huoyan.app.aidl.LicenseModelsParcel queryDeviceModels() { return null; }
-        public cc.huoyan.app.aidl.LicenseModelsParcel queryLicenseModels(String activationCode) { return null; }
-
-    public BaseResultParcel activate(String activationCode, String modelCode) {
+        public cc.huoyan.app.aidl.LicenseModelsParcel queryDeviceModels() {
             return null;
         }
 
-        /** 构造测试桥使用的 RGB 字节载体。 */
+        public cc.huoyan.app.aidl.LicenseModelsParcel queryLicenseModels(String activationCode) {
+            return null;
+        }
+
+        public BaseResultParcel activate(String activationCode, String modelCode) {
+            return null;
+        }
+
+        /**
+         * 构造测试桥使用的 RGB 字节载体。
+         */
         @Override
         public ImageRequestParcel createImageRequest(byte[] rgbFrame, int width, int height) {
             return new ImageRequestParcel(null, rgbFrame, rgbFrame.length, width, height,
@@ -266,27 +338,35 @@ final class SdkChannelFakes {
         }
 
         @Override
-    public cc.huoyan.app.aidl.PhotoUploadResultParcel uploadPhoto(cc.huoyan.app.aidl.ImageRequestParcel image) {
-        return null;
-    }
+        public cc.huoyan.app.aidl.PhotoUploadResultParcel uploadPhoto(cc.huoyan.app.aidl.ImageRequestParcel image) {
+            return null;
+        }
 
-    @Override
+        @Override
         public BaseResultParcel submitFeedback(FeedbackParcel feedback) {
             return null;
         }
 
         // ---- 绑定/商品 CRUD（本替身只服务状态查询路径，占位可预设） ----
 
-        /** bindDevice 预设回执。 */
+        /**
+         * bindDevice 预设回执。
+         */
         BindingResultParcel bindDeviceResult;
 
-        /** createGoods 预设回执。 */
+        /**
+         * createGoods 预设回执。
+         */
         GoodsResultParcel createGoodsResult;
 
-        /** updateGoods 预设回执。 */
+        /**
+         * updateGoods 预设回执。
+         */
         GoodsResultParcel updateGoodsResult;
 
-        /** deleteGoods 预设回执。 */
+        /**
+         * deleteGoods 预设回执。
+         */
         BaseResultParcel deleteGoodsResult;
 
         @Override

@@ -28,42 +28,73 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/** 授权面板视图；云状态和面板查询由 Presenter 管理，激活交给共享弹窗会话。 */
+/**
+ * 授权面板视图；云状态和面板查询由 Presenter 管理，激活交给共享弹窗会话。
+ */
 public class PanelFragment extends BaseFragment implements PanelPresenter.View {
-    /** 授权页面的既有日志标签。 */
+    /**
+     * 授权页面的既有日志标签。
+     */
     private static final String LOG_TAG = "PanelFragment";
-    /** 客户端版本展示。 */
+    /**
+     * 客户端版本展示。
+     */
     private TextView appVersionTv;
-    /** 可复制的设备序列号展示。 */
+    /**
+     * 可复制的设备序列号展示。
+     */
     private TextView hardwareSerialTv;
-    /** SDK 版本展示。 */
+    /**
+     * SDK 版本展示。
+     */
     private TextView sdkVersionTv;
-    /** 模型实际就绪状态展示。 */
+    /**
+     * 模型实际就绪状态展示。
+     */
     private TextView activeStatusTv;
-    /** 授权起始时间展示。 */
+    /**
+     * 授权起始时间展示。
+     */
     private TextView serviceStartTimeTv;
-    /** 授权到期时间展示。 */
+    /**
+     * 授权到期时间展示。
+     */
     private TextView serviceExpireTimeTv;
-    /** 授权类型展示。 */
+    /**
+     * 授权类型展示。
+     */
     private TextView serialTypeTv;
-    /** 打开激活码输入的入口。 */
+    /**
+     * 打开激活码输入的入口。
+     */
     private TextView activateTv;
-    /** 云服务开关控件。 */
+    /**
+     * 云服务开关控件。
+     */
     private Switch cloudServiceSwitch;
-    /** 程序化回显时屏蔽开关监听，避免把渲染误当作用户操作。 */
+    /**
+     * 程序化回显时屏蔽开关监听，避免把渲染误当作用户操作。
+     */
     private boolean renderingCloudStatus;
-    /** 云开关与授权快照协调者。 */
+    /**
+     * 云开关与授权快照协调者。
+     */
     private PanelPresenter presenter;
 
 
-    /** 根据是否独立页面选择授权布局。 */
+    /**
+     * 根据是否独立页面选择授权布局。
+     */
     @Override
     protected int getLayoutResId() {
-        if (getArguments() != null && getArguments().getBoolean("standalone")) return R.layout.page_authorization;
+        if (getArguments() != null && getArguments().getBoolean("standalone"))
+            return R.layout.page_authorization;
         return R.layout.fragment_panel;
     }
 
-    /** 创建当前视图的 Presenter 并绑定界面操作。 */
+    /**
+     * 创建当前视图的 Presenter 并绑定界面操作。
+     */
     @Override
     protected void initView(View view) {
         presenter = new PanelPresenter(this, IOThreadHelper.getInstance()::post,
@@ -94,7 +125,8 @@ public class PanelFragment extends BaseFragment implements PanelPresenter.View {
         });
         cloudServiceSwitch = view.findViewById(R.id.cloudServiceSwitch);
         cloudServiceSwitch.setOnCheckedChangeListener((button, checked) -> {
-            if (renderingCloudStatus || presenter.cloudRunning() || presenter.cloudEnabled() == null || checked == presenter.cloudEnabled()) return;
+            if (renderingCloudStatus || presenter.cloudRunning() || presenter.cloudEnabled() == null || checked == presenter.cloudEnabled())
+                return;
             renderCloudStatus();
             if (checked) {
                 if (!checkCloudBinding()) return;
@@ -120,24 +152,38 @@ public class PanelFragment extends BaseFragment implements PanelPresenter.View {
 
     }
 
-    /** 开启云服务仍须先确认门店绑定；读取和关闭不受此条件限制。 */
+    /**
+     * 开启云服务仍须先确认门店绑定；读取和关闭不受此条件限制。
+     */
     private void requestCloudStatus(Boolean requested) {
         if (Boolean.TRUE.equals(requested) && !checkCloudBinding()) return;
         presenter.cloud(requested);
     }
-    /** 回显真实云状态，程序赋值不触发写接口。 */
-    @Override public void cloudChanged() {
+
+    /**
+     * 回显真实云状态，程序赋值不触发写接口。
+     */
+    @Override
+    public void cloudChanged() {
         renderCloudStatus();
         if (BuildConfig.DEBUG) Log.d(LOG_TAG, "[Biz] cloud_enabled=" + presenter.cloudEnabled());
     }
-    /** 显示云接口失败原因。 */
-    @Override public void cloudFailed(CloudStatus response) {
+
+    /**
+     * 显示云接口失败原因。
+     */
+    @Override
+    public void cloudFailed(CloudStatus response) {
+        if (response != null && cc.huoyan.retail.sdk.SdkPermissionGuide.showIfRequired(
+                requireActivity(), response.getCode(), response.getReason())) return;
         String reason = response == null ? getString(R.string.sdk_error_not_connected) : response.getReason();
         if (reason == null || reason.isEmpty()) reason = String.valueOf(response.getCode());
         ToastEx.createToast(requireContext(), getString(R.string.panel_cloud_failed, reason));
     }
 
-    /** 回显 Presenter 的真实云状态和忙碌状态，不触发写请求。 */
+    /**
+     * 回显 Presenter 的真实云状态和忙碌状态，不触发写请求。
+     */
     private void renderCloudStatus() {
         cloudServiceSwitch.setEnabled(false);
         // 回显不调用写接口；监听器通过请求中标记与终态值过滤程序赋值。
@@ -147,24 +193,35 @@ public class PanelFragment extends BaseFragment implements PanelPresenter.View {
         cloudServiceSwitch.setEnabled(!presenter.cloudRunning() && presenter.cloudEnabled() != null);
     }
 
-    /** 保留开启云服务前的门店绑定提示。 */
+    /**
+     * 保留开启云服务前的门店绑定提示。
+     */
     private boolean checkCloudBinding() {
         if (SPManager.getInstance().hasBoundShop()) return true;
         ToastEx.createToast(requireContext(), getString(R.string.cloud_bind_shop_first));
         return false;
     }
 
-    /** 返回控制面板时重新读取 SDK 的云端服务状态。 */
+    /**
+     * 返回控制面板时重新读取 SDK 的云端服务状态。
+     */
     @Override
     public void onResume() {
         super.onResume();
         presenter.resume();
     }
 
-    /** 展示 SDK 与证书快照。 */
-    @Override public void panelLoaded(StatusSnapshot status, CertInfo cert, Capability capability) { updatePanelUi(status, cert, capability); }
+    /**
+     * 展示 SDK 与证书快照。
+     */
+    @Override
+    public void panelLoaded(StatusSnapshot status, CertInfo cert, Capability capability) {
+        updatePanelUi(status, cert, capability);
+    }
 
-    /** 将 SDK 状态和证书快照映射为本地化展示。 */
+    /**
+     * 将 SDK 状态和证书快照映射为本地化展示。
+     */
     private void updatePanelUi(StatusSnapshot status, CertInfo certInfo, Capability capability) {
         appVersionTv.setText(String.format("v%s", BuildConfig.VERSION_NAME));
         if (mContext != null) {
@@ -200,7 +257,9 @@ public class PanelFragment extends BaseFragment implements PanelPresenter.View {
         return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault()).format(new Date(epochSeconds * 1000L));
     }
 
-    /** 请求最新面板与证书信息。 */
+    /**
+     * 请求最新面板与证书信息。
+     */
     @Override
     protected void loadData() {
         presenter.refresh();
@@ -208,7 +267,9 @@ public class PanelFragment extends BaseFragment implements PanelPresenter.View {
                 ? R.string.land_activate_device : R.string.panel_activation_button);
     }
 
-    /** 解绑 Presenter，阻止旧查询回写。 */
+    /**
+     * 解绑 Presenter，阻止旧查询回写。
+     */
     @Override
     public void onDestroyView() {
         presenter.detach();

@@ -66,7 +66,7 @@
 
             <TextView
                 android:id="@+id/cancel"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_24"
                 android:layout_weight="1"
                 android:background="@drawable/btn_e1e3ea_radius_3"
@@ -79,7 +79,7 @@
 
             <TextView
                 android:id="@+id/confirm"
-                android:layout_width="0dp"
+                android:layout_width="@dimen/dp_0"
                 android:layout_height="@dimen/dp_24"
                 android:layout_marginStart="@dimen/dp_8"
                 android:layout_weight="1"

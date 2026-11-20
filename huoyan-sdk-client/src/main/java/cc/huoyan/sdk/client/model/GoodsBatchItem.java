@@ -14,24 +14,32 @@ public final class GoodsBatchItem {
     private final int code;
     private final String reason;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public GoodsBatchItem(String goodsId, int code, String reason) {
         this.goodsId = goodsId;
         this.code = code;
         this.reason = reason;
     }
 
-    /** 目标商品 id（回显入参元素）。 */
+    /**
+     * 目标商品 id（回显入参元素）。
+     */
     public String getGoodsId() {
         return goodsId;
     }
 
-    /** 0=成功；非 0=失败（reason 携带说明）。 */
+    /**
+     * 0=成功；非 0=失败（reason 携带说明）。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 读取 getReason 对应数据。 */
+    /**
+     * 读取 getReason 对应数据。
+     */
     public String getReason() {
         return reason;
     }

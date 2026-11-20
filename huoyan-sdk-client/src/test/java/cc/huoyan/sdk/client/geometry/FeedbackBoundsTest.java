@@ -1,11 +1,14 @@
 package cc.huoyan.sdk.client.geometry;
+
 import cc.huoyan.sdk.client.geometry.FeedbackBounds;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
 
-/** 反馈坐标转换覆盖 AABB、OBB、越界及无效坐标。 */
+/**
+ * 反馈坐标转换覆盖 AABB、OBB、越界及无效坐标。
+ */
 public class FeedbackBoundsTest {
     @Test
     public void aabbKeepsOriginalImageCoordinates() {

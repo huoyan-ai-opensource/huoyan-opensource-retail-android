@@ -3,7 +3,9 @@ package cc.huoyan.retail.settings;
 import java.util.ArrayList;
 import java.util.List;
 
-/** 激活码提交格式及输入框分段，沿用现有十六位手输规则。 */
+/**
+ * 激活码提交格式及输入框分段，沿用现有十六位手输规则。
+ */
 final class ActivationCode {
     /**
      * 激活码规范化（纯逻辑，供单测）：去输入中已有连字符后重新分组为带连字符
@@ -14,7 +16,9 @@ final class ActivationCode {
      * @param input 手输纯码/带连字符码、扫码 serial
      * @return 带连字符的规范化激活码；长度异常时原样返回
      */
-    static String normalize(String input) { return cc.huoyan.sdk.client.activation.ActivationCode.normalize(input); }
+    static String normalize(String input) {
+        return cc.huoyan.sdk.client.activation.ActivationCode.normalize(input);
+    }
 
     /**
      * 激活码分段（纯逻辑，供单测）：先去连字符（SP 回填带连字符，用户
@@ -41,6 +45,10 @@ final class ActivationCode {
         return segments;
     }
 
-    /** 手输入口要求去掉连字符后恰好十六位；扫码不套用此限制。 */
-    static boolean validManual(String input) { return cc.huoyan.sdk.client.activation.ActivationCode.validManual(input); }
+    /**
+     * 手输入口要求去掉连字符后恰好十六位；扫码不套用此限制。
+     */
+    static boolean validManual(String input) {
+        return cc.huoyan.sdk.client.activation.ActivationCode.validManual(input);
+    }
 }

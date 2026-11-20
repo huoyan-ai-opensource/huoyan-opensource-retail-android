@@ -32,14 +32,18 @@ public final class BindingResultParcel implements Parcelable {
     private final String shopName;
     private final String shopNo;
 
-    /** 后端门店地址，未填写为空字符串。 */
+    /**
+     * 后端门店地址，未填写为空字符串。
+     */
     private final String shopAddress;
 
-    /** 后端门店电话，未填写为空字符串，不使用联系人手机号替代。 */
+    /**
+     * 后端门店电话，未填写为空字符串，不使用联系人手机号替代。
+     */
     private final String shopPhone;
 
     public BindingResultParcel(int code, String reason, BindDeviceParcel request,
-            String accountId, String accountName, String shopId, String shopName, String shopNo, String shopAddress, String shopPhone) {
+                               String accountId, String accountName, String shopId, String shopName, String shopNo, String shopAddress, String shopPhone) {
         this.code = code;
         this.reason = reason;
         this.request = request;
@@ -56,47 +60,65 @@ public final class BindingResultParcel implements Parcelable {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 客户端传入回显（全字段，没传置空）；守卫拒绝/空请求时为 null。 */
+    /**
+     * 客户端传入回显（全字段，没传置空）；守卫拒绝/空请求时为 null。
+     */
     public BindDeviceParcel getRequest() {
         return request;
     }
 
-    /** 后端实际：归属账号标识（字符串化）；错误时 null。 */
+    /**
+     * 后端实际：归属账号标识（字符串化）；错误时 null。
+     */
     public String getAccountId() {
         return accountId;
     }
 
-    /** 后端实际：归属账号名称；错误时 null。 */
+    /**
+     * 后端实际：归属账号名称；错误时 null。
+     */
     public String getAccountName() {
         return accountName;
     }
 
-    /** 后端实际：门店标识（wujing 内部门店 ID）；错误时 null。 */
+    /**
+     * 后端实际：门店标识（wujing 内部门店 ID）；错误时 null。
+     */
     public String getShopId() {
         return shopId;
     }
 
-    /** 后端实际：门店名称；错误时 null。 */
+    /**
+     * 后端实际：门店名称；错误时 null。
+     */
     public String getShopName() {
         return shopName;
     }
 
-    /** 后端实际：门店编号（自动生成时为 SH+雪花）；错误时 null。 */
+    /**
+     * 后端实际：门店编号（自动生成时为 SH+雪花）；错误时 null。
+     */
     public String getShopNo() {
         return shopNo;
     }
 
-    /** 返回后端门店地址。 */
+    /**
+     * 返回后端门店地址。
+     */
     public String getShopAddress() {
         return shopAddress;
     }
 
-    /** 返回后端门店电话。 */
+    /**
+     * 返回后端门店电话。
+     */
     public String getShopPhone() {
         return shopPhone;
     }

@@ -14,22 +14,32 @@ import cc.huoyan.retail.common.LocalizedText;
 import java.util.Objects;
 
 
-/** 改品宫格适配器，呈现商品信息和相似候选标签，选择状态仅在主线程更新。 */
+/**
+ * 改品宫格适配器，呈现商品信息和相似候选标签，选择状态仅在主线程更新。
+ */
 public class RecognizeModifyCandidateAdapter extends RetailAdapter<RecognizeModifyCandidate> {
-    /** 当前选中的商品编码，以底色显示选择状态。 */
+    /**
+     * 当前选中的商品编码，以底色显示选择状态。
+     */
     private String selectedPlu;
 
-    /** 使用与学习选择器共享的三层商品卡片。 */
+    /**
+     * 使用与学习选择器共享的三层商品卡片。
+     */
     public RecognizeModifyCandidateAdapter() {
         super(R.layout.item_goods_choice);
     }
 
-    /** 在查询结果绑定前设置当前选择。 */
+    /**
+     * 在查询结果绑定前设置当前选择。
+     */
     public void setSelectedPlu(String selectedPlu) {
         this.selectedPlu = selectedPlu;
     }
 
-    /** 只刷新原选择与新选择两张卡片，避免整页重绑。 */
+    /**
+     * 只刷新原选择与新选择两张卡片，避免整页重绑。
+     */
     public void refreshSelection(String selectedPlu) {
         String previous = this.selectedPlu;
         if (Objects.equals(previous, selectedPlu)) {
@@ -45,7 +55,9 @@ public class RecognizeModifyCandidateAdapter extends RetailAdapter<RecognizeModi
         }
     }
 
-    /** 绑定商品三层信息与选择底色。 */
+    /**
+     * 绑定商品三层信息与选择底色。
+     */
     @Override
     protected void convert(@NonNull RowViewHolder holder, RecognizeModifyCandidate item) {
         GoodsEntity goods = item.getGoods();
@@ -63,10 +75,12 @@ public class RecognizeModifyCandidateAdapter extends RetailAdapter<RecognizeModi
                 LocalizedText.unit(getContext(), goods.getUnit())));
     }
 
-    /** 局部刷新仅更新选择状态。 */
+    /**
+     * 局部刷新仅更新选择状态。
+     */
     @Override
     protected void convert(@NonNull RowViewHolder holder, RecognizeModifyCandidate item,
-            java.util.List<? extends Object> payloads) {
+                           java.util.List<? extends Object> payloads) {
         if (payloads.isEmpty()) {
             convert(holder, item);
             return;
@@ -76,7 +90,9 @@ public class RecognizeModifyCandidateAdapter extends RetailAdapter<RecognizeModi
         bindSelection(holder, selected);
     }
 
-    /** 通过背景突出选中卡片，与橙色相似候选标签区分。 */
+    /**
+     * 通过背景突出选中卡片，与橙色相似候选标签区分。
+     */
     private void bindSelection(RowViewHolder holder, boolean selected) {
         holder.itemView.setSelected(selected);
         holder.itemView.findViewById(R.id.main).setSelected(selected);

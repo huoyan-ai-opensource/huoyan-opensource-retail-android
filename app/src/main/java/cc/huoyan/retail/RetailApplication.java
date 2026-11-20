@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
-
 import xcrash.ICrashCallback;
 import xcrash.XCrash;
 
@@ -31,13 +30,17 @@ public class RetailApplication extends Application {
     }
 
 
-    /** 应用级资源同样跟随系统映射，供 Toast、后台任务及 SDK 宿主界面读取。 */
+    /**
+     * 应用级资源同样跟随系统映射，供 Toast、后台任务及 SDK 宿主界面读取。
+     */
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocalePreferenceUtil.wrap(base));
     }
 
-    /** 系统配置变化时更新应用资源；Activity 由系统重建并重新包装资源。 */
+    /**
+     * 系统配置变化时更新应用资源；Activity 由系统重建并重新包装资源。
+     */
     @Override
     public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);

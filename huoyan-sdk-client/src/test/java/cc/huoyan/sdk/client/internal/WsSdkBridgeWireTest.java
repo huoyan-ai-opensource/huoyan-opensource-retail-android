@@ -2,6 +2,7 @@ package cc.huoyan.sdk.client.internal;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+
 import cc.huoyan.sdk.client.internal.ws.WsV2Codec;
 
 import org.java_websocket.WebSocket;
@@ -11,7 +12,9 @@ import org.junit.Test;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+
 import cc.huoyan.app.aidl.ImageRequestParcel;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -19,7 +22,9 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
-/** 回环 WS 服务验证真实请求命令、参数和响应路由，不依赖现场 SDK。 */
+/**
+ * 回环 WS 服务验证真实请求命令、参数和响应路由，不依赖现场 SDK。
+ */
 public class WsSdkBridgeWireTest {
     @Test(timeout = 15000)
     public void newContract_roundTripsThroughWebSocket() throws Exception {
@@ -108,10 +113,13 @@ public class WsSdkBridgeWireTest {
         server.start();
         assertTrue(server.started.await(3, TimeUnit.SECONDS));
         WsSdkBridge transport = new WsSdkBridge(new WsV2Codec.Endpoint("127.0.0.1", server.getPort(), "/ws"),
-                message -> { if (message.startsWith("[Biz] ws_connect ")) connected.countDown(); }, () -> true);
+                message -> {
+                    if (message.startsWith("[Biz] ws_connect ")) connected.countDown();
+                }, () -> true);
         cc.huoyan.sdk.client.HuoyanSdkClient client = new DefaultSdkClient(transport, true, "1.2.3");
         try {
-            client.connect(); assertTrue(connected.await(3, TimeUnit.SECONDS));
+            client.connect();
+            assertTrue(connected.await(3, TimeUnit.SECONDS));
             server.data = JSON.parseObject("{\"request\":{\"account_id\":2115027529298350203,"
                     + "\"shop_id\":\"external-user:007\"},\"response\":{\"account_id\":\"2115027529298350203\","
                     + "\"shop_id\":\"internal-shop-9\"}}");
@@ -131,50 +139,65 @@ public class WsSdkBridgeWireTest {
             assertEquals(123, server.take("listGoods").getJSONObject("params").getLongValue("sync_timestamp"));
             assertEquals(1, client.queryGoods("面包", null, null, 1, 2, 50, "name", "desc").getTotal());
             JSONObject query = server.take("queryGoods").getJSONObject("params");
-            assertEquals("面包", query.getString("keyword")); assertEquals("desc", query.getString("sort_order"));
+            assertEquals("面包", query.getString("keyword"));
+            assertEquals("desc", query.getString("sort_order"));
             assertFalse(query.containsKey("name"));
             server.data = JSON.parseObject("{\"count\":7,\"goods\":{\"id\":\"9\"}}");
-            assertEquals(7, client.getGoodsCount(null, null, null, -1).getCount()); server.take("getGoodsCount");
-            assertEquals("9", client.getGoods("9").getRecord().getGoodsId()); server.take("getGoods");
+            assertEquals(7, client.getGoodsCount(null, null, null, -1).getCount());
+            server.take("getGoodsCount");
+            assertEquals("9", client.getGoods("9").getRecord().getGoodsId());
+            server.take("getGoods");
             server.data = JSON.parseObject("{\"phase\":\"SUCCESS\",\"sync_timestamp\":321,\"added\":2,\"fail_count\":1}");
             assertEquals(2, client.downloadGoods(100).getAdded());
             assertEquals(100, server.take("downloadGoods").getJSONObject("params").getIntValue("size"));
-            assertEquals(321, client.getDownloadGoodsProgress().getSyncTimestamp()); server.take("getDownloadGoodsProgress");
+            assertEquals(321, client.getDownloadGoodsProgress().getSyncTimestamp());
+            server.take("getDownloadGoodsProgress");
             server.data = JSON.parseObject("{\"items\":[{\"goods_id\":\"9\",\"code\":0},{\"goods_id\":\"10\",\"code\":404,\"reason\":\"不存在\"}]}");
             cc.huoyan.sdk.client.model.GoodsSave changes = new cc.huoyan.sdk.client.model.GoodsSave(
-                    null,null,null,null,null,null,null,null,null,null,null,0L,null,null);
-            assertEquals(404, client.batchUpdateGoods(new String[]{"9","10"}, changes).getItems().get(1).getCode());
+                    null, null, null, null, null, null, null, null, null, null, null, 0L, null, null);
+            assertEquals(404, client.batchUpdateGoods(new String[]{"9", "10"}, changes).getItems().get(1).getCode());
             JSONObject update = server.take("batchUpdateGoods").getJSONObject("params");
             assertEquals(0, update.getJSONObject("changes").getLongValue("price"));
             assertFalse(update.getJSONObject("changes").containsKey("sale_mode"));
-            assertEquals(2, client.batchDeleteGoods(new String[]{"9","10"}).getItems().size()); server.take("batchDeleteGoods");
+            assertEquals(2, client.batchDeleteGoods(new String[]{"9", "10"}).getItems().size());
+            server.take("batchDeleteGoods");
             server.data = JSON.parseObject("{\"phase\":\"SUCCESS\",\"learn_success\":2,\"learn_fail\":1,\"skipped_count\":3}");
             assertEquals(3, client.downloadImagesAndLearnByGoodsId(new long[]{9007199254740993L}).getSkippedCount());
             assertEquals(9007199254740993L, server.take("downloadImagesAndLearnByGoodsId").getJSONObject("params").getJSONArray("goods_ids").getLongValue(0));
             server.data = JSON.parseObject("{\"backup_time_epoch_ms\":456,\"schema_version\":3,\"file_format_version\":4}");
-            assertEquals(0, client.backupRecognitionData().getCode()); server.take("backupRecognitionData");
-            assertEquals(456, client.getRecognitionDataInfo().getBackupTimeEpochMs()); server.take("getRecognitionDataInfo");
-            assertEquals(0, client.restoreRecognitionData().getCode()); server.take("restoreRecognitionData");
+            assertEquals(0, client.backupRecognitionData().getCode());
+            server.take("backupRecognitionData");
+            assertEquals(456, client.getRecognitionDataInfo().getBackupTimeEpochMs());
+            server.take("getRecognitionDataInfo");
+            assertEquals(0, client.restoreRecognitionData().getCode());
+            server.take("restoreRecognitionData");
             server.data = JSON.parseObject("{\"photo_file_url\":\"https://files.example/photo.jpg\"}");
             server.imageMode = true;
             String url = client.uploadPhoto(cc.huoyan.sdk.client.SdkImage.encoded(
-                    new byte[]{(byte)255,(byte)216,(byte)255},0,0,2)).getPhotoFileUrl();
-            assertEquals("https://files.example/photo.jpg", url); server.take("uploadPhoto");
+                    new byte[]{(byte) 255, (byte) 216, (byte) 255}, 0, 0, 2)).getPhotoFileUrl();
+            assertEquals("https://files.example/photo.jpg", url);
+            server.take("uploadPhoto");
             server.imageMode = false;
             cc.huoyan.sdk.client.model.Feedback feedback = new cc.huoyan.sdk.client.model.Feedback(
                     "request-1", url, 1, java.util.Collections.singletonList(
-                    new cc.huoyan.sdk.client.model.FeedbackItem(0,java.util.Collections.emptyList(),new cc.huoyan.sdk.client.model.FeedbackResult("42","面包","SDK识别"),10.0,20.0,30.0,40.0)));
+                    new cc.huoyan.sdk.client.model.FeedbackItem(0, java.util.Collections.emptyList(), new cc.huoyan.sdk.client.model.FeedbackResult("42", "面包", "SDK识别"), 10.0, 20.0, 30.0, 40.0)));
             assertEquals(0, client.submitFeedback(feedback).getCode());
             JSONObject sent = server.take("submitFeedback").getJSONObject("params");
             assertEquals(url, sent.getString("photo_file_url"));
             assertEquals("request-1", sent.getString("request_id"));
             assertEquals(10.0, sent.getJSONArray("items").getJSONObject(0).getDoubleValue("x"), 0);
             server.code = 409;
-            assertEquals(409, client.downloadGoods(100).getCode()); server.take("downloadGoods");
-        } finally { client.close(); server.stop(1000); }
+            assertEquals(409, client.downloadGoods(100).getCode());
+            server.take("downloadGoods");
+        } finally {
+            client.close();
+            server.stop(1000);
+        }
     }
 
-    /** 验证坐标实际进入 WS 请求，且同一条目顺序与商品、反馈类型一致。 */
+    /**
+     * 验证坐标实际进入 WS 请求，且同一条目顺序与商品、反馈类型一致。
+     */
     @Test(timeout = 15000)
     public void feedbackCoordinatesTravelInGoodsForDetectAndStudy() throws Exception {
         RecordingServer server = new RecordingServer();
@@ -193,8 +216,8 @@ public class WsSdkBridgeWireTest {
                 cc.huoyan.app.aidl.FeedbackParcel feedback = new cc.huoyan.app.aidl.FeedbackParcel(
                         "feedback-" + type, "https://files/frame.jpg", type,
                         java.util.Arrays.asList(
-                                new cc.huoyan.app.aidl.FeedbackItemParcel(0,java.util.Collections.emptyList(),new cc.huoyan.app.aidl.FeedbackResultParcel( "1001", "面包", "SDK识别"), 10D, 20D, 30D, 40D),
-                                new cc.huoyan.app.aidl.FeedbackItemParcel(0,java.util.Collections.emptyList(),new cc.huoyan.app.aidl.FeedbackResultParcel( "1002", "可颂", "手动修改"), 50D, 60D, 70D, 80D)));
+                                new cc.huoyan.app.aidl.FeedbackItemParcel(0, java.util.Collections.emptyList(), new cc.huoyan.app.aidl.FeedbackResultParcel("1001", "面包", "SDK识别"), 10D, 20D, 30D, 40D),
+                                new cc.huoyan.app.aidl.FeedbackItemParcel(0, java.util.Collections.emptyList(), new cc.huoyan.app.aidl.FeedbackResultParcel("1002", "可颂", "手动修改"), 50D, 60D, 70D, 80D)));
                 server.code = type == 1 ? 0 : -9;
                 assertEquals(server.code, bridge.submitFeedback(feedback).getCode());
                 JSONObject params = server.take("submitFeedback").getJSONObject("params");
@@ -254,11 +277,21 @@ public class WsSdkBridgeWireTest {
                 ImageRequestParcel image = bridge.createImageRequest(rgb, 1076, 756);
                 assertNull(image.getSharedMemory());
                 switch (cmd) {
-                    case "detect": assertEquals(0, bridge.detect(image).getCode()); break;
-                    case "recognize": assertEquals(0, bridge.recognize(image, 0).getCode()); break;
-                    case "itemLearn": assertEquals(0, bridge.itemLearn(image, "101").getCode()); break;
-                    case "importLearn": assertEquals(0, bridge.importLearn(image, "101").getCode()); break;
-                    default: assertEquals(0, bridge.batchLearn(image, "101").getCode()); break;
+                    case "detect":
+                        assertEquals(0, bridge.detect(image).getCode());
+                        break;
+                    case "recognize":
+                        assertEquals(0, bridge.recognize(image, 0).getCode());
+                        break;
+                    case "itemLearn":
+                        assertEquals(0, bridge.itemLearn(image, "101").getCode());
+                        break;
+                    case "importLearn":
+                        assertEquals(0, bridge.importLearn(image, "101").getCode());
+                        break;
+                    default:
+                        assertEquals(0, bridge.batchLearn(image, "101").getCode());
+                        break;
                 }
                 JSONObject request = server.take(cmd);
                 JSONObject params = request.getJSONObject("params");
@@ -286,7 +319,9 @@ public class WsSdkBridgeWireTest {
         try {
             assertTrue(server.started.await(3, TimeUnit.SECONDS));
             bridge = new WsSdkBridge(new WsV2Codec.Endpoint("127.0.0.1", server.getPort(), "/ws"),
-                    message -> { if (message.startsWith("[Biz] ws_connect ")) connected.countDown(); },
+                    message -> {
+                        if (message.startsWith("[Biz] ws_connect ")) connected.countDown();
+                    },
                     () -> true);
             bridge.connect();
             assertTrue(connected.await(3, TimeUnit.SECONDS));
@@ -320,7 +355,9 @@ public class WsSdkBridgeWireTest {
         assertFalse(request.containsKey("app_version"));
     }
 
-    /** 同机 WS 只拉起一次服务，断开释放绑定，再连接时创建新的绑定实例。 */
+    /**
+     * 同机 WS 只拉起一次服务，断开释放绑定，再连接时创建新的绑定实例。
+     */
     @Test(timeout = 15000)
     public void localServiceFollowsWsLifecycleWithoutDuplicateBindings() throws Exception {
         RecordingServer server = new RecordingServer();
@@ -330,17 +367,20 @@ public class WsSdkBridgeWireTest {
         server.start();
         assertTrue(server.started.await(3, TimeUnit.SECONDS));
         WsSdkBridge bridge = new WsSdkBridge(new WsV2Codec.Endpoint("127.0.0.1", server.getPort(), "/ws"),
-                message -> {}, () -> true, () -> {
-                    created.incrementAndGet();
-                    return (SdkChannelBridge) java.lang.reflect.Proxy.newProxyInstance(
-                            SdkChannelBridge.class.getClassLoader(), new Class[]{SdkChannelBridge.class},
-                            (proxy, method, args) -> {
-                                if (method.getName().equals("connect")) connects.incrementAndGet();
-                                else if (method.getName().equals("disconnect")) disconnects.incrementAndGet();
-                                else throw new AssertionError("拉起服务不应调用业务方法：" + method.getName());
-                                return null;
-                            });
-                });
+                message -> {
+                }, () -> true, () -> {
+            created.incrementAndGet();
+            return (SdkChannelBridge) java.lang.reflect.Proxy.newProxyInstance(
+                    SdkChannelBridge.class.getClassLoader(), new Class[]{SdkChannelBridge.class},
+                    (proxy, method, args) -> {
+                        if (method.getName().equals("connect")) connects.incrementAndGet();
+                        else if (method.getName().equals("disconnect"))
+                            disconnects.incrementAndGet();
+                        else
+                            throw new AssertionError("拉起服务不应调用业务方法：" + method.getName());
+                        return null;
+                    });
+        });
         try {
             bridge.connect();
             bridge.connect();
@@ -359,7 +399,9 @@ public class WsSdkBridgeWireTest {
         assertEquals(2, disconnects.get());
     }
 
-    /** 长任务未返回时，下载与学习进度仍可独立查询，终态按学习统计映射。 */
+    /**
+     * 长任务未返回时，下载与学习进度仍可独立查询，终态按学习统计映射。
+     */
     @Test(timeout = 15000)
     public void imagePackageProgressWhileDownloadIsInFlight() throws Exception {
         RecordingServer server = new RecordingServer();
@@ -370,7 +412,8 @@ public class WsSdkBridgeWireTest {
         try {
             assertTrue(server.started.await(3, TimeUnit.SECONDS));
             bridge = new WsSdkBridge(new WsV2Codec.Endpoint("127.0.0.1", server.getPort(), "/ws"),
-                    message -> {}, () -> true);
+                    message -> {
+                    }, () -> true);
             bridge.connect();
             long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(3);
             while (!bridge.isConnected() && System.nanoTime() < deadline) Thread.sleep(10);
@@ -420,10 +463,13 @@ public class WsSdkBridgeWireTest {
         assertTrue(server.started.await(2, TimeUnit.SECONDS));
         CountDownLatch connected = new CountDownLatch(1);
         WsSdkBridge bridge = new WsSdkBridge(new WsV2Codec.Endpoint("127.0.0.1", server.getPort(), "/ws"),
-                message -> { if (message.startsWith("[Biz] ws_connect ")) connected.countDown(); }, () -> true);
+                message -> {
+                    if (message.startsWith("[Biz] ws_connect ")) connected.countDown();
+                }, () -> true);
         java.util.concurrent.ExecutorService worker = java.util.concurrent.Executors.newSingleThreadExecutor();
         try {
-            bridge.connect(); assertTrue(connected.await(2, TimeUnit.SECONDS));
+            bridge.connect();
+            assertTrue(connected.await(2, TimeUnit.SECONDS));
             java.lang.reflect.Method request = WsSdkBridge.class.getDeclaredMethod("request", String.class, JSONObject.class, byte[].class, long.class);
             request.setAccessible(true);
             WsV2Codec.Response timeout = (WsV2Codec.Response) request.invoke(bridge, "downloadImagesAndLearn", null, null, 50L);
@@ -432,9 +478,13 @@ public class WsSdkBridgeWireTest {
             java.util.concurrent.Future<cc.huoyan.app.aidl.ImageFlowProgressParcel> result = worker.submit(bridge::downloadImagesAndLearn);
             server.take("downloadImagesAndLearn");
             bridge.disconnect();
-            assertEquals(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN, result.get(2,TimeUnit.SECONDS).getCode());
+            assertEquals(cc.huoyan.sdk.client.HuoyanSdkClient.RESULT_UNKNOWN, result.get(2, TimeUnit.SECONDS).getCode());
             assertTrue(server.requests.isEmpty());
-        } finally { bridge.disconnect(); worker.shutdownNow(); server.stop(1000); }
+        } finally {
+            bridge.disconnect();
+            worker.shutdownNow();
+            server.stop(1000);
+        }
     }
 
     private static final class RecordingServer extends WebSocketServer {
@@ -461,10 +511,12 @@ public class WsSdkBridgeWireTest {
         }
 
         @Override
-        public void onOpen(WebSocket socket, ClientHandshake handshake) { }
+        public void onOpen(WebSocket socket, ClientHandshake handshake) {
+        }
 
         @Override
-        public void onClose(WebSocket socket, int code, String reason, boolean remote) { }
+        public void onClose(WebSocket socket, int code, String reason, boolean remote) {
+        }
 
         @Override
         public void onMessage(WebSocket socket, String message) {
@@ -483,7 +535,9 @@ public class WsSdkBridgeWireTest {
             reply(socket, request);
         }
 
-        /** 收到完整二进制图像后才回执，验证实际发出的字节。 */
+        /**
+         * 收到完整二进制图像后才回执，验证实际发出的字节。
+         */
         @Override
         public void onMessage(WebSocket socket, ByteBuffer message) {
             byte[] bytes = new byte[message.remaining()];
@@ -503,7 +557,8 @@ public class WsSdkBridgeWireTest {
         }
 
         @Override
-        public void onError(WebSocket socket, Exception error) { }
+        public void onError(WebSocket socket, Exception error) {
+        }
 
         @Override
         public void onStart() {

@@ -18,19 +18,32 @@ import androidx.fragment.app.DialogFragment;
 import cc.huoyan.retail.R;
 
 public class LoadingDialog extends DialogFragment {
-    /** 当前提示文案，视图重建时从参数恢复。 */
+    /**
+     * 当前提示文案，视图重建时从参数恢复。
+     */
     private String text;
-    /** 当前视图，销毁时释放。 */
+    /**
+     * 当前视图，销毁时释放。
+     */
     private TextView textView;
-    /** 可取消任务的主线程回调；弹窗销毁时释放宿主引用。 */
+    /**
+     * 可取消任务的主线程回调；弹窗销毁时释放宿主引用。
+     */
     private Runnable cancelAction;
-    /** 下载模式的横向进度条，普通等待弹窗不持有；销毁视图时释放。 */
+    /**
+     * 下载模式的横向进度条，普通等待弹窗不持有；销毁视图时释放。
+     */
     private ProgressBar downloadProgress;
 
-    /** 供 FragmentManager 恢复加载弹窗。 */
-    public LoadingDialog() { }
+    /**
+     * 供 FragmentManager 恢复加载弹窗。
+     */
+    public LoadingDialog() {
+    }
 
-    /** 使用参数保留提示文案，支持配置变化后重建。 */
+    /**
+     * 使用参数保留提示文案，支持配置变化后重建。
+     */
     public LoadingDialog(String text) {
         this.text = text;
         Bundle args = new Bundle();
@@ -38,7 +51,9 @@ public class LoadingDialog extends DialogFragment {
         setArguments(args);
     }
 
-    /** 更新加载提示，视图尚未创建时保留最新文案。 */
+    /**
+     * 更新加载提示，视图尚未创建时保留最新文案。
+     */
     public void setText(String text) {
         this.text = text;
         if (getArguments() != null) getArguments().putString("text", text);
@@ -46,7 +61,9 @@ public class LoadingDialog extends DialogFragment {
             textView.setText(text);
     }
 
-    /** 启用共用下载样式并更新真实字节进度；首次显示前调用，总量未知时显示不定进度。 */
+    /**
+     * 启用共用下载样式并更新真实字节进度；首次显示前调用，总量未知时显示不定进度。
+     */
     public void setDownloadProgress(long downloaded, long total) {
         Bundle args = getArguments();
         if (args == null) {
@@ -59,7 +76,9 @@ public class LoadingDialog extends DialogFragment {
         renderDownloadProgress();
     }
 
-    /** 在主线程渲染进度；恢复视图时仍从参数读取，不伪造未知总量的百分比。 */
+    /**
+     * 在主线程渲染进度；恢复视图时仍从参数读取，不伪造未知总量的百分比。
+     */
     private void renderDownloadProgress() {
         if (downloadProgress == null || getArguments() == null) return;
         long total = getArguments().getLong("total", -1);
@@ -71,19 +90,27 @@ public class LoadingDialog extends DialogFragment {
         }
     }
 
-    /** 绑定用户取消等待时停止任务的操作，主动关闭弹窗不会触发。 */
+    /**
+     * 绑定用户取消等待时停止任务的操作，主动关闭弹窗不会触发。
+     */
     public void setCancelAction(@Nullable Runnable action) {
         cancelAction = action;
     }
 
-    /** 用户按返回键取消时通知任务所属页面，避免后台继续提交。 */
-    @Override public void onCancel(@NonNull DialogInterface dialog) {
+    /**
+     * 用户按返回键取消时通知任务所属页面，避免后台继续提交。
+     */
+    @Override
+    public void onCancel(@NonNull DialogInterface dialog) {
         if (cancelAction != null) cancelAction.run();
         super.onCancel(dialog);
     }
 
-    /** 释放任务回调，恢复后的弹窗由所属页面重新绑定。 */
-    @Override public void onDestroy() {
+    /**
+     * 释放任务回调，恢复后的弹窗由所属页面重新绑定。
+     */
+    @Override
+    public void onDestroy() {
         cancelAction = null;
         super.onDestroy();
     }
@@ -108,8 +135,11 @@ public class LoadingDialog extends DialogFragment {
         return view;
     }
 
-    /** 释放已销毁的文本控件。 */
-    @Override public void onDestroyView() {
+    /**
+     * 释放已销毁的文本控件。
+     */
+    @Override
+    public void onDestroyView() {
         textView = null;
         downloadProgress = null;
         super.onDestroyView();

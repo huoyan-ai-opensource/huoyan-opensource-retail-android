@@ -42,11 +42,18 @@
     <string name="goods_management_sort_value">Sort · %1$s</string>
     <string name="goods_management_pricing_value">Pricing · %1$s</string>
     <string-array name="goods_management_sort_options">
-        <item>Newest</item><item>Name A–Z</item><item>PLU A–Z</item><item>Price: low to high</item><item>Price: high to low</item>
-            <item>Images: low to high</item><item>Images: high to low</item>
+        <item>Newest</item>
+        <item>Name A–Z</item>
+        <item>PLU A–Z</item>
+        <item>Price: low to high</item>
+        <item>Price: high to low</item>
+        <item>Images: low to high</item>
+        <item>Images: high to low</item>
     </string-array>
     <string-array name="goods_management_pricing_options">
-        <item>All</item><item>Weight</item><item>Count</item>
+        <item>All</item>
+        <item>Weight</item>
+        <item>Count</item>
     </string-array>
     <string name="learning_switch_goods">Switch product</string>
     <string name="goods_columns_learned">Learned images</string>

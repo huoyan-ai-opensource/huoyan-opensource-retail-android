@@ -40,7 +40,9 @@ import cc.huoyan.app.aidl.ImageRequestParcel;
  */
 public class AidlSdkBridgeTest {
 
-    /** 通道生命周期方法（bridge 自有，不属于 SDK 契约 18 业务方法）。 */
+    /**
+     * 通道生命周期方法（bridge 自有，不属于 SDK 契约 18 业务方法）。
+     */
     private static final Set<String> LOCAL_METHODS =
             new HashSet<>(Arrays.asList("connect", "disconnect", "isConnected", "createImageRequest", "createJpegImageRequest", "createEncodedImageRequest", "createPhotoRequest"));
 
@@ -48,7 +50,8 @@ public class AidlSdkBridgeTest {
     private final CapturingScheduler scheduler = new CapturingScheduler();
 
     private SdkCommBinding newBinding() {
-        return new SdkCommBinding(ops, scheduler, message -> { });
+        return new SdkCommBinding(ops, scheduler, message -> {
+        });
     }
 
     // ---- 未连接占位 ----
@@ -64,7 +67,8 @@ public class AidlSdkBridgeTest {
         assertEquals("退避任务在途", 1, scheduler.delayed.size());
 
         for (Method method : SdkChannelBridge.class.getDeclaredMethods()) {
-            if (method.getName().equals("createImageRequest") || method.getName().equals("createJpegImageRequest") || method.getName().equals("createEncodedImageRequest") || method.getName().equals("createPhotoRequest")) continue; // 本地图像工厂另有专测。
+            if (method.getName().equals("createImageRequest") || method.getName().equals("createJpegImageRequest") || method.getName().equals("createEncodedImageRequest") || method.getName().equals("createPhotoRequest"))
+                continue; // 本地图像工厂另有专测。
             Object result = method.invoke(bridge, defaultArgs(method.getParameterTypes()));
             assertPlaceholder(method, result, SdkChannelBridge.LOCAL_DISCONNECTED);
         }
@@ -159,7 +163,9 @@ public class AidlSdkBridgeTest {
         assertTrue(service.invoked.contains("deleteGoods"));
     }
 
-    /** 云开关透传真实终态与关闭拒绝原因，不把错误载荷当作关闭成功。 */
+    /**
+     * 云开关透传真实终态与关闭拒绝原因，不把错误载荷当作关闭成功。
+     */
     @Test
     public void cloudStatus_preservesSwitchArgumentAndRejectedResult() {
         FakeSdkCommService service = new FakeSdkCommService();
@@ -290,7 +296,9 @@ public class AidlSdkBridgeTest {
         assertTrue("batchLearn 调用返回后须 close 载体", isCarrierClosed(batchLearnCarrier));
     }
 
-    /** 新反馈契约保留框几何，图片上传回执原样返回且释放共享内存。 */
+    /**
+     * 新反馈契约保留框几何，图片上传回执原样返回且释放共享内存。
+     */
     @Test
     public void photoUploadAndFeedbackUseNewAidlContract() throws Exception {
         FakeSdkCommService service = new FakeSdkCommService();
@@ -307,7 +315,7 @@ public class AidlSdkBridgeTest {
         assertTrue(isCarrierClosed(image));
         cc.huoyan.app.aidl.FeedbackParcel feedback = new cc.huoyan.app.aidl.FeedbackParcel("request-1",
                 service.photoResult.getPhotoFileUrl(), 1, java.util.Collections.singletonList(
-                        new cc.huoyan.app.aidl.FeedbackItemParcel(0,java.util.Collections.emptyList(),new cc.huoyan.app.aidl.FeedbackResultParcel( "1001", "面包", "SDK识别"), 100D, 200D, 300D, 400D)));
+                new cc.huoyan.app.aidl.FeedbackItemParcel(0, java.util.Collections.emptyList(), new cc.huoyan.app.aidl.FeedbackResultParcel("1001", "面包", "SDK识别"), 100D, 200D, 300D, 400D)));
         assertSame(service.baseResult, bridge.submitFeedback(feedback));
         assertSame(feedback, service.lastFeedback);
         assertEquals(300D, service.lastFeedback.getItems().get(0).getWidth(), 0);
@@ -382,7 +390,9 @@ public class AidlSdkBridgeTest {
         return frame;
     }
 
-    /** 按参数类型构造占位实参：基本类型取零值，引用类型取 null。 */
+    /**
+     * 按参数类型构造占位实参：基本类型取零值，引用类型取 null。
+     */
     private static Object[] defaultArgs(Class<?>[] parameterTypes) {
         Object[] args = new Object[parameterTypes.length];
         for (int i = 0; i < parameterTypes.length; i++) {
@@ -402,7 +412,9 @@ public class AidlSdkBridgeTest {
         return args;
     }
 
-    /** 占位断言：int 为 0（getApiVersion）或本地哨兵；init 为哨兵快照（永非 null）；其余对象为 null。 */
+    /**
+     * 占位断言：int 为 0（getApiVersion）或本地哨兵；init 为哨兵快照（永非 null）；其余对象为 null。
+     */
     private static void assertPlaceholder(Method method, Object result, int expectedCode) throws Exception {
         Class<?> returnType = method.getReturnType();
         if (returnType == void.class) {
@@ -437,10 +449,13 @@ public class AidlSdkBridgeTest {
         }
     }
 
-    /** 可抛受检异常的动作（lambda 调用声明 throws 的静态工具）。 */
+    /**
+     * 可抛受检异常的动作（lambda 调用声明 throws 的静态工具）。
+     */
     private interface ThrowingAction {
         void run() throws Exception;
     }
+
     @Test
     public void imageFactoryWithoutSharedMemoryRetainsBinderInlineLimit() {
         // JVM 的 SDK_INT=0，覆盖低版本内联降级路径。

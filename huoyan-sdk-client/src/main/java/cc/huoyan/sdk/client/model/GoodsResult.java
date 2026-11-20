@@ -13,24 +13,32 @@ public final class GoodsResult {
     private final String reason;
     private final Goods record;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public GoodsResult(int code, String reason, Goods record) {
         this.code = code;
         this.reason = reason;
         this.record = record;
     }
 
-    /** 结果码；0 表示请求成功。 */
+    /**
+     * 结果码；0 表示请求成功。
+     */
     public int getCode() {
         return code;
     }
 
-    /** getReason 字段值。 */
+    /**
+     * getReason 字段值。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 创建/更新后的商品终态；错误时 null。 */
+    /**
+     * 创建/更新后的商品终态；错误时 null。
+     */
     public Goods getRecord() {
         return record;
     }

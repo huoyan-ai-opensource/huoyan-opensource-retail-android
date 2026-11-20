@@ -111,7 +111,9 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
     private static final String LOG_TAG = "MainActivity";
     private static final String BUSINESS_TIMING_LOG_TAG = "BusinessTiming";
     private static final long STABLE_RESULT_TIMEOUT_MS = 3000L;
-    /** debug 注入无相机帧时的占位帧尺寸（识别预览绘制坐标系兜底，仅 debug 链路） */
+    /**
+     * debug 注入无相机帧时的占位帧尺寸（识别预览绘制坐标系兜底，仅 debug 链路）
+     */
     private static final int DEBUG_PREVIEW_FRAME_WIDTH = 1280;
     private static final int DEBUG_PREVIEW_FRAME_HEIGHT = 720;
     private static final long SCALE_OPEN_TIMEOUT_MS = 5000L;
@@ -129,29 +131,47 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
     private final RecognitionLoop recognitionLoop = new RecognitionLoop(this::processLatestDetectFrame);
     private RecognizeResultAdapter resultAdapter;
     private RecognizeResultPreviewView previewView;
-    /** 底部三项汇总，主线程按同一会话快照更新。 */
+    /**
+     * 底部三项汇总，主线程按同一会话快照更新。
+     */
     private TextView summaryKinds, summaryCount, summaryAmount;
-    /** 空态引导及水印，不参与商品行布局。 */
+    /**
+     * 空态引导及水印，不参与商品行布局。
+     */
     private ImageView trayGuide;
     private TextView emptyTitle, emptyHint;
     private RecognitionWatermarkView resultWatermark;
-    /** 当前引导显示模式，避免每次重量刷新重启动画。 */
+    /**
+     * 当前引导显示模式，避免每次重量刷新重启动画。
+     */
     private int guideMode = -1;
-    /** 顶部皮重及毛重；没有设备回执时显示未知。 */
+    /**
+     * 顶部皮重及毛重；没有设备回执时显示未知。
+     */
     private TextView tareWeightTv, grossWeightTv;
-    /** 最近一次设备读数，仅在当前连接有效。 */
+    /**
+     * 最近一次设备读数，仅在当前连接有效。
+     */
     private AclasWeightSnapshot latestScaleSnapshot;
-    /** 自动去皮的页面级等待弹窗，保留待提交实例以避免重复添加。 */
+    /**
+     * 自动去皮的页面级等待弹窗，保留待提交实例以避免重复添加。
+     */
     private cc.huoyan.retail.common.ui.LoadingDialog automaticTareLoading;
-    /** 结果确认的页面级等待弹窗；暂停或输出结束时关闭。 */
+    /**
+     * 结果确认的页面级等待弹窗；暂停或输出结束时关闭。
+     */
     private cc.huoyan.retail.common.ui.LoadingDialog confirmationLoading;
-    /** 连续三次点击版本号的时间窗口。 */
+    /**
+     * 连续三次点击版本号的时间窗口。
+     */
     private long versionTapAt;
     private int versionTapCount;
     private TextView modifyGoods;
     private View emptyPanel;
     private volatile CheckoutRecognition detectWsResp;
-    /** 仅比较主识别项（包含数量），相似候选变化不影响结果判定。 */
+    /**
+     * 仅比较主识别项（包含数量），相似候选变化不影响结果判定。
+     */
     private final RecognitionResultGate recognitionResultGate = new RecognitionResultGate();
     private final Runnable recognitionResultTimeoutRunnable = () -> {
         if (!presenter.state().recognitionLocked && presenter.state().recognitionActive
@@ -169,33 +189,57 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
     private TextView confirmSale;
     private boolean activityResumed;
     private BroadcastReceiver debugRecognizeReceiver;
-    /** debug 批量识别注入的计件确认顺序；真实识别帧始终为空 */
+    /**
+     * debug 批量识别注入的计件确认顺序；真实识别帧始终为空
+     */
     private volatile List<String> pendingDebugRecognizePlus = Collections.emptyList();
     private volatile CheckoutRecognition pendingDebugRecognizeResp;
-    /** debug 批量注入确认完成标志：确认后暂停真实识别，防止真实摄像头帧覆盖注入购物车 */
+    /**
+     * debug 批量注入确认完成标志：确认后暂停真实识别，防止真实摄像头帧覆盖注入购物车
+     */
     private volatile boolean pendingDebugRecognizeBatch;
-    /** 相邻帧变化启动一轮识别；会话清理与相机线程通过同步方法交接。 */
+    /**
+     * 相邻帧变化启动一轮识别；会话清理与相机线程通过同步方法交接。
+     */
     private final FrameChangeGate frameChangeGate = new FrameChangeGate();
-    /** 识别线程最近已消费的相机帧，所有模式下均避免重复发送同一帧。 */
+    /**
+     * 识别线程最近已消费的相机帧，所有模式下均避免重复发送同一帧。
+     */
     private CameraFrame requestedFrame;
-    /** 相机回调中的上一帧，用于识别摄像头代次变化。 */
+    /**
+     * 相机回调中的上一帧，用于识别摄像头代次变化。
+     */
     private CameraFrame comparedFrame;
-    /** 已保存的画面变化开关，主线程更新、相机线程读取。 */
+    /**
+     * 已保存的画面变化开关，主线程更新、相机线程读取。
+     */
     private volatile boolean stableRecognition;
-    /** 已保存的汉明距离阈值，主线程更新、相机线程读取。 */
+    /**
+     * 已保存的汉明距离阈值，主线程更新、相机线程读取。
+     */
     private volatile int frameChangeThreshold;
-    /** 计件确认键盘 DialogFragment tag（是否在显示 = 识别暂停以等待数量确认） */
+    /**
+     * 计件确认键盘 DialogFragment tag（是否在显示 = 识别暂停以等待数量确认）
+     */
     private static final String COUNT_KEYBOARD_TAG = "mainRecognizeCountKeyboard";
-    /** 称重商品修改重量弹窗 DialogFragment tag */
+    /**
+     * 称重商品修改重量弹窗 DialogFragment tag
+     */
     private static final String WEIGHT_INPUT_TAG = "mainRecognizeWeightInput";
     private CameraController cameraController;
-    /** 页面实例独立的订阅键，旧页面销毁不能移除新订阅。 */
+    /**
+     * 页面实例独立的订阅键，旧页面销毁不能移除新订阅。
+     */
     private final String cameraListenerKey = getClass().getSimpleName() + "@" + System.identityHashCode(this);
     private NV21ToBitmap mNv21ToBitmap;
     private MainDrawView drawView;
-    /** SDK 已连接且 sdkState=READY、modelReady=true 后才允许发识别。 */
+    /**
+     * SDK 已连接且 sdkState=READY、modelReady=true 后才允许发识别。
+     */
     private volatile boolean sdkRecognitionReady;
-    /** 最近一次 getStatus() 对识别页状态标识的明确结果；0 表示暂未取得阻断状态。 */
+    /**
+     * 最近一次 getStatus() 对识别页状态标识的明确结果；0 表示暂未取得阻断状态。
+     */
     private volatile int sdkStatusTextRes;
     private final SdkStartupController sdkStartup = SdkChannelManager.getInstance().newStartupController();
     private volatile long lastDetectRequestAt;
@@ -214,9 +258,13 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
             updateRecognizeStatus(R.string.status_scale_connect_timeout, R.drawable.bg_red_round);
         }
     };
-    /** 非称重确认完成后保留结果十秒，主线程到期重开识别。 */
+    /**
+     * 非称重确认完成后保留结果十秒，主线程到期重开识别。
+     */
     private long printResumeAt;
-    /** 页面暂停时移除任务，恢复时按原截止时间重新安排。 */
+    /**
+     * 页面暂停时移除任务，恢复时按原截止时间重新安排。
+     */
     private final Runnable printResumeRunnable = () -> {
         if (!activityResumed || presenter.state().weighingEnabled
                 || presenter.state().phase != CheckoutState.Phase.SOLD_OR_REPORTED) return;
@@ -250,14 +298,17 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         presenter = new CheckoutPresenter(this, new CheckoutGoodsLoader(runnable -> MainHandler.get().post(runnable)),
                 new CheckoutPresenter.Output() {
                     /** 主线程固定图片与保留、删除结果，后台按提交时的开关执行打印及反馈。 */
-                    @Override public void submit(cc.huoyan.retail.checkout.domain.SalePrintJob job, boolean printEnabled,
-                            CheckoutRecognition response, List<GoodsVo> rows, List<GoodsVo> deletedRows,
-                            Consumer<Exception> completion) {
+                    @Override
+                    public void submit(cc.huoyan.retail.checkout.domain.SalePrintJob job, boolean printEnabled,
+                                       CheckoutRecognition response, List<GoodsVo> rows, List<GoodsVo> deletedRows,
+                                       Consumer<Exception> completion) {
                         checkoutOutput.submit(job, printEnabled,
                                 response, rows, deletedRows, copyStableRecognizeFrame(), completion);
                     }
+
                     /** 全部删除仍保留本轮原图，提交无小票的删除反馈。 */
-                    @Override public void submitDeletion(CheckoutRecognition response, List<GoodsVo> deletedRows) {
+                    @Override
+                    public void submitDeletion(CheckoutRecognition response, List<GoodsVo> deletedRows) {
                         checkoutOutput.submitDeletion(response, deletedRows, copyStableRecognizeFrame());
                     }
                 });
@@ -333,13 +384,18 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         verifyBasePermissions(this);
     }
 
-    /** 退出页面时立即解除展示引用，避免在销毁前收到打印完成提示。 */
-    @Override public void finish() {
+    /**
+     * 退出页面时立即解除展示引用，避免在销毁前收到打印完成提示。
+     */
+    @Override
+    public void finish() {
         if (presenter != null) presenter.detach();
         super.finish();
     }
 
-    /** 只为已完成的非称重单据安排恢复，避免旧任务清空新单。 */
+    /**
+     * 只为已完成的非称重单据安排恢复，避免旧任务清空新单。
+     */
     private void schedulePrintResume() {
         MainHandler.removeCallback(printResumeRunnable);
         if (activityResumed && printResumeAt > 0)
@@ -351,13 +407,19 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         finish();
     }
 
-    /** 系统返回键与导航按钮一致，结束本次收银并返回首页。 */
-    @Override public void onBackPressed() {
+    /**
+     * 系统返回键与导航按钮一致，结束本次收银并返回首页。
+     */
+    @Override
+    public void onBackPressed() {
         requestExit();
     }
 
-    /** 首页重复进入时丢弃旧清单，重新创建识别会话。 */
-    @Override protected void onNewIntent(Intent intent) {
+    /**
+     * 首页重复进入时丢弃旧清单，重新创建识别会话。
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
         if (intent.getBooleanExtra("freshCheckout", false)) restartRecognition();
@@ -383,7 +445,8 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
             if (!state.recognitionLocked && state.recognitionActive) {
                 boolean accepted = true;
                 if (FrameChangeGate.enabled(stableRecognition, state.weighingEnabled)) {
-                    if (comparedFrame == null || !cameraController.isCurrent(comparedFrame)) frameChangeGate.reset();
+                    if (comparedFrame == null || !cameraController.isCurrent(comparedFrame))
+                        frameChangeGate.reset();
                     comparedFrame = entity;
                     // 变化只启动本轮；触发后的静止新帧仍须继续识别以完成结果确认。
                     accepted = frameChangeGate.accept(CompareImage.frameHash(entity), frameChangeThreshold);
@@ -405,7 +468,8 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         if (presenter.state().recognitionLocked) {
             // 清单保存人工数量及商品选择，不能从检测框数量重新构建。
             presenter.refreshRows();
-            if (presenter.needsGoodsReload() && hasDetectResults(detectWsResp)) presenter.loadGoods(detectWsResp);
+            if (presenter.needsGoodsReload() && hasDetectResults(detectWsResp))
+                presenter.loadGoods(detectWsResp);
             updatePreviewFrame();
             if (presenter.state().weighingEnabled) openScale();
             return;
@@ -475,7 +539,9 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         }
     }
 
-    /** 复用首页的 SDK 启动流程，以模型就绪状态控制识别。 */
+    /**
+     * 复用首页的 SDK 启动流程，以模型就绪状态控制识别。
+     */
     private void checkSdkChannelStatus() {
         sdkStartup.start((initCode, status, modelReady) -> {
             sdkRecognitionReady = modelReady;
@@ -485,36 +551,59 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
             } else {
                 sdkStatusTextRes = 0;
                 sdkResumeInit();
-                if (!presenter.state().weighingEnabled && presenter.state().recognitionActive) startDetect();
+                if (!presenter.state().weighingEnabled && presenter.state().recognitionActive)
+                    startDetect();
                 // 称重轮次可能已在等待模型；就绪事件主动唤醒，不依赖下一张相机帧。
                 recognitionLoop.wakeUp();
             }
         });
     }
 
-    /** 将连接结果及 sdkState 映射为提示；reason 仅诊断，不参与状态推断。 */
+    /**
+     * 将连接结果及 sdkState 映射为提示；reason 仅诊断，不参与状态推断。
+     */
     static int resolveSdkChannelIssueTextRes(int initCode, StatusSnapshot status) {
         switch (cc.huoyan.sdk.client.status.SdkStatus.issue(initCode, status)) {
-            case STOPPED: return R.string.status_sdk_stopped;
-            case CLEANUP_PENDING: return R.string.status_sdk_cleanup_pending;
-            case NOT_INIT: return R.string.status_sdk_uninitialized;
-            case INITIALIZING: return R.string.status_sdk_initializing;
-            case NOT_ACTIVATED: return R.string.status_sdk_not_activated;
-            case MODEL_PREPARING: return R.string.status_sdk_model_preparing;
-            case MODEL_NOT_READY: return R.string.status_sdk_model_not_ready;
-            case KEY_ROTATION_PENDING: return R.string.status_sdk_key_rotation_pending;
-            case KEY_ROTATION_REJECTED: return R.string.status_sdk_key_rotation_rejected;
-            case KEY_ROTATION_RATE_LIMITED: return R.string.status_sdk_key_rotation_rate_limited;
-            case KEY_ROTATION_RESTORING: return R.string.status_sdk_key_rotation_restoring;
-            case CERTIFICATE_EXPIRED: return R.string.status_sdk_certificate_expired;
-            case CERTIFICATE_INVALID: return R.string.status_sdk_certificate_invalid;
-            case BACKEND_UNAVAILABLE: return R.string.status_sdk_backend_unavailable;
-            case STARTUP_FAILED: return R.string.status_sdk_startup_failed;
-            case DISABLED: return R.string.status_sdk_disabled;
-            case NONE: return 0;
-            case NOT_CONNECTED: return R.string.status_sdk_not_started;
-            case STATUS_UNAVAILABLE: return R.string.status_sdk_status_unavailable;
-            default: return R.string.status_sdk_status_unavailable;
+            case STOPPED:
+                return R.string.status_sdk_stopped;
+            case CLEANUP_PENDING:
+                return R.string.status_sdk_cleanup_pending;
+            case NOT_INIT:
+                return R.string.status_sdk_uninitialized;
+            case INITIALIZING:
+                return R.string.status_sdk_initializing;
+            case NOT_ACTIVATED:
+                return R.string.status_sdk_not_activated;
+            case MODEL_PREPARING:
+                return R.string.status_sdk_model_preparing;
+            case MODEL_NOT_READY:
+                return R.string.status_sdk_model_not_ready;
+            case KEY_ROTATION_PENDING:
+                return R.string.status_sdk_key_rotation_pending;
+            case KEY_ROTATION_REJECTED:
+                return R.string.status_sdk_key_rotation_rejected;
+            case KEY_ROTATION_RATE_LIMITED:
+                return R.string.status_sdk_key_rotation_rate_limited;
+            case KEY_ROTATION_RESTORING:
+                return R.string.status_sdk_key_rotation_restoring;
+            case CERTIFICATE_EXPIRED:
+                return R.string.status_sdk_certificate_expired;
+            case CERTIFICATE_INVALID:
+                return R.string.status_sdk_certificate_invalid;
+            case BACKEND_UNAVAILABLE:
+                return R.string.status_sdk_backend_unavailable;
+            case STARTUP_FAILED:
+                return R.string.status_sdk_startup_failed;
+            case DISABLED:
+                return R.string.status_sdk_disabled;
+            case NONE:
+                return 0;
+            case NOT_CONNECTED:
+                return R.string.status_sdk_not_started;
+            case STATUS_UNAVAILABLE:
+                return R.string.status_sdk_status_unavailable;
+            default:
+                return R.string.status_sdk_status_unavailable;
         }
     }
 
@@ -597,12 +686,12 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
      * WS future 等待），在 recognitionLoop 单线程执行，新帧事件合并后取最新帧续发；
      * 错误暂停续发，停止或重启后的旧回执丢弃。
      *
-     * @param cropBitmap    识别区裁剪位图；编码后尺寸和方向不变
-     * @param sourceBitmap  完整预览帧（识别预览/反馈抓图用，可 null）
-     * @param frameStartAt  帧处理起始时间（耗时打点）
+     * @param cropBitmap   识别区裁剪位图；编码后尺寸和方向不变
+     * @param sourceBitmap 完整预览帧（识别预览/反馈抓图用，可 null）
+     * @param frameStartAt 帧处理起始时间（耗时打点）
      */
     private RecognitionLoop.Outcome sendDetectRequest(Bitmap cropBitmap,
-                                   Bitmap sourceBitmap, long frameStartAt, BooleanSupplier isCurrent) {
+                                                      Bitmap sourceBitmap, long frameStartAt, BooleanSupplier isCurrent) {
         if (!isCurrent.getAsBoolean() || presenter.state().recognitionLocked || !presenter.state().recognitionActive) {
             return RecognitionLoop.Outcome.IDLE;
         }
@@ -619,7 +708,8 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
                 Log.d(LOG_TAG, "[Biz] recognize_v2=fail code=disconnected");
             }
             postMainHandler(() -> {
-                if (!isCurrent.getAsBoolean() || presenter.state().recognitionLocked || !presenter.state().recognitionActive) return;
+                if (!isCurrent.getAsBoolean() || presenter.state().recognitionLocked || !presenter.state().recognitionActive)
+                    return;
                 resetStableResultTimeout();
                 resetRecognitionResultWindow();
                 updateRecognizeStatus(R.string.status_recognition_failed, R.drawable.bg_red_round);
@@ -640,18 +730,20 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         }
         long sendFinishAt = SystemClock.elapsedRealtime();
         lastDetectRequestAt = sendFinishAt;
-        if (BuildConfig.DEBUG) Log.d(LOG_TAG, "detectRequest: totalPrepareMs=" + (sendStartAt - frameStartAt)
-                + ", sendSdkMs=" + (sendFinishAt - sendStartAt)
-                + ", totalMs=" + (sendFinishAt - frameStartAt)
-                + ", frame=" + frameStartAt
-                + ", frameSize=" + frameWidth + "x" + frameHeight);
+        if (BuildConfig.DEBUG)
+            Log.d(LOG_TAG, "detectRequest: totalPrepareMs=" + (sendStartAt - frameStartAt)
+                    + ", sendSdkMs=" + (sendFinishAt - sendStartAt)
+                    + ", totalMs=" + (sendFinishAt - frameStartAt)
+                    + ", frame=" + frameStartAt
+                    + ", frameSize=" + frameWidth + "x" + frameHeight);
         if (result == null) {
             // 通道层未回执（发送失败/在途断线）：暂停，避免连续重发。
             if (BuildConfig.DEBUG) {
                 Log.d(LOG_TAG, "[Biz] recognize_v2=fail code=no_receipt");
             }
             postMainHandler(() -> {
-                if (!isCurrent.getAsBoolean() || presenter.state().recognitionLocked || !presenter.state().recognitionActive) return;
+                if (!isCurrent.getAsBoolean() || presenter.state().recognitionLocked || !presenter.state().recognitionActive)
+                    return;
                 resetStableResultTimeout();
                 resetRecognitionResultWindow();
                 updateRecognizeStatus(R.string.status_recognition_failed, R.drawable.bg_red_round);
@@ -664,9 +756,11 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
                         + " reason=" + result.getReason());
             }
             postMainHandler(() -> {
-                if (!isCurrent.getAsBoolean() || presenter.state().recognitionLocked || !presenter.state().recognitionActive) return;
+                if (!isCurrent.getAsBoolean() || presenter.state().recognitionLocked || !presenter.state().recognitionActive)
+                    return;
                 handleDetectError(result.getCode());
                 resetStableResultTimeout();
+                cc.huoyan.retail.sdk.SdkPermissionGuide.showIfRequired(this, result.getCode(), result.getReason());
             });
             return RecognitionLoop.Outcome.ERROR;
         }
@@ -702,7 +796,9 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         return RecognitionLoop.Outcome.SUCCESS;
     }
 
-    /** v2 回执同框落选候选总数（[Biz] candidates=N 打点）。 */
+    /**
+     * v2 回执同框落选候选总数（[Biz] candidates=N 打点）。
+     */
     private static int countV2Candidates(RecognizeResult result) {
         int count = 0;
         for (RecognitionItem item : result.getItems()) {
@@ -713,7 +809,9 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         return count;
     }
 
-    /** 主线程处理回执，与超时锁定串行，保证锁定结果及图片属于同一帧。 */
+    /**
+     * 主线程处理回执，与超时锁定串行，保证锁定结果及图片属于同一帧。
+     */
     private void handleDetectSuccess(CheckoutRecognition wsResp) {
         detectWsResp = wsResp;
         String setKey = wsResp == null ? null : wsResp.setKey();
@@ -927,8 +1025,11 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         presenter.clearRows();
     }
 
-    /** 恢复相机帧调度与识别结果窗口。 */
-    @Override public void resumeRecognition() {
+    /**
+     * 恢复相机帧调度与识别结果窗口。
+     */
+    @Override
+    public void resumeRecognition() {
         frameChangeGate.reset();
         latestCameraFrame = null;
         resetRecognitionResultWindow();
@@ -944,7 +1045,8 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         int color = !connected || presenter.state().currentWeightKg.signum() < 0
                 ? 0xFFC93636 : stable ? 0xFF27835B : 0xFFFA6400;
         android.graphics.drawable.GradientDrawable dot = new android.graphics.drawable.GradientDrawable();
-        dot.setShape(android.graphics.drawable.GradientDrawable.OVAL); dot.setColor(color);
+        dot.setShape(android.graphics.drawable.GradientDrawable.OVAL);
+        dot.setColor(color);
         connectLine.setBackground(dot);
     }
 
@@ -992,7 +1094,7 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
     }
 
     private boolean hasDetectResults(CheckoutRecognition wsResp) {
-        return wsResp != null  && wsResp.getSelections() != null && !wsResp.getSelections().isEmpty();
+        return wsResp != null && wsResp.getSelections() != null && !wsResp.getSelections().isEmpty();
     }
 
     /**
@@ -1166,8 +1268,11 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         return new float[]{centerX - halfW, centerY - halfH, centerX + halfW, centerY + halfH};
     }
 
-    /** 将 Presenter 提供的页面状态写入控件。 */
-    @Override public void render(CheckoutViewState page) {
+    /**
+     * 将 Presenter 提供的页面状态写入控件。
+     */
+    @Override
+    public void render(CheckoutViewState page) {
         CheckoutState state = page.sale;
         showAutomaticTareLoading(activityResumed && state.automaticTarePending);
         resultAdapter.setCurrentWeightKg(state.currentWeightKg.doubleValue());
@@ -1200,7 +1305,7 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         confirmSale.setText(state.phase == CheckoutState.Phase.LOCKED_PRICE_MISSING ? R.string.checkout_price_required
                 : page.priceConflict
                 ? R.string.button_price_conflict : (ModuleConfig.isPrintEnabled(this)
-                        ? R.string.button_print_ticket : R.string.button_confirm_results));
+                ? R.string.button_print_ticket : R.string.button_confirm_results));
         previewView.setPreviewState(goodsColorMap, null, page.selected);
         if (state.recognitionLocked) {
             resultAdapter.setPreviewState(goodsColorMap, null, page.selected);
@@ -1208,7 +1313,9 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         }
     }
 
-    /** 列表空态与动画随内容和系统减少动态效果设置切换。 */
+    /**
+     * 列表空态与动画随内容和系统减少动态效果设置切换。
+     */
     private void renderEmptyGuide(CheckoutViewState page) {
         boolean empty = page.rows.isEmpty();
         emptyPanel.setVisibility(page.waitingVisible || page.emptyVisible ? View.VISIBLE : View.GONE);
@@ -1222,33 +1329,48 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         trayGuide.setVisibility(mode >= 2 ? View.VISIBLE : View.GONE);
         emptyTitle.setText(mode == 1 ? R.string.checkout_no_match : R.string.checkout_place_tray);
         emptyHint.setText(mode == 1 ? R.string.checkout_no_match_hint : R.string.checkout_wait_hint);
-        if (mode == 2) com.bumptech.glide.Glide.with(this).asGif().load(R.raw.recognition_tray_guide).into(trayGuide);
+        if (mode == 2)
+            com.bumptech.glide.Glide.with(this).asGif().load(R.raw.recognition_tray_guide).into(trayGuide);
         else if (mode == 3) trayGuide.setImageResource(R.drawable.recognition_tray_still);
     }
 
-    /** 三次连续点击版本号才请求退出，间隔超过1秒重新计数。 */
+    /**
+     * 三次连续点击版本号才请求退出，间隔超过1秒重新计数。
+     */
     private void onVersionTap() {
         long now = SystemClock.elapsedRealtime();
         versionTapCount = now - versionTapAt <= 1000 ? versionTapCount + 1 : 1;
         versionTapAt = now;
-        if (versionTapCount == 3) { versionTapCount = 0; requestExit(); }
+        if (versionTapCount == 3) {
+            versionTapCount = 0;
+            requestExit();
+        }
     }
 
-    /** 系统返回和隐藏入口执行相同的本地密码验证。 */
+    /**
+     * 系统返回和隐藏入口执行相同的本地密码验证。
+     */
     private void requestExit() {
-        if (!cc.huoyan.retail.settings.ExitPasswordStore.isEnabled(this)) { returnToHome(); return; }
+        if (!cc.huoyan.retail.settings.ExitPasswordStore.isEnabled(this)) {
+            returnToHome();
+            return;
+        }
         if (getSupportFragmentManager().findFragmentByTag("exitPassword") == null)
             cc.huoyan.retail.settings.ExitPasswordDialog.showVerify(getSupportFragmentManager());
     }
 
-    /** 显示设备称重操作，复用本页秤连接而不另开串口。 */
+    /**
+     * 显示设备称重操作，复用本页秤连接而不另开串口。
+     */
     private void showScaleDialog() {
         if (presenter.state().automaticTarePending) return;
         if (getSupportFragmentManager().findFragmentByTag("scaleOperations") == null)
             new ScaleOperationsDialog().show(getSupportFragmentManager(), "scaleOperations");
     }
 
-    /** 设备读数同时更新三个重量卡片与已打开的弹窗。 */
+    /**
+     * 设备读数同时更新三个重量卡片与已打开的弹窗。
+     */
     private void renderScaleReadings() {
         if (weightTv == null) return;
         AclasWeightSnapshot snapshot = latestScaleSnapshot;
@@ -1256,23 +1378,34 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         tareWeightTv.setText(snapshot == null || snapshot.tareKg() == null ? "—" : snapshot.tareKg().toPlainString());
         grossWeightTv.setText(snapshot == null || snapshot.grossKg() == null ? "—" : snapshot.grossKg().toPlainString());
         androidx.fragment.app.Fragment dialog = getSupportFragmentManager().findFragmentByTag("scaleOperations");
-        if (dialog instanceof ScaleOperationsDialog) ((ScaleOperationsDialog) dialog).render(snapshot);
+        if (dialog instanceof ScaleOperationsDialog)
+            ((ScaleOperationsDialog) dialog).render(snapshot);
     }
 
-    /** 弹窗读取当前设备快照，未知值不替换成零。 */
-    AclasWeightSnapshot scaleSnapshot() { return latestScaleSnapshot; }
+    /**
+     * 弹窗读取当前设备快照，未知值不替换成零。
+     */
+    AclasWeightSnapshot scaleSnapshot() {
+        return latestScaleSnapshot;
+    }
 
-    /** 主线程发送命令；设备管理器以读数确认结果。 */
+    /**
+     * 主线程发送命令；设备管理器以读数确认结果。
+     */
     void commandScale(BigDecimal tare, AclasScaleManager.CommandListener callback) {
         if (tare == null) aclasScaleManager.setZero(callback);
         else aclasScaleManager.setPreTare(tare.movePointRight(3).intValueExact(), callback);
     }
 
-    /** 自动去皮沿用设备确认接口；回调不强持有页面，退出后只完成业务状态。 */
-    @Override public void applyAutomaticTare(BigDecimal tareKg, Consumer<Boolean> completion) {
+    /**
+     * 自动去皮沿用设备确认接口；回调不强持有页面，退出后只完成业务状态。
+     */
+    @Override
+    public void applyAutomaticTare(BigDecimal tareKg, Consumer<Boolean> completion) {
         final int grams;
-        try { grams = tareKg.movePointRight(3).intValueExact(); }
-        catch (ArithmeticException error) {
+        try {
+            grams = tareKg.movePointRight(3).intValueExact();
+        } catch (ArithmeticException error) {
             completion.accept(false);
             ToastEx.showFailureToast(this, getString(R.string.checkout_tare_invalid));
             return;
@@ -1287,7 +1420,9 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         }));
     }
 
-    /** 按在途状态恢复或关闭 Loading，页面暂停时立即移除遮罩。 */
+    /**
+     * 按在途状态恢复或关闭 Loading，页面暂停时立即移除遮罩。
+     */
     private void showAutomaticTareLoading(boolean busy) {
         androidx.fragment.app.DialogFragment existing = (androidx.fragment.app.DialogFragment)
                 getSupportFragmentManager().findFragmentByTag("automaticTareLoading");
@@ -1302,7 +1437,9 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         }
     }
 
-    /** 根据在途确认状态展示 Loading；保留待添加实例，暂停或完成时关闭。 */
+    /**
+     * 根据在途确认状态展示 Loading；保留待添加实例，暂停或完成时关闭。
+     */
     private void showConfirmationLoading(boolean busy) {
         androidx.fragment.app.DialogFragment existing = (androidx.fragment.app.DialogFragment)
                 getSupportFragmentManager().findFragmentByTag("confirmationLoading");
@@ -1317,8 +1454,11 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         }
     }
 
-    /** 创建缩略图并把页面清单交给现有适配器和预览控件。 */
-    @Override public void renderRows(CheckoutViewState page, boolean updateList) {
+    /**
+     * 创建缩略图并把页面清单交给现有适配器和预览控件。
+     */
+    @Override
+    public void renderRows(CheckoutViewState page, boolean updateList) {
         for (GoodsVo row : page.rows) {
             if (row.getRecognizeBitmap() == null && row.getRecognitionSelection() != null
                     && !row.getRecognitionSelection().isEmpty())
@@ -1334,24 +1474,33 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         updatePreviewFrame();
     }
 
-    /** 展示数量键盘，确认结果交回 Presenter。 */
-    @Override public void showCountInput(int initial, IntConsumer confirm) {
+    /**
+     * 展示数量键盘，确认结果交回 Presenter。
+     */
+    @Override
+    public void showCountInput(int initial, IntConsumer confirm) {
         RecognizeCountKeyboardDialog dialog = new RecognizeCountKeyboardDialog();
         dialog.setCount(initial);
         dialog.setListener(confirm::accept);
         dialog.show(getSupportFragmentManager(), COUNT_KEYBOARD_TAG);
     }
 
-    /** 展示重量键盘，保持现有三位小数输入。 */
-    @Override public void showWeightInput(BigDecimal initial, Consumer<BigDecimal> confirm) {
+    /**
+     * 展示重量键盘，保持现有三位小数输入。
+     */
+    @Override
+    public void showWeightInput(BigDecimal initial, Consumer<BigDecimal> confirm) {
         WeightInputDialog dialog = new WeightInputDialog();
         dialog.setWeight(initial.doubleValue());
         dialog.setListener(weight -> confirm.accept(BigDecimal.valueOf(weight)));
         dialog.show(getSupportFragmentManager(), WEIGHT_INPUT_TAG);
     }
 
-    /** 展示改品选择框与当前选择的缩略图。 */
-    @Override public void showGoodsPicker(GoodsVo selected, Predicate<GoodsEntity> confirm) {
+    /**
+     * 展示改品选择框与当前选择的缩略图。
+     */
+    @Override
+    public void showGoodsPicker(GoodsVo selected, Predicate<GoodsEntity> confirm) {
         selected.setRecognizeBitmap(buildRecognizeBitmap(selected.getRecognitionSelection().get(0)));
         RecognizeModifyGoodsDialog dialog = new RecognizeModifyGoodsDialog();
         dialog.setGoodsVo(selected);
@@ -1360,29 +1509,56 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         dialog.show(getSupportFragmentManager(), "mainRecognizeModify");
     }
 
-    /** 回显手改重量。 */
-    @Override public void showManualWeight(BigDecimal weight) {
+    /**
+     * 回显手改重量。
+     */
+    @Override
+    public void showManualWeight(BigDecimal weight) {
         weightTv.setText(DisplayFormatUtil.formatWeightKg(weight.doubleValue(), displayLocale()));
     }
 
-    /** 记录平台依赖的业务日志。 */
-    @Override public void logBusiness(String message) {
+    /**
+     * 记录平台依赖的业务日志。
+     */
+    @Override
+    public void logBusiness(String message) {
         if (BuildConfig.DEBUG) Log.d(LOG_TAG, "[Biz] " + message);
     }
 
-    /** 将交互结果映射为已有文案和 Toast 样式。 */
-    @Override public void showMessage(CheckoutPresenter.Message message, String detail) {
+    /**
+     * 将交互结果映射为已有文案和 Toast 样式。
+     */
+    @Override
+    public void showMessage(CheckoutPresenter.Message message, String detail) {
         int textRes;
         switch (message) {
-            case SELECT_BOX: textRes = R.string.toast_select_modify_box_first; break;
-            case NO_GOODS: textRes = R.string.toast_no_modifiable_goods; break;
-            case MODIFY_EXPIRED: textRes = R.string.toast_modify_result_expired; break;
-            case WEIGHING_DISABLED: textRes = R.string.toast_modify_weighing_disabled; break;
-            case SPLIT_COUNT: textRes = R.string.toast_modify_split_count; break;
-            case PRICE_MISSING: textRes = R.string.checkout_price_required; break;
-            case PRICE_CONFLICT: textRes = R.string.price_conflict_message; break;
-            case GOODS_REMOVED: textRes = R.string.toast_goods_removed_please_reweigh; break;
-            case NOT_READY: textRes = R.string.toast_recognition_or_weight_unstable; break;
+            case SELECT_BOX:
+                textRes = R.string.toast_select_modify_box_first;
+                break;
+            case NO_GOODS:
+                textRes = R.string.toast_no_modifiable_goods;
+                break;
+            case MODIFY_EXPIRED:
+                textRes = R.string.toast_modify_result_expired;
+                break;
+            case WEIGHING_DISABLED:
+                textRes = R.string.toast_modify_weighing_disabled;
+                break;
+            case SPLIT_COUNT:
+                textRes = R.string.toast_modify_split_count;
+                break;
+            case PRICE_MISSING:
+                textRes = R.string.checkout_price_required;
+                break;
+            case PRICE_CONFLICT:
+                textRes = R.string.price_conflict_message;
+                break;
+            case GOODS_REMOVED:
+                textRes = R.string.toast_goods_removed_please_reweigh;
+                break;
+            case NOT_READY:
+                textRes = R.string.toast_recognition_or_weight_unstable;
+                break;
             case RESULT_DELETED:
                 ToastEx.showSuccessToast(mContext, R.string.toast_recognition_result_deleted);
                 return;
@@ -1398,7 +1574,8 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
             case PRINT_FAILED:
                 ToastEx.showFailureToast(mContext, getString(R.string.toast_print_failed, detail));
                 return;
-            default: throw new IllegalArgumentException("Unknown checkout message: " + message);
+            default:
+                throw new IllegalArgumentException("Unknown checkout message: " + message);
         }
         if (message == CheckoutPresenter.Message.SELECT_BOX || message == CheckoutPresenter.Message.NO_GOODS) {
             if (BuildConfig.DEBUG) Log.d(LOG_TAG, "[Toast] " + getString(textRes));
@@ -1406,8 +1583,11 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         } else ToastEx.showFailureToast(mContext, getString(textRes));
     }
 
-    /** 加载完成后触发 debug 批量计件弹窗，生产识别不自动弹窗。 */
-    @Override public void onGoodsLoaded(CheckoutRecognition source, List<GoodsVo> rows) {
+    /**
+     * 加载完成后触发 debug 批量计件弹窗，生产识别不自动弹窗。
+     */
+    @Override
+    public void onGoodsLoaded(CheckoutRecognition source, List<GoodsVo> rows) {
         List<String> plus = BuildConfig.DEBUG && source == pendingDebugRecognizeResp
                 ? pendingDebugRecognizePlus : Collections.emptyList();
         if (!plus.isEmpty()) {
@@ -1417,13 +1597,21 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         }
     }
 
-    /** 查询页面当前的数量弹窗。 */
-    @Override public boolean isCountInputShowing() {
+    /**
+     * 查询页面当前的数量弹窗。
+     */
+    @Override
+    public boolean isCountInputShowing() {
         return getSupportFragmentManager().findFragmentByTag(COUNT_KEYBOARD_TAG) != null;
     }
 
-    /** 保留商品查询错误日志。 */
-    @Override public void showLoadingFailure(Exception error) { Log.e(LOG_TAG, "refreshGoodsData", error); }
+    /**
+     * 保留商品查询错误日志。
+     */
+    @Override
+    public void showLoadingFailure(Exception error) {
+        Log.e(LOG_TAG, "refreshGoodsData", error);
+    }
 
     private String formatCent(long amountCent) {
         return BigDecimal.valueOf(amountCent).movePointLeft(2).setScale(2, RoundingMode.HALF_UP).toPlainString();
@@ -1448,8 +1636,11 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
         }
     }
 
-    /** 展示收银状态并保留平台日志、语音与计时出口。 */
-    @Override public void showSaleStatus(CheckoutPresenter.SaleStatus status, CheckoutState state) {
+    /**
+     * 展示收银状态并保留平台日志、语音与计时出口。
+     */
+    @Override
+    public void showSaleStatus(CheckoutPresenter.SaleStatus status, CheckoutState state) {
         if (status == CheckoutPresenter.SaleStatus.PRINTED || status == CheckoutPresenter.SaleStatus.CONFIRMED) {
             if (!state.weighingEnabled) {
                 printResumeAt = SystemClock.elapsedRealtime() + 10_000L;
@@ -1457,8 +1648,8 @@ public class MainActivity extends BaseActivity implements CheckoutPresenter.View
             }
             boolean printed = status == CheckoutPresenter.SaleStatus.PRINTED;
             updateRecognizeStatus(state.weighingEnabled
-                    ? (printed ? R.string.status_print_done_wait_remove : R.string.status_confirmed_wait_remove)
-                    : (printed ? R.string.status_print_done_auto_resume : R.string.status_confirmed_auto_resume),
+                            ? (printed ? R.string.status_print_done_wait_remove : R.string.status_confirmed_wait_remove)
+                            : (printed ? R.string.status_print_done_auto_resume : R.string.status_confirmed_auto_resume),
                     R.drawable.bg_green_round);
             return;
         }

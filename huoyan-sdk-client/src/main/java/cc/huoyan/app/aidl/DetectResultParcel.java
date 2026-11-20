@@ -29,12 +29,16 @@ public final class DetectResultParcel implements Parcelable {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 检测框列表（code=0 时有效；无目标为空列表）。 */
+    /**
+     * 检测框列表（code=0 时有效；无目标为空列表）。
+     */
     public List<DetectBoxParcel> getBoxes() {
         return boxes;
     }

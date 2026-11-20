@@ -26,27 +26,37 @@ public final class DetectBoxParcel implements Parcelable {
         this.score = score;
     }
 
-    /** 框左上角 x（画布绝对坐标）。 */
+    /**
+     * 框左上角 x（画布绝对坐标）。
+     */
     public int getX() {
         return x;
     }
 
-    /** 框左上角 y（画布绝对坐标）。 */
+    /**
+     * 框左上角 y（画布绝对坐标）。
+     */
     public int getY() {
         return y;
     }
 
-    /** 框宽（像素）。 */
+    /**
+     * 框宽（像素）。
+     */
     public int getW() {
         return w;
     }
 
-    /** 框高（像素）。 */
+    /**
+     * 框高（像素）。
+     */
     public int getH() {
         return h;
     }
 
-    /** 框置信度；后端无置信度输出时为 0。 */
+    /**
+     * 框置信度；后端无置信度输出时为 0。
+     */
     public double getScore() {
         return score;
     }

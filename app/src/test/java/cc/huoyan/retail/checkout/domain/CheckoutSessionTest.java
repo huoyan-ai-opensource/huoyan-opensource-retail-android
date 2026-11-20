@@ -1,10 +1,13 @@
 package cc.huoyan.retail.checkout.domain;
 
 import cc.huoyan.retail.pricing.PricingMode;
+
 import org.junit.Test;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
+
 import static org.junit.Assert.*;
 
 public class CheckoutSessionTest {
@@ -21,7 +24,8 @@ public class CheckoutSessionTest {
         return session;
     }
 
-    @Test public void scaleWeightChargedOnceAndCountLinesAddedIndependently() {
+    @Test
+    public void scaleWeightChargedOnceAndCountLinesAddedIndependently() {
         CheckoutSession session = weighted();
         session.replaceLines(Arrays.asList(line("W", 1000, 3, PricingMode.WEIGHT),
                 line("W2", 1000, 2, PricingMode.WEIGHT), line("C", 120, 5, PricingMode.COUNT)));
@@ -30,7 +34,8 @@ public class CheckoutSessionTest {
         assertTrue(session.state().canPrint);
     }
 
-    @Test public void conflictingWeightPricesBlockButCountPricesDoNot() {
+    @Test
+    public void conflictingWeightPricesBlockButCountPricesDoNot() {
         CheckoutSession session = weighted();
         session.replaceLines(Arrays.asList(line("W", 1000, 1, PricingMode.WEIGHT),
                 line("W2", 1100, 1, PricingMode.WEIGHT), line("C", 999, 2, PricingMode.COUNT)));
@@ -40,7 +45,8 @@ public class CheckoutSessionTest {
         assertNull(session.state().receipt);
     }
 
-    @Test public void countOnlyWorksWithoutScaleAndBlockedWeightDoesNotEnterTotal() {
+    @Test
+    public void countOnlyWorksWithoutScaleAndBlockedWeightDoesNotEnterTotal() {
         CheckoutSession session = new CheckoutSession();
         session.setWeighingEnabled(false);
         session.lockRecognition();
@@ -49,7 +55,8 @@ public class CheckoutSessionTest {
         assertEquals(600L, session.state().receipt.getTotalAmountCent());
     }
 
-    @Test public void unstableOrDisconnectedScaleRevokesPrintAndTwoReadsRestoreIt() {
+    @Test
+    public void unstableOrDisconnectedScaleRevokesPrintAndTwoReadsRestoreIt() {
         CheckoutSession session = weighted();
         assertTrue(session.state().canPrint);
         session.onWeight(new BigDecimal("0.356"), java.math.BigDecimal.ZERO, false);
@@ -62,7 +69,8 @@ public class CheckoutSessionTest {
         assertFalse(session.state().canPrint);
     }
 
-    @Test public void threeEmptyReadingsEndSaleButFirstAlreadyBlocksPrinting() {
+    @Test
+    public void threeEmptyReadingsEndSaleButFirstAlreadyBlocksPrinting() {
         CheckoutSession session = weighted();
         session.onWeight(BigDecimal.ZERO, java.math.BigDecimal.ZERO, true);
         assertFalse(session.state().canPrint);
@@ -73,7 +81,8 @@ public class CheckoutSessionTest {
         assertNull(session.state().receipt);
     }
 
-    @Test public void recognitionUsesFixedWeightBaselineAndManualWeightUsesScaleBaseline() {
+    @Test
+    public void recognitionUsesFixedWeightBaselineAndManualWeightUsesScaleBaseline() {
         CheckoutSession session = weighted();
         session.setManualWeight(new BigDecimal("1.200"));
         assertEquals(1200L, session.state().receipt.getTotalAmountCent());
@@ -84,7 +93,8 @@ public class CheckoutSessionTest {
         assertNull(session.state().receipt);
     }
 
-    @Test public void printingFreezesReceiptAndFinishesDespiteChangingWeight() {
+    @Test
+    public void printingFreezesReceiptAndFinishesDespiteChangingWeight() {
         CheckoutSession session = weighted();
         SalePrintJob job = session.beginPrint();
         WeightedSaleResult receipt = session.state().receipt;
@@ -98,10 +108,12 @@ public class CheckoutSessionTest {
         assertFalse(session.state().canPrint);
     }
 
-    @Test public void completionOfOldPrintCannotMarkNewSaleSold() {
+    @Test
+    public void completionOfOldPrintCannotMarkNewSaleSold() {
         CheckoutSession session = weighted();
         SalePrintJob old = session.beginPrint();
-        for (int i = 0; i < 3; i++) session.onWeight(BigDecimal.ZERO, java.math.BigDecimal.ZERO, true);
+        for (int i = 0; i < 3; i++)
+            session.onWeight(BigDecimal.ZERO, java.math.BigDecimal.ZERO, true);
         session.onWeight(new BigDecimal("0.700"), java.math.BigDecimal.ZERO, true);
         session.onWeight(new BigDecimal("0.700"), java.math.BigDecimal.ZERO, true);
         session.lockRecognition();
@@ -117,7 +129,8 @@ public class CheckoutSessionTest {
         assertFalse(session.state().printing);
     }
 
-    @Test public void failedPrintReevaluatesLatestScaleState() {
+    @Test
+    public void failedPrintReevaluatesLatestScaleState() {
         CheckoutSession session = weighted();
         SalePrintJob job = session.beginPrint();
         session.scaleDisconnected();
@@ -126,7 +139,8 @@ public class CheckoutSessionTest {
         assertTrue(session.state().canEdit);
     }
 
-    @Test public void unresolvedRowsDoNotCausePriceConflictAndAmountsKeepLongPrecision() {
+    @Test
+    public void unresolvedRowsDoNotCausePriceConflictAndAmountsKeepLongPrecision() {
         CheckoutSession session = new CheckoutSession();
         session.setWeighingEnabled(false);
         session.lockRecognition();
@@ -136,7 +150,8 @@ public class CheckoutSessionTest {
         assertTrue(session.state().canPrint);
     }
 
-    @Test public void stateSnapshotsRemainUnchangedAfterLaterEvents() {
+    @Test
+    public void stateSnapshotsRemainUnchangedAfterLaterEvents() {
         CheckoutSession session = weighted();
         CheckoutState before = session.state();
         session.scaleDisconnected();
@@ -145,7 +160,8 @@ public class CheckoutSessionTest {
         assertThrows(UnsupportedOperationException.class, () -> before.priceConflictPlus.add("X"));
     }
 
-    @Test public void invalidGoodsBlockSaleAndRemovingLastLineRevokesValidPhase() {
+    @Test
+    public void invalidGoodsBlockSaleAndRemovingLastLineRevokesValidPhase() {
         CheckoutSession session = weighted();
         session.replaceLines(Arrays.asList(line("W", 1000, 1, PricingMode.WEIGHT),
                 line("INVALID", 0, 1, PricingMode.COUNT)));
@@ -156,7 +172,8 @@ public class CheckoutSessionTest {
         assertEquals(CheckoutState.Phase.WEIGHT_STABILIZING, session.state().phase);
     }
 
-    @Test public void negativeWeightClearsSaleAndReconnectingAloneDoesNotRestoreStability() {
+    @Test
+    public void negativeWeightClearsSaleAndReconnectingAloneDoesNotRestoreStability() {
         CheckoutSession session = weighted();
         assertEquals(CheckoutSession.WeightEvent.NEGATIVE, session.onWeight(new BigDecimal("-0.005"), java.math.BigDecimal.ZERO, true));
         assertNull(session.state().receipt);
@@ -166,7 +183,8 @@ public class CheckoutSessionTest {
         assertFalse(session.state().hasStableWeight);
     }
 
-    @Test public void changesToInputListCannotChangePublishedSale() {
+    @Test
+    public void changesToInputListCannotChangePublishedSale() {
         CheckoutSession session = weighted();
         java.util.List<SaleLine> lines = new java.util.ArrayList<>();
         lines.add(line("C", 200, 3, PricingMode.COUNT));
@@ -177,7 +195,8 @@ public class CheckoutSessionTest {
         assertTrue(session.state().canPrint);
     }
 
-    @Test public void editingDuringPrintCannotChangePrintedReceipt() {
+    @Test
+    public void editingDuringPrintCannotChangePrintedReceipt() {
         CheckoutSession session = weighted();
         SalePrintJob job = session.beginPrint();
         WeightedSaleResult original = session.state().receipt;
@@ -188,8 +207,12 @@ public class CheckoutSessionTest {
         session.replaceLines(Collections.emptyList());
         assertSame(original, session.state().receipt);
     }
-    /** 无称重打印完成后暂停接收结果，显式恢复才开始新单，失败则允许重试。 */
-    @Test public void countReceiptWaitsForResumeAfterSuccessfulPrint() {
+
+    /**
+     * 无称重打印完成后暂停接收结果，显式恢复才开始新单，失败则允许重试。
+     */
+    @Test
+    public void countReceiptWaitsForResumeAfterSuccessfulPrint() {
         CheckoutSession session = new CheckoutSession();
         session.setWeighingEnabled(false);
         session.lockRecognition();
@@ -207,8 +230,11 @@ public class CheckoutSessionTest {
         assertNull(session.state().receipt);
     }
 
-    /** 零价格优先于整秤价格冲突，纠正价格后恢复正常结算。 */
-    @Test public void missingPriceIsNotAWeightPriceConflict() {
+    /**
+     * 零价格优先于整秤价格冲突，纠正价格后恢复正常结算。
+     */
+    @Test
+    public void missingPriceIsNotAWeightPriceConflict() {
         CheckoutSession session = weighted();
         session.replaceLines(Arrays.asList(line("W", 1000, 1, PricingMode.WEIGHT),
                 line("Z", 0, 1, PricingMode.COUNT), line("W2", 2000, 1, PricingMode.WEIGHT)));

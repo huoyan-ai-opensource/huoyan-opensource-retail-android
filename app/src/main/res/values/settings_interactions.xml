@@ -15,6 +15,10 @@
     <string name="recognition_sensitivity_title">画面变化识别灵敏度</string>
     <string name="recognition_sensitivity_hint">灵敏度越高，越小的画面变化也会触发识别</string>
     <string-array name="recognition_sensitivity_names">
-        <item>很低</item><item>较低</item><item>标准</item><item>较高</item><item>很高</item>
+        <item>很低</item>
+        <item>较低</item>
+        <item>标准</item>
+        <item>较高</item>
+        <item>很高</item>
     </string-array>
 </resources>

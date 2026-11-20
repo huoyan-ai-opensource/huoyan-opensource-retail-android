@@ -24,7 +24,7 @@ public final class GoodsQueryResultParcel implements Parcelable {
     private final List<GoodsParcel> records;
 
     public GoodsQueryResultParcel(int code, String reason, long total, long pages,
-            int current, int size, List<GoodsParcel> records) {
+                                  int current, int size, List<GoodsParcel> records) {
         this.code = code;
         this.reason = reason;
         this.total = total;
@@ -42,27 +42,37 @@ public final class GoodsQueryResultParcel implements Parcelable {
         return reason;
     }
 
-    /** 过滤后总条数（分页元数据）。 */
+    /**
+     * 过滤后总条数（分页元数据）。
+     */
     public long getTotal() {
         return total;
     }
 
-    /** 总页数（ceil(total/size)）。 */
+    /**
+     * 总页数（ceil(total/size)）。
+     */
     public long getPages() {
         return pages;
     }
 
-    /** 当前页（生效页码——缺省/0 归一后）。 */
+    /**
+     * 当前页（生效页码——缺省/0 归一后）。
+     */
     public int getCurrent() {
         return current;
     }
 
-    /** 页大小（生效值——缺省/0 归一后）。 */
+    /**
+     * 页大小（生效值——缺省/0 归一后）。
+     */
     public int getSize() {
         return size;
     }
 
-    /** 本页条目（越界页为空列表；错误回执空列表）。 */
+    /**
+     * 本页条目（越界页为空列表；错误回执空列表）。
+     */
     public List<GoodsParcel> getRecords() {
         return records;
     }
@@ -125,14 +135,14 @@ public final class GoodsQueryResultParcel implements Parcelable {
 
     public static final Creator<GoodsQueryResultParcel> CREATOR =
             new Creator<GoodsQueryResultParcel>() {
-        @Override
-        public GoodsQueryResultParcel createFromParcel(Parcel parcel) {
-            return new GoodsQueryResultParcel(parcel);
-        }
+                @Override
+                public GoodsQueryResultParcel createFromParcel(Parcel parcel) {
+                    return new GoodsQueryResultParcel(parcel);
+                }
 
-        @Override
-        public GoodsQueryResultParcel[] newArray(int size) {
-            return new GoodsQueryResultParcel[size];
-        }
-    };
+                @Override
+                public GoodsQueryResultParcel[] newArray(int size) {
+                    return new GoodsQueryResultParcel[size];
+                }
+            };
 }

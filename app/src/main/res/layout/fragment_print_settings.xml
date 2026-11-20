@@ -6,7 +6,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/dp_0"
         android:layout_weight="95"
         android:gravity="center_vertical"
         android:paddingStart="@dimen/dp_10"
@@ -22,7 +22,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/dp_0"
         android:layout_weight="926"
         android:orientation="vertical">
 
@@ -92,7 +92,7 @@
 
                 <TextView
                     android:id="@+id/printerInitName"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ellipsize="end"
@@ -156,7 +156,7 @@
 
                 <TextView
                     android:id="@+id/printerModel"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ellipsize="end"
@@ -182,9 +182,10 @@
             android:layout_height="@dimen/dp_0_5"
             android:background="#EAEFF4" />
 
-        <include layout="@layout/printer_paper_setting"
+        <include
+            layout="@layout/printer_paper_setting"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="@dimen/dp_26"
             android:layout_marginHorizontal="@dimen/dp_10" />
 
         <LinearLayout

@@ -24,23 +24,32 @@ import java.util.List;
 
 import aclasdriver.AclasScale;
 
-/** Settings for the Aclas scale used by the Walmart weighted-sale flow. */
+/**
+ * Settings for the Aclas scale used by the Walmart weighted-sale flow.
+ */
 public class AclasScaleSettingsFragment extends BaseFragment implements ScaleSettingsPresenter.View {
-    /** 串口配置及测试会话协调者，每个视图独立创建。 */
+    /**
+     * 串口配置及测试会话协调者，每个视图独立创建。
+     */
     private ScaleSettingsPresenter presenter;
     private TextView selectedPortView;
     private TextView statusView;
     private TextView testButton;
     private Switch weighingModule;
     private boolean suppressWeighingSwitchWrite;
-    /** 用户请求打开列表时，等待当前枚举完成后展示新快照。 */
+    /**
+     * 用户请求打开列表时，等待当前枚举完成后展示新快照。
+     */
     private boolean selectingPort;
-    /** 页面所属的串口读取遮罩，视图销毁时关闭。 */
+    /**
+     * 页面所属的串口读取遮罩，视图销毁时关闭。
+     */
     private cc.huoyan.retail.common.ui.LoadingDialog portsLoading;
 
     @Override
     protected int getLayoutResId() {
-        if (getArguments() != null && getArguments().getBoolean("standalone")) return R.layout.page_scale;
+        if (getArguments() != null && getArguments().getBoolean("standalone"))
+            return R.layout.page_scale;
         return R.layout.fragment_aclas_scale_settings;
     }
 
@@ -54,7 +63,10 @@ public class AclasScaleSettingsFragment extends BaseFragment implements ScaleSet
                 SPManager.getInstance().getString(SP_ACLAS_SCALE_PORT));
         renderSelectedPort();
         SelectOptionDialog.listen(getChildFragmentManager(), this, "scalePort", (position, value) -> presenter.select(value));
-        view.findViewById(R.id.selectScalePort).setOnClickListener(v -> { selectingPort = true; presenter.refresh(); });
+        view.findViewById(R.id.selectScalePort).setOnClickListener(v -> {
+            selectingPort = true;
+            presenter.refresh();
+        });
         testButton = view.findViewById(R.id.testScalePort);
         testButton.setOnClickListener(v -> presenter.toggle());
         view.findViewById(R.id.zeroScale).setOnClickListener(v -> presenter.zero());
@@ -96,13 +108,19 @@ public class AclasScaleSettingsFragment extends BaseFragment implements ScaleSet
         dialog.show(getParentFragmentManager(), "scaleTareKeyboard");
     }
 
-    /** 展示当前发现的串口选项。 */
+    /**
+     * 展示当前发现的串口选项。
+     */
     private void showPortSelect() {
         SelectOptionDialog.show(getChildFragmentManager(), "scalePort", getString(R.string.settings_scale_select_port),
                 presenter.available(), presenter.selected());
     }
-    /** 串口读取期间复用恢复的遮罩，异步提交避免嵌套 Fragment 事务。 */
-    @Override public void readingPorts() {
+
+    /**
+     * 串口读取期间复用恢复的遮罩，异步提交避免嵌套 Fragment 事务。
+     */
+    @Override
+    public void readingPorts() {
         if (portsLoading != null) return;
         portsLoading = (cc.huoyan.retail.common.ui.LoadingDialog)
                 getChildFragmentManager().findFragmentByTag("portsLoading");
@@ -112,48 +130,107 @@ public class AclasScaleSettingsFragment extends BaseFragment implements ScaleSet
             portsLoading.show(getChildFragmentManager(), "portsLoading");
         }
     }
-    /** 展示可用数量、已保存串口丢失或枚举错误。 */
-    @Override public void portsFound(List<String> ports, String selected, String error) {
-        if (portsLoading != null) { portsLoading.dismissAllowingStateLoss(); portsLoading = null; }
+
+    /**
+     * 展示可用数量、已保存串口丢失或枚举错误。
+     */
+    @Override
+    public void portsFound(List<String> ports, String selected, String error) {
+        if (portsLoading != null) {
+            portsLoading.dismissAllowingStateLoss();
+            portsLoading = null;
+        }
         boolean open = selectingPort;
         selectingPort = false;
-        if (!TextUtils.isEmpty(error)) { ToastEx.showFailureToast(requireContext(), getString(R.string.status_read_ports_failed, error)); return; }
+        if (!TextUtils.isEmpty(error)) {
+            ToastEx.showFailureToast(requireContext(), getString(R.string.status_read_ports_failed, error));
+            return;
+        }
         if (open && isResumed() && !getChildFragmentManager().isStateSaved()) showPortSelect();
     }
-    /** 保存后同步当前端口并提示。 */
-    @Override public void portSaved(String port) {
+
+    /**
+     * 保存后同步当前端口并提示。
+     */
+    @Override
+    public void portSaved(String port) {
         renderSelectedPort();
         ToastEx.showSuccessToast(requireContext(), getString(R.string.toast_scale_config_saved));
     }
-    /** 选择结果已过期，要求用户重新选择。 */
-    @Override public void unavailableSelection() { ToastEx.createToast(requireContext(), getString(R.string.select_option_unavailable)); }
-    /** 未选端口或端口不可用时提示。 */
-    @Override public void cannotStart(boolean missing) { ToastEx.createToast(requireContext(), getString(missing ? R.string.toast_select_port_first : R.string.toast_selected_port_unavailable)); }
-    /** 置零去皮依赖活动测试连接。 */
-    @Override public void startFirst() { ToastEx.createToast(requireContext(), getString(R.string.toast_start_test_first)); }
-    /** 展示连接中并切换为关闭按钮。 */
-    @Override public void connecting(String port) { testButton.setText(R.string.button_close_test); statusView.setText(getString(R.string.status_connecting, port)); }
-    /** 连接成功，等待实时读数。 */
-    @Override public void connected(String port) { statusView.setText(getString(R.string.status_connected_waiting, port)); }
-    /** 根据布局展示三位小数的读数及稳定标记。 */
-    @Override public void weight(String port, AclasWeightSnapshot snapshot) {
+
+    /**
+     * 选择结果已过期，要求用户重新选择。
+     */
+    @Override
+    public void unavailableSelection() {
+        ToastEx.createToast(requireContext(), getString(R.string.select_option_unavailable));
+    }
+
+    /**
+     * 未选端口或端口不可用时提示。
+     */
+    @Override
+    public void cannotStart(boolean missing) {
+        ToastEx.createToast(requireContext(), getString(missing ? R.string.toast_select_port_first : R.string.toast_selected_port_unavailable));
+    }
+
+    /**
+     * 置零去皮依赖活动测试连接。
+     */
+    @Override
+    public void startFirst() {
+        ToastEx.createToast(requireContext(), getString(R.string.toast_start_test_first));
+    }
+
+    /**
+     * 展示连接中并切换为关闭按钮。
+     */
+    @Override
+    public void connecting(String port) {
+        testButton.setText(R.string.button_close_test);
+        statusView.setText(getString(R.string.status_connecting, port));
+    }
+
+    /**
+     * 连接成功，等待实时读数。
+     */
+    @Override
+    public void connected(String port) {
+        statusView.setText(getString(R.string.status_connected_waiting, port));
+    }
+
+    /**
+     * 根据布局展示三位小数的读数及稳定标记。
+     */
+    @Override
+    public void weight(String port, AclasWeightSnapshot snapshot) {
         TextView weight = requireView().findViewById(R.id.scaleWeight);
         TextView stable = requireView().findViewById(R.id.scaleStable);
-        if (weight == null) statusView.setText(getString(R.string.status_weight_read, port, formatWeight(snapshot.getWeightKg()), getString(snapshot.isStable() ? R.string.text_stable : R.string.text_unstable)));
+        if (weight == null)
+            statusView.setText(getString(R.string.status_weight_read, port, formatWeight(snapshot.getWeightKg()), getString(snapshot.isStable() ? R.string.text_stable : R.string.text_unstable)));
         else {
             statusView.setText(R.string.land_scale_connected);
             weight.setText(formatWeight(snapshot.getWeightKg()));
             stable.setText(snapshot.isStable() ? R.string.land_scale_stable : R.string.land_scale_unstable);
         }
     }
-    /** 测试结束后恢复启动按钮。 */
-    @Override public void stopped(String error) {
+
+    /**
+     * 测试结束后恢复启动按钮。
+     */
+    @Override
+    public void stopped(String error) {
         testButton.setText(R.string.settings_scale_test_btn);
         statusView.setText(error == null ? getString(R.string.status_test_stopped) : getString(R.string.status_test_failed, error));
     }
-    /** 显示置零或去皮命令回执。 */
-    @Override public void commandResult(boolean tare, boolean success, String message) {
-        if (success) ToastEx.showSuccessToast(requireContext(), getString(tare ? R.string.toast_tare_sent : R.string.toast_zero_sent));
+
+    /**
+     * 显示置零或去皮命令回执。
+     */
+    @Override
+    public void commandResult(boolean tare, boolean success, String message) {
+        if (success)
+            ToastEx.showSuccessToast(requireContext(), getString(tare ? R.string.toast_tare_sent : R.string.toast_zero_sent));
         else ToastEx.createToast(requireContext(), message);
     }
 
@@ -177,7 +254,10 @@ public class AclasScaleSettingsFragment extends BaseFragment implements ScaleSet
 
     @Override
     public void onDestroyView() {
-        if (portsLoading != null) { portsLoading.dismissAllowingStateLoss(); portsLoading = null; }
+        if (portsLoading != null) {
+            portsLoading.dismissAllowingStateLoss();
+            portsLoading = null;
+        }
         presenter.detach();
         super.onDestroyView();
     }

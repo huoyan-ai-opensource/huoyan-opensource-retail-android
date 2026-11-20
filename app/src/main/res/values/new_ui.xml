@@ -42,11 +42,18 @@
     <string name="goods_management_sort_value">排序 · %1$s</string>
     <string name="goods_management_pricing_value">计价 · %1$s</string>
     <string-array name="goods_management_sort_options">
-        <item>最近新增</item><item>名称 A–Z</item><item>PLU A–Z</item><item>价格从低到高</item><item>价格从高到低</item>
-            <item>已学图片从少到多</item><item>已学图片从多到少</item>
+        <item>最近新增</item>
+        <item>名称 A–Z</item>
+        <item>PLU A–Z</item>
+        <item>价格从低到高</item>
+        <item>价格从高到低</item>
+        <item>已学图片从少到多</item>
+        <item>已学图片从多到少</item>
     </string-array>
     <string-array name="goods_management_pricing_options">
-        <item>全部</item><item>称重</item><item>计数</item>
+        <item>全部</item>
+        <item>称重</item>
+        <item>计数</item>
     </string-array>
     <string name="learning_switch_goods">切换商品</string>
     <string name="goods_columns_learned">已学图片数</string>

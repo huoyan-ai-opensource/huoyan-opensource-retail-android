@@ -1,18 +1,27 @@
 package cc.huoyan.retail.device.camera;
 
 import android.graphics.Bitmap;
+
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
-/** 验证 RenderScript 资源复用不改变颜色、尺寸和输出位图所有权。 */
+/**
+ * 验证 RenderScript 资源复用不改变颜色、尺寸和输出位图所有权。
+ */
 @RunWith(AndroidJUnit4.class)
 public class Nv21ReuseDeviceTest {
-    /** 连续转换及切换尺寸时与独立转换器像素一致，释放后拒绝继续调用。 */
-    @Test public void matchesFreshConverterAcrossFramesAndResolutionChanges() {
+    /**
+     * 连续转换及切换尺寸时与独立转换器像素一致，释放后拒绝继续调用。
+     */
+    @Test
+    public void matchesFreshConverterAcrossFramesAndResolutionChanges() {
         NV21ToBitmap reused = new NV21ToBitmap(InstrumentationRegistry.getInstrumentation().getTargetContext());
         Bitmap previous = null;
         int[] previousPixels = null;
@@ -31,13 +40,19 @@ public class Nv21ReuseDeviceTest {
                 NV21ToBitmap fresh = new NV21ToBitmap(InstrumentationRegistry.getInstrumentation().getTargetContext());
                 try {
                     Bitmap expected = fresh.nv21ToBitmap(nv21, size, size);
-                    try { assertArrayEquals(pixels(expected), previousPixels); }
-                    finally { expected.recycle(); }
-                } finally { fresh.release(); }
+                    try {
+                        assertArrayEquals(pixels(expected), previousPixels);
+                    } finally {
+                        expected.recycle();
+                    }
+                } finally {
+                    fresh.release();
+                }
             }
         } finally {
             if (previous != null) previous.recycle();
-            reused.release(); reused.release();
+            reused.release();
+            reused.release();
         }
         assertThrows(IllegalStateException.class, () -> reused.nv21ToBitmap(new byte[96], 8, 8));
     }

@@ -20,13 +20,17 @@ import android.os.Build;
 
 import java.lang.reflect.Method;
 
-/** 提供设备授权和首页展示需要的型号、硬件序列号。 */
+/**
+ * 提供设备授权和首页展示需要的型号、硬件序列号。
+ */
 public class DeviceUtils {
     private DeviceUtils() {
         throw new IllegalStateException("you can't instantiate me!");
     }
 
-    /** 返回系统报告的设备型号。 */
+    /**
+     * 返回系统报告的设备型号。
+     */
     public static String getPhoneType() {
         return Build.MODEL;
     }

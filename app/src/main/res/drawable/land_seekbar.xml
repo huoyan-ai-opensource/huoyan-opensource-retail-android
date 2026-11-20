@@ -1,4 +1,18 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
- <item android:id="@android:id/background"><shape><solid android:color="#E7EBF1"/><corners android:radius="4dp"/><size android:height="8dp"/></shape></item>
- <item android:id="@android:id/progress"><scale android:scaleWidth="100%"><shape><solid android:color="#3F3EED"/><corners android:radius="4dp"/><size android:height="8dp"/></shape></scale></item>
+    <item android:id="@android:id/background">
+        <shape>
+            <solid android:color="#E7EBF1" />
+            <corners android:radius="@dimen/dp_2" />
+            <size android:height="@dimen/dp_4" />
+        </shape>
+    </item>
+    <item android:id="@android:id/progress">
+        <scale android:scaleWidth="100%">
+            <shape>
+                <solid android:color="#3F3EED" />
+                <corners android:radius="@dimen/dp_2" />
+                <size android:height="@dimen/dp_4" />
+            </shape>
+        </scale>
+    </item>
 </layer-list>

@@ -28,11 +28,13 @@ public final class GoodsDownloadResult {
     private final int failCode;
     private final String failReason;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public GoodsDownloadResult(int code, String reason, String phase, String syncMode,
-            long syncTimestamp, long total, long added, long updated, long deleted,
-            long successCount, long failCount, boolean hasChanges, int failCode,
-            String failReason) {
+                               long syncTimestamp, long total, long added, long updated, long deleted,
+                               long successCount, long failCount, boolean hasChanges, int failCode,
+                               String failReason) {
         this.code = code;
         this.reason = reason;
         this.phase = phase;
@@ -49,72 +51,100 @@ public final class GoodsDownloadResult {
         this.failReason = failReason;
     }
 
-    /** 读取 getCode 对应数据。 */
+    /**
+     * 读取 getCode 对应数据。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 读取 getReason 对应数据。 */
+    /**
+     * 读取 getReason 对应数据。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 终态：SUCCESS（失败经 code≠0 返回，见类注释）。 */
+    /**
+     * 终态：SUCCESS（失败经 code≠0 返回，见类注释）。
+     */
     public String getPhase() {
         return phase;
     }
 
-    /** 同步模式（full/incremental）。 */
+    /**
+     * 同步模式（full/incremental）。
+     */
     public String getSyncMode() {
         return syncMode;
     }
 
-    /** 本次提交游标（epoch 秒；空商品也提交）。 */
+    /**
+     * 本次提交游标（epoch 秒；空商品也提交）。
+     */
     public long getSyncTimestamp() {
         return syncTimestamp;
     }
 
-    /** 本次商品总数（非页码）。 */
+    /**
+     * 本次商品总数（非页码）。
+     */
     public long getTotal() {
         return total;
     }
 
-    /** 读取 getAdded 对应数据。 */
+    /**
+     * 读取 getAdded 对应数据。
+     */
     public long getAdded() {
         return added;
     }
 
-    /** 读取 getUpdated 对应数据。 */
+    /**
+     * 读取 getUpdated 对应数据。
+     */
     public long getUpdated() {
         return updated;
     }
 
-    /** 读取 getDeleted 对应数据。 */
+    /**
+     * 读取 getDeleted 对应数据。
+     */
     public long getDeleted() {
         return deleted;
     }
 
-    /** 读取 getSuccessCount 对应数据。 */
+    /**
+     * 读取 getSuccessCount 对应数据。
+     */
     public long getSuccessCount() {
         return successCount;
     }
 
-    /** 读取 getFailCount 对应数据。 */
+    /**
+     * 读取 getFailCount 对应数据。
+     */
     public long getFailCount() {
         return failCount;
     }
 
-    /** 本次本地库是否有变更。 */
+    /**
+     * 本次本地库是否有变更。
+     */
     public boolean isHasChanges() {
         return hasChanges;
     }
 
-    /** 读取 getFailCode 对应数据。 */
+    /**
+     * 读取 getFailCode 对应数据。
+     */
     public int getFailCode() {
         return failCode;
     }
 
-    /** 读取 getFailReason 对应数据。 */
+    /**
+     * 读取 getFailReason 对应数据。
+     */
     public String getFailReason() {
         return failReason;
     }

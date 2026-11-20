@@ -1,7 +1,9 @@
 package cc.huoyan.retail.sdk;
+
 import cc.huoyan.sdk.client.samples.LearnedClazzPages;
 
 import cc.huoyan.sdk.client.HuoyanSdkClient;
+
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -19,16 +21,22 @@ import cc.huoyan.sdk.client.model.StatusSnapshot;
 
 import static org.junit.Assert.*;
 
-/** 真机 SDK 契约联调：需要同机安装新版 cc.huoyan，仅初始化和查询，不修改商品/识别数据。 */
+/**
+ * 真机 SDK 契约联调：需要同机安装新版 cc.huoyan，仅初始化和查询，不修改商品/识别数据。
+ */
 @RunWith(AndroidJUnit4.class)
 public class SdkContractDeviceTest {
-    /** 验证真实 Binder 调用及 Parcelable 解码。 */
+    /**
+     * 验证真实 Binder 调用及 Parcelable 解码。
+     */
     @Test
     public void aidlContract() {
         verify(HuoyanSdkClient.create(androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().getTargetContext(), cc.huoyan.sdk.client.SdkConfig.aidl()), "aidl");
     }
 
-    /** 验证客户端 WS 桥与同机 SDK 的实际通信。 */
+    /**
+     * 验证客户端 WS 桥与同机 SDK 的实际通信。
+     */
     @Test
     public void wsContract() {
         verify(HuoyanSdkClient.create(androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().getTargetContext(), cc.huoyan.sdk.client.SdkConfig.websocket("ws://127.0.0.1:18086/ws")), "ws");
@@ -64,12 +72,15 @@ public class SdkContractDeviceTest {
             assertNotNull(cert.getModelCode());
             assertNotNull(cert.getLicenseType());
             cc.huoyan.sdk.client.model.GoodsQueryResult goods = bridge.queryGoods(null, null, null, -1, 1, 10, "goods_id", "asc");
-            assertNotNull(goods); assertEquals(goods.getReason(), 0, goods.getCode());
+            assertNotNull(goods);
+            assertEquals(goods.getReason(), 0, goods.getCode());
             cc.huoyan.sdk.client.model.GoodsCountResult count = bridge.getGoodsCount(null, null, null, -1);
-            assertNotNull(count); assertEquals(count.getReason(), 0, count.getCode());
+            assertNotNull(count);
+            assertEquals(count.getReason(), 0, count.getCode());
             assertEquals(goods.getTotal(), count.getCount());
             cc.huoyan.sdk.client.model.GoodsDownloadProgress progress = bridge.getDownloadGoodsProgress();
-            assertNotNull(progress); assertEquals(progress.getReason(), 0, progress.getCode());
+            assertNotNull(progress);
+            assertEquals(progress.getReason(), 0, progress.getCode());
 
             ItemClazzList page = bridge.listClasses(1, 1);
             assertNotNull(page);

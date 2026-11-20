@@ -2,6 +2,7 @@ package cc.huoyan.sdk.client;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -27,11 +28,17 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/** SDK WebSocket 服务发现工具；只验证 SDK 协议，不保存连接或业务状态。 */
+/**
+ * SDK WebSocket 服务发现工具；只验证 SDK 协议，不保存连接或业务状态。
+ */
 public final class SdkDiscovery {
-    /** SDK WebSocket 服务端口。 */
+    /**
+     * SDK WebSocket 服务端口。
+     */
     public static final int DEFAULT_PORT = 18086;
-    /** SDK WebSocket 服务路径。 */
+    /**
+     * SDK WebSocket 服务路径。
+     */
     public static final String DEFAULT_PATH = "/ws";
 
     private SdkDiscovery() {

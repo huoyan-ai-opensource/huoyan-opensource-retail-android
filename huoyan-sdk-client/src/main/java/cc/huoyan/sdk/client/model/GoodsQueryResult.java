@@ -20,9 +20,11 @@ public final class GoodsQueryResult {
     private final int size;
     private final List<Goods> records;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public GoodsQueryResult(int code, String reason, long total, long pages,
-            int current, int size, List<Goods> records) {
+                            int current, int size, List<Goods> records) {
         this.code = code;
         this.reason = reason;
         this.total = total;
@@ -32,37 +34,51 @@ public final class GoodsQueryResult {
         this.records = records == null ? Collections.<Goods>emptyList() : records;
     }
 
-    /** 读取 getCode 对应数据。 */
+    /**
+     * 读取 getCode 对应数据。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 读取 getReason 对应数据。 */
+    /**
+     * 读取 getReason 对应数据。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 过滤后总条数（分页元数据）。 */
+    /**
+     * 过滤后总条数（分页元数据）。
+     */
     public long getTotal() {
         return total;
     }
 
-    /** 总页数（ceil(total/size)）。 */
+    /**
+     * 总页数（ceil(total/size)）。
+     */
     public long getPages() {
         return pages;
     }
 
-    /** 当前页（生效页码——缺省/0 归一后）。 */
+    /**
+     * 当前页（生效页码——缺省/0 归一后）。
+     */
     public int getCurrent() {
         return current;
     }
 
-    /** 页大小（生效值——缺省/0 归一后）。 */
+    /**
+     * 页大小（生效值——缺省/0 归一后）。
+     */
     public int getSize() {
         return size;
     }
 
-    /** 本页条目（越界页为空列表；错误回执空列表）。 */
+    /**
+     * 本页条目（越界页为空列表；错误回执空列表）。
+     */
     public List<Goods> getRecords() {
         return records;
     }

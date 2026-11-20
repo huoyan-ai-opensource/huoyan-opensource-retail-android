@@ -37,7 +37,7 @@
             android:id="@+id/close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
+            android:minHeight="@dimen/dp_24"
             android:layout_marginTop="@dimen/dp_8"
             android:background="@drawable/btn_white_stroke_979797_radius_3"
             android:clickable="true"

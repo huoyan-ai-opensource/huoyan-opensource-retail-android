@@ -4,14 +4,18 @@ import org.junit.Rule;
 import org.junit.Assume;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
 import java.io.File;
 import java.nio.file.Files;
+
 import static org.junit.Assert.*;
 
 public class StudyFilesTest {
-    @Rule public TemporaryFolder temp = new TemporaryFolder();
+    @Rule
+    public TemporaryFolder temp = new TemporaryFolder();
 
-    @Test public void deletesOnlyNamedProduct() throws Exception {
+    @Test
+    public void deletesOnlyNamedProduct() throws Exception {
         File root = temp.newFolder("study");
         File product = new File(root, "ABC-123");
         assertTrue(product.mkdir());
@@ -23,7 +27,8 @@ public class StudyFilesTest {
         assertTrue(sibling.exists());
     }
 
-    @Test public void rejectsTraversalAndRootBeforeDeletingAnything() throws Exception {
+    @Test
+    public void rejectsTraversalAndRootBeforeDeletingAnything() throws Exception {
         File root = temp.newFolder("study");
         File sentinel = temp.newFile("keep");
         for (String plu : new String[]{"", ".", "..", "../keep", "../study-other", "/tmp", "a/b", "a\\b"}) {
@@ -33,7 +38,8 @@ public class StudyFilesTest {
         assertTrue(sentinel.exists());
     }
 
-    @Test public void neverTraversesSymbolicLinks() throws Exception {
+    @Test
+    public void neverTraversesSymbolicLinks() throws Exception {
         File root = temp.newFolder("study");
         File outside = temp.newFolder("outside");
         File sentinel = new File(outside, "keep");

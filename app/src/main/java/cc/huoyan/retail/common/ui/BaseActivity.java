@@ -32,7 +32,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     private static final Map<Class<?>, Boolean> SUBSCRIBER_CACHE = new ConcurrentHashMap<>();
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     protected Context mContext;
-    /** 当前页面创建时使用的语言，用于返回前台时检测系统语言变化。 */
+    /**
+     * 当前页面创建时使用的语言，用于返回前台时检测系统语言变化。
+     */
     private Locale renderedLocale;
 
     @Override
@@ -61,7 +63,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    /** 包装过的资源可能屏蔽语言配置差异，收到变化时按页面创建语言决定是否重建。 */
+    /**
+     * 包装过的资源可能屏蔽语言配置差异，收到变化时按页面创建语言决定是否重建。
+     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -121,8 +125,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    /** 页面返回直接切换，不播放系统的左右滑动过渡。 */
-    @Override public void finish() {
+    /**
+     * 页面返回直接切换，不播放系统的左右滑动过渡。
+     */
+    @Override
+    public void finish() {
         super.finish();
         overridePendingTransition(0, 0);
     }

@@ -6,7 +6,7 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/dp_0"
         android:layout_weight="95"
         android:gravity="center_vertical"
         android:paddingStart="@dimen/dp_10"
@@ -22,14 +22,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/dp_0"
         android:layout_weight="926"
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/dp_12"
         android:paddingTop="@dimen/dp_11">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="510"
             android:background="@drawable/bg_white_radius_dddddd_3"
@@ -60,7 +60,7 @@
                 android:paddingVertical="@dimen/dp_8">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/panel_client_version"
@@ -69,7 +69,7 @@
 
                 <TextView
                     android:id="@+id/app_version"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical|end"
@@ -91,7 +91,7 @@
                 android:paddingVertical="@dimen/dp_8">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/panel_sdk_version"
@@ -100,7 +100,7 @@
 
                 <TextView
                     android:id="@+id/sdk_version"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical|end"
@@ -122,7 +122,7 @@
                 android:paddingVertical="@dimen/dp_8">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/panel_hardware_serial"
@@ -131,7 +131,7 @@
 
                 <TextView
                     android:id="@+id/hardware_serial"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical|end"
@@ -153,7 +153,7 @@
                 android:paddingVertical="@dimen/dp_8">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/panel_cloud_service"
@@ -175,12 +175,12 @@
         </LinearLayout>
 
         <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_0"
             android:layout_weight="21" />
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="@dimen/dp_0"
             android:layout_height="wrap_content"
             android:layout_weight="510"
             android:background="@drawable/bg_white_radius_dddddd_3"
@@ -212,7 +212,7 @@
                 android:paddingVertical="@dimen/dp_8">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/panel_activation_status"
@@ -221,7 +221,7 @@
 
                 <TextView
                     android:id="@+id/active_status"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical|end"
@@ -243,7 +243,7 @@
                 android:paddingVertical="@dimen/dp_8">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/panel_activation_time"
@@ -252,7 +252,7 @@
 
                 <TextView
                     android:id="@+id/service_start_time"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical|end"
@@ -274,7 +274,7 @@
                 android:paddingVertical="@dimen/dp_8">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/panel_activation_expire"
@@ -283,7 +283,7 @@
 
                 <TextView
                     android:id="@+id/service_expire_time"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical|end"
@@ -305,7 +305,7 @@
                 android:paddingVertical="@dimen/dp_8">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/panel_activation_serial_type"
@@ -314,7 +314,7 @@
 
                 <TextView
                     android:id="@+id/serial_type"
-                    android:layout_width="0dp"
+                    android:layout_width="@dimen/dp_0"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center_vertical|end"

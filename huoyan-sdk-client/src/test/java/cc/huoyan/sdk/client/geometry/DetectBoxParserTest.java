@@ -1,4 +1,5 @@
 package cc.huoyan.sdk.client.geometry;
+
 import cc.huoyan.sdk.client.geometry.DetectGeometry;
 
 import static org.junit.Assert.assertEquals;

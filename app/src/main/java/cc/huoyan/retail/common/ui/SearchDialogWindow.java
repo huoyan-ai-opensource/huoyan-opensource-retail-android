@@ -5,14 +5,22 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
 import androidx.fragment.app.DialogFragment;
 
-/** 商品搜索弹窗的窗口约束，横竖屏共用可压缩列表的居中布局。 */
+/**
+ * 商品搜索弹窗的窗口约束，横竖屏共用可压缩列表的居中布局。
+ */
 public final class SearchDialogWindow {
-    /** 仅提供窗口配置，不创建实例。 */
-    private SearchDialogWindow() { }
+    /**
+     * 仅提供窗口配置，不创建实例。
+     */
+    private SearchDialogWindow() {
+    }
 
-    /** 在弹窗 onStart 时按宿主可用区域设置尺寸，中文输入法出现时压缩列表。 */
+    /**
+     * 在弹窗 onStart 时按宿主可用区域设置尺寸，中文输入法出现时压缩列表。
+     */
     public static void apply(DialogFragment fragment) {
         fragment.requireDialog().setCanceledOnTouchOutside(true);
         Window window = fragment.requireDialog().getWindow();

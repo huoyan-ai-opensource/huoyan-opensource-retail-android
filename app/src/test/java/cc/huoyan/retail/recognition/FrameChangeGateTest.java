@@ -1,34 +1,52 @@
 package cc.huoyan.retail.recognition;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
-/** 验证启动阈值、轮次持续放行、基线重置及称重优先。 */
+/**
+ * 验证启动阈值、轮次持续放行、基线重置及称重优先。
+ */
 public class FrameChangeGateTest {
-    /** 没有上一帧时不识别，等于阈值也不识别，超过才识别。 */
-    @Test public void firstFrameAndThresholdBoundary() {
+    /**
+     * 没有上一帧时不识别，等于阈值也不识别，超过才识别。
+     */
+    @Test
+    public void firstFrameAndThresholdBoundary() {
         FrameChangeGate gate = new FrameChangeGate();
         assertFalse(gate.accept("00", 4));
         assertFalse(gate.accept("0f", 4));
         assertTrue(gate.accept("f0", 4));
         assertTrue("已启动后静止新帧仍须放行", gate.accept("f0", 4));
     }
-    /** 未通过阈值的帧也必须成为下一次比较的基线。 */
-    @Test public void comparesPreviousFrameInsteadOfLastRecognizedFrame() {
+
+    /**
+     * 未通过阈值的帧也必须成为下一次比较的基线。
+     */
+    @Test
+    public void comparesPreviousFrameInsteadOfLastRecognizedFrame() {
         FrameChangeGate gate = new FrameChangeGate();
         assertFalse(gate.accept("0", 2));
         assertFalse(gate.accept("3", 2));
         assertFalse(gate.accept("7", 2));
         assertTrue(gate.accept("0", 2));
     }
-    /** 汉明距离按位计数，不把一个十六进制字符误当成一位。 */
-    @Test public void hexNibbleCanContainFourChangedBits() {
+
+    /**
+     * 汉明距离按位计数，不把一个十六进制字符误当成一位。
+     */
+    @Test
+    public void hexNibbleCanContainFourChangedBits() {
         FrameChangeGate gate = new FrameChangeGate();
         gate.accept("0", 3);
         assertTrue(gate.accept("f", 3));
     }
-    /** 重开会话及尺寸变化建立新基线，不与旧画面触发比较。 */
-    @Test public void resetAndChangedHashSizeEstablishBaseline() {
+
+    /**
+     * 重开会话及尺寸变化建立新基线，不与旧画面触发比较。
+     */
+    @Test
+    public void resetAndChangedHashSizeEstablishBaseline() {
         FrameChangeGate gate = new FrameChangeGate();
         gate.accept("0", 0);
         gate.reset();
@@ -37,15 +55,23 @@ public class FrameChangeGateTest {
         assertFalse(gate.accept(null, 0));
         assertFalse(gate.accept("ff", 0));
     }
-    /** 所有开关组合均以称重流程为优先。 */
-    @Test public void weighingAlwaysBypassesImageGate() {
+
+    /**
+     * 所有开关组合均以称重流程为优先。
+     */
+    @Test
+    public void weighingAlwaysBypassesImageGate() {
         assertTrue(FrameChangeGate.enabled(true, false));
         assertFalse(FrameChangeGate.enabled(true, true));
         assertFalse(FrameChangeGate.enabled(false, true));
         assertFalse(FrameChangeGate.enabled(false, false));
     }
-    /** 五个档位均只需触发一次，静止后继续取得三次一致结果，不依赖超时。 */
-    @Test public void singleChangeAtEverySensitivityCanCompleteResultConfirmation() {
+
+    /**
+     * 五个档位均只需触发一次，静止后继续取得三次一致结果，不依赖超时。
+     */
+    @Test
+    public void singleChangeAtEverySensitivityCanCompleteResultConfirmation() {
         for (int level = 1; level <= 5; level++) {
             FrameChangeGate frames = new FrameChangeGate();
             RecognitionResultGate results = new RecognitionResultGate();

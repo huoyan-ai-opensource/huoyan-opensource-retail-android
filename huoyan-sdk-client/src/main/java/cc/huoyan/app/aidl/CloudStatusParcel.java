@@ -27,12 +27,16 @@ public final class CloudStatusParcel implements Parcelable {
         return code;
     }
 
-    /** 错误说明；code=0 时为 null。 */
+    /**
+     * 错误说明；code=0 时为 null。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 开关终态（code=0 有效）。 */
+    /**
+     * 开关终态（code=0 有效）。
+     */
     public boolean isEnabled() {
         return enabled;
     }

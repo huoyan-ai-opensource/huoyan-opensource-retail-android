@@ -1,10 +1,15 @@
 package cc.huoyan.retail.device.camera;
 
-/** NV21 水平镜像，亮度逐像素翻转，色度按 VU 对翻转。 */
+/**
+ * NV21 水平镜像，亮度逐像素翻转，色度按 VU 对翻转。
+ */
 public final class Nv21Mirror {
-    private Nv21Mirror() { }
+    private Nv21Mirror() {
+    }
 
-    /** 原位水平镜像完整 NV21 图像；拒绝不合法尺寸以免损坏相机帧。 */
+    /**
+     * 原位水平镜像完整 NV21 图像；拒绝不合法尺寸以免损坏相机帧。
+     */
     public static void mirror(byte[] pixels, int width, int height) {
         if (pixels == null || width <= 0 || height <= 0 || (width & 1) != 0 || (height & 1) != 0
                 || (long) width * height * 3 / 2 > pixels.length) {

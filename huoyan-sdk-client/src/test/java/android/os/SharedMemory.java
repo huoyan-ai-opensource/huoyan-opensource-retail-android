@@ -17,7 +17,9 @@ public final class SharedMemory implements Parcelable {
 
     private final byte[] data;
 
-    /** close 已触达标记（断言桥方法调用后释放载体）。 */
+    /**
+     * close 已触达标记（断言桥方法调用后释放载体）。
+     */
     private boolean closed;
 
     private SharedMemory(byte[] data) {
@@ -31,7 +33,9 @@ public final class SharedMemory implements Parcelable {
         return new SharedMemory(new byte[sizeInBytes]);
     }
 
-    /** 区容量（字节）。 */
+    /**
+     * 区容量（字节）。
+     */
     public int getSize() {
         return data.length;
     }
@@ -44,15 +48,20 @@ public final class SharedMemory implements Parcelable {
         return ByteBuffer.wrap(data).asReadOnlyBuffer();
     }
 
-    /** 堆缓冲区无需解除 native 映射，仅用于对齐平台签名。 */
-    public static void unmap(ByteBuffer buffer) { }
+    /**
+     * 堆缓冲区无需解除 native 映射，仅用于对齐平台签名。
+     */
+    public static void unmap(ByteBuffer buffer) {
+    }
 
     public void close() {
         // 测试替身无 native 资源可释放，仅记录触达供断言
         closed = true;
     }
 
-    /** close 是否已被调用（真实实现释放在 native 层，不可观测）。 */
+    /**
+     * close 是否已被调用（真实实现释放在 native 层，不可观测）。
+     */
     public boolean isClosed() {
         return closed;
     }

@@ -2,25 +2,35 @@ package cc.huoyan.retail.common.ui;
 
 import android.content.Context;
 import android.view.View;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+
 import cc.huoyan.retail.R;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import static org.junit.Assert.*;
 
-/** 原生适配器的列表所有权、空态切换、删除后点击及局部绑定回归。 */
+/**
+ * 原生适配器的列表所有权、空态切换、删除后点击及局部绑定回归。
+ */
 @RunWith(AndroidJUnit4.class)
 public class RetailAdapterDeviceTest {
-    /** 空态铺满网格，删除最后一项后仍可追加并绑定新数据。 */
-    @Test public void emptyToDataToEmptyAndBack() {
+    /**
+     * 空态铺满网格，删除最后一项后仍可追加并绑定新数据。
+     */
+    @Test
+    public void emptyToDataToEmptyAndBack() {
         InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
             TestAdapter adapter = new TestAdapter();
             RecyclerView recycler = recycler(adapter);
@@ -49,8 +59,11 @@ public class RetailAdapterDeviceTest {
         });
     }
 
-    /** 删除前面的条目后，行及子按钮使用当前位置；载荷通知保留局部绑定。 */
-    @Test public void clicksFollowCurrentPositionAndPayloadsArePreserved() {
+    /**
+     * 删除前面的条目后，行及子按钮使用当前位置；载荷通知保留局部绑定。
+     */
+    @Test
+    public void clicksFollowCurrentPositionAndPayloadsArePreserved() {
         InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
             TestAdapter adapter = new TestAdapter();
             RecyclerView recycler = recycler(adapter);
@@ -96,14 +109,19 @@ public class RetailAdapterDeviceTest {
 
     private static final class TestAdapter extends RetailAdapter<String> {
         private boolean sawPayload;
+
         private TestAdapter() {
             super(R.layout.adapter_study_goods);
             addChildClickViewIds(R.id.pluName);
         }
-        @Override protected void convert(RowViewHolder holder, String item) {
+
+        @Override
+        protected void convert(RowViewHolder holder, String item) {
             holder.setText(R.id.pluName, item);
         }
-        @Override protected void convert(RowViewHolder holder, String item, List<? extends Object> payloads) {
+
+        @Override
+        protected void convert(RowViewHolder holder, String item, List<? extends Object> payloads) {
             sawPayload |= payloads.contains("selection");
             super.convert(holder, item, payloads);
         }

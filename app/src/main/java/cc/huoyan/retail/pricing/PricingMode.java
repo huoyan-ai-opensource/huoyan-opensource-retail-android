@@ -13,10 +13,14 @@ package cc.huoyan.retail.pricing;
  */
 public enum PricingMode {
 
-    /** 按件/按份计价：数量（整数件）× 单价。 */
+    /**
+     * 按件/按份计价：数量（整数件）× 单价。
+     */
     COUNT,
 
-    /** 称重计价：重量(kg) × 单价。 */
+    /**
+     * 称重计价：重量(kg) × 单价。
+     */
     WEIGHT;
 
     /**

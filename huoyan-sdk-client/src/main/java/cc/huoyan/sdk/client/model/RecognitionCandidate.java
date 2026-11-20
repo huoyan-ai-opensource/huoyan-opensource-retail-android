@@ -15,7 +15,9 @@ public final class RecognitionCandidate {
     private final double square;
     private final double rank;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public RecognitionCandidate(String clazz, double distance, double square, double rank) {
         this.clazz = clazz;
         this.distance = distance;
@@ -23,22 +25,30 @@ public final class RecognitionCandidate {
         this.rank = rank;
     }
 
-    /** 分类编码；由业务应用映射商品。 */
+    /**
+     * 分类编码；由业务应用映射商品。
+     */
     public String getClazz() {
         return clazz;
     }
 
-    /** 识别距离，数值语义由 SDK 定义，不是置信度。 */
+    /**
+     * 识别距离，数值语义由 SDK 定义，不是置信度。
+     */
     public double getDistance() {
         return distance;
     }
 
-    /** 候选样本面积（尺寸加权重放字段，缺省 0）。 */
+    /**
+     * 候选样本面积（尺寸加权重放字段，缺省 0）。
+     */
     public double getSquare() {
         return square;
     }
 
-    /** 候选加权分（尺寸加权重放字段，缺省 0；可负——C 侧软加权公式产物）。 */
+    /**
+     * 候选加权分（尺寸加权重放字段，缺省 0；可负——C 侧软加权公式产物）。
+     */
     public double getRank() {
         return rank;
     }

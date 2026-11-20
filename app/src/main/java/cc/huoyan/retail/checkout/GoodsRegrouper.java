@@ -2,11 +2,14 @@ package cc.huoyan.retail.checkout;
 
 import cc.huoyan.retail.data.GoodsEntity;
 import cc.huoyan.retail.checkout.RecognitionSelection;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/** 只重组被改品的行；整行改品携带手工数量，拆出部分框时每框转移一件。 */
+/**
+ * 只重组被改品的行；整行改品携带手工数量，拆出部分框时每框转移一件。
+ */
 final class GoodsRegrouper {
     static List<GoodsVo> replace(List<GoodsVo> rows, Set<RecognitionSelection> selected, GoodsEntity target) {
         List<GoodsVo> result = new ArrayList<>();
@@ -34,7 +37,8 @@ final class GoodsRegrouper {
                 movedCount += count(row);
             } else {
                 // 无法为拆分后的两行分配正数数量时，要求先调整数量，不能凭空增加件数。
-                if (count(row) <= transferred) throw new IllegalArgumentException("insufficient count to split");
+                if (count(row) <= transferred)
+                    throw new IllegalArgumentException("insufficient count to split");
                 int transferredCount = transferred;
                 movedCount += transferredCount;
                 result.add(new GoodsVo(count(row) - transferredCount, row.getAmount(), row.getGoods(), remaining));

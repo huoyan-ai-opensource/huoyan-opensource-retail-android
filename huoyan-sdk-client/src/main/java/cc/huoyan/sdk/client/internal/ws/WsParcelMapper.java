@@ -2,8 +2,10 @@ package cc.huoyan.sdk.client.internal.ws;
 
 import cc.huoyan.app.aidl.PhotoUploadResultParcel;
 import cc.huoyan.app.aidl.ImageFlowProgressParcel;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import cc.huoyan.app.aidl.*;
 
 import cc.huoyan.app.aidl.BaseResultParcel;
@@ -48,13 +50,17 @@ import com.alibaba.fastjson.JSONObject;
  */
 public final class WsParcelMapper {
 
-    /** 入参非法错误码（对齐 SDK huoyan ERR_ARGS）。 */
+    /**
+     * 入参非法错误码（对齐 SDK huoyan ERR_ARGS）。
+     */
     public static final int ERR_ARGS = -1;
 
     private WsParcelMapper() {
     }
 
-    /** 映射云端开关回执；错误载荷中的 enabled 不得作为实际状态。 */
+    /**
+     * 映射云端开关回执；错误载荷中的 enabled 不得作为实际状态。
+     */
     public static CloudStatusParcel cloudStatus(WsV2Codec.Response response) {
         if (!response.isOk()) {
             return new CloudStatusParcel(response.getCode(), response.getReason(), false);
@@ -401,7 +407,7 @@ public final class WsParcelMapper {
      * activate 命令参数。
      *
      * @param activationCode 激活码
-     * @param modelCode 用户选择的模型代码
+     * @param modelCode      用户选择的模型代码
      * @return 激活码与模型代码参数
      */
     public static JSONObject buildActivateParams(String activationCode, String modelCode) {
@@ -411,17 +417,22 @@ public final class WsParcelMapper {
         return params;
     }
 
-    /** 按激活码查询模型的请求参数。 */
+    /**
+     * 按激活码查询模型的请求参数。
+     */
     public static JSONObject buildLicenseModelsParams(String activationCode) {
         JSONObject params = new JSONObject(true);
         params.put("activation_code", activationCode);
         return params;
     }
 
-    /** 保留模型列表顺序、稳定代码和当前项标记。 */
+    /**
+     * 保留模型列表顺序、稳定代码和当前项标记。
+     */
     public static LicenseModelsParcel licenseModels(WsV2Codec.Response response) {
         List<LicenseModelParcel> models = new ArrayList<>();
-        if (!response.isOk()) return new LicenseModelsParcel(response.getCode(), response.getReason(), models);
+        if (!response.isOk())
+            return new LicenseModelsParcel(response.getCode(), response.getReason(), models);
         JSONArray rows = response.getData().getJSONArray("models");
         if (rows == null) return new LicenseModelsParcel(-1, "模型列表回执缺失", models);
         for (int i = 0; i < rows.size(); i++) {
@@ -491,8 +502,8 @@ public final class WsParcelMapper {
     /**
      * item_learn 命令参数（分类编码 + 图像载体几何）。
      *
-     * @param clazz 分类编码（int64）
-     * @param width 帧宽
+     * @param clazz  分类编码（int64）
+     * @param width  帧宽
      * @param height 帧高
      * @return {"clazz", "format", "width", "height"}
      */
@@ -502,7 +513,9 @@ public final class WsParcelMapper {
         return params;
     }
 
-    /** 将识别目标、候选、最终选择与原图坐标转换为 WS feedback 契约。 */
+    /**
+     * 将识别目标、候选、最终选择与原图坐标转换为 WS feedback 契约。
+     */
     public static JSONObject buildFeedbackParams(FeedbackParcel feedback) {
         JSONObject params = new JSONObject(true);
         params.put("feedback_type", feedback.getFeedbackType());
@@ -545,7 +558,9 @@ public final class WsParcelMapper {
         return params;
     }
 
-    /** 解析 uploadPhoto 回执，保留 SDK 业务错误码与线上 URL。 */
+    /**
+     * 解析 uploadPhoto 回执，保留 SDK 业务错误码与线上 URL。
+     */
     public static PhotoUploadResultParcel photoUpload(WsV2Codec.Response response) {
         BaseResultParcel result = base(response);
         JSONObject data = response.getData();
@@ -727,7 +742,10 @@ public final class WsParcelMapper {
                 goods.getString("account_name"),
                 goods.getString("create_time"));
     }
-    /** 映射类别图片分页；缺失图片仍保留样本记录。 */
+
+    /**
+     * 映射类别图片分页；缺失图片仍保留样本记录。
+     */
     public static ItemClazzImagePageParcel clazzImages(WsV2Codec.Response response) {
         if (!response.isOk()) {
             return new ItemClazzImagePageParcel(response.getCode(), response.getReason(),
@@ -749,7 +767,9 @@ public final class WsParcelMapper {
                 data.getIntValue("pages"), items);
     }
 
-    /** 映射失败图片查询，保留错误码与原因。 */
+    /**
+     * 映射失败图片查询，保留错误码与原因。
+     */
     public static FailedImagesResultParcel failedImages(WsV2Codec.Response response) {
         return new FailedImagesResultParcel(response.getCode(), response.getReason(),
                 failedImageRecords(response.isOk() ? response.getData().getJSONArray("items") : null));
@@ -768,7 +788,9 @@ public final class WsParcelMapper {
         return items;
     }
 
-    /** 映射识别数据备份时间及版本，未备份保持零值空态。 */
+    /**
+     * 映射识别数据备份时间及版本，未备份保持零值空态。
+     */
     public static RecognitionDataInfoParcel recognitionDataInfo(WsV2Codec.Response response) {
         if (!response.isOk()) {
             return new RecognitionDataInfoParcel(response.getCode(), response.getReason(),
@@ -780,7 +802,9 @@ public final class WsParcelMapper {
                 data.getLongValue("file_format_version"));
     }
 
-    /** 将阶段进度或最终学习统计映射为与 AIDL 一致的回执。 */
+    /**
+     * 将阶段进度或最终学习统计映射为与 AIDL 一致的回执。
+     */
     public static ImageFlowProgressParcel imageFlow(WsV2Codec.Response response, boolean finalResult) {
         JSONObject data = response.getData();
         if (!response.isOk() || data == null || data.getString("phase") == null) {
@@ -805,7 +829,9 @@ public final class WsParcelMapper {
                 failedImageRecords(data.getJSONArray("failed_images")));
     }
 
-    /** 构造分页参数，0 交由 SDK 使用默认值。 */
+    /**
+     * 构造分页参数，0 交由 SDK 使用默认值。
+     */
     public static JSONObject buildPageParams(int page, int size) {
         JSONObject params = new JSONObject(true);
         params.put("page", page);
@@ -813,7 +839,9 @@ public final class WsParcelMapper {
         return params;
     }
 
-    /** 构造类别图片分页参数。 */
+    /**
+     * 构造类别图片分页参数。
+     */
     public static JSONObject buildClazzPageParams(String clazz, int page, int size) {
         JSONObject params = buildPageParams(page, size);
         params.put("clazz", clazz);
@@ -827,11 +855,14 @@ public final class WsParcelMapper {
     private static List<GoodsParcel> goodsRecords(JSONObject data) {
         List<GoodsParcel> result = new ArrayList<>();
         JSONArray records = data.getJSONArray("records");
-        if (records != null) for (int i = 0; i < records.size(); i++) result.add(goodsRecord(records.getJSONObject(i)));
+        if (records != null) for (int i = 0; i < records.size(); i++)
+            result.add(goodsRecord(records.getJSONObject(i)));
         return result;
     }
 
-    /** 解析云端商品分页及同步游标。 */
+    /**
+     * 解析云端商品分页及同步游标。
+     */
     public static GoodsListResultParcel goodsList(WsV2Codec.Response response) {
         JSONObject d = payload(response);
         return new GoodsListResultParcel(response.getCode(), response.getReason(), d.getString("shop_id"),
@@ -839,19 +870,25 @@ public final class WsParcelMapper {
                 d.getLongValue("total"), d.getLongValue("pages"), d.getIntValue("current"), d.getIntValue("size"), goodsRecords(d));
     }
 
-    /** 解析 SDK 本地商品查询分页，保留软删字段。 */
+    /**
+     * 解析 SDK 本地商品查询分页，保留软删字段。
+     */
     public static GoodsQueryResultParcel goodsQuery(WsV2Codec.Response response) {
         JSONObject d = payload(response);
         return new GoodsQueryResultParcel(response.getCode(), response.getReason(), d.getLongValue("total"),
                 d.getLongValue("pages"), d.getIntValue("current"), d.getIntValue("size"), goodsRecords(d));
     }
 
-    /** 解析商品计数；错误码不被空统计覆盖。 */
+    /**
+     * 解析商品计数；错误码不被空统计覆盖。
+     */
     public static GoodsCountResultParcel goodsCount(WsV2Codec.Response response) {
         return new GoodsCountResultParcel(response.getCode(), response.getReason(), payload(response).getLongValue("count"));
     }
 
-    /** 解析批量操作逐项结果，保留部分成功与原始顺序。 */
+    /**
+     * 解析批量操作逐项结果，保留部分成功与原始顺序。
+     */
     public static GoodsBatchResultParcel goodsBatch(WsV2Codec.Response response) {
         List<GoodsBatchItemParcel> result = new ArrayList<>();
         JSONArray items = payload(response).getJSONArray("items");
@@ -862,7 +899,9 @@ public final class WsParcelMapper {
         return new GoodsBatchResultParcel(response.getCode(), response.getReason(), result);
     }
 
-    /** 解析商品同步终态及完整统计。 */
+    /**
+     * 解析商品同步终态及完整统计。
+     */
     public static GoodsDownloadResultParcel goodsDownload(WsV2Codec.Response response) {
         JSONObject d = payload(response);
         return new GoodsDownloadResultParcel(response.getCode(), response.getReason(), d.getString("phase"),
@@ -872,7 +911,9 @@ public final class WsParcelMapper {
                 d.getIntValue("fail_code"), d.getString("fail_reason"));
     }
 
-    /** 解析商品同步进度，保留失败阶段和已提交游标。 */
+    /**
+     * 解析商品同步进度，保留失败阶段和已提交游标。
+     */
     public static GoodsDownloadProgressParcel goodsDownloadProgress(WsV2Codec.Response response) {
         JSONObject d = payload(response);
         return new GoodsDownloadProgressParcel(response.getCode(), response.getReason(), d.getBooleanValue("active"),

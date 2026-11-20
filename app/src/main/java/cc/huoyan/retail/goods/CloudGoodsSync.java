@@ -7,20 +7,41 @@ import cc.huoyan.retail.sdk.SdkChannelManager;
 import cc.huoyan.sdk.client.HuoyanSdkClient;
 import cc.huoyan.sdk.client.model.GoodsDownloadResult;
 
-/** 云端商品同步只交给 SDK 执行，宿主不复制商品目录。 */
+/**
+ * 云端商品同步只交给 SDK 执行，宿主不复制商品目录。
+ */
 public final class CloudGoodsSync {
-    /** SDK 同步的最终回执。 */
+    /**
+     * SDK 同步的最终回执。
+     */
     public static final class Result {
-        /** 无失败条目时为 true。 */
+        /**
+         * 无失败条目时为 true。
+         */
         public final boolean success;
-        /** 当前语言的同步结果。 */
+        /**
+         * 当前语言的同步结果。
+         */
         public final String message;
-        /** 固定本次同步回执。 */
-        private Result(boolean success, String message) { this.success = success; this.message = message; }
+
+        /**
+         * 固定本次同步回执。
+         */
+        private Result(boolean success, String message) {
+            this.success = success;
+            this.message = message;
+        }
     }
-    /** 仅提供后台同步入口。 */
-    private CloudGoodsSync() { }
-    /** 等待 SDK 完成云端同步；换绑或断连均不返回成功，不自动重试。 */
+
+    /**
+     * 仅提供后台同步入口。
+     */
+    private CloudGoodsSync() {
+    }
+
+    /**
+     * 等待 SDK 完成云端同步；换绑或断连均不返回成功，不自动重试。
+     */
     public static Result run(HuoyanSdkClient client) {
         if (!SPManager.getInstance().hasBoundShop())
             return new Result(false, LocalizedText.get(R.string.cloud_sync_bind_shop_first));
@@ -36,7 +57,10 @@ public final class CloudGoodsSync {
         return new Result(success, success ? LocalizedText.get(R.string.cloud_sync_complete)
                 : LocalizedText.get(R.string.cloud_sync_partial, result.getSuccessCount(), result.getFailCount()));
     }
-    /** SDK 完成且没有失败条目才认定为完整成功。 */
+
+    /**
+     * SDK 完成且没有失败条目才认定为完整成功。
+     */
     static boolean complete(GoodsDownloadResult result) {
         return result != null && result.getCode() == 0 && "SUCCESS".equals(result.getPhase()) && result.getFailCount() == 0;
     }

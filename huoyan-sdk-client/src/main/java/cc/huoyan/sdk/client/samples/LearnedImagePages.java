@@ -1,17 +1,26 @@
 package cc.huoyan.sdk.client.samples;
 
 import cc.huoyan.sdk.client.HuoyanSdkClient;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import cc.huoyan.sdk.client.model.ItemClazzImagePage;
 import cc.huoyan.sdk.client.model.ItemClazzImage;
 
-/** 按 SDK 分页读取样本，保留缺图样本的 UID 供遗忘操作使用。 */
+/**
+ * 按 SDK 分页读取样本，保留缺图样本的 UID 供遗忘操作使用。
+ */
 public final class LearnedImagePages {
-    /** 仅提供分页静态方法。 */
-    private LearnedImagePages() {}
+    /**
+     * 仅提供分页静态方法。
+     */
+    private LearnedImagePages() {
+    }
 
-    /** 取最新的有效样本图片地址，跳过缺图记录，保留完整长整型 UID。 */
+    /**
+     * 取最新的有效样本图片地址，跳过缺图记录，保留完整长整型 UID。
+     */
     public static List<String> latestUrls(List<ItemClazzImage> images, int limit) {
         List<ItemClazzImage> available = new ArrayList<>();
         for (ItemClazzImage image : images) {
@@ -28,18 +37,24 @@ public final class LearnedImagePages {
         return urls;
     }
 
-    /** 判断 SDK 返回的图片地址是否为有效 HTTP(S) URL。 */
+    /**
+     * 判断 SDK 返回的图片地址是否为有效 HTTP(S) URL。
+     */
     public static boolean isHttpUrl(String url) {
         try {
             java.net.URI uri = new java.net.URI(url == null ? "" : url);
             return ("http".equalsIgnoreCase(uri.getScheme()) || "https".equalsIgnoreCase(uri.getScheme()))
                     && uri.getHost() != null;
-        } catch (java.net.URISyntaxException ignored) { return false; }
+        } catch (java.net.URISyntaxException ignored) {
+            return false;
+        }
     }
 
-    /** 只取最新一页；SDK 按 UID 升序分页，先查询页数再读取末页。须在后台调用。 */
+    /**
+     * 只取最新一页；SDK 按 UID 升序分页，先查询页数再读取末页。须在后台调用。
+     */
     public static ItemClazzImagePage loadNewestPage(HuoyanSdkClient bridge, String clazz,
-            int size, java.util.function.BooleanSupplier isCurrent) {
+                                                    int size, java.util.function.BooleanSupplier isCurrent) {
         ItemClazzImagePage first = loadPage(bridge, clazz, 1, size, isCurrent);
         if (first.getPages() <= 1) return first;
         ItemClazzImagePage last = loadPage(bridge, clazz, first.getPages(), size, isCurrent);
@@ -50,9 +65,11 @@ public final class LearnedImagePages {
         return last;
     }
 
-    /** 读取单页并校验回执；失败不推进游标，过期请求不回写页面。 */
+    /**
+     * 读取单页并校验回执；失败不推进游标，过期请求不回写页面。
+     */
     public static ItemClazzImagePage loadPage(HuoyanSdkClient bridge, String clazz, int page,
-            int size, java.util.function.BooleanSupplier isCurrent) {
+                                              int size, java.util.function.BooleanSupplier isCurrent) {
         checkCurrent(isCurrent);
         ItemClazzImagePage result = bridge.listImages(clazz, page, size);
         checkCurrent(isCurrent);
@@ -66,21 +83,27 @@ public final class LearnedImagePages {
         return result;
     }
 
-    /** 请求过期后停止后续只读查询。 */
+    /**
+     * 请求过期后停止后续只读查询。
+     */
     private static void checkCurrent(java.util.function.BooleanSupplier isCurrent) {
         if (Thread.currentThread().isInterrupted() || !isCurrent.getAsBoolean()) {
             throw new java.util.concurrent.CancellationException();
         }
     }
 
-    /** 读取类别全部图片；任一页失败时抛错，避免展示不完整图集。须在后台调用。 */
+    /**
+     * 读取类别全部图片；任一页失败时抛错，避免展示不完整图集。须在后台调用。
+     */
     public static List<ItemClazzImage> loadAll(HuoyanSdkClient bridge, String clazz) {
         return loadAll(bridge, clazz, () -> true);
     }
 
-    /** 分页读取时检查请求是否仍有效，商品切换后不继续查询旧商品。 */
+    /**
+     * 分页读取时检查请求是否仍有效，商品切换后不继续查询旧商品。
+     */
     public static List<ItemClazzImage> loadAll(HuoyanSdkClient bridge, String clazz,
-            java.util.function.BooleanSupplier isCurrent) {
+                                               java.util.function.BooleanSupplier isCurrent) {
         List<ItemClazzImage> images = new ArrayList<>();
         for (int page = 1; ; page++) {
             ItemClazzImagePage result = loadPage(bridge, clazz, page, 100, isCurrent);
@@ -93,12 +116,19 @@ public final class LearnedImagePages {
             }
         }
     }
-    /** 从最新页倒查指定样本 UID；查询失败交由宿主保留已成功的学习结果。 */
+
+    /**
+     * 从最新页倒查指定样本 UID；查询失败交由宿主保留已成功的学习结果。
+     */
     public static java.util.Map<Long, String> findUrls(HuoyanSdkClient client, String clazz,
-            long[] uids, int size, java.util.function.BooleanSupplier active) {
+                                                       long[] uids, int size, java.util.function.BooleanSupplier active) {
         java.util.Set<Long> wanted = new java.util.HashSet<>();
         long earliest = Long.MAX_VALUE;
-        for (long uid : uids) if (uid > 0) { wanted.add(uid); earliest = Math.min(earliest, uid); }
+        for (long uid : uids)
+            if (uid > 0) {
+                wanted.add(uid);
+                earliest = Math.min(earliest, uid);
+            }
         java.util.Map<Long, String> urls = new java.util.HashMap<>();
         if (wanted.isEmpty()) return urls;
         ItemClazzImagePage page = loadNewestPage(client, clazz, size, active);

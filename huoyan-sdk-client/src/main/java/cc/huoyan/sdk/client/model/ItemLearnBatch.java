@@ -18,7 +18,9 @@ public final class ItemLearnBatch {
     private final String reason;
     private final List<ItemLearnBox> boxes;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public ItemLearnBatch(int code, String reason, List<ItemLearnBox> boxes) {
         this.code = code;
         this.reason = reason;
@@ -26,17 +28,23 @@ public final class ItemLearnBatch {
                 Objects.requireNonNull(boxes, "boxes 不能为空")));
     }
 
-    /** 结果码；0 表示请求成功。 */
+    /**
+     * 结果码；0 表示请求成功。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 整体错误说明；code=0 时为 null（每框错误说明在 boxes 元素内）。 */
+    /**
+     * 整体错误说明；code=0 时为 null（每框错误说明在 boxes 元素内）。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 每框结果列表（code=0 时有效；与 detect 框序一致，无框为空列表）。 */
+    /**
+     * 每框结果列表（code=0 时有效；与 detect 框序一致，无框为空列表）。
+     */
     public List<ItemLearnBox> getBoxes() {
         return boxes;
     }

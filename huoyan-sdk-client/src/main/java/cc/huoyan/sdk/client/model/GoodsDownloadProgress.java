@@ -31,11 +31,13 @@ public final class GoodsDownloadProgress {
     private final long syncTimestamp;
     private final String failReason;
 
-    /** 构造数据对象。 */
+    /**
+     * 构造数据对象。
+     */
     public GoodsDownloadProgress(int code, String reason, boolean active, String phase,
-            long current, long total, long successCount, long failCount, long addedCount,
-            long updatedCount, long deletedCount, boolean hasChanges, String syncMode,
-            long syncTimestamp, String failReason) {
+                                 long current, long total, long successCount, long failCount, long addedCount,
+                                 long updatedCount, long deletedCount, boolean hasChanges, String syncMode,
+                                 long syncTimestamp, String failReason) {
         this.code = code;
         this.reason = reason;
         this.active = active;
@@ -53,77 +55,107 @@ public final class GoodsDownloadProgress {
         this.failReason = failReason;
     }
 
-    /** 读取 getCode 对应数据。 */
+    /**
+     * 读取 getCode 对应数据。
+     */
     public int getCode() {
         return code;
     }
 
-    /** 读取 getReason 对应数据。 */
+    /**
+     * 读取 getReason 对应数据。
+     */
     public String getReason() {
         return reason;
     }
 
-    /** 同步进行中（FETCHING/APPLYING）；无任务（IDLE）恒 false。 */
+    /**
+     * 同步进行中（FETCHING/APPLYING）；无任务（IDLE）恒 false。
+     */
     public boolean isActive() {
         return active;
     }
 
-    /** IDLE/FETCHING/APPLYING/SUCCESS/FAILED（终态停留可查）。 */
+    /**
+     * IDLE/FETCHING/APPLYING/SUCCESS/FAILED（终态停留可查）。
+     */
     public String getPhase() {
         return phase;
     }
 
-    /** 已处理商品行数（含跨页重复与无效行；非页码）。 */
+    /**
+     * 已处理商品行数（含跨页重复与无效行；非页码）。
+     */
     public long getCurrent() {
         return current;
     }
 
-    /** 本次商品总数（0 = 未知/未开始）。 */
+    /**
+     * 本次商品总数（0 = 未知/未开始）。
+     */
     public long getTotal() {
         return total;
     }
 
-    /** 读取 getSuccessCount 对应数据。 */
+    /**
+     * 读取 getSuccessCount 对应数据。
+     */
     public long getSuccessCount() {
         return successCount;
     }
 
-    /** 读取 getFailCount 对应数据。 */
+    /**
+     * 读取 getFailCount 对应数据。
+     */
     public long getFailCount() {
         return failCount;
     }
 
-    /** 读取 getAddedCount 对应数据。 */
+    /**
+     * 读取 getAddedCount 对应数据。
+     */
     public long getAddedCount() {
         return addedCount;
     }
 
-    /** 读取 getUpdatedCount 对应数据。 */
+    /**
+     * 读取 getUpdatedCount 对应数据。
+     */
     public long getUpdatedCount() {
         return updatedCount;
     }
 
-    /** 读取 getDeletedCount 对应数据。 */
+    /**
+     * 读取 getDeletedCount 对应数据。
+     */
     public long getDeletedCount() {
         return deletedCount;
     }
 
-    /** 本次本地库是否有变更。 */
+    /**
+     * 本次本地库是否有变更。
+     */
     public boolean isHasChanges() {
         return hasChanges;
     }
 
-    /** 同步模式（full/incremental；未开始为 null）。 */
+    /**
+     * 同步模式（full/incremental；未开始为 null）。
+     */
     public String getSyncMode() {
         return syncMode;
     }
 
-    /** 已提交游标（进行中/失败保留旧值；成功为本次回执值）。 */
+    /**
+     * 已提交游标（进行中/失败保留旧值；成功为本次回执值）。
+     */
     public long getSyncTimestamp() {
         return syncTimestamp;
     }
 
-    /** 失败原因（仅 FAILED 非 null）。 */
+    /**
+     * 失败原因（仅 FAILED 非 null）。
+     */
     public String getFailReason() {
         return failReason;
     }

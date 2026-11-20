@@ -35,17 +35,17 @@ public final class GoodsSave {
     /**
      * 全参构造（数值可选项盒装：null → 哨兵 -1 + hasX=false）。
      *
-     * @param category 商品类别（0-8 枚举）
-     * @param saleMode 销售方式（0 按个 / 1 按重量）
-     * @param price    单价（整数分）
+     * @param category   商品类别（0-8 枚举）
+     * @param saleMode   销售方式（0 按个 / 1 按重量）
+     * @param price      单价（整数分）
      * @param tareWeight 皮重（克）
-     * @param sort     排序（小在前）
-     * @param status   状态（1 上架 / 2 下架）
+     * @param sort       排序（小在前）
+     * @param status     状态（1 上架 / 2 下架）
      */
     public GoodsSave(String name, String plu, String image,
-            String ingredientsList, String shelfLife, String pinyin,
-            Integer category, String categoryName, String unit, Integer saleMode,
-            Long tareWeight, Long price, Integer sort, Integer status) {
+                     String ingredientsList, String shelfLife, String pinyin,
+                     Integer category, String categoryName, String unit, Integer saleMode,
+                     Long tareWeight, Long price, Integer sort, Integer status) {
         this.name = name;
         this.plu = plu;
         this.image = image;
@@ -68,102 +68,142 @@ public final class GoodsSave {
         this.hasStatus = status != null;
     }
 
-    /** 商品名称。 */
+    /**
+     * 商品名称。
+     */
     public String getName() {
         return name;
     }
 
-    /** 称重/店内码；创建必填，更新 null = 不更新。 */
+    /**
+     * 称重/店内码；创建必填，更新 null = 不更新。
+     */
     public String getPlu() {
         return plu;
     }
 
-    /** 商品图片地址。 */
+    /**
+     * 商品图片地址。
+     */
     public String getImage() {
         return image;
     }
 
-    /** 配料表。 */
+    /**
+     * 配料表。
+     */
     public String getIngredientsList() {
         return ingredientsList;
     }
 
-    /** 保质期。 */
+    /**
+     * 保质期。
+     */
     public String getShelfLife() {
         return shelfLife;
     }
 
-    /** 商品拼音。 */
+    /**
+     * 商品拼音。
+     */
     public String getPinyin() {
         return pinyin;
     }
 
-    /** 商品分类名称。 */
+    /**
+     * 商品分类名称。
+     */
     public String getCategoryName() {
         return categoryName;
     }
 
-    /** 商品单位文本。 */
+    /**
+     * 商品单位文本。
+     */
     public String getUnit() {
         return unit;
     }
 
-    /** 商品类别（0-8）；仅 {@link #hasCategory()}=true 时有效。 */
+    /**
+     * 商品类别（0-8）；仅 {@link #hasCategory()}=true 时有效。
+     */
     public int getCategory() {
         return category;
     }
 
-    /** 销售方式（0 按个 / 1 按重量）；仅 {@link #hasSaleMode()}=true 时有效。 */
+    /**
+     * 销售方式（0 按个 / 1 按重量）；仅 {@link #hasSaleMode()}=true 时有效。
+     */
     public int getSaleMode() {
         return saleMode;
     }
 
-    /** 单价（整数分）；仅 {@link #hasPrice()}=true 时有效。 */
+    /**
+     * 单价（整数分）；仅 {@link #hasPrice()}=true 时有效。
+     */
     public long getPrice() {
         return price;
     }
 
-    /** 皮重（克）；仅 {@link #hasTareWeight()}=true 时有效。 */
+    /**
+     * 皮重（克）；仅 {@link #hasTareWeight()}=true 时有效。
+     */
     public long getTareWeight() {
         return tareWeight;
     }
 
-    /** 排序（小在前）；仅 {@link #hasSort()}=true 时有效。 */
+    /**
+     * 排序（小在前）；仅 {@link #hasSort()}=true 时有效。
+     */
     public int getSort() {
         return sort;
     }
 
-    /** 状态（1 上架 / 2 下架）；仅 {@link #hasStatus()}=true 时有效。 */
+    /**
+     * 状态（1 上架 / 2 下架）；仅 {@link #hasStatus()}=true 时有效。
+     */
     public int getStatus() {
         return status;
     }
 
-    /** 是否显式提供 Category 字段。 */
+    /**
+     * 是否显式提供 Category 字段。
+     */
     public boolean hasCategory() {
         return hasCategory;
     }
 
-    /** 是否显式提供 SaleMode 字段。 */
+    /**
+     * 是否显式提供 SaleMode 字段。
+     */
     public boolean hasSaleMode() {
         return hasSaleMode;
     }
 
-    /** 是否显式提供 Price 字段。 */
+    /**
+     * 是否显式提供 Price 字段。
+     */
     public boolean hasPrice() {
         return hasPrice;
     }
 
-    /** 是否显式提供 TareWeight 字段。 */
+    /**
+     * 是否显式提供 TareWeight 字段。
+     */
     public boolean hasTareWeight() {
         return hasTareWeight;
     }
 
-    /** 是否显式提供 Sort 字段。 */
+    /**
+     * 是否显式提供 Sort 字段。
+     */
     public boolean hasSort() {
         return hasSort;
     }
 
-    /** 是否显式提供 Status 字段。 */
+    /**
+     * 是否显式提供 Status 字段。
+     */
     public boolean hasStatus() {
         return hasStatus;
     }
